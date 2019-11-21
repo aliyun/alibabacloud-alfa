@@ -1,0 +1,23 @@
+{
+  "name": "@alicloud/consoleos-browser-vm",
+  "version": "0.1.0",
+  "description": "browser virtual machine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 9000",
+    "build-storybook": "build-storybook"
+  },
+  "author": "dron",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@storybook/addon-actions": "^5.1.10",
+    "@storybook/addon-console": "^1.2.1",
+    "@storybook/addon-links": "^5.1.10",
+    "@storybook/addons": "^5.1.10",
+    "@storybook/react": "^5.1.10",
+    "babel-loader": "^8.0.6",
+    "js-beautify": "^1.10.1"
+  }
+}

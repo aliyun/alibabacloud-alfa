@@ -1,0 +1,47 @@
+{
+  "name": "@alicloud/console-toolkit-plugin-os",
+  "version": "0.1.0",
+  "description": "long term cache plugin for breezr",
+  "main": "lib/index.js",
+  "scripts": {
+    "ci": "tnpm run lint && tnpm run compile && tnpm run cov",
+    "lint": "tslint --project .",
+    "compile": "rm -rf ./lib && tsc -d true -p ./",
+    "watch": "tsc -watch -d true -p ./",
+    "test": "jest",
+    "cov": "jest  --coverage",
+    "prepare": "npm run compile",
+    "clean": "rm -rf lib yarn.lock"
+  },
+  "devDependencies": {
+    "@alicloud/console-toolkit-core": "^1.0.0",
+    "@types/chai": "^4.1.7",
+    "@types/debug": "0.0.30",
+    "@types/jest": "^23.3.13",
+    "@types/lodash": "^4.14.121",
+    "@types/object-assign": "^4.0.30",
+    "@types/webpack-assets-manifest": "^3.0.0",
+    "@types/webpack-chain": "^5.0.1",
+    "@types/webpack-sources": "^0.1.5",
+    "chai": "^4.2.0",
+    "jest": "^24.2.0-alpha.0",
+    "nyc": "^13.1.0",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.8.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@alicloud/console-toolkit-shared-utils": "^1.0.0",
+    "@types/node": "^12.7.0",
+    "escape-string-regexp": "^2.0.0",
+    "lodash": "^4.17.11",
+    "object-assign": "^4.1.1",
+    "package-json": "^6.5.0",
+    "postcss": "^7.0.17",
+    "webpack-assets-manifest": "^3.1.1",
+    "webpack-sources": "^1.4.1"
+  },
+  "author": "流司",
+  "license": "MIT"
+}

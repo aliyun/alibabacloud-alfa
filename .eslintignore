@@ -1,0 +1,5 @@
+packages/loader/test/fixtures/
+*.d.ts
+packages/*/config/*
+packages/*/start.js
+packages/*/build.js

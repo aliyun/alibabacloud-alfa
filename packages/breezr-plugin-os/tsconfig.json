@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "outDir": "lib",
+    "lib": [
+        "es6",
+        "dom",
+        "es2017.string"
+    ],
+    "sourceMap": true,
+    "rootDir": "src",
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    /* Additional Checks */
+    "noUnusedLocals": true
+  },
+  "exclude": [
+    "test",
+    "node_modules",
+    "lib"
+  ]
+}

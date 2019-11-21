@@ -1,0 +1,27 @@
+{
+  "name": "@alicloud/console-os-events",
+  "version": "0.1.0",
+  "description": "Console OS Event Bus",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "author": "Boelroy",
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "npm run build && npm run babel && npm run babel:esm",
+    "babel": "breezr build --engine babel",
+    "babel:esm": "breezr build --engine babel --es-module",
+    "build": "breezr build --engine webpack",
+    "storybook": "breezr start-storybook",
+    "clean": "rm -rf lib yarn.lock"
+  },
+  "devDependencies": {
+    "@alicloud/console-toolkit": "^1.2.0",
+    "@alicloud/console-toolkit-preset-wind-component": "^1.2.1",
+    "@types/chai": "^4.1.7",
+    "@types/jest": "^23.3.13",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.8.0",
+    "typescript": "^3.0.3"
+  }
+}
