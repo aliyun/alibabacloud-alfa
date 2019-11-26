@@ -23,6 +23,10 @@ export class Application {
     return this.remoteApp;
   }
 
+  public async unmount() {
+    return this.parcel.unmount();
+  }
+
   public async dispose() {
     await removeContext(this.context);
     return this.parcel.unmount();
@@ -51,7 +55,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
       });
     } else {
       // @ts-ignore
-      window.__CONSOLE_OS_GLOBAL_VARS_ = {};
+      window.__CONSOLE_OS_GLOBAL_VARS__ = {};
       // @ts-ignore
       window.__IS_CONSOLE_OS_CONTEXT__ = true
     }

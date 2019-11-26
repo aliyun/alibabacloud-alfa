@@ -168,7 +168,7 @@ class Application extends React.Component<Partial<IProps>, IState> {
     this.addThingToDo('unmount', () => {
       const { singleton = true } = this.props;
       if (this.app.parcel && this.app.parcel.getStatus() === "MOUNTED" && !singleton) {
-        return this.app.dispose();
+        return singleton ? this.app.unmount() : this.app.dispose();
       }
     })
 
