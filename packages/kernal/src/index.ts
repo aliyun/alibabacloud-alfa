@@ -1,9 +1,13 @@
 import { registerApplication as registerSpaApp, start as startSpa, triggerAppChange, getAppNames, unloadApplication, mountRootParcel } from 'single-spa';
 import { AppInfo, AppOption } from './type';
-import { createContext } from './creatContext';
 import { createEventBus } from './createEventBus';
 import { flattenFnArray } from './util';
 import { createApplication, Application } from './createApp';
+import { createCachePool } from './AppCachePool';
+import { createContext } from './creatContext';
+
+
+let globalOptions: AppOption = {};
 
 /**
  * Create sand dom for an app
@@ -24,44 +28,46 @@ export const createSandDom = (id: string, context: VMContext) => {
  */
 export const registerApplication = async (appInfo: AppInfo, options: AppOption = {}) => {
   const { name, id, activityFn } = appInfo;
-  const { sandBox } = options;
 
-  // TODO: pre-request for manifest
-  
-  const context = await createContext({
-    initURL: location.href,
-    externals: sandBox ? sandBox.externalsVars: []
-  });
+  const sandBox = {
+    singleton: true,
+    ...globalOptions.sandBox,
+    ...options.sandBox,
+  }
 
-  const dom = createSandDom(id, context);
-  const app = createApplication(appInfo, context);
+  const app = await createApplication(appInfo, sandBox);
+  const dom = createSandDom(id, app.context);
+
+  if(appInfo.dom) {
+    appInfo.dom.appendChild(dom);
+  }
+
   const appLoader = () => app.getAppLoader();
 
   registerSpaApp(name || id, appLoader, activityFn, {
     customProps: {
-      domElement: context.document.body,
+      domElement: app.context.document.body,
       emitter: createEventBus()
     }
-  })
+  });
 
-  return {
-    dom,
-    context,
-    appInfo
-  };
+  return app;
 }
 
 export const mountApp = async (appInfo: AppInfo, options: AppOption = {}) => {
   const { id } = appInfo;
-  const { sandBox } = options;
 
-  const context = await createContext({
-    initURL: location.href,
-    body: appInfo.dom,
-    externals: sandBox ? sandBox.externalsVars: []
-  });
+  const sandBox = {
+    singleton: true,
+    ...globalOptions.sandBox,
+    ...options.sandBox,
+  };
 
-  const app = createApplication(appInfo, context);
+  if (!appInfo.deps) {
+    appInfo.deps = globalOptions.deps || {};
+  }
+
+  const app = await createApplication(appInfo, sandBox);
   const remoteApp = await app.getAppLoader();
 
   const parcel = mountRootParcel({
@@ -85,8 +91,10 @@ export const mountApp = async (appInfo: AppInfo, options: AppOption = {}) => {
   return app;
 }
 
-export const start = () => {
+export const start = (options?: AppOption) => {
+  globalOptions = options || {};
   startSpa();
+  createCachePool({})
 }
 
 export const isAppRegistered = (appName: string) => {

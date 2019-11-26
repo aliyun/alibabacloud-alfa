@@ -10,6 +10,7 @@ interface ContextOption {
   initURL: string;
   body?: Element;
   externals?: string[];
+  url?: string;
 }
 
 interface BrowserVM {

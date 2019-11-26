@@ -2,7 +2,7 @@
 import React from 'react';
 import { Parcel as SpaParcel, ParcelConfig, LifeCycles } from 'single-spa'
 import { mountApp, OSApplication } from '@alicloud/console-os-kernal'
-import { AppInfo } from '@alicloud/console-os-kernal/lib/type';
+import { AppInfo, SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 
 type MountParcelFn = (parcelConfig: ParcelConfig, customProps: object) => SpaParcel & LifeCycles;
@@ -13,6 +13,8 @@ interface IProps extends Partial<AppInfo>  {
 
   config: ParcelConfig;
   externalsVars: string[];
+  singleton: boolean;
+  sandBox: SandBoxOption;
 
   handleError: (err: Error) => void;
   parcelDidMount: () => void;
@@ -102,7 +104,16 @@ class Application extends React.Component<Partial<IProps>, IState> {
 
   public componentDidMount() {
     this.addThingToDo('mount',  async () => {
-      const { url, id, manifest, externalsVars } = this.props;
+      const { url, id, manifest, externalsVars, singleton = true } = this.props;
+      let sandBox = this.props.sandBox;
+      if (sandBox) {
+        sandBox.externalsVars = externalsVars;
+        sandBox.singleton = singleton;
+      } else {
+        sandBox = {
+          singleton
+        };
+      }
 
       let domElement;
       if (this.el) {
@@ -110,6 +121,11 @@ class Application extends React.Component<Partial<IProps>, IState> {
       } else {
         this.createdDomElement = domElement = document.createElement(this.props.wrapWith || id)
         this.props.appendTo.appendChild(domElement)
+      }
+
+      if (externalsVars) {
+        // @ts-ignore
+        sandBox.externalsVars = externalsVars;
       }
 
       this.app = await mountApp({
@@ -124,9 +140,8 @@ class Application extends React.Component<Partial<IProps>, IState> {
           ...getParcelProps(this.props)
         }
       }, {
-        sandBox: {
-          externalsVars,
-        }
+        // @ts-ignore
+        sandBox
       })
 
       this.app.parcel.mountPromise.then(() => {
@@ -151,7 +166,8 @@ class Application extends React.Component<Partial<IProps>, IState> {
 
   public componentWillUnmount() {
     this.addThingToDo('unmount', () => {
-      if (this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
+      const { singleton = true } = this.props;
+      if (this.app.parcel && this.app.parcel.getStatus() === "MOUNTED" && !singleton) {
         return this.app.dispose();
       }
     })
@@ -183,7 +199,7 @@ class Application extends React.Component<Partial<IProps>, IState> {
       return (
         <>
           {this.state.loading ? <Skeleton active /> : null}
-          { React.createElement(this.props.wrapWith, {ref: this.handleRef}) }
+          { React.createElement(this.props.wrapWith || this.props.id, {ref: this.handleRef}) }
         </>
       );
     }

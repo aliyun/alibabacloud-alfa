@@ -54,6 +54,12 @@ export function flattenFnArray(fns, description) {
 }
 
 export const getRealUrl = (urlStr: string, base: string) => {
-  const url = new URL(urlStr, base);
+  // TODO: FUCK CODE
+  let sourceUrl = urlStr;
+  if (base.indexOf('dev.g.alicdn.com') !== -1) {
+    sourceUrl = urlStr.replace('g.alicdn.com', 'dev.g.alicdn.com');
+  }
+
+  const url = new URL(sourceUrl, base);
   return url.toString()
 };

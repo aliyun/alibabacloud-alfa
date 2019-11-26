@@ -44,7 +44,7 @@ export class Module {
   }
 
   public require(id: string) {
-    return Module._load(id, this.id);
+    return Module._load(id);
   }
 
   public requireIsolateWithContext(id: string, context: any) {

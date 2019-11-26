@@ -60,7 +60,8 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
       const { js, css } = handleManifest(manifest);
 
-      url = formatUrl(js[0], appInfo.manifest);
+      url = formatUrl(js[js.length - 1], appInfo.manifest);
+
       style = css;
     }
   }
@@ -71,11 +72,13 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
   const appInstance = extractApp(
     await loadBundle<AppInstance>({
-      id, url, context,
+      id, url, context, deps: appInfo.deps
     })
   );
 
   return {
+    id,
+    name,
     bootstrap: [
       ...appInstance.bootstrap
     ],

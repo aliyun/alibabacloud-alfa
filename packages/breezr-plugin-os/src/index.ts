@@ -13,6 +13,8 @@ export default (api: PluginAPI, options: PluginOptions) => {
       .output
       .library(options.id)
       .jsonpFunction(`webpackJsonp${options.id}`)
+      // @ts-ignore
+      .devtoolNamespace(options.id)
       .libraryTarget('umd');
 
     config

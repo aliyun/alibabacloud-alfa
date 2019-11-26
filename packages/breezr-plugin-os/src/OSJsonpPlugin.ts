@@ -1,5 +1,5 @@
 import { Compiler } from 'webpack';
-import { RawSource } from 'webpack-sources';
+import { ConcatSource } from 'webpack-sources';
 
 export interface OSJsonpWebpackPluginOption {
   injectVars?: string[];
@@ -33,9 +33,9 @@ export class OSJsonpWebpackPlugin {
               return;
             }
   
-            const code: string = this._wrapCodeWithOSJsonp(this.getId(compiler), entryAsset.source());
+            const [prefix, suffix] = this._wrapCodeWithOSJsonp(this.getId(compiler));
   
-            compilation.assets[entryFile] = new RawSource(code);
+            compilation.assets[entryFile] = new ConcatSource(prefix, entryAsset, suffix);
           });
         });
       }
@@ -54,13 +54,14 @@ export class OSJsonpWebpackPlugin {
     throw new Error('library for os jsonp plugin should be string');
   }
 
-  private _wrapCodeWithOSJsonp(id: string, code: string) {
+  private _wrapCodeWithOSJsonp(id: string) {
     const injectVars = ['window', 'location', 'history', 'document', ...(this.option.injectVars || [])];
     const jsonpCall = this.option.jsonpCall || 'window.__CONSOLE_OS_GLOBAL_HOOK__';
 
-    return `
+    return [`
 if (!window.__CONSOLE_OS_GLOBAL_HOOK__){window.__CONSOLE_OS_GLOBAL_VARS_={};window.__CONSOLE_OS_GLOBAL_HOOK__ = function(id, resolver) {resolver(null, {}, {}, {${injectVars.join(',')}})};}
-${jsonpCall}(${JSON.stringify(id)}, function(require, module, exports, {${injectVars.join(',')}}){ with(window.__CONSOLE_OS_GLOBAL_VARS_) { \n ${code} \n}})
-`;
+${jsonpCall}(${JSON.stringify(id)}, function(require, module, exports, {${injectVars.join(',')}}){ with(window.__CONSOLE_OS_GLOBAL_VARS_) { \n
+`, '\n}})']
+  
   }
 }

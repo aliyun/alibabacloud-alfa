@@ -29,6 +29,9 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   customProps?: {
     [key: string]: any;
   };
+  deps?: {
+    [key: string]: any;
+  };
   activityFn: () => boolean;
 }
 
@@ -36,11 +39,19 @@ export interface AppCreationOption<E> {
   runtime: string;
 }
 
+export interface SandBoxOption {
+  disable: boolean;
+  externalsVars?: string[];
+  sandBoxUrl?: string;
+  singleton?: boolean;
+}
+
 export interface AppOption {
-  sandBox?: {
-    externalsVars: string[];
-  };
+  sandBox?: SandBoxOption;
   parcel?: boolean;
+  deps?: {
+    [key: string]: any;
+  };
 }
 
 export interface AppManifest {

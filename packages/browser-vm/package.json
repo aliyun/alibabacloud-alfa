@@ -1,5 +1,5 @@
 {
-  "name": "@alicloud/consoleos-browser-vm",
+  "name": "@alicloud/console-os-browser-vm",
   "version": "0.1.0",
   "description": "browser virtual machine",
   "main": "index.js",

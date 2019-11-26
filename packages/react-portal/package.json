@@ -15,8 +15,8 @@
     "clean": "rm -rf lib yarn.lock"
   },
   "devDependencies": {
-    "@alicloud/console-toolkit": "^1.2.0",
-    "@alicloud/console-toolkit-preset-wind-component": "^1.2.1",
+    "@alicloud/console-toolkit-cli": "^1.0.0-rc.0",
+    "@alicloud/console-toolkit-preset-wind-component": "^1.0.0-rc.0",
     "@types/chai": "^4.1.7",
     "@types/jest": "^23.3.13",
     "@types/react": "^16.9.2",
@@ -30,7 +30,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/console-os-events": "^0.1.6",
+    "@alicloud/console-os-events": "^0.1.0",
     "single-spa-react": "^2.10.2"
   },
   "peerDependencies": {
