@@ -1,7 +1,7 @@
 import { Component, Input, ElementRef } from '@angular/core';
 import { mountApp } from '@alicloud/console-os-kernal';
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
-import { Application } from '@alicloud/console-os-kernal/lib/createApp';
+import { Application as OsApplication } from '@alicloud/console-os-kernal/lib/createApp';
 
 const getParcelProps = (props) => {
   const parcelProps = {...props}
@@ -20,7 +20,7 @@ const getParcelProps = (props) => {
   selector: 'console-os-app',
   template: `<!-- os app -->`
 })
-class ApplicationComponent {
+export class Application {
   @Input() public handleError: Function;
   @Input() public sandBox: SandBoxOption;
   @Input() public parcelDidMount: Function;
@@ -39,7 +39,7 @@ class ApplicationComponent {
   private el: Element;
   private createdDomElement: Element;
   private appendTo: Element;
-  private app: Application;
+  private app: OsApplication;
 
   public constructor(private elementRef: ElementRef) { } 
 
@@ -141,4 +141,3 @@ class ApplicationComponent {
       });
   }
 }
-export default ApplicationComponent;
