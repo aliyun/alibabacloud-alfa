@@ -1,7 +1,7 @@
 {
-  "name": "@alicloud/console-os-react-app",
+  "name": "@alicloud/console-os-ng-app",
   "version": "0.1.1",
-  "description": "Console OS React Sub Application",
+  "description": "Console OS Angular Sub Application",
   "main": "lib/index.js",
   "module": "es/index.js",
   "author": "Boelroy",
@@ -19,18 +19,14 @@
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0-rc.0",
     "@types/chai": "^4.1.7",
     "@types/jest": "^23.3.13",
-    "@types/react": "^16.9.2",
-    "@types/react-dom": "^16.9.0",
-    "@types/single-spa-react": "^2.8.3",
     "jest": "^23.6.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
     "ts-jest": "^23.10.5",
     "tslint": "^5.8.0",
     "typescript": "^3.0.3"
   },
   "dependencies": {
     "@alicloud/console-os-kernal": "^0.1.1",
+    "@angular/core": "8.2.14",
     "classnames": "^2.2.6"
   },
   "peerDependencies": {

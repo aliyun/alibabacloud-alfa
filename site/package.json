@@ -1,0 +1,25 @@
+{
+  "name": "alibaba-cloud-console-os-site",
+  "version": "1.0.3",
+  "private": true,
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "gatsby clean",
+    "develop": "npm run clean && gatsby develop",
+    "start": "npm run develop",
+    "debug": "npm run clean && npx --node-arg=--inspect-brk gatsby develop",
+    "build": "npm run clean && gatsby build --prefix-paths"
+  },
+  "devDependencies": {
+    "@alicloud/gatsby-theme-console-doc": "^1.0.5",
+    "gatsby": "^2.18.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "styled-components": "^4.4.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@alicloud/console-chart": "^0.1.0-alpha.4"
+  }
+}

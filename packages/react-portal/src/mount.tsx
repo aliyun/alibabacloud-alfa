@@ -23,9 +23,15 @@ const bindEvents = (emitter: EventEmitter) => {
   })
 }
 
-const getProps = (props: IProps) => {
-  return props.customProps || props.appProps;
-}
+const getProps = (props) => {
+  const appProps = {...props}
+
+  delete appProps.domElement
+  delete appProps.singleSpa
+  delete appProps.externalsVars
+  delete appProps.mountParcel
+  return appProps;
+};
 
 export function mount<T = any>(App: new() => React.Component<T & EmitterProps, any>, container: Element, id: string) {
 

@@ -3,3 +3,4 @@ packages/loader/test/fixtures/
 packages/*/config/*
 packages/*/start.js
 packages/*/build.js
+site/*

@@ -19,6 +19,7 @@ interface IProps extends Partial<AppInfo>  {
   handleError: (err: Error) => void;
   parcelDidMount: () => void;
   mountParcel: MountParcelFn;
+  [key: string]: any;
 }
 
 interface IState {

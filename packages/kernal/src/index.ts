@@ -4,7 +4,6 @@ import { createEventBus } from './createEventBus';
 import { flattenFnArray } from './util';
 import { createApplication, Application } from './createApp';
 import { createCachePool } from './AppCachePool';
-import { createContext } from './creatContext';
 
 
 let globalOptions: AppOption = {};
