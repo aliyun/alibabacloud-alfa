@@ -2,14 +2,7 @@
   "lerna": "2.11.0",
   "npmClient": "yarn",
   "packages": [
-    "packages/breezr-plugin-os",
-    "packages/browser-vm",
-    "packages/events",
-    "packages/example",
-    "packages/kernal",
-    "packages/loader",
-    "packages/react-application",
-    "packages/react-portal"
+    "packages/*"
   ],
   "publish": {
     "npmClient": "tnpm",
