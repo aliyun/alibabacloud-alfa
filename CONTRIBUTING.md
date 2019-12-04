@@ -1,4 +1,4 @@
-# Contributing to Breezr
+# Contributing to ConsoleOS
 
 ## 分支
 
