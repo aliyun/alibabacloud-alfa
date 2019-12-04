@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-react-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Console OS React Sub Application",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -30,7 +30,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/console-os-kernal": "^0.1.0"
+    "@alicloud/console-os-kernal": "^0.1.1"
   },
   "peerDependencies": {
     "react": "^16"
