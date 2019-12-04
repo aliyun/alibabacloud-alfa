@@ -28,7 +28,7 @@ export default mount(
 宿主应用
 
 ```javascript
-import Application from '@ali/os-react-app'
+import Application from '@alicloud/console-os-react-app'
 
 const appConfigUrl = 'https://dev.g.alicdn.com/aliyun-next/endpoint/0.1.0/aliyun-console-slb.manifest.json';
 
