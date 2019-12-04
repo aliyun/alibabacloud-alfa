@@ -20,7 +20,7 @@ const getParcelProps = (props) => {
   selector: 'console-os-app',
   template: `<!-- os app -->`
 })
-export class ApplicationComponent {
+class ApplicationComponent {
   @Input() public handleError: Function;
   @Input() public sandBox: SandBoxOption;
   @Input() public parcelDidMount: Function;
@@ -141,3 +141,4 @@ export class ApplicationComponent {
       });
   }
 }
+export default ApplicationComponent;
