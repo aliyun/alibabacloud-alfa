@@ -53,9 +53,15 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
         externals: sandBoxOption ? sandBoxOption.externalsVars: [],
         url: sandBoxOption.sandBoxUrl
       });
+
+      if (appInfo.initialPath) {
+        context.history.pushState(null, '' , appInfo.initialPath);
+      } else {
+        context.history.pushState(null, '' , '/');
+      }
     } else {
       // @ts-ignore
-      window.__CONSOLE_OS_GLOBAL_VARS__ = {};
+      window.__CONSOLE_OS_GLOBAL_VARS_ = {};
       // @ts-ignore
       window.__IS_CONSOLE_OS_CONTEXT__ = true
     }
