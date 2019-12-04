@@ -19,5 +19,6 @@
     "@storybook/react": "^5.1.10",
     "babel-loader": "^8.0.6",
     "js-beautify": "^1.10.1"
-  }
+  },
+  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
 }

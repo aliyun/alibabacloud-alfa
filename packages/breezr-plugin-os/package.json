@@ -43,5 +43,6 @@
     "webpack-sources": "^1.4.1"
   },
   "author": "流司",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
 }

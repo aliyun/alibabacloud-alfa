@@ -30,5 +30,6 @@
     "@alicloud/console-os-events": "^0.1.0",
     "@alicloud/console-os-loader": "^0.1.0",
     "single-spa": "^4.3.7"
-  }
+  },
+  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
 }
