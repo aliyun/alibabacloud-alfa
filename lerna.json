@@ -4,16 +4,16 @@
   "packages": [
     "packages/breezr-plugin-os",
     "packages/browser-vm",
+    "packages/events",
+    "packages/example",
     "packages/kernal",
     "packages/loader",
-    "packages/example",
-    "packages/react-portal",
-    "packages/events",
-    "packages/react-application"
+    "packages/react-application",
+    "packages/react-portal"
   ],
   "publish": {
     "npmClient": "tnpm",
     "verifyAccess": false
   },
-  "version": "0.1.7-alpha.1"
+  "version": "0.1.0"
 }
