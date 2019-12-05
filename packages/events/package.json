@@ -4,6 +4,7 @@
   "description": "Console OS Event Bus",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "typings": "lib/index.d.ts",
   "author": "Boelroy",
   "license": "MIT",
   "scripts": {

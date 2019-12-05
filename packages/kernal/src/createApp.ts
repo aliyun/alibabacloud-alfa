@@ -2,7 +2,7 @@ import { AppInfo, SandBoxOption } from './type';
 import { createAppLoader } from './createAppLoader';
 import { createContext } from './creatContext';
 import { getApp, setApp } from './AppCachePool';
-import { removeContext } from '@alicloud/console-os-browser-vm';
+import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
 import { Parcel } from 'single-spa';
 
 export class Application {

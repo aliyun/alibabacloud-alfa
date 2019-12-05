@@ -3,6 +3,7 @@ import { AppInfo, AppOption } from './type';
 import { createEventBus } from './createEventBus';
 import { flattenFnArray } from './util';
 import { createApplication, Application } from './createApp';
+import VMContext from '@alicloud/console-os-browser-vm';
 import { createCachePool } from './AppCachePool';
 
 
