@@ -1,12 +1,11 @@
 {
   "name": "@alicloud/console-os-react-app",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Console OS React Sub Application",
   "main": "lib/index.js",
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "author": "Boelroy",
-  "typings": "lib/index.d.ts",
   "license": "MIT",
   "scripts": {
     "prepublish": "npm run build && npm run babel && npm run babel:esm",
@@ -32,7 +31,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/console-os-kernal": "^0.1.2",
+    "@alicloud/console-os-kernal": "^0.1.4",
     "classnames": "^2.2.6"
   },
   "peerDependencies": {
