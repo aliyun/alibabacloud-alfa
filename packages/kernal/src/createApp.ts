@@ -54,8 +54,8 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
         url: sandBoxOption.sandBoxUrl
       });
 
-      if (appInfo.initialPath) {
-        context.history.pushState(null, '' , appInfo.initialPath);
+      if (sandBoxOption.initialPath) {
+        context.history.pushState(null, '' , sandBoxOption.initialPath);
       } else {
         context.history.pushState(null, '' , '/');
       }

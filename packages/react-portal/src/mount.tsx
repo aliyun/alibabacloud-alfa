@@ -6,7 +6,7 @@ import { EventEmitter } from '@alicloud/console-os-events'
 import { isOsContext } from './utils';
 import { Context } from './Context';
 import { IContextProps } from './types';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary, { Logger } from './ErrorBoundary';
 
 interface EmitterProps {
   emitter: EventEmitter;
@@ -15,30 +15,35 @@ interface EmitterProps {
 interface IProps {
   customProps: EmitterProps;
   appProps: EmitterProps;
+  logger: Logger;
+}
+
+const globalEventEmitter = (data: any) => {
+  window.postMessage(data.data, null);
 }
 
 const bindEvents = (emitter: EventEmitter) => {
-  emitter.on('main:postMessage', (data: any) => {
-    window.postMessage(data.data, null);
-  })
+  emitter && emitter.on('main:postMessage', globalEventEmitter);
+}
+
+const unbindEvents = (emitter: EventEmitter) => {
+  emitter && emitter.off('main:postMessage', globalEventEmitter);
 }
 
 const getProps = (props) => {
-  const appProps = {...props}
+  const appProps = { ...props };
 
-  delete appProps.domElement
-  delete appProps.singleSpa
-  delete appProps.externalsVars
-  delete appProps.mountParcel
-  return appProps;
+  delete appProps.domElement;
+  delete appProps.singleSpa;
+  delete appProps.mountParcel;
+
+  return appProps || {};
 };
 
 export function mount<T = any>(App: new() => React.Component<T & EmitterProps, any>, container: Element, id: string) {
 
   class ConsoleApp extends React.Component<T & IProps> {
-    public componentDidCatch() {
-      // Empty
-    }
+    public componentDidCatch() {/*Empty*/}
 
     public componentDidMount() {
       const props = getProps(this.props);
@@ -47,6 +52,11 @@ export function mount<T = any>(App: new() => React.Component<T & EmitterProps, a
       }
       const { emitter } = props;
       bindEvents(emitter)
+    }
+
+    public componentWillUnmount() {
+      const { emitter } = getProps(this.props);
+      unbindEvents(emitter)
     }
 
     public render () {

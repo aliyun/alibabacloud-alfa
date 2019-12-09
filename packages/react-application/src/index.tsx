@@ -1,54 +1,85 @@
 
 import React from 'react';
-import { Parcel as SpaParcel, ParcelConfig, LifeCycles } from 'single-spa'
 import { mountApp, OSApplication } from '@alicloud/console-os-kernal'
-import { AppInfo, SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
+import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
+import ErrorPanel from './ErrorPanel';
 
-type MountParcelFn = (parcelConfig: ParcelConfig, customProps: object) => SpaParcel & LifeCycles;
+interface IProps<T = any> {
+  /**
+   * App unique id
+   */
+  id: string;
+  /**
+   * JS entry for consoleOS.
+   */
+  jsUrl?: string;
+  /**
+   * App config url.
+   */
+  manifest?: string;
+  /**
+   * 沙箱配置
+   */
+  sandBox?: SandBoxOption;
+  /**
+   * 处理错误的生命周期
+   */
+  appDidCatch?: (err: Error) => void;
+  /**
+   * 引用完成加载之后生命周期
+   */
+  appDidMount?: () => void;
+  /**
+   * @deprecated
+   * initialPath for SandBox
+   */
+  initialPath?: string;
+  /**
+   * @deprecated
+   * @default true
+   * Set application singleton,
+   *     true:  it will cache the sandbox at the component umounted (better performance)
+   *     false: it will distroy the sandbox.
+   */
+  singleton?: boolean;
+  /**
+   * @deprecated
+   * window variable whitelist. For example:
+   * if externalsVars = ['test']. the window.test in subapp equals window.test
+   */
+  externalsVars?: string[];
 
-interface IProps extends Partial<AppInfo>  {
-  wrapWith: string;
-  appendTo: HTMLElement;
-
-  config: ParcelConfig;
-  externalsVars: string[];
-  singleton: boolean;
-  sandBox: SandBoxOption;
-
-  handleError: (err: Error) => void;
-  parcelDidMount: () => void;
-  mountParcel: MountParcelFn;
-  [key: string]: any;
+  appProps: T;
 }
 
 interface IState {
   hasError: boolean;
   loading: boolean;
-  error: Error;
+  error: Error | null;
 }
 
 const getParcelProps = (props: Partial<IProps>) => {
-  const parcelProps = {...props}
+  const parcelProps = {...props, ...(props.appProps || {})};
 
-  delete parcelProps.mountParcel
-  delete parcelProps.config
-  delete parcelProps.wrapWith
-  delete parcelProps.appendTo
-  delete parcelProps.handleError
-  delete parcelProps.parcelDidMount
+  delete parcelProps.jsUrl;
+  delete parcelProps.manifest;
+  delete parcelProps.initialPath;
+  delete parcelProps.externalsVars;
+  delete parcelProps.sandBox;
+  delete parcelProps.appDidCatch;
+  delete parcelProps.appDidMount;
 
   return parcelProps;
 }
 
-class Application extends React.Component<Partial<IProps>, IState> {
+class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
   private unmounted: boolean;
-  private el: HTMLElement;
-  private createdDomElement: HTMLElement;
-  private mountParcel: MountParcelFn;
 
-  private app: OSApplication;
-  private nextThingToDo: Promise<any>;
+  private el?: HTMLElement;
+  private nextThingToDo?: Promise<any>;
+  private createdDomElement?: HTMLElement;
+  private app?: undefined | OSApplication;
 
   public constructor(props: IProps) {
     super(props);
@@ -57,13 +88,93 @@ class Application extends React.Component<Partial<IProps>, IState> {
       hasError: false,
       loading: true,
       error: null
-    }
+    };
 
     this.unmounted = false;
+  }
+  private handleRef = (el: HTMLElement) => {
+    this.el = el
+  }
 
-    if (props.config) {
-      throw new Error(`ConsoleOS's ConsoleApp component requires the 'config' prop to either be a parcel config or a loading function that returns a promise.`)
+  public componentDidMount() {
+    this.addThingToDo('mount',  async () => {
+      const { jsUrl: url, id, manifest, externalsVars, singleton = true } = this.props;
+
+      if (!id) {
+        throw Error('You should give a id for OS Application');
+      }
+
+      let sandBox = this.props.sandBox;
+      if (sandBox) {
+        sandBox.externalsVars = externalsVars;
+        sandBox.singleton = singleton;
+      } else {
+        sandBox = {
+          singleton
+        };
+      }
+
+      let domElement;
+      if (this.el) {
+        domElement = this.el
+      } else {
+        throw new Error('React dom element is no prepared. please check')
+      }
+
+      if (externalsVars) {
+        sandBox.externalsVars = externalsVars;
+      }
+
+      this.app = await mountApp({
+        url,
+        id,
+        manifest,
+        activityFn: () => { 
+          return true
+        },
+        dom: domElement,
+        customProps: {
+          ...getParcelProps(this.props)
+        }
+      }, {
+        sandBox
+      });
+
+      if (this.app && this.app.parcel) {
+        this.app && this.app.parcel.mountPromise.then(() => {
+          this.setState({
+            loading: false
+          });
+          this.props.appDidMount && this.props.appDidMount()
+        });
+        return this.app.parcel.mountPromise;
+      }
+    })
+  }
+
+  public componentDidUpdate() {
+    this.addThingToDo('update', () => {
+      // @ts-ignore
+      if (this.app && this.app.parcel && this.app.parcel.update) {
+        // @ts-ignore
+        return this.app.parcel.update(getParcelProps(this.props))
+      }
+    })
+  }
+
+  public componentWillUnmount() {
+    this.addThingToDo('unmount', () => {
+      const { singleton = true } = this.props;
+      if (this.app && this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
+        return singleton ? this.app.unmount() : this.app.dispose();
+      }
+    })
+
+    if (this.createdDomElement && this.createdDomElement.parentNode) {
+      this.createdDomElement.parentNode.removeChild(this.createdDomElement)
     }
+
+    this.unmounted = true
   }
 
   private addThingToDo = (action: string, thing: Function) => {
@@ -81,129 +192,37 @@ class Application extends React.Component<Partial<IProps>, IState> {
         return thing(...args)
       })
       .catch((err) => {
-        this.nextThingToDo = Promise.resolve() // reset so we don't .then() the bad promise again
+        this.nextThingToDo = Promise.resolve(); // reset so we don't .then() the bad promise again
         this.setState({hasError: true, loading: false, error: err})
-
         if (err && err.message) {
-          err.message = `During '${action}', parcel threw an error: ${err.message}`
+          err.message = `During '${action}', os application threw an error: ${err.message}`
         }
-
-        if (this.props.handleError) {
-          this.props.handleError(err)
-        } else {
-          setTimeout(() => {throw err})
+        if (this.props.appDidCatch) {
+          this.props.appDidCatch(err)
         }
-
-        // No more things to do should be done -- the parcel is in an error state
-        throw err
       });
   }
 
-  private handleRef = (el: HTMLElement) => {
-    this.el = el
-  }
-
-  public componentDidMount() {
-    this.addThingToDo('mount',  async () => {
-      const { url, id, manifest, externalsVars, singleton = true } = this.props;
-      let sandBox = this.props.sandBox;
-      if (sandBox) {
-        sandBox.externalsVars = externalsVars;
-        sandBox.singleton = singleton;
-      } else {
-        sandBox = {
-          singleton
-        };
-      }
-
-      let domElement;
-      if (this.el) {
-        domElement = this.el
-      } else {
-        this.createdDomElement = domElement = document.createElement(this.props.wrapWith || id)
-        this.props.appendTo.appendChild(domElement)
-      }
-
-      if (externalsVars) {
-        // @ts-ignore
-        sandBox.externalsVars = externalsVars;
-      }
-
-      this.app = await mountApp({
-        url,
-        id,
-        manifest,
-        activityFn: () => { 
-          return true
-        },
-        dom: domElement,
-        customProps: {
-          ...getParcelProps(this.props)
-        }
-      }, {
-        // @ts-ignore
-        sandBox
-      })
-
-      this.app.parcel.mountPromise.then(() => {
-        this.setState({
-          loading: false
-        })
-        this.props.parcelDidMount && this.props.parcelDidMount()
-      })
-      return this.app.parcel.mountPromise
-    })
-  }
-
-  public componentDidUpdate() {
-    this.addThingToDo('update', () => {
-      // @ts-ignore
-      if (this.app.parcel && this.app.parcel.update) {
-        // @ts-ignore
-        return this.app.parcel.update(getParcelProps(this.props))
-      }
-    })
-  }
-
-  public componentWillUnmount() {
-    this.addThingToDo('unmount', () => {
-      const { singleton = true } = this.props;
-      if (this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
-        return singleton ? this.app.unmount() : this.app.dispose();
-      }
-    })
-
-    if (this.createdDomElement) {
-      this.createdDomElement.parentNode.removeChild(this.createdDomElement)
-    }
-
-    this.unmounted = true
-  }
-
   public render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{padding: 24}}>
-          { process.env.NODE_ENV === 'development' ?
-            (<div style={{background: '#fcebea', padding: 24}}>
-              <div style={{lineHeight: '22px', color: '#d93026', fontSize: 14}}>{this.state.error.message}</div>
-              <pre style={{overflow: 'scroll'}}>{this.state.error.stack}</pre>
-            </div>) : <div style={{lineHeight: '22px', color: '#d93026', fontSize: 14}}>Error</div>
-          }
-        </div>
-      )
+    const { id = '' } = this.props;
+
+    if (this.state.hasError && this.state.error) {
+      return (<ErrorPanel error={this.state.error}/>)
     }
 
-    if (this.props.appendTo) {
-      return null;
-    } else {
-      return (
-        <>
-          {this.state.loading ? <Skeleton active /> : null}
-          { React.createElement(this.props.wrapWith || this.props.id, {ref: this.handleRef}) }
-        </>
-      );
-    }
+    return (
+      <>
+        {
+          this.state.loading ? <Skeleton active /> : null
+        }
+        {
+          React.createElement(
+            id,
+            { ref: this.handleRef }
+          )
+        }
+      </>
+    );
   }
 }
 

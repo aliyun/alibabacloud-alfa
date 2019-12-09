@@ -25,7 +25,6 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   name?: string;
   dom?: Element;
   manifest?: string;
-  initialPath?: string;
   externals?: BasicModule[];
   customProps?: {
     [key: string]: any;
@@ -42,9 +41,10 @@ export interface AppCreationOption<E> {
 
 export interface SandBoxOption {
   disable?: boolean;
-  externalsVars?: string[];
   sandBoxUrl?: string;
   singleton?: boolean;
+  initialPath?: string;
+  externalsVars?: string[];
 }
 
 export interface AppOption {

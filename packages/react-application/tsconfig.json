@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./build",
+    "strict": true,
     "jsx": "react",
     "module": "esnext",
     "target": "es5",

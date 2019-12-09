@@ -1,9 +1,11 @@
 import React, { ErrorInfo } from 'react';
 
+export interface Logger {
+  error: (...args: any[]) => void;
+}
+
 interface IProp {
-  logger: {
-    error: (...args: any[]) => void;
-  };
+  logger: Logger;
 }
 
 interface State {

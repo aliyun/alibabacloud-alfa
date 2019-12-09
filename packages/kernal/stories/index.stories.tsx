@@ -11,22 +11,18 @@ storiesOf('Basic Console OS', module)
     return (
       <div>
         <Application
-          id="config"
-          wrapWith="config"
-          externalsVars={[ 'ALIYUN_CONSOLE_CONFIG' ]}
-          url="https://g.alicdn.com/ConsoleOS/OSExample/0.1.0/config.js"
+          id="os-example"
+          manifest="https://g.alicdn.com/ConsoleOS/angular-example/0.0.1/os-exmaple-angular.manifest.json"
         />
       </div>
     )
   })
-  .add('With Manifest', () => {
+  .add('Load Angular Application', () => {
     return (
       <div>
         <Application
-          id="endpoint"
-          wrapWith="endpoint"
-          externalsVars={[ 'ALIYUN_CONSOLE_CONFIG' ]}
-          manifest="https://g.alicdn.com/aliyun-next/endpoint/0.1.2/endpoint.manifest.json"
+          id="os-example-angular"
+          manifest="https://g.alicdn.com/ConsoleOS/angular-example/0.0.1/os-exmaple-angular.manifest.json"
         />
       </div>
     )

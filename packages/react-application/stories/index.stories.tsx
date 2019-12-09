@@ -7,22 +7,17 @@ import { storiesOf } from '@storybook/react';
 storiesOf('Console Application', module)
   .add('With Manifest', () => {
     return (
-      // @ts-ignore
       <Application
-        id="endpoint"
-        wrapWith="endpoint"
-        externalsVars={['ALIYUN_CONSOLE_CONFIG']}
-        manifest="https://g.alicdn.com/aliyun-next/endpoint/0.1.2/endpoint.manifest.json"
+        id="os-example"
+        manifest="https://g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json"
       />
     )
   })
   .add('With Error', () => {
     return (
-      // @ts-ignore
       <Application
-        id="endpoint"
-        wrapWith="endpoint"
-        manifest="https://g.alicdn.com/aliyun-next/endpoint/0.1.2/endpoint.manifest.json"
+        id="os-example"
+        manifest="https://g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json"
       />
     )
   })
