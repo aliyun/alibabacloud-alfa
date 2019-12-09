@@ -28,10 +28,16 @@ const addStyles = (urls: string[], manifest: string) => {
  */
 export const loadExternal = async (appInfo: AppInfo, context: VMContext) => {
   return Promise.all(
-    appInfo.externals.map((external) => loadBundle({
-      ...external,
-      context,
-    }))
+    appInfo.externals.map((external) => {
+      if (!external.url) {
+        return Promise.resolve();
+      }
+      return loadBundle({
+        id: external.id,
+        url: external.url,
+        context,
+      });
+    })
   )
 }
 

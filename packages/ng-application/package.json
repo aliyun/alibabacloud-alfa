@@ -20,7 +20,7 @@
     "typescript": "~3.5.0"
   },
   "dependencies": {
-    "@alicloud/console-os-kernal": "^0.1.4"
+    "@alicloud/console-os-kernal": "^0.1.5"
   },
   "publishConfig": {
     "directory": "dist"
@@ -38,5 +38,5 @@
       "."
     ]
   },
-  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
+  "gitHead": "298b4b2fb1b5d20a1b0efb2b1fdf226a3798ce6b"
 }

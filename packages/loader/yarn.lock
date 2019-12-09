@@ -2,16 +2,16 @@
 # yarn lockfile v1
 
 
-"@alicloud/console-toolkit-cli@^1.0.0-alpha.0":
-  version "1.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-cli/-/console-toolkit-cli-1.0.0-rc.7.tgz#a3237ce17d655241138714ec1c3adaf42213b5b9"
-  integrity sha512-pKVaEAhT8TOQ8YaU8DYj/mOCCgBsjrFZKXtVVCZKQSABEqgrlEKA1h+ba+7ExyHfnELKvqLRK3A78RuH0JMTrw==
+"@alicloud/console-toolkit-cli@^1.0.0-rc.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-cli/-/console-toolkit-cli-1.0.1.tgz#5b91aa927a6de9c73ee4501fb5de1a93b4ee4d6c"
+  integrity sha512-hlFblKMknr06xdRXOzoOsdeldQm9JC6nP8Kg1ZiT+mp0E0182M38Jo9U9sCQoP8pg34DRCL8fctAA7KJQJKKCQ==
   dependencies:
-    "@alicloud/console-toolkit-core" "^1.0.0-rc.7"
+    "@alicloud/console-toolkit-core" "^1.0.1"
     "@alicloud/console-toolkit-plugin-block" "^1.0.0-rc.7"
     "@alicloud/console-toolkit-plugin-builtin" "^1.0.0-rc.7"
     "@alicloud/console-toolkit-plugin-generator" "^1.0.0-rc.7"
-    "@alicloud/console-toolkit-shared-utils" "^1.0.0-rc.7"
+    "@alicloud/console-toolkit-shared-utils" "^1.0.1"
     chalk "^2.4.2"
     commander "^3.0.1"
     debug "^4.0.1"
@@ -25,6 +25,21 @@
   integrity sha512-bjbyFh+i6h84ipIjq2hiIlbiHts9l4LHTIzplxuDLSJs48Mum9Uz/ioQb4zGCzTq2Zy+KGGqGFlGkTprQWHhQA==
   dependencies:
     "@alicloud/console-toolkit-shared-utils" "^1.0.0-rc.7"
+    "@hapi/joi" "^15.1.1"
+    assert "^2.0.0"
+    chalk "^2.4.2"
+    debug "^4.0.1"
+    extend2 "^1.0.0"
+    lodash "^4.17.11"
+    package-json "^6.3.0"
+    string.prototype.padend "^3.0.0"
+
+"@alicloud/console-toolkit-core@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-core/-/console-toolkit-core-1.0.1.tgz#76e730b24667e6218c1661f7103375e103e18eb2"
+  integrity sha512-a/T+mD/++c7Eh/tC1zLK0Q8ESVKNMO9enPPIEDXw74I4qDkMx42ZJH3K047Ty1bh+48UdXcwEKIw80YS8dj37Q==
+  dependencies:
+    "@alicloud/console-toolkit-shared-utils" "^1.0.1"
     "@hapi/joi" "^15.1.1"
     assert "^2.0.0"
     chalk "^2.4.2"
@@ -112,11 +127,13 @@
     less "^3.9.0"
     postcss "^7.0.14"
 
-"@alicloud/console-toolkit-plugin-react@^1.0.0-rc.8":
-  version "1.0.0-rc.8"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-react/-/console-toolkit-plugin-react-1.0.0-rc.8.tgz#3a4d28146744a0ca5bfa33d61c5d40c3cc56c677"
-  integrity sha512-h2KZLbS8vQvwn8UBt57E675aMyxITCS6abIuEYcwMSqzsYLFMWD+RcZAUMpahV4zTVq051+wzyli6gUghIPD6A==
+"@alicloud/console-toolkit-plugin-react@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-react/-/console-toolkit-plugin-react-1.0.1.tgz#fe0429fc0dc14dc2fe75d29386d7678d1885c0e2"
+  integrity sha512-OOakoEG2+eA+gah7GxFg1/ui47i/7SUTOIJQbHYno8my3dFjICgV7PTXx+co/IsHgNDesJlrUTwR20Wp1d+R4Q==
   dependencies:
+    "@alicloud/console-toolkit-core" "^1.0.1"
+    "@alicloud/console-toolkit-shared-utils" "^1.0.1"
     "@babel/core" "^7.3.3"
     "@types/cheerio" "^0.22.13"
     assert "^1.4.1"
@@ -148,11 +165,12 @@
     webpack-plugin-html-skeleton "^1.0.0-rc.7"
     webpackbar "^4.0.0"
 
-"@alicloud/console-toolkit-plugin-rollup@^1.0.0-rc.7":
-  version "1.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-rollup/-/console-toolkit-plugin-rollup-1.0.0-rc.7.tgz#2b1bde85dacdf21e90a665463ea6831a1703a14a"
-  integrity sha512-etrSOsR0DEs6aoKqUXF+N32MGUTL0TFYV6cf3oICRLlKa04AHO8KYBaQiTSq8kcExE9IzntU3Qqaa5RKasKg0A==
+"@alicloud/console-toolkit-plugin-rollup@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-rollup/-/console-toolkit-plugin-rollup-1.0.1.tgz#025f6810e65a5ffdafb32d3e58e48ac78de53d31"
+  integrity sha512-FgXPBAgruCXSmlQI01sl9MxHmbDLiUm9qwYOroe0zeKzgtNd/63ExZTT5quJLiylF2XCPsqrECGIPcNwABZ2yQ==
   dependencies:
+    "@alicloud/console-toolkit-core" "^1.0.1"
     chalk "^2.4.2"
     debug "^4.0.1"
     json-colorizer "^2.1.2"
@@ -164,11 +182,12 @@
     rollup-plugin-node-resolve "^3.3.0"
     rollup-plugin-uglify "^4.0.0"
 
-"@alicloud/console-toolkit-plugin-storybook@^1.0.0-rc.7":
-  version "1.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-storybook/-/console-toolkit-plugin-storybook-1.0.0-rc.7.tgz#622def6e6294a65d40ed29c4122690c38d55e7e2"
-  integrity sha512-U+ldIh5p/+aBaeZEoPlbSjPPgI84tPsxj8N6Y39T5+uH56ak5YW16EK/49ytG0mC7o5yYeVqOioI8GVwcu4ntA==
+"@alicloud/console-toolkit-plugin-storybook@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-storybook/-/console-toolkit-plugin-storybook-1.0.1.tgz#7910b03f54a8d62214c338d123e90b0d5bda4cf5"
+  integrity sha512-Q9PLfbLpMsGduqdcLRfJXuGLtSwf91mL5BjBDMoaFrvSEmL9bI5oiyVdeyDgn448OzCxBx1/j6/ETg78xtJVzw==
   dependencies:
+    "@alicloud/console-toolkit-core" "^1.0.1"
     "@babel/plugin-transform-modules-commonjs" "^7.4.3"
     "@storybook/addon-actions" "^5.0.5"
     "@storybook/addon-console" "^1.2.1"
@@ -198,11 +217,13 @@
     lodash "^4.17.11"
     read-pkg "^5.2.0"
 
-"@alicloud/console-toolkit-plugin-typescript@^1.0.0-rc.7":
-  version "1.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-typescript/-/console-toolkit-plugin-typescript-1.0.0-rc.7.tgz#c6f169a35e204a76a4c6b2aeaef7694f1fda838f"
-  integrity sha512-sWEUja5GRGohPlyxP5+pXzvcenCGMf6ocyIJFse+o8tn7erb1knJK0gpHptGormHg1lfEq7vXELP2SdJRc1oFQ==
+"@alicloud/console-toolkit-plugin-typescript@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-typescript/-/console-toolkit-plugin-typescript-1.0.1.tgz#5d7945d635793fb4ac2c341e054122115bfc395e"
+  integrity sha512-2eYRxJjBdumfzIBaat6Q7R4q45mOCO9H0d5wqYrHxLxKX8y5S0/qsGlfJcLNrCobWFKckb3fGooDx1Dm2+/xEw==
   dependencies:
+    "@alicloud/console-toolkit-core" "^1.0.1"
+    "@alicloud/console-toolkit-shared-utils" "^1.0.1"
     "@babel/plugin-transform-typescript" "^7.4.0"
     awesome-typescript-loader "^5.2.1"
     babel-polyfill "^6.26.0"
@@ -214,11 +235,12 @@
     ts-loader "^6.0.1"
     typescript "^3.0.3"
 
-"@alicloud/console-toolkit-plugin-unit-jest@^1.0.0-rc.7":
-  version "1.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-unit-jest/-/console-toolkit-plugin-unit-jest-1.0.0-rc.7.tgz#342f474269527fc844811c1dfa891de1ffed3c67"
-  integrity sha512-zX6a/kv9Blt2iSu/o4EJyjEXyb9bCSqd3RQ6Te92Z1vL5PgKM75s3nUUqPWfiW1ZnBxfoDbAT8PdygyRpzUcfw==
+"@alicloud/console-toolkit-plugin-unit-jest@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-unit-jest/-/console-toolkit-plugin-unit-jest-1.0.1.tgz#b80e715a506359afbfa221004bfe51b51059ae0e"
+  integrity sha512-6MySQqjB3OCF2lsoSmjI3/jtz1Wz2kApZbwln9MbZaYnyyRKKNvcqt7NPczp6E4G+E8+lpZgQJTHdVdd8UGYog==
   dependencies:
+    "@alicloud/console-toolkit-core" "^1.0.1"
     "@babel/plugin-transform-modules-commonjs" "^7.4.3"
     babel-jest "^24.7.1"
     enzyme "^3.10.0"
@@ -228,11 +250,13 @@
     jest-enzyme "^7.0.2"
     ts-jest "^24.0.2"
 
-"@alicloud/console-toolkit-plugin-updator@^1.0.0-rc.7":
-  version "1.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-updator/-/console-toolkit-plugin-updator-1.0.0-rc.7.tgz#3c2cd882b013010a52eaee8c2f658f2ae2557570"
-  integrity sha512-K5D/ku1z9RUkd3ZNjW3xGPht79f6cppPZ7roHAfHmHFJe69x9Fw0RQoaPEpHNjsh6vHItw4pnb/TVAh64rbtyw==
+"@alicloud/console-toolkit-plugin-updator@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-updator/-/console-toolkit-plugin-updator-1.0.1.tgz#6ad77d2c8151a55d5a80a861057b8ba5028e0311"
+  integrity sha512-Vf5L1srqwHVb4GQ5eLOb85w1COORTGefoltDJ4Ysn6/PGTMLM3g+0smxCy4kRNwm4qdry+9LcCUSlGKkUHnbWA==
   dependencies:
+    "@alicloud/console-toolkit-core" "^1.0.1"
+    "@alicloud/console-toolkit-shared-utils" "^1.0.1"
     execa "^2.0.4"
     inquirer "^7.0.0"
     rimraf "^3.0.0"
@@ -256,24 +280,24 @@
     webpack-dev-server "^3.3.1"
     webpack-merge "^4.2.1"
 
-"@alicloud/console-toolkit-preset-wind-component@^1.0.0-alpha.0":
-  version "1.0.0-rc.8"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-preset-wind-component/-/console-toolkit-preset-wind-component-1.0.0-rc.8.tgz#c1acb82f58949b588b983f9a012fd40d43129734"
-  integrity sha512-188y/GcXJmEXXUl6aV8NVsK2g9tj+rdEKJSbfzcJeNx4N4/z387Kp3ckxXhRKh+i6wrIxh0ScOdeAg2kJy1EVQ==
+"@alicloud/console-toolkit-preset-wind-component@^1.0.0-rc.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-preset-wind-component/-/console-toolkit-preset-wind-component-1.0.1.tgz#8b11ea7d01de7431ce76daad71cbf8d28642f7c9"
+  integrity sha512-UkCpxJMFzVPlAuocZHs/Hk57mo19YCpLH/NvGH0S3SM7/x8d2GoGvYTdWlEIWnKwJrhmA+HXdrgramAShPSLmw==
   dependencies:
-    "@alicloud/console-toolkit-core" "^1.0.0-rc.7"
+    "@alicloud/console-toolkit-core" "^1.0.1"
     "@alicloud/console-toolkit-plugin-babel" "^1.0.0-rc.7"
     "@alicloud/console-toolkit-plugin-builtin" "^1.0.0-rc.7"
     "@alicloud/console-toolkit-plugin-less" "^1.0.0-rc.7"
-    "@alicloud/console-toolkit-plugin-react" "^1.0.0-rc.8"
-    "@alicloud/console-toolkit-plugin-rollup" "^1.0.0-rc.7"
-    "@alicloud/console-toolkit-plugin-storybook" "^1.0.0-rc.7"
+    "@alicloud/console-toolkit-plugin-react" "^1.0.1"
+    "@alicloud/console-toolkit-plugin-rollup" "^1.0.1"
+    "@alicloud/console-toolkit-plugin-storybook" "^1.0.1"
     "@alicloud/console-toolkit-plugin-styled-components-isolation" "^1.0.0-rc.7"
-    "@alicloud/console-toolkit-plugin-typescript" "^1.0.0-rc.7"
-    "@alicloud/console-toolkit-plugin-unit-jest" "^1.0.0-rc.7"
-    "@alicloud/console-toolkit-plugin-updator" "^1.0.0-rc.7"
+    "@alicloud/console-toolkit-plugin-typescript" "^1.0.1"
+    "@alicloud/console-toolkit-plugin-unit-jest" "^1.0.1"
+    "@alicloud/console-toolkit-plugin-updator" "^1.0.1"
     "@alicloud/console-toolkit-plugin-webpack" "^1.0.0-rc.7"
-    "@alicloud/console-toolkit-shared-utils" "^1.0.0-rc.7"
+    "@alicloud/console-toolkit-shared-utils" "^1.0.1"
     "@babel/plugin-transform-typescript" "^7.4.0"
     babel-plugin-module-resolver "^3.2.0"
     babel-plugin-transform-remove-imports "^1.0.8"
@@ -290,6 +314,18 @@
   version "1.0.0-rc.7"
   resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-shared-utils/-/console-toolkit-shared-utils-1.0.0-rc.7.tgz#8bfb7e211451906c1429ec66c9d36718ce1db1b4"
   integrity sha512-vp92nF7qCgdVwxpeJqnzxrpmGIohZx40qj47OSxG5eGOefcc/tb+rWoMSfJKzIK1ZeqvZMqJWaP3VH3fd1HTHg==
+  dependencies:
+    "@hapi/joi" "^15.1.1"
+    chalk "^2.4.2"
+    chokidar "^3.0.2"
+    debug "^4.0.1"
+    fs-extra "^8.1.0"
+    lodash "^4.17.11"
+
+"@alicloud/console-toolkit-shared-utils@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-shared-utils/-/console-toolkit-shared-utils-1.0.1.tgz#17632b829edad81293baa942aa16abf647ea1723"
+  integrity sha512-EZRomgSsgbR1ovM4Op1jGGxjw77mU6hDKgu77FIw4sEbVivGVwdzTfjtVxepJkVZSBCIrry3QY+387m2pjq0+A==
   dependencies:
     "@hapi/joi" "^15.1.1"
     chalk "^2.4.2"
