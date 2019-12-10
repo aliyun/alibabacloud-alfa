@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-browser-vm",
-  "version": "0.1.1",
+  "version": "0.1.6",
   "description": "browser virtual machine",
   "main": "index.js",
   "scripts": {
@@ -11,20 +11,17 @@
   "author": "dron",
   "license": "ISC",
   "devDependencies": {
+    "@alicloud/console-toolkit-cli": "^1.0.1",
+    "@alicloud/console-toolkit-preset-wind-component": "^1.0.1",
     "@babel/core": "^7.5.5",
     "@storybook/addon-actions": "^5.1.10",
     "@storybook/addon-console": "^1.2.1",
     "@storybook/addon-links": "^5.1.10",
     "@storybook/addons": "^5.1.10",
     "@storybook/react": "^5.1.10",
-    "babel-loader": "^8.0.6",
-    "@alicloud/console-toolkit-cli": "^1.0.1",
-    "@alicloud/console-toolkit-preset-wind-component": "^1.0.1",
     "axios": "^0.19.0",
+    "babel-loader": "^8.0.6",
     "js-beautify": "^1.10.1"
   },
-  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073",
-  "dependencies": {
-
-  }
+  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
 }
