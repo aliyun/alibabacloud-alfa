@@ -1,5 +1,5 @@
 import { loadBundle } from '@alicloud/console-os-loader';
-import { getFromCdn, invokeLifeCycle, getRealUrl } from './util';
+import { getFromCdn, invokeLifeCycle, getRealUrl, validateAppInstance } from './util';
 
 import { AppInfo, AppInstance, AppManifest } from './type';
 import { handleManifest } from './manifest';
@@ -82,17 +82,18 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
     })
   );
 
+  validateAppInstance(appInstance);
+
   return {
     id,
     name,
     bootstrap: [
-      ...appInstance.bootstrap
+      ...appInstance.bootstrap,
     ],
     mount: [
       async () => {
         await invokeLifeCycle(appInfo.appWillMount, appInstance);
       },
-      // TODO: load the context
       ...appInstance.mount,
       async () => {
         await invokeLifeCycle(appInfo.appDidMount, appInstance);
@@ -102,14 +103,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       async () => {
         await invokeLifeCycle(appInfo.appWillUnmount, appInstance);
       },
-
       ...appInstance.unmount,
-
-      async () => {
-        // TODO: clear context
-        // context.despose()
-      },
-
       async () => {
         await invokeLifeCycle(appInfo.appDidUnmount, appInstance)
       }

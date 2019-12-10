@@ -24,6 +24,12 @@ function smellsLikeAPromise(promise) {
   return promise && typeof promise.then === 'function' && typeof promise.catch === 'function';
 }
 
+export function validateAppInstance(appInstance: AppInstance) {
+  if (!appInstance.bootstrap && !appInstance.mount && !appInstance.unmount) {
+    throw new Error(`The app ${appInstance.id}'s export is invalid, you should export bootstrap, mount, unmount`)
+  }
+}
+
 export function flattenFnArray(fns, description) {
   fns = Array.isArray(fns) ? fns : [fns];
   if (fns.length === 0) {

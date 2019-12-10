@@ -24,7 +24,11 @@ export const hook = (id: string, resolver: BundleResolver) => {
       }
 
       if (chunkRecord.deps) {
+        // Check the deps undefined
         Object.entries(chunkRecord.deps).forEach(([depsName, exports]) => {
+          if (!exports) {
+            console.warn(`${depsName} is null or undefined, please check the import statement for ${depsName}`);
+          }
           const dep = Module.resolveModule(depsName);
           dep.exports = exports;
         })
