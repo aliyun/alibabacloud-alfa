@@ -5,9 +5,9 @@ Kernal for Console OS
 ## TODO
 
 - [x] load app by single bundle
-- [ ] load app by manifest
+- [x] load app by manifest
+- [x] security sandbox
 - [ ] cache by service work
-- [ ] security sandbox
 
 ## How to use
 
@@ -50,7 +50,7 @@ start();
 
 ## React
 
-If you are using react as your UI framework, you can use sub app as a jsx element by using ```@alicloud/console-os-react-portal```
+If you are using react as your UI framework, you can use sub app as a jsx element by using ```@alicloud/console-os-react-app```
 
 ```javascript
 import ConsoleApp from '@alicloud/console-os-react-app'

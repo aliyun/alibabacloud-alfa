@@ -6,8 +6,9 @@ An app bundle loader used by console os
 
 - [x] load single bundle
 - [x] script load error handler
+- [x] recursive load
+- [x] load with deps
 - [ ] combo load bundle
-- [ ] recursive load
 
 ## How to use
 

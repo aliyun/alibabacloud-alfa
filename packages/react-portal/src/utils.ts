@@ -15,11 +15,12 @@ interface IProps extends React.Attributes {
   emitter?: any;
   path?: string;
   id?: string;
+  [key: string]: any;
 }
 
-export const withSyncHistory = (Comp: React.ComponentClass | React.SFC) => {
+export const withSyncHistory = (Comp: React.ComponentClass | React.SFC, history: History) => {
   const Wrapper: React.SFC<IProps> = (props: IProps) => {
-    const { history, emitter, path } = props;
+    const { emitter, path } = props;
 
     useEffect(() => {
       if (!history) {
