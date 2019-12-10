@@ -1,4 +1,3 @@
-
 # Console OS React Portal
 
 ## Basic Use
@@ -6,7 +5,7 @@
 Replace the ReactDOM.render to ```mount``` function in ```@alicloud/console-os-react-portal```
 
 ```javascript
-import { mount } from '@ali/os-react-portal';
+import { mount } from '@alicloud/console-os-react-portal';
 import App from './app';
 
 export default mount(
@@ -25,7 +24,7 @@ If you are use the react-router, and you want to your Main Application (Parent A
 you can use util funtion ```withSyncHistory``` in ```@alicloud/console-os-react-portal```.
 
 ```javascript
-import { mount, withSyncHistory } from '@ali/os-react-portal';
+import { mount, withSyncHistory } from '@alicloud/console-os-react-portal';
 import { createBrowserHistory } from 'history';
 import App from './app';
 
