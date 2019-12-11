@@ -28,6 +28,10 @@ class Window {
             return __CONSOLE_OS_GLOBAL_VARS_;
         }
 
+        if (__CONSOLE_OS_GLOBAL_VARS_[name]) {
+          return __CONSOLE_OS_GLOBAL_VARS_[name];
+        }
+
         if( typeof target[ name ] === 'function' && /^[a-z]/.test( name ) ){
           return target[ name ].bind && target[ name ].bind( target );
         }else{
