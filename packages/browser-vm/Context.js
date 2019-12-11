@@ -12,8 +12,8 @@ import Location from './Location';
 class Context {
   constructor( conf, frame ){
     this.window = new Window( conf, this, frame );
-    this.document = new Document( conf, this, frame );
     this.location = new Location(this.window.location);
+    this.document = new Document( conf, this, frame, location );
     this.history = this.window.history;
     this.baseFrame = frame;
     this.window.__IS_CONSOLE_OS_CONTEXT__ = true
