@@ -11,8 +11,8 @@ import Location from './Location';
 
 class Context {
   constructor( conf, frame ){
-    this.window = new Window( conf, this, frame );
-    this.location = new Location(this.window.location);
+    this.location = new Location(frame.contentWindow.location);
+    this.window = new Window( conf, this, frame, location);
     this.document = new Document( conf, this, frame, location );
     this.history = this.window.history;
     this.baseFrame = frame;

@@ -24,6 +24,8 @@ class Window {
         switch( name ){
           case 'document':
             return context.document;
+          case 'location':
+            return context.location;
           case '__CONSOLE_OS_GLOBAL_VARS_':
             return __CONSOLE_OS_GLOBAL_VARS_;
         }

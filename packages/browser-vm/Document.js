@@ -8,7 +8,7 @@
 import notImplemented from './not-implemented';
 
 class Document{
-  constructor( options = {}, context, frame, location ){
+  constructor( options = {}, context, frame ){
     let body = options.body;
     if (!options.body) {
       body = document.createElement( 'body' );
@@ -34,7 +34,7 @@ class Document{
           case 'body':
             return body;
           case 'location':
-            return location
+            return context.location
           case 'defaultView':
             return context.window;
 

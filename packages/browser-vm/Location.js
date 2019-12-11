@@ -1,18 +1,12 @@
-/**
- * Window.js
- * @lastModified 2019085
- * @forwardCompatibleTo 2019085
- * @createAt 2019085
- */
-class Document{
+class Location{
   constructor( location ){
-    return new Proxy( location, {
+    return new Proxy( {}, {
       set(target, name, value) {
         switch( name ) {
           case 'href':
             break;
           default:
-            target[name] = value;
+            location[name] = value;
         }
         return true;
       },
@@ -26,14 +20,14 @@ class Document{
           default:
             break;
         }
-        if( typeof target[ name ] === 'function' ){
-          return target[ name ].bind && target[ name ].bind( target );
+        if( typeof location[ name ] === 'function' ){
+          return location[ name ].bind && location[ name ].bind( target );
         } else {
-          return target[ name ];
+          return location[ name ];
         }
       }
     } );
   }
 }
 
-export default Document;
+export default Location;
