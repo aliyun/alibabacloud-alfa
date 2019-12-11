@@ -1,8 +1,8 @@
 import * as React from 'react';
-import './index.js'
 import Application from '../src';
 import Skeleton from '../src/Skeleton';
 import { storiesOf } from '@storybook/react';
+import { start } from '@alicloud/console-os-kernal';
 
 storiesOf('Console Application', module)
   .add('With Manifest', () => {
@@ -26,3 +26,5 @@ storiesOf('Console Application', module)
       <Skeleton active />
     )
   })
+
+start()

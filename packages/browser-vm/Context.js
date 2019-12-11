@@ -7,12 +7,13 @@
 
 import Window from './Window';
 import Document from './Document';
+import Location from './Location';
 
 class Context {
   constructor( conf, frame ){
     this.window = new Window( conf, this, frame );
     this.document = new Document( conf, this, frame );
-    this.location = this.window.location;
+    this.location = new Location(this.window.location);
     this.history = this.window.history;
     this.baseFrame = frame;
     this.window.__IS_CONSOLE_OS_CONTEXT__ = true
