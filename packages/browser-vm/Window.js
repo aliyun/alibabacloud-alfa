@@ -1,8 +1,5 @@
 /**
  * Window.js
- * @lastModified 2019085
- * @forwardCompatibleTo 2019085
- * @createAt 2019085
  */
 
 class Window {

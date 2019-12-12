@@ -4,6 +4,7 @@ interface VMContext {
   document: Document;
   history: History;
   location: Location;
+  baseFrame?: HTMLFrameElement;
 }
 
 interface ContextOption {

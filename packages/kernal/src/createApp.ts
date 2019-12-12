@@ -4,6 +4,9 @@ import { createContext } from './creatContext';
 import { getApp, setApp } from './AppCachePool';
 import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
 import { Parcel } from 'single-spa';
+import { createEventBus } from './createEventBus';
+
+const eventBus = createEventBus();
 
 export class Application {
   private appinfo: AppInfo;
@@ -14,6 +17,9 @@ export class Application {
   public constructor(appInfo: AppInfo, context: VMContext) {
     this.appinfo = appInfo;
     this.context = context;
+    if (this.context.baseFrame) {
+      this.context.baseFrame.contentWindow.addEventListener('popstate', this.emitLocaitonChange);
+    }
   }
 
   public async getAppLoader() {
@@ -24,6 +30,9 @@ export class Application {
   }
 
   public async unmount() {
+    if (this.context.baseFrame) {
+      this.context.baseFrame.contentWindow.removeEventListener('popstate', this.emitLocaitonChange);
+    }
     return this.parcel.unmount();
   }
 
@@ -34,6 +43,10 @@ export class Application {
 
   public attachParcel(parcel: Parcel) {
     this.parcel = parcel;
+  }
+
+  private emitLocaitonChange() {    
+    eventBus.emit(`${this.appinfo.id}:history-change`, location)
   }
 }
 
