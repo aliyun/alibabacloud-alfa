@@ -53,6 +53,10 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
         externals: sandBoxOption ? sandBoxOption.externalsVars: [],
         url: sandBoxOption.sandBoxUrl
       });
+
+      if (sandBoxOption.initialPath) {
+        context.history.pushState(null, '' , sandBoxOption.initialPath);
+      }
     } else {
       // @ts-ignore
       window.__CONSOLE_OS_GLOBAL_VARS_ = {};
