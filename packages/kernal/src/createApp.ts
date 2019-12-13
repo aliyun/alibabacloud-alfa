@@ -45,7 +45,7 @@ export class Application {
     this.parcel = parcel;
   }
 
-  private emitLocaitonChange() {    
+  private emitLocaitonChange = () => {
     eventBus.emit(`${this.appinfo.id}:history-change`, location)
   }
 }
