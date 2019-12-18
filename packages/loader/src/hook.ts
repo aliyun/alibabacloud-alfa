@@ -13,9 +13,11 @@ export const hook = (id: string, resolver: BundleResolver) => {
   if (id && resolver) {
     const chunkRecord = Module.record.get(id);
 
-    if (!chunkRecord && preHook) {
-      return preHook(id, resolver)
+    if (!chunkRecord) {
+      preHook && preHook(id, resolver)
+      return;
     }
+
     const module = Module.resolveModule(id);
     try {
       let context = chunkRecord.context;
