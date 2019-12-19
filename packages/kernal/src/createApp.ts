@@ -1,10 +1,11 @@
+import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
+import { Parcel } from 'single-spa';
 import { AppInfo, SandBoxOption } from './type';
 import { createAppLoader } from './createAppLoader';
 import { createContext } from './creatContext';
 import { getApp, setApp } from './AppCachePool';
-import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
-import { Parcel } from 'single-spa';
 import { createEventBus } from './createEventBus';
+import { serializeData } from './util';
 
 const eventBus = createEventBus();
 
@@ -13,13 +14,12 @@ export class Application {
   public readonly context: VMContext;
   public parcel?: Parcel;
   public remoteApp;
+  public allowEvents: string[];
 
-  public constructor(appInfo: AppInfo, context: VMContext) {
+  public constructor(appInfo: AppInfo, context: VMContext, option?: SandBoxOption) {
     this.appinfo = appInfo;
-    this.context = context;
-    if (this.context.baseFrame) {
-      this.context.baseFrame.contentWindow.addEventListener('popstate', this.emitLocaitonChange);
-    }
+    this.context = context; 
+    this.allowEvents = option.allowEvents ? option.allowEvents : [];
   }
 
   public async getAppLoader() {
@@ -29,9 +29,19 @@ export class Application {
     return this.remoteApp;
   }
 
+  public mount() {
+    const { baseFrame } = this.context;
+    if (baseFrame) {
+      baseFrame.contentWindow.addEventListener('popstate', this.emitLocaitonChange);
+      baseFrame.contentWindow.addEventListener('message', this.emitGlobalEvent);
+    }
+  }
+
   public async unmount() {
-    if (this.context.baseFrame) {
-      this.context.baseFrame.contentWindow.removeEventListener('popstate', this.emitLocaitonChange);
+    const { baseFrame } = this.context;
+    if (baseFrame) {
+      baseFrame.contentWindow.removeEventListener('popstate', this.emitLocaitonChange);
+      baseFrame.contentWindow.removeEventListener('message', this.emitGlobalEvent);
     }
     return this.parcel.unmount();
   }
@@ -48,36 +58,45 @@ export class Application {
   private emitLocaitonChange = () => {
     eventBus.emit(`${this.appinfo.id}:history-change`, this.context.location)
   }
+
+  private emitGlobalEvent = (e: MessageEvent) => {
+    const payload = e.data;
+    if (!payload.type || this.allowEvents.indexOf(e.data.type) === -1) {
+      return;
+    }
+    payload.appId = this.appinfo.id;
+    eventBus.emit(payload.type, serializeData(e.data))
+  }
 }
 
 export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
-  // 根据是否单例来决定 APP 是否缓存
-  // 这里是为了性能考虑 从功能性上做了折中
-  // 每个实例
   let app = getApp(appInfo.id);
   if (app && sandBoxOption.singleton) {
     return app;
-  } else {
-    let context: VMContext = {window, document, location, history};
-    if (!sandBoxOption.disable) {
-      context = await createContext({
-        initURL: location.href,
-        body: appInfo.dom,
-        externals: sandBoxOption ? sandBoxOption.externalsVars: [],
-        url: sandBoxOption.sandBoxUrl
-      });
-
-      if (sandBoxOption.initialPath) {
-        context.history.pushState(null, '' , sandBoxOption.initialPath);
-      }
-    } else {
-      // @ts-ignore
-      window.__CONSOLE_OS_GLOBAL_VARS_ = {};
-      // @ts-ignore
-      window.__IS_CONSOLE_OS_CONTEXT__ = true
-    }
-    app = new Application(appInfo, context);
-    setApp(appInfo.id, app);
   }
+
+  let context: VMContext = { window, document, location, history };
+
+  if (!sandBoxOption.disable) {
+    context = await createContext({
+      initURL: location.href,
+      body: appInfo.dom,
+      externals: sandBoxOption ? sandBoxOption.externalsVars: [],
+      url: sandBoxOption.sandBoxUrl
+    });
+
+    if (sandBoxOption.initialPath) {
+      context.history.pushState(null, '' , sandBoxOption.initialPath);
+    }
+  } else {
+    // @ts-ignore
+    window.__CONSOLE_OS_GLOBAL_VARS_ = {};
+    // @ts-ignore
+    window.__IS_CONSOLE_OS_CONTEXT__ = true
+  }
+
+  app = new Application(appInfo, context, sandBoxOption);
+  setApp(appInfo.id, app);
+
   return app;
 }

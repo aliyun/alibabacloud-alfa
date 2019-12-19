@@ -69,3 +69,7 @@ export const getRealUrl = (urlStr: string, base: string) => {
   const url = new URL(sourceUrl, base);
   return url.toString()
 };
+
+export const serializeData = (data: any) => {
+  return JSON.parse(JSON.stringify(data))
+}

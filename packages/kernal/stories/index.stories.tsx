@@ -4,7 +4,11 @@ import { storiesOf } from '@storybook/react';
 import Application from '../../react-application/src';
 import { start } from '../src';
 
-start();
+start({
+  sandBox: {
+    allowEvents: ['test']
+  }
+});
 
 storiesOf('Basic Console OS', module)
   .add('Basic Use', () => {
@@ -12,7 +16,7 @@ storiesOf('Basic Console OS', module)
       <div>
         <Application
           id="os-example"
-          manifest="https://g.alicdn.com/ConsoleOS/angular-example/0.0.1/os-exmaple-angular.manifest.json"
+          manifest="https://g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json"
         />
       </div>
     )

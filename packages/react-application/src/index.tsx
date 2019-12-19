@@ -141,12 +141,13 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       });
 
       if (this.app && this.app.parcel) {
-        this.app && this.app.parcel.mountPromise.then(() => {
+        this.app.parcel.mountPromise.then(() => {
           this.setState({
             loading: false
           });
           this.props.appDidMount && this.props.appDidMount()
         });
+        this.app.mount()
         return this.app.parcel.mountPromise;
       }
     })
@@ -227,3 +228,5 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 }
 
 export default Application;
+
+export { start } from '@alicloud/console-os-kernal';

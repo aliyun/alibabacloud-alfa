@@ -45,6 +45,7 @@ export interface SandBoxOption {
   singleton?: boolean;
   initialPath?: string;
   externalsVars?: string[];
+  allowEvents?: string[];
 }
 
 export interface AppOption {
