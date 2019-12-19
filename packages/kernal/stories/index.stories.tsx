@@ -6,7 +6,7 @@ import { start } from '../src';
 
 start({
   sandBox: {
-    allowEvents: ['test']
+    allowEvents: ['console:xxxxx']
   }
 });
 

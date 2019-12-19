@@ -213,15 +213,15 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
     return (
       <>
-        {
-          this.state.loading ? <Skeleton active /> : null
-        }
-        {
-          React.createElement(
-            id,
-            { ref: this.handleRef }
-          )
-        }
+      {
+        this.state.loading ? <Skeleton active /> : null
+      }
+      {
+        React.createElement(
+          id,
+          { ref: this.handleRef }
+        )
+      }
       </>
     );
   }
@@ -229,4 +229,4 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
 export default Application;
 
-export { start } from '@alicloud/console-os-kernal';
+export { start, createEventBus, isAppRegistered, registerApplication, mountApp } from '@alicloud/console-os-kernal';
