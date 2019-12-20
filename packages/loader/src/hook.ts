@@ -14,7 +14,16 @@ export const hook = (id: string, resolver: BundleResolver) => {
     const chunkRecord = Module.record.get(id);
 
     if (!chunkRecord) {
-      preHook && preHook(id, resolver)
+      preHook && preHook(id, resolver);
+
+      // when a page contains two consoleos runtime
+      // using __CONSOLE_OS_WHITE_LIST__ to invoke app directly
+      // rather than render by another consoleos runtime
+      if (!preHook
+        && window.__CONSOLE_OS_WHITE_LIST__
+        && window.__CONSOLE_OS_WHITE_LIST__.indexOf(id) !== -1) {
+        resolver({}, null, null, { window, location, history, document })
+      }
       return;
     }
 

@@ -28,5 +28,6 @@ export interface IBundleOption {
 declare global {
   interface Window {
     __CONSOLE_OS_GLOBAL_HOOK__: (string, BundleResolver) => any;
+    __CONSOLE_OS_WHITE_LIST__: string[];
   }
 }
