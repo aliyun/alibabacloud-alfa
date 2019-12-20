@@ -1,4 +1,4 @@
-import { registerApplication as registerSpaApp, start as startSpa, triggerAppChange, getAppNames, unloadApplication, mountRootParcel } from 'single-spa';
+import { registerApplication as registerSpaApp, start as startSpa, triggerAppChange, getAppNames, unloadApplication, mountRootParcel, toggleNavigationCalling } from 'os-single-spa';
 import { AppInfo, AppOption } from './type';
 import { createEventBus } from './createEventBus';
 import { flattenFnArray } from './util';
@@ -93,6 +93,8 @@ export const mountApp = async (appInfo: AppInfo, options: AppOption = {}) => {
 
 export const start = (options?: AppOption) => {
   globalOptions = options || {};
+  // @ts-ignore
+  toggleNavigationCalling(true);
   startSpa();
   createCachePool({})
 }
@@ -101,6 +103,6 @@ export const isAppRegistered = (appName: string) => {
   return getAppNames().indexOf(appName) !== -1;
 }
 
-export { triggerAppChange, unloadApplication, createEventBus }
+export { triggerAppChange, unloadApplication, createEventBus, toggleNavigationCalling }
 
 export type OSApplication = Application;

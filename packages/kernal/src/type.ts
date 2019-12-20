@@ -1,4 +1,4 @@
-import { LifeCycles } from 'single-spa';
+import { LifeCycles } from 'os-single-spa';
 
 export type Lifecycle<T = any> = (app: AppInstance<T>) => Promise<any>;
 

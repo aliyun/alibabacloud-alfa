@@ -1,5 +1,5 @@
 import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
-import { Parcel } from 'single-spa';
+import { Parcel } from 'os-single-spa';
 import { AppInfo, SandBoxOption } from './type';
 import { createAppLoader } from './createAppLoader';
 import { createContext } from './creatContext';
