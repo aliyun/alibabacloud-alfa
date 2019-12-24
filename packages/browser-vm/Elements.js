@@ -7,13 +7,13 @@
 
 import injectScriptCallBack from './utils/injectScriptCallBack';
 
-if( typeof Element === 'function' ){
+if( typeof window.Element === 'function' ){
   const mountElementMethods = [ 'appendChild', 'insertBefore', 'append' ];
 
   for ( const method of mountElementMethods ) {
     const originMethod = Element.prototype[ method ];
 
-    Element.prototype[ method ] = function( el, ...args ){
+    window.Element.prototype[ method ] = function( el, ...args ){
       if( el && el.nodeName === 'SCRIPT' && el.ownerAppWindow ){
         injectScriptCallBack( el );
       }

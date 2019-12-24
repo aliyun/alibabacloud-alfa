@@ -29,5 +29,6 @@ declare global {
   interface Window {
     __CONSOLE_OS_GLOBAL_HOOK__: (string, BundleResolver) => any;
     __CONSOLE_OS_WHITE_LIST__: string[];
+    __CONSOLE_OS_GLOBAL_VARS_: object;
   }
 }

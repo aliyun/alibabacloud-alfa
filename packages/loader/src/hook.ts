@@ -22,7 +22,8 @@ export const hook = (id: string, resolver: BundleResolver) => {
       if (!preHook
         && window.__CONSOLE_OS_WHITE_LIST__
         && window.__CONSOLE_OS_WHITE_LIST__.indexOf(id) !== -1) {
-        resolver({}, null, null, { window, location, history, document })
+        window.__CONSOLE_OS_GLOBAL_VARS_ || (window.__CONSOLE_OS_GLOBAL_VARS_ = {});
+        resolver(undefined, undefined, undefined, { window, location, history, document })
       }
       return;
     }

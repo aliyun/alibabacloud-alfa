@@ -12,7 +12,7 @@ export const sandBoxCss = async (dirPath: string, root: string) => {
   const files = readdirSync(dirPath);
 
   files.forEach(async (file) => {
-    if (!file.endsWith('.css')) {
+    if (!file.endsWith('.css') || file.endsWith('.os.css')) {
       return;
     }
     const srcPath = join(dirPath, file);
