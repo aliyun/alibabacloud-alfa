@@ -1,0 +1,32 @@
+{
+  "name": "@alicloud/console-os-vue-portal",
+  "version": "0.1.7",
+  "description": "Console OS Vue Portal",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "lib/index.d.ts",
+  "author": "Boelroy",
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "npm run clean && npm run build",
+    "build": "tsc",
+    "clean": "rm -rf lib yarn.lock"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/jest": "^24.0.23",
+    "enzyme": "^3.10.0",
+    "history": "^4.10.1",
+    "jest": "^23.6.0",
+    "vue": "^2.6.1",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.8.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@alicloud/console-os-events": "^0.1.6"
+  },
+  "peerDependencies": {
+    "vue": "^2"
+  }
+}

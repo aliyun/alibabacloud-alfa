@@ -5,49 +5,50 @@ import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { sandBoxCss } from './sandboxCss';
 
-export default (api: PluginAPI, options: PluginOptions) => {
+export const chainOsWebpack = (options: PluginOptions, api: PluginAPI) => async (config: WebpackChain) => {
   const { jsonpCall, injectVars } = options;
+  config
+    .output
+    .library(options.id)
+    .jsonpFunction(`webpackJsonp${options.id}`)
+    // @ts-ignore
+    .devtoolNamespace(options.id)
+    .libraryTarget('umd');
 
-  api.on('onChainWebpack', async (config: WebpackChain) => {
-    config
-      .output
-      .library(options.id)
-      .jsonpFunction(`webpackJsonp${options.id}`)
-      // @ts-ignore
-      .devtoolNamespace(options.id)
-      .libraryTarget('umd');
-
-    config
-      .plugin('OSJsonpPlugin')
-      .use(OSJsonpWebpackPlugin, [{
-        injectVars,
-        jsonpCall
-      }]);
-
-    config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
-      transform: (manifest: any) => {
-        const entrypoints = manifest.entrypoints;
-        if (entrypoints) {
-          delete manifest.entrypoints;
-        }
-        return {
-          name: options.id,
-          resources: manifest,
-          entrypoints: entrypoints
-        };
-      },
-      publicPath: true,
-      entrypoints: true,
-      output: `${options.id}.manifest.json`
+  config
+    .plugin('OSJsonpPlugin')
+    .use(OSJsonpWebpackPlugin, [{
+      injectVars,
+      jsonpCall
     }]);
+
+  config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
+    transform: (manifest: any) => {
+      const entrypoints = manifest.entrypoints;
+      if (entrypoints) {
+        delete manifest.entrypoints;
+      }
+      return {
+        name: options.id,
+        resources: manifest,
+        entrypoints: entrypoints
+      };
+    },
+    publicPath: true,
+    entrypoints: true,
+    output: `${options.id}.manifest.json`
+  }]);
     
     
-    if (options.id) {
-      api.on('onBuildEnd', async () => {
-        sandBoxCss(join(config.output.get('path')), options.id)
-      })
-    }
-  });
+  if (options.id) {
+    api.on('onBuildEnd', async () => {
+      sandBoxCss(join(config.output.get('path')), options.id)
+    })
+  }
+}
+
+export default (api: PluginAPI, options: PluginOptions) => {
+  api.on('onChainWebpack', chainOsWebpack(options, api));
 
   api.dispatchSync('addHtmlHeadScript', `
 <style>

@@ -1,0 +1,30 @@
+{
+  "name": "vue-cli-plugin-console-os",
+  "version": "0.1.22",
+  "description": "long term cache plugin for breezr",
+  "main": "index.js",
+  "scripts": {
+    "ci": "tnpm run lint && tnpm run compile && tnpm run cov",
+    "lint": "tslint --project .",
+    "compile": "rm -rf ./lib && tsc -d true -p ./",
+    "watch": "tsc -watch -d true -p ./",
+    "test": "jest",
+    "cov": "jest  --coverage",
+    "prepare": "npm run compile",
+    "clean": "rm -rf lib yarn.lock"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "jest": "^24.2.0-alpha.0",
+    "nyc": "^13.1.0",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@alicloud/console-toolkit-plugin-os": "^0.1.22"
+  },
+  "author": "流司",
+  "license": "MIT",
+  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
+}
