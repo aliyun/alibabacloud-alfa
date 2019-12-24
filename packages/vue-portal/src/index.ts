@@ -21,9 +21,13 @@ const getProps = (props) => {
 
 
 export const mount = (option) => {
+  const el = option.el;
+  delete option.el;
   // @ts-ignore
   if (window.__IS_CONSOLE_OS_CONTEXT__) {
-    const spaInstance = singleSpaVue(option);
+    const spaInstance = singleSpaVue({
+      appOptions: option,
+    });
     return {
       bootstrap: [spaInstance.bootstrap],
       mount: [(props) => {
@@ -39,5 +43,8 @@ export const mount = (option) => {
       update: [spaInstance.update],
     }
   }
-  return new Vue(option);
+  return new Vue({
+    ...option,
+    el
+  });
 }
