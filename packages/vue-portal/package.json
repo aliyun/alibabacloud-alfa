@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-vue-portal",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Console OS Vue Portal",
   "main": "lib/index.js",
   "module": "es/index.js",
