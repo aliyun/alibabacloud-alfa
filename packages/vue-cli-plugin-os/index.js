@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { chainOsWebpack } = require('@alicloud/console-toolkit-plugin-os')
 
 module.exports = (api, options) => {
