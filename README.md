@@ -60,7 +60,7 @@ see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/bl
 
 ### Angular
 
-* [Angular 加载 React 应用](ttps://codesandbox.io/s/nameless-rain-1yv57)
+* [Angular 加载 React 应用](https://codesandbox.io/s/nameless-rain-1yv57)
 
 ## 贡献指南
 
