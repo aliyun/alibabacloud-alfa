@@ -48,7 +48,7 @@ see [Console OS React Portal](https://github.com/aliyun/alibabacloud-console-os/
 
 ## Vue 
 
-see [Console OS React Portal](https://github.com/aliyun/alibabacloud-console-os/blob/master/packages/vue-portal/README.md)
+see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/blob/master/packages/vue-portal/README.md)
 
 ## Try Demo
 
