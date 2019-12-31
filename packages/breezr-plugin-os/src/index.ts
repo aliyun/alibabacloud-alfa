@@ -42,7 +42,7 @@ export const chainOsWebpack = (options: PluginOptions, api: PluginAPI) => async 
     
   if (options.id) {
     api.on('onBuildEnd', async () => {
-      sandBoxCss(join(config.output.get('path')), options.id)
+      sandBoxCss(join(config.output.get('path')), options.id, options)
     })
   }
 }
