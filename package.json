@@ -26,6 +26,8 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "single-spa-react": "^2.10.2"
+    "@types/webpack": "^4.41.0",
+    "single-spa-react": "^2.10.2",
+    "webpack-merge": "^4.2.2"
   }
 }

@@ -1,10 +1,10 @@
 import * as postcss from 'postcss';
 import { join  } from 'path';
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
-
+import { PluginOptions } from '@alicloud/console-toolkit-core';
 import { postcssWrap } from './postcssWrap';
 
-export const sandBoxCss = async (dirPath: string, root: string) => {
+export const sandBoxCss = async (dirPath: string, root: string, opts: PluginOptions) => {
   if (!existsSync(dirPath)) {
     return;
   }
@@ -16,7 +16,7 @@ export const sandBoxCss = async (dirPath: string, root: string) => {
       return;
     }
     const srcPath = join(dirPath, file);
-    const destPath = `${join(dirPath, file).replace('.css', '')}.os.css`
+    const destPath = `${join(dirPath, file).replace('.css', '')}${ !opts.disableOsCssExtends ? '.os' : ''}.css`
     const cssContent = readFileSync(srcPath, 'UTF-8');
 
     const result = await postcss([
