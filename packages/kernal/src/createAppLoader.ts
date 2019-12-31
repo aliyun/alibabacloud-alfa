@@ -16,7 +16,7 @@ const addStyles = (urls: string[], manifest: string) => {
   urls.forEach((url) => {
     const styleSheet = document.createElement('link');
     styleSheet.rel = 'stylesheet';
-    styleSheet.href = formatUrl(url.replace('.css', '.os.css'), manifest);
+    styleSheet.href = formatUrl(url, manifest);
     document.head.appendChild(styleSheet);
   });
 }
