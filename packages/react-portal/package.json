@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-react-portal",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Console OS React Portal",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -33,7 +33,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/console-os-events": "^0.2.0",
+    "@alicloud/console-os-events": "^0.2.2",
     "single-spa-react": "^2.10.2"
   },
   "peerDependencies": {
