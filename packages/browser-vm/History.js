@@ -4,25 +4,25 @@ class History {
     const postMessage = () => {
       frame.postMessage({
         type: `${id}:history-change`,
-        data: JSON.parse(JSON.stringify(location))
+        data: JSON.parse(JSON.stringify(frame.location))
       }, '*')
     }
 
-    const originalPushStatus = history.pushState
-    const originalReplaceStatus = history.replaceState
+    const originalPushStatus = frame.history.pushState
+    const originalReplaceStatus = frame.history.replaceState
 
     frame.history.pushState = (...args) => {
-      const returnValue = originalPushStatus.call(history, ...args);
+      const returnValue = originalPushStatus.call(frame.history, ...args);
       postMessage();
       return returnValue;
     }
 
     frame.history.replaceState = (...args) => {
-      const returnValue = originalReplaceStatus.call(history, ...args);
+      const returnValue = originalReplaceStatus.call(frame.history, ...args);
       postMessage()
       return returnValue;
     }
-    return history;
+    return frame.history;
   }
 }
 

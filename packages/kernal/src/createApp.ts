@@ -73,7 +73,11 @@ export class Application {
       return;
     }
     payload.appId = this.appinfo.id;
-    eventBus.emit(payload.type, serializeData(e.data))
+    if (payload.type === `${this.appinfo.id}:history-change`) {
+      this.emitLocaitonChange()
+    } else {
+      eventBus.emit(payload.type, serializeData(e.data))
+    }
   }
 }
 
