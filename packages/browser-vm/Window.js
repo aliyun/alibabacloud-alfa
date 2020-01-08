@@ -1,6 +1,7 @@
 /**
  * Window.js
  */
+import { addEventListener, removeEventListener } from './events';
 
 class Window {
   constructor( options = {}, context, frame ){
@@ -25,6 +26,10 @@ class Window {
             return context.location;
           case '__CONSOLE_OS_GLOBAL_VARS_':
             return __CONSOLE_OS_GLOBAL_VARS_;
+          case 'addEventListener':
+            return addEventListener(context)
+          case 'removeEventListener':
+            return removeEventListener(context)
         }
 
         if (__CONSOLE_OS_GLOBAL_VARS_[name]) {

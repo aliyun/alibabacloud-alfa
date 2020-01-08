@@ -19,7 +19,15 @@ export class Application {
   public constructor(appInfo: AppInfo, context: VMContext, option?: SandBoxOption) {
     this.appinfo = appInfo;
     this.context = context; 
-    this.allowEvents = option.allowEvents ? option.allowEvents : [];
+
+    const DEFAULT_EVENTS = [`${this.appinfo.id}:history-change`];
+
+    this.allowEvents = option.allowEvents ? [
+      ...option.allowEvents,
+      ...DEFAULT_EVENTS
+    ]: [
+      ...DEFAULT_EVENTS
+    ];
   }
 
   public async getAppLoader() {
@@ -81,6 +89,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     context = await createContext({
       initURL: location.href,
       body: appInfo.dom,
+      id: appInfo.id,
       externals: sandBoxOption ? sandBoxOption.externalsVars: [],
       url: sandBoxOption.sandBoxUrl
     });

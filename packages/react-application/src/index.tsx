@@ -219,7 +219,8 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       {
         React.createElement(
           id,
-          { ref: this.handleRef }
+          {},
+          React.createElement('body', { ref: this.handleRef })
         )
       }
       </>

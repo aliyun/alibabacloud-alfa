@@ -12,6 +12,7 @@ interface ContextOption {
   body?: Element;
   externals?: string[];
   url?: string;
+  id?: string;
 }
 
 interface BrowserVM {
