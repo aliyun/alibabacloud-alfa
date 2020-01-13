@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./build",
+    "outDir": "./lib",
     "module": "esnext",
     "target": "es5",
     "esModuleInterop": true,

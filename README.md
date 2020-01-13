@@ -54,13 +54,13 @@ see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/bl
 
 ## Try Example
 
-Clone the this repo
+克隆仓库到本地
 
 ```
 git clone https://github.com/aliyun/alibabacloud-console-os.git
 ```
 
-Run SubApp React App
+运行 React 子应用
 
 ```bash
 $ cd example/SubApp/React
@@ -69,7 +69,7 @@ $ npm run start
 # you will visit app on http://localhost:8080/
 ```
 
-Run SubApp Vue App
+运行 Vue 子应用
 
 ```bash
 $ cd example/SubApp/Vue
@@ -78,7 +78,7 @@ $ npm run serve
 # you will visit app on http://localhost:8081/
 ```
 
-Run Host app
+运行 宿主 应用
 
 ```bash
 $ cd example/HostApp/ReactHost
@@ -87,7 +87,8 @@ $ npm run start
 # you will visit app on http://localhost:3000/
 ```
 
-You
+你可以在 http://localhost:3000/ 访问到当前加载的两个子应用。
+
 ## Try Live Demo
 
 ### React

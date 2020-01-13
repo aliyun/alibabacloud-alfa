@@ -61,11 +61,12 @@ const osAngularWebpack = (config) => {
   return mergedConfig;
 }
 
-export default (userConfig) => (config, ngOptions) => {
+export default (userConfig) => (config) => {
   const opts = {
     id: 'config-webpack'
   };
-  chainOsWebpack(opts, { on: () =>  {} })(chain)
+  // @ts-ignore
+  chainOsWebpack(opts)(chain)
 
   return osAngularWebpack(
     mergeConfigs(
