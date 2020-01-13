@@ -1,4 +1,3 @@
-import { join } from 'path';
 import * as WebpackChain from 'webpack-chain';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
