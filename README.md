@@ -7,6 +7,8 @@
 
  * 📦 开箱即用，无代码侵入
  * 📎 完善的微前端体系支撑
+ * 🕋 完整前端容器沙箱
+ * ♋️  多实例兼容
 
 ## 使用文档
 
@@ -50,7 +52,43 @@ see [Console OS React Portal](https://github.com/aliyun/alibabacloud-console-os/
 
 see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/blob/master/packages/vue-portal/README.md)
 
-## Try Demo
+## Try Example
+
+Clone the this repo
+
+```
+git clone https://github.com/aliyun/alibabacloud-console-os.git
+```
+
+Run SubApp React App
+
+```bash
+$ cd example/SubApp/React
+$ yarn install # or npm install
+$ npm run start
+# you will visit app on http://localhost:8080/
+```
+
+Run SubApp Vue App
+
+```bash
+$ cd example/SubApp/Vue
+$ yarn install # or npm install
+$ npm run serve
+# you will visit app on http://localhost:8081/
+```
+
+Run Host app
+
+```bash
+$ cd example/HostApp/ReactHost
+$ yarn install # or npm install
+$ npm run start
+# you will visit app on http://localhost:3000/
+```
+
+You
+## Try Live Demo
 
 ### React
 

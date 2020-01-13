@@ -1,0 +1,13 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.vue {
+  border: 4px solid #41b883;
+}
+
+.react {
+  border: 4px solid #ff6a00;
+  margin-bottom: 2px;
+}

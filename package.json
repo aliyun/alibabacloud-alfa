@@ -18,7 +18,7 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-react-hooks": "^1.1.0-alpha.1",
     "husky": "^1.1.2",
-    "jest": "^23.6.0",
+    "jest": "24.7.1",
     "lerna": "^3.6.0",
     "nyc": "^13.1.0",
     "ts-jest": "^23.10.5",

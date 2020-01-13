@@ -2,10 +2,11 @@ import { join } from 'path';
 import * as WebpackChain from 'webpack-chain';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
+import { DonePlugin } from './DonePlugins';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { sandBoxCss } from './sandboxCss';
 
-export const chainOsWebpack = (options: PluginOptions, api: PluginAPI) => async (config: WebpackChain) => {
+export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
   const { jsonpCall, injectVars } = options;
   config
     .output
@@ -38,17 +39,16 @@ export const chainOsWebpack = (options: PluginOptions, api: PluginAPI) => async 
     entrypoints: true,
     output: `${options.id}.manifest.json`
   }]);
-    
-    
-  if (options.id) {
-    api.on('onBuildEnd', async () => {
-      sandBoxCss(join(config.output.get('path')), options.id, options)
-    })
-  }
+  
+  config.plugin('WebpackDonePlugin').use(DonePlugin, [{
+    done: () => {
+      sandBoxCss(options.cssBuildDir || config.output.get('path'), options.id, options)
+    }
+  }])
 }
 
 export default (api: PluginAPI, options: PluginOptions) => {
-  api.on('onChainWebpack', chainOsWebpack(options, api));
+  api.on('onChainWebpack', chainOsWebpack(options));
 
   api.dispatchSync('addHtmlHeadScript', `
 <style>
