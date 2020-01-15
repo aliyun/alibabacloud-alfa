@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./lib",
-    "module": "esnext",
+    "module": "CommonJS",
     "target": "es5",
     "esModuleInterop": true,
     "lib": ["dom", "es2015", "scripthost", "es5"],

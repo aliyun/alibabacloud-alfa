@@ -17,6 +17,14 @@ class Location{
             return () => {};
           case 'replace':
             return () => {};
+          case 'toString':
+            return () => {
+              try {
+                return location.toString();
+              } catch(e) {
+                return window.location.toString();
+              }
+            };
           default:
             break;
         }

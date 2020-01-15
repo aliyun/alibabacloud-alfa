@@ -5,6 +5,10 @@ import ReactDOM from "react-dom";
 import { start } from "@alicloud/console-os-kernal";
 import Application from "@alicloud/console-os-react-app";
 
+// ng 的依赖
+import "core-js";
+import "zone.js/dist/zone";
+
 import "./styles.css";
 
 function App() {
@@ -15,7 +19,7 @@ function App() {
         <Application
           id="os-example"
           // src="http://localhost:8080/img/logo.82b9c7a5.png"
-          manifest="http://localhost:8083/os-example.manifest.json"
+          manifest="http://localhost:8081/os-example.manifest.json"
         />
       </div>
 
@@ -23,6 +27,13 @@ function App() {
         <Application
           id="os-example-vue"
           manifest="http://localhost:8080/os-example-vue.manifest.json"
+        />
+      </div>
+
+      <div className="ng">
+        <Application
+          id="os-exmaple-angular"
+          manifest="http://localhost:4200/os-exmaple-angular.manifest.json"
         />
       </div>
 
@@ -40,7 +51,7 @@ start({
     // 再次开启之后，可以看到路由没有发生变化
     disable: false,
     // 宿主变量白名单
-    // externalsVars: ["title"],
+    externalsVars: ["Zone"],
     // 沙箱初始地址
     initialPath: '/'
   },

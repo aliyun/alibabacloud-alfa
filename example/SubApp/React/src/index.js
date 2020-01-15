@@ -16,6 +16,10 @@ const LOGO_SRC = 'https://img.alicdn.com/tfs/TB1Ly5oS3HqK1RjSZFPXXcwapXa-238-54.
 
 window.title = '🤹FAKE ALIYUN FOR REACT';
 
+const AppContainer = () => {
+
+}
+
 const App = (props) => {
   return (
     <Router>
