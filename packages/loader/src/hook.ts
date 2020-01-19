@@ -1,6 +1,16 @@
 import isFunction from 'lodash/isFunction';
 import { BundleResolver } from './type';
 import { Module, globalModule } from './module';
+import { Record } from './module/Record';
+
+
+const getContext = (id: string, chunkRecord: Record) => {
+  let context = chunkRecord.context;
+  if (isFunction(chunkRecord.context)) {
+    context = context({id});
+  }
+  return context
+}
 
 let preHook = null;
 /**
@@ -12,8 +22,8 @@ let preHook = null;
 export const hook = (id: string, resolver: BundleResolver) => {
   if (id && resolver) {
     const chunkRecord = Module.record.get(id);
-
-    if (!chunkRecord) {
+    const scriptRecord = Module.record.get(`${id}_scripts_`);
+    if (!chunkRecord && !scriptRecord) {
       preHook && preHook(id, resolver);
 
       // when a page contains two consoleos runtime
@@ -23,18 +33,25 @@ export const hook = (id: string, resolver: BundleResolver) => {
         && window.__CONSOLE_OS_WHITE_LIST__
         && window.__CONSOLE_OS_WHITE_LIST__.indexOf(id) !== -1) {
         window.__CONSOLE_OS_GLOBAL_VARS_ || (window.__CONSOLE_OS_GLOBAL_VARS_ = {});
-        resolver(undefined, undefined, undefined, { window, location, history, document })
+        resolver.call(this, undefined, undefined, undefined, { window, location, history, document })
+      }
+      return;
+    }
+
+    if (scriptRecord) {
+      try {
+        const context = getContext(id, scriptRecord);
+        resolver.call(context.window, undefined, undefined, undefined, { ...context });
+        scriptRecord.resolve();
+      } catch(e) {
+        scriptRecord.reject(e);
       }
       return;
     }
 
     const module = Module.resolveModule(id);
     try {
-      let context = chunkRecord.context;
-      if (isFunction(chunkRecord.context)) {
-        context = context({id});
-      }
-
+      let context = getContext(id, chunkRecord);
       if (chunkRecord.deps) {
         // Check the deps undefined
         Object.entries(chunkRecord.deps).forEach(([depsName, exports]) => {
@@ -49,7 +66,7 @@ export const hook = (id: string, resolver: BundleResolver) => {
       module.resolver = resolver;
 
       context = context || globalModule.context;
-      resolver(module.require, module, module.exports, { ...context });
+      resolver(module.require, module, module.exports, { ...context })
     } catch(e) {
       chunkRecord.reject(e);
     }

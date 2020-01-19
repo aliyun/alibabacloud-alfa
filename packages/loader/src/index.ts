@@ -10,3 +10,11 @@ import { IBundleOption } from './type';
 export async function loadBundle<T>(option: IBundleOption) {
   return await requireEnsure<T>(option);
 }
+
+export async function loadScriptsWithContext<T>(option: IBundleOption) {
+  return await requireEnsure<T>({
+    ...option,
+    id: `${option.id}_scripts_`,
+    noCache: true,
+  });
+}

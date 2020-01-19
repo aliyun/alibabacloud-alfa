@@ -2,13 +2,18 @@
   "name": "@alicloud/console-os-browser-vm",
   "version": "0.2.8",
   "description": "browser virtual machine",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "start-storybook -p 9000",
-    "build-storybook": "build-storybook"
+    "prepublish": "npm run clean && npm run build && npm run babel && npm run babel:esm",
+    "babel": "breezr build --engine babel",
+    "babel:esm": "breezr build --engine babel --es-module",
+    "build": "breezr build --engine webpack",
+    "storybook": "breezr start-storybook",
+    "clean": "rm -rf es build lib yarn.lock"
   },
-  "author": "dron",
+  "author": "Boelroy",
   "license": "ISC",
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.1",

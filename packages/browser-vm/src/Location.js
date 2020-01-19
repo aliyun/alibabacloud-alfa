@@ -22,7 +22,7 @@ class Location{
               try {
                 return location.toString();
               } catch(e) {
-                return window.location.toString();
+                return location.href;
               }
             };
           default:

@@ -14,7 +14,7 @@ function onScriptComplete (id: string, script: HTMLScriptElement, timeout: numbe
   clearTimeout(timeout);
 
   const record = Module.record.get(id);
-  if (!record.loaded) {
+  if (record && !record.loaded) {
     Module.record.delete(id);
   }
 }
@@ -65,7 +65,7 @@ function jsonpRequire(id: string, url: string) {
  * @param bundle {IBundleOption}
  */
 export async function requireEnsure<T>(bundle: IBundleOption) {
-  if (globalModule.resolved(bundle.id)) {
+  if (!bundle.noCache && globalModule.resolved(bundle.id)) {
     if (bundle.context) {
       return globalModule.requireIsolateWithContext(bundle.id, bundle.context);
     }

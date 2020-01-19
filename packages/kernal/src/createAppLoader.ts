@@ -1,4 +1,4 @@
-import { loadBundle } from '@alicloud/console-os-loader';
+import { loadBundle, loadScriptsWithContext } from '@alicloud/console-os-loader';
 import { getFromCdn, invokeLifeCycle, getRealUrl, validateAppInstance } from './util';
 
 import { AppInfo, AppInstance, AppManifest } from './type';
@@ -65,6 +65,10 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       id = manifest.name;
 
       const { js, css } = handleManifest(manifest);
+
+      manifest.externals && await loadScriptsWithContext({
+        id, url: manifest.externals[0], context
+      });
 
       url = formatUrl(js[js.length - 1], appInfo.manifest);
 

@@ -23,6 +23,8 @@ export interface IBundleOption {
   };
   // TODO: 支持 xmlrequest load
   xmlrequest?: true;
+
+  noCache?: boolean;
 }
 
 declare global {

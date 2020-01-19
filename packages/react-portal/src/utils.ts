@@ -34,7 +34,7 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.SFC, history:
         }
       });
 
-      if (path) {
+      if (path && path !== location.href) {
         history.push(path);
       }
 

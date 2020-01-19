@@ -58,6 +58,7 @@ export interface AppOption {
 
 export interface AppManifest {
   name: string;
+  externals: string[];
   resources: {
     [key: string]: string;
   };
