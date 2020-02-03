@@ -1,3 +1,8 @@
+# 0.2.10
+* Feature: Add the NG support: ng-build, ng-portal, ng-application
+* Fix: Vue Portal get undefined eventEmitter.
+* Example: Add NG example see, exmaple/SubApp/Anuglar
+
 # 0.1.5
 Types: add the types for react-portal, react-application, loader, events.
 

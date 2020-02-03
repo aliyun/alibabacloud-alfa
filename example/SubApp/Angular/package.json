@@ -26,7 +26,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "CONSOLE_OS_DEV_LOCAL=true ng serve",
     "build": "npm run build:ng",
     "build:ng": "ng build --prod; echo",
     "test": "ng test",

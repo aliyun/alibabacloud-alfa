@@ -36,6 +36,5 @@
     "webpack-assets-manifest": "^3.1.1"
   },
   "author": "boelroy <boelroy@live.com>",
-  "license": "MIT",
-  "private": true
+  "license": "MIT"
 }
