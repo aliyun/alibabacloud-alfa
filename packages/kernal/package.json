@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-kernal",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Console OS Kernal",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@alicloud/console-os-browser-vm": "^0.2.9",
-    "@alicloud/console-os-events": "^0.2.8",
-    "@alicloud/console-os-loader": "^0.2.9",
+    "@alicloud/console-os-events": "^0.2.10",
+    "@alicloud/console-os-loader": "^0.2.10",
     "axios": "^0.19.0",
     "lru-cache": "^5.1.1",
     "os-single-spa": "^4.3.7"
