@@ -4,6 +4,7 @@ const { chainOsWebpack } = require('@alicloud/console-toolkit-plugin-os');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const chain = new WepbackChain();
+
 chainOsWebpack({
   id: 'os-example'
 })(chain);

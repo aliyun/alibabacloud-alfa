@@ -15,7 +15,12 @@ const unbindEvents = (emitter: EventEmitter) => {
 }
 
 const getProps = (props) => {
-  const appProps = { ...props };
+  const appProps = { ...props, ...(props.appProps || {}) };
+
+  delete appProps.domElement;
+  delete appProps.singleSpa;
+  delete appProps.mountParcel;
+
   return appProps || {};
 };
 

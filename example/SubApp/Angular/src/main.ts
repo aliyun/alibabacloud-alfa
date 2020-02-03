@@ -1,16 +1,26 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { environment } from './environments/environment';
 
+import { enableProdMode, NgZone } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { ɵAnimationEngine as AnimationEngine } from '@angular/animations/browser'; 
 import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
+import { bootstrap } from '@alicloud/console-os-ng-portal';
+import { singleSpaPropsSubject } from './single-spa/single-spa-props';
+
 
 if (environment.production) {
   enableProdMode();
 }
 
-
-platformBrowserDynamic().bootstrapModule(AppModule);
-
+export default bootstrap({
+  bootstrapFunction: singleSpaProps => {
+    singleSpaPropsSubject.next(singleSpaProps);
+    return platformBrowserDynamic().bootstrapModule(AppModule);
+  },
+  template: '<app-root />',
+  NgZone: NgZone,
+  AnimationEngine: AnimationEngine,
+});
 
 /*
 Copyright Google LLC. All Rights Reserved.

@@ -16,8 +16,8 @@
     "clean": "rm -rf lib yarn.lock"
   },
   "devDependencies": {
-    "@alicloud/console-toolkit-cli": "^1.0.0-rc.0",
-    "@alicloud/console-toolkit-preset-wind-component": "^1.0.0-rc.0",
+    "@alicloud/console-toolkit-cli": "^1.0.0",
+    "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
     "@types/chai": "^4.1.7",
     "@types/classnames": "^2.2.9",
     "@types/jest": "^23.3.13",

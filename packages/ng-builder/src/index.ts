@@ -46,17 +46,23 @@ const osAngularWebpack = (config) => {
 
   const mergedConfig = webpackMerge.smart(config, singleSpaConfig)
 
-  removePluginByName(mergedConfig.plugins, 'IndexHtmlWebpackPlugin');
   removeMiniCssExtract(mergedConfig);
 
   if (Array.isArray(mergedConfig.entry.styles)) {
     mergedConfig.entry.main = [...mergedConfig.entry.styles, ...mergedConfig.entry.main];
   }
+
   delete mergedConfig.entry['polyfills-es5'];
-  delete mergedConfig.entry.polyfills;
   delete mergedConfig.entry.styles;
   delete mergedConfig.optimization.runtimeChunk;
   delete mergedConfig.optimization.splitChunks;
+
+  if (process.env.CONSOLE_OS_DEV_LOCAL ===  'true') {
+    delete mergedConfig.entry.polyfills;
+    removePluginByName(mergedConfig.plugins, 'IndexHtmlWebpackPlugin');
+  } else {
+    delete mergedConfig.externals['zone.js'];
+  }
 
   return mergedConfig;
 }

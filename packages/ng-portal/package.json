@@ -1,34 +1,42 @@
 {
-  "name": "@alicloud/console-os-loader",
+  "name": "@alicloud/console-os-ng-portal",
   "version": "0.2.9",
-  "description": "Console OS Loader",
+  "description": "Console OS Angular Portal",
   "main": "lib/index.js",
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "author": "Boelroy",
   "license": "MIT",
   "scripts": {
-    "prepublish": "rm -rf ./lib ./es && npm run build && npm run babel && npm run babel:esm",
+    "prepublish": "npm run clean && npm run build && npm run babel && npm run babel:esm",
     "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
     "babel:esm": "breezr build --engine babel --es-module",
     "build": "breezr build --engine webpack",
     "storybook": "breezr start-storybook",
-    "clean": "rm -rf lib yarn.lock"
+    "clean": "rm -rf es build lib yarn.lock"
   },
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.0",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
     "@types/chai": "^4.1.7",
-    "@types/jest": "^23.3.13",
+    "@types/jest": "^24.0.23",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "enzyme": "^3.10.0",
+    "history": "^4.10.1",
     "jest": "^23.6.0",
-    "serve-static": "^1.14.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "ts-jest": "^23.10.5",
     "tslint": "^5.8.0",
-    "typescript": "^3.0.3",
-    "webpack-merge": "^4.2.2"
+    "typescript": "^3.0.3"
   },
   "dependencies": {
-    "debug": "^4.1.1"
+    "@alicloud/console-os-events": "^0.2.8",
+    "single-spa-angular": "^3.1.0"
   },
-  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
+  "peerDependencies": {
+    "react": "^16"
+  },
+  "gitHead": "298b4b2fb1b5d20a1b0efb2b1fdf226a3798ce6b"
 }
