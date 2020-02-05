@@ -74,6 +74,28 @@ export default (userConfig = {}, options) => (config) => {
   // @ts-ignore
   chainOsWebpack(opts)(chain)
 
+  chain.plugin('WebpackAssetsManifestPlugin').tap((args) => {
+    if (args[0]) {
+      args[0].transform = function (manifest) {
+        var entrypoints = manifest.entrypoints;
+        var externals = []
+        if (entrypoints && entrypoints.scripts) {
+          externals = entrypoints.scripts.js
+        }
+        if (entrypoints) {
+          delete manifest.entrypoints;
+        }
+        return {
+          name: options.id,
+          resources: manifest,
+          externals: externals,
+          entrypoints: entrypoints
+        };
+      }
+    }
+    return args;
+  })
+
   return osAngularWebpack(
     mergeConfigs(
       mergeConfigs(config, userConfig, { 'module.rules': 'prepend' }, undefined),

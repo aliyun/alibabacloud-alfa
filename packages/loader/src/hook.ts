@@ -42,6 +42,8 @@ export const hook = (id: string, resolver: BundleResolver) => {
       try {
         const context = getContext(id, scriptRecord);
         resolver.call(context.window, undefined, undefined, undefined, { ...context });
+        Module.record.delete(`${id}_scripts_`);
+        scriptRecord.loaded = true;
         scriptRecord.resolve();
       } catch(e) {
         scriptRecord.reject(e);

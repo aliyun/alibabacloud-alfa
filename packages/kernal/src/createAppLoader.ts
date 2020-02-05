@@ -70,6 +70,12 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
         id, url: manifest.externals[0], context
       });
 
+      for (var index = 0; index < js.length - 1; index++) {
+        await loadScriptsWithContext({
+          id, url: js[index], context
+        });
+      }
+
       url = formatUrl(js[js.length - 1], appInfo.manifest);
 
       style = css;
