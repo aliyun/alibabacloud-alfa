@@ -1,3 +1,7 @@
+# 0.2.11
+* Feature: Now ConsoleOS can load pre scripts before real entry load.
+* Fix: window.addEventListener("resize|scroll|focus|blur") no working
+
 # 0.2.10
 * Feature: Add the NG support: ng-build, ng-portal, ng-application
 * Fix: Vue Portal get undefined eventEmitter.
