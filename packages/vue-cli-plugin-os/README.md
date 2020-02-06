@@ -10,6 +10,20 @@ add the ```vue-cli-plugin-os``` to the dev dependencies.
 > yarn add vue-cli-plugin-os -D
 ```
 
+## Config
+
+add the Config in vue.config.js
+
+```
+module.export = {
+  pluginOptions: {
+    consoleOs: {
+      id: 'xxxx-xxxxxx'
+    }
+  }
+}
+```
+
 
 ## How to Use
 
