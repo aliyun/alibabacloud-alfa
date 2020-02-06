@@ -14,19 +14,6 @@ function removePluginByName(plugins, name) {
   }
 }
 
-// remove css
-function removeMiniCssExtract(config) {
-  removePluginByName(config.plugins, 'MiniCssExtractPlugin');
-  config.module.rules.forEach(rule => {
-    if (rule.use) {
-      const cssMiniExtractIndex = rule.use.findIndex(use => typeof use === 'string' && use.includes('mini-css-extract-plugin'));
-      if (cssMiniExtractIndex >= 0) {
-        rule.use[cssMiniExtractIndex] = {loader: 'style-loader'}
-      }
-    }
-  });
-}
-
 const osAngularWebpack = (config) => {
   const singleSpaConfig = {
     output: {
@@ -45,8 +32,6 @@ const osAngularWebpack = (config) => {
   }
 
   const mergedConfig = webpackMerge.smart(config, singleSpaConfig)
-
-  removeMiniCssExtract(mergedConfig);
 
   if (Array.isArray(mergedConfig.entry.styles)) {
     mergedConfig.entry.main = [...mergedConfig.entry.styles, ...mergedConfig.entry.main];
