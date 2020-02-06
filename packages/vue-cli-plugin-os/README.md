@@ -5,9 +5,9 @@
 add the ```vue-cli-plugin-os``` to the dev dependencies.
 
 ```bash
-> npm install vue-cli-plugin-os -D
+> npm install vue-cli-plugin-console-os -D
 # or
-> yarn add vue-cli-plugin-os -D
+> yarn add vue-cli-plugin-console-os -D
 ```
 
 ## Config
