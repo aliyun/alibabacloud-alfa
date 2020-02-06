@@ -1,9 +1,9 @@
 {
   "name": "gxydrlvnekq.angular",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "private": true,
   "dependencies": {
-    "@alicloud/console-os-ng-builder": "^0.2.11",
+    "@alicloud/console-os-ng-builder": "^0.2.12",
     "@alicloud/console-os-ng-portal": "^0.2.10",
     "@angular/animations": "8.2.14",
     "@angular/common": "8.2.14",

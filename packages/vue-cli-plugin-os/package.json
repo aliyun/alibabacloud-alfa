@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-console-os",
-  "version": "0.2.10",
+  "version": "0.2.12",
   "description": "long term cache plugin for breezr",
   "main": "index.js",
   "scripts": {},

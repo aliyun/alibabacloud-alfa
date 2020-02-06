@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-ng-builder",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "NG builder for Angular",
   "main": "lib/index.js",
   "scripts": {
