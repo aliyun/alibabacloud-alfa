@@ -1,3 +1,6 @@
+# 0.2.12
+* Fix: ng build --extract-css no working for extract standalone css
+
 # 0.2.11
 * Feature: Now ConsoleOS can load pre scripts before real entry load.
 * Fix: window.addEventListener("resize|scroll|focus|blur") no working
