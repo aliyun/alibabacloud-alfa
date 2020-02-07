@@ -1,3 +1,6 @@
+# 0.2.13
+* Fix: get history incorrectly in ConsoleOS browser vm
+
 # 0.2.12
 * Fix: ng build --extract-css no working for extract standalone css
 
