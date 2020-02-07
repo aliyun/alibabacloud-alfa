@@ -24,6 +24,8 @@ class Window {
             return context.document;
           case 'location':
             return context.location;
+          case 'history':
+            return context.history;
           case '__CONSOLE_OS_GLOBAL_VARS_':
             return __CONSOLE_OS_GLOBAL_VARS_;
           case 'addEventListener':
