@@ -20,26 +20,15 @@ interface IProps extends React.Attributes {
 
 export const withSyncHistory = (Comp: React.ComponentClass | React.SFC, history: History) => {
   const Wrapper: React.SFC<IProps> = (props: IProps) => {
-    const { emitter, path } = props;
+    const { path } = props;
 
     useEffect(() => {
       if (!history) {
         return;
       }
 
-      const unlisten = history.listen((location) => {
-        // @ts-ignore
-        if (props.id && emitter && window.location.href !== location.href) {
-          emitter.emit(`${props.id}:history-change`, location)
-        }
-      });
-
       if (path && path !== location.href) {
         history.push(path);
-      }
-
-      return () => {
-        unlisten();
       }
     }, [path]);
 
