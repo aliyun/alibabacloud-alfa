@@ -1,3 +1,9 @@
+# 0.2.15
+* Feat:remove router change event for syncHistory hoc in react portal
+
+# 0.2.14
+* Fix: UMD Build For ConsoleOS Kernal
+
 # 0.2.13
 * Fix: get history incorrectly in ConsoleOS browser vm
 
