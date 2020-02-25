@@ -1,3 +1,6 @@
+# 0.2.16
+* Fix: Remove es6 syntax in umd release for console-os-kernal
+
 # 0.2.15
 * Feat:remove router change event for syncHistory hoc in react portal
 
