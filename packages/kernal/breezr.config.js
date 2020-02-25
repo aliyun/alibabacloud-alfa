@@ -3,7 +3,7 @@ module.exports = {
     ['@alicloud/console-toolkit-preset-wind-component', {
       moduleName: 'aliOSKernal',
       useTypescript: true,
-      useTerserPlugin: true
+      babelExclude: /node_modules\/(?!lrc-cache)\/.*/ig
     }]
   ]
 }
