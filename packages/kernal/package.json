@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-kernal",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "description": "Console OS Kernal",
   "main": "lib/index.js",
   "module": "es/index.js",
