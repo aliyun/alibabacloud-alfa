@@ -25,6 +25,5 @@ export const sandBoxCss = async (dirPath: string, root: string, opts: PluginOpti
       .process(cssContent, { from: dirPath, to: destPath })
 
     writeFileSync(destPath, result.css, 'UTF-8');
-  })
-
+  });
 }
