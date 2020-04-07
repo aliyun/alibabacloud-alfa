@@ -6,6 +6,8 @@ import { createApplication, Application } from './createApp';
 import VMContext from '@alicloud/console-os-browser-vm';
 import { createCachePool } from './AppCachePool';
 
+// @ts-ignore
+window.__CONSOLE_OS_GLOBAL_VARS_ = {};
 
 let globalOptions: AppOption = {};
 

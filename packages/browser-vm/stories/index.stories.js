@@ -3,7 +3,7 @@ import beautify from 'js-beautify';
 
 import { storiesOf } from '@storybook/react';
 
-import { createContext } from '../index';
+import { createContext } from '../src/index';
 const context = createContext( { initURL: 'https://www.example.com/home' } );
 
 const RunCode = ( { title, code, context } ) =>
@@ -33,87 +33,97 @@ storiesOf( 'Browser', module )
         ` } />
 
       <RunCode 
-      context={ context }
-      title="设置 hash 并打印 href"
-      code={ `
-        location.hash = '#test-hash';
-        window.addEventListener( 'hashchange', event => console.log( 'hashchange:', event ) );
-        location.hash = '#test-hash-change';
-        console.log( 'location.hash:', location.hash );
-        console.log( 'location.href:', location.href );
-      ` } />
+        context={ context }
+        title="设置 hash 并打印 href"
+        code={ `
+          location.hash = '#test-hash';
+          window.addEventListener( 'hashchange', event => console.log( 'hashchange:', event ) );
+          location.hash = '#test-hash-change';
+          console.log( 'location.hash:', location.hash );
+          console.log( 'location.href:', location.href );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="设置 search"
-      code={ `
-        location.search = '?name=value';
-        console.log( 'location.href:', location.href );
-      ` } />
+        context={ context }
+        title="设置 search"
+        code={ `
+          location.search = '?name=value';
+          console.log( 'location.href:', location.href );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="replace 跳转"
-      code={ `
-        location.replace( '/about' );
-        console.log( 'location.href', location.href );
-      ` } />
+        context={ context }
+        title="replace 跳转"
+        code={ `
+          location.replace( '/about' );
+          console.log( 'location.href', location.href );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="assign 跳转"
-      code={ `
-        location.assign( '/blog' );
-        console.log( 'location.href', location.href );
-      ` } />
+        context={ context }
+        title="assign 跳转"
+        code={ `
+          location.assign( '/blog' );
+          console.log( 'location.href', location.href );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="修改 origin"
-      code={ `
-        location.origin = 'www.example2.com';
-        console.log( 'location.href', location.href );
-      ` } />
+        context={ context }
+        title="修改 origin"
+        code={ `
+          location.origin = 'www.example2.com';
+          console.log( 'location.href', location.href );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="修改 pathname"
-      code={ `
-        location.pathname = '/home';
-        console.log( 'location.pathname', location.pathname );
-        console.log( 'location.href', location.href );
-      ` } />
+        context={ context }
+        title="修改 pathname"
+        code={ `
+          location.pathname = '/home';
+          console.log( 'location.pathname', location.pathname );
+          console.log( 'location.href', location.href );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="修改 port"
-      code={ `
-        console.log( 'location.port', location.port );
-        location.port = '8080';
-        console.log( 'location.port', location.port );
-        console.log( 'location.href', location.href );
-      ` } />
+        context={ context }
+        title="修改 port"
+        code={ `
+          console.log( 'location.port', location.port );
+          location.port = '8080';
+          console.log( 'location.port', location.port );
+          console.log( 'location.href', location.href );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="ancestorOrigins"
-      code={ `
-        console.log( 'location.ancestorOrigins', location.ancestorOrigins );
-      ` } />
+        context={ context }
+        title="ancestorOrigins"
+        code={ `
+          console.log( 'location.ancestorOrigins', location.ancestorOrigins );
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="reload"
-      code={ `
-        location.reload();
-      ` } />
+        context={ context }
+        title="reload"
+        code={ `
+          location.reload();
+        ` }
+      />
 
       <RunCode 
-      context={ context }
-      title="toString() and valueOf()"
-      code={ `
-        console.log( 'location.toString()', location.toString() );
-        console.log( 'location.valueOf()', location.valueOf() );
-      ` } />
+        context={ context }
+        title="toString() and valueOf()"
+        code={ `
+          console.log( 'location.toString()', location.toString() );
+          console.log( 'location.valueOf()', location.valueOf() );
+        ` }
+      />
     </div>
   } );

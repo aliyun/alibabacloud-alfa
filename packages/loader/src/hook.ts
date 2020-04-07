@@ -3,7 +3,6 @@ import { BundleResolver } from './type';
 import { Module, globalModule } from './module';
 import { Record } from './module/Record';
 
-
 const getContext = (id: string, chunkRecord: Record) => {
   let context = chunkRecord.context;
   if (isFunction(chunkRecord.context)) {
@@ -51,7 +50,7 @@ export const hook = (id: string, resolver: BundleResolver) => {
       return;
     }
 
-    const module = Module.resolveModule(id);
+    const module = globalModule.resolveModule(id);
     try {
       let context = getContext(id, chunkRecord);
       if (chunkRecord.deps) {
@@ -60,7 +59,7 @@ export const hook = (id: string, resolver: BundleResolver) => {
           if (!exports) {
             console.warn(`${depsName} is null or undefined, please check the import statement for ${depsName}`);
           }
-          const dep = Module.resolveModule(depsName);
+          const dep = module.resolveModule(depsName);
           dep.exports = exports;
         })
       }

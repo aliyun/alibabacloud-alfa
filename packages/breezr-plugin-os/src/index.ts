@@ -31,6 +31,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       return {
         name: options.id,
         resources: manifest,
+        runtime: options.runtime || {},
         entrypoints: entrypoints
       };
     },

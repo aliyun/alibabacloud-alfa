@@ -3,6 +3,7 @@ import { loadBundle } from '../src';
 import { withKnobs, text } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 
+
 const log = (...args) => {
   /* eslint-disable no-console */
   console.log(...args)
@@ -11,24 +12,37 @@ const log = (...args) => {
 storiesOf('Loader', module)
   .addDecorator(withKnobs)
   .add('Loader', () => {
-    const url = text('loadUrl', 'http://127.0.0.1:8080/a.bundle.js')
+    window.__CONSOLE_OS_GLOBAL_VARS_ = {};
+    window.__IS_CONSOLE_OS_CONTEXT__ = true;
+    const url = text('loadUrl', 'https://g.alicdn.com/ConsoleOS/OSExample/0.0.2/index.js')
+    const id = text('id', 'os-example')
     log(url)
     return (
-      <button id="app-wrapper" onClick={
-        async () => {
-          try {
-            const m = await loadBundle(url)
-            if (m) {
-              m.bootstrap();
-              m.mount();
-              m.unmount();
+      <>
+        <button id="app-wrapper" onClick={
+          async () => {
+            try {
+              const m = await loadBundle({
+                id: id,
+                url,
+                context: {
+                  window,
+                  location,
+                  history,
+                  document
+                }
+              })
+              if (m) {
+                console.log(m.default)
+              }
+            } catch (e) {
+              console.error(e)
+              throw e;
             }
-          } catch (e) {
-            console.error(e)
-            throw e;
-          }
-        }}>
-        load chuck
-      </button>
+          }}>
+          load chuck
+        </button>
+        <div id="app"/>
+      </>
     );
   })

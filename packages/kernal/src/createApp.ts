@@ -103,8 +103,6 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     }
   } else {
     // @ts-ignore
-    window.__CONSOLE_OS_GLOBAL_VARS_ = {};
-    // @ts-ignore
     window.__IS_CONSOLE_OS_CONTEXT__ = true
   }
 

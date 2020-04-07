@@ -18,6 +18,9 @@ function App() {
       <div className="react">
         <Application
           id="os-example"
+          sandBox={{
+            initialPath: "/dashboard"
+          }}
           // src="http://localhost:8080/img/logo.82b9c7a5.png"
           manifest="http://localhost:8081/os-example.manifest.json"
         />
@@ -53,7 +56,7 @@ start({
     // 宿主变量白名单
     externalsVars: ["Zone"],
     // 沙箱初始地址
-    initialPath: '/'
+    // initialPath: '/'
   },
   // 注入应用依赖
   deps: {

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import beautify from 'js-beautify';
 import axios from 'axios'
 
 import { storiesOf } from '@storybook/react';
 
-import { createContext } from '../index';
+import { createContext } from '../src/index';
 import { useState } from '@storybook/addons';
 
 const RunCode = ( { title, code, context }) =>
