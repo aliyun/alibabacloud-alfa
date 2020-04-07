@@ -16,7 +16,7 @@ export const removeContext = async ( context ) => {
   return await Context.remove( context );
 }
 
-export const eval = async (code, conf = {}) => {
+export const evalScripts = async (code, conf = {}) => {
   const ctx = await Context.create( conf );
   const resolver = new Function(`
     return function({window, location, history, document}){ 

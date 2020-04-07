@@ -11,9 +11,9 @@
 直接执行代码：
 
 ``` javascript
-import { eval } from '@alicloud/console-os-browser-vm';
+import { evalScripts } from '@alicloud/console-os-browser-vm';
 
-const context = eval('window.test = 1;')
+const context = evalScripts('window.test = 1;')
 
 console.log(window.test === undefined) // true
 ```
