@@ -45,6 +45,22 @@ const vpc = await loadBundle(
 
 ## Build bundle
 
+### Webpack
+
+in you webpack.config.js
+
+```javascript
+const Chain = require('webpack-chain');
+const merge = require('webpack-merge');
+const { chainOsWebpack } = require('@alicloud/console-toolkit-plugin-os')
+
+const chain = new Chain();
+const config = chainOsWebpack(chain, { id: 'app-id' });
+
+module.exports = merge(/*you webpack conf*/, config.toConfig());
+```
+
+### Consol OS Toolkit
 In OS, an app bundle is built by breezr, you can use @alicloud/console-toolkit-plugin-os to build your bundle
 
 ```javascript

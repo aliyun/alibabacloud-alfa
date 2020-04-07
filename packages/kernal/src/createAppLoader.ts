@@ -1,7 +1,7 @@
 import { loadBundle, loadScriptsWithContext } from '@alicloud/console-os-loader';
 import { getFromCdn, invokeLifeCycle, getRealUrl, validateAppInstance } from './util';
 
-import { AppInfo, AppInstance, AppManifest } from './type';
+import { AppInfo, AppInstance, AppManifest, BasicModule } from './type';
 import { handleManifest } from './manifest';
 
 const formatUrl = (url: string, manifest: string) => {
@@ -21,29 +21,30 @@ const addStyles = (urls: string[], manifest: string) => {
   });
 }
 
+export const extractModule = (rawModule: any) =>  {
+  return rawModule.default ? rawModule.default : rawModule;
+}
+
 /**
  * Load the app external from url
  * @param {AppInfo} appInfo
  * @param {VMContext} context
  */
-export const loadExternal = async (appInfo: AppInfo, context: VMContext) => {
-  return Promise.all(
-    appInfo.externals.map((external) => {
-      if (!external.url) {
-        return Promise.resolve();
-      }
-      return loadBundle({
-        id: external.id,
-        url: external.url,
-        context,
-      });
+export const loadRuntime = async (runtime: BasicModule, context: VMContext) => {
+
+  if (!runtime.url) {
+    return Promise.resolve(null);
+  }
+
+  return extractModule(
+    await loadBundle({
+      id: runtime.id,
+      url: runtime.url,
+      context,
     })
-  )
+  );
 }
 
-export const extractApp = (app: any) =>  {
-  return app.default ? app.default : app;
-}
 
 /**
  * Create an app loader for single spa
@@ -54,10 +55,6 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
   let { id, url } = appInfo;
   let style: string[] | null = null;
 
-  if (appInfo.externals) {
-    await loadExternal(appInfo, context);
-  }
-
   if (appInfo.manifest) {
     const manifest = await getManifest(appInfo.manifest)
     if (manifest) {
@@ -65,6 +62,12 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       id = manifest.name;
 
       const { js, css } = handleManifest(manifest);
+      if (manifest.runtime) {
+        const runtime = await loadRuntime(manifest.runtime, { window, document, location, history });
+        if (runtime) {
+          appInfo.deps = runtime;
+        }
+      }
 
       manifest.externals && await loadScriptsWithContext({
         id, url: manifest.externals[0], context
@@ -80,13 +83,15 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
       style = css;
     }
+
+    await loadRuntime(appInfo, context);
   }
 
   if (style) {
     addStyles(style, appInfo.manifest)
   }
 
-  const appInstance = extractApp(
+  const appInstance = extractModule(
     await loadBundle<AppInstance>({
       id, url, context, deps: appInfo.deps
     })

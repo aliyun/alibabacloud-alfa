@@ -60,28 +60,33 @@ function jsonpRequire(id: string, url: string) {
   document.head.appendChild(script);
 }
 
-export async function fetchRequire(id: string, url: string, enableWrapper: boolean) {
-  const resp = await fetch(url);
-  const code = await resp.text();
-  if (enableWrapper) {
-    eval(`
-function(require, module, exports, {window, location, history, document}){ 
-  with(window.__CONSOLE_OS_GLOBAL_VARS_) { 
-    ${code}
-  }
-})`)
-  }
-}
+// export async function fetchRequire(id: string, url: string, enableWrapper: boolean) {
+//   const resp = await fetch(url);
+//   const code = await resp.text();
+//   if (enableWrapper) {
+//     const resolver = new Function(`
+//       return function(require, module, exports, {window, location, history, document}){ 
+//         with(window.__CONSOLE_OS_GLOBAL_VARS_) { 
+//           ${code}
+//         }
+//       })//@sourceURL=${url}
+//     `)
+//   }
+// }
 
 /**
  * async require the bundle from url
  * @param bundle {IBundleOption}
  */
 export async function requireEnsure<T>(bundle: IBundleOption) {
+  // if module has been resolved
   if (!bundle.noCache && globalModule.resolved(bundle.id)) {
+    // if loader contains the context(window, location)
+    // then get the new export using new context
     if (bundle.context) {
       return globalModule.requireIsolateWithContext(bundle.id, bundle.context);
     }
+    // return the cached module
     return globalModule.require(bundle.id);
   }
 
@@ -111,4 +116,3 @@ export async function requireEnsure<T>(bundle: IBundleOption) {
 
   return globalModule.require(bundle.id);
 }
-

@@ -62,6 +62,7 @@ export interface AppManifest {
   resources: {
     [key: string]: string;
   };
+  runtime?: BasicModule;
   entrypoints: {
     [id: string]: {
       js: string[];

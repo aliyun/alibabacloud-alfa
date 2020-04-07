@@ -2,8 +2,6 @@ import { Record } from './Record';
 import { BundleResolver } from '../type';
 
 export class Module {
-  private static _cache: Map<string, Module> = new Map<string, Module>();
-
   public static record: Map<string, Record> = new Map<string, Record>()
   /**
    * unique identity for module
@@ -29,6 +27,7 @@ export class Module {
 
   public context: any;
   public resolver: BundleResolver;
+  private cache: Map<string, Module> = new Map<string, Module>();
 
   public constructor(id: string, parent: string) {
     this.id = id;
@@ -39,35 +38,29 @@ export class Module {
     this.loaded = false;
   }
 
-  public resolved(id: string) {
-    return Module._cache.has(id);
+  public resolved = (id: string) => {
+    return this.cache.has(id);
   }
 
-  public require(id: string) {
-    return Module._load(id);
+  public require = (id: string) => {
+    const module = this.resolveModule(id);
+    return module.exports;
   }
 
   public requireIsolateWithContext(id: string, context: any) {
-    const module = Module.resolveModule(id);
+    const module = this.resolveModule(id);
     module.resolver(module.require, module, module.exports, { ...context });
     return module.exports;
   }
 
-  public static resolveModule(id: string, parent: string = null) {
-    const cachedModule = Module._cache.get(id);
+  public resolveModule(id: string, parent: string = null) {
+    const cachedModule = this.cache.get(id);
     if (cachedModule !== undefined) {
       return cachedModule;
     }
 
     const module = new Module(id, parent);
-    Module._cache.set(id, module);
+    this.cache.set(id, module);
     return module;
   }
-
-  public static _load(id: string, parent: string = null) {
-    const module = this.resolveModule(id, parent);
-    module.loaded = true;
-    return module.exports;
-  }
-  
 }
