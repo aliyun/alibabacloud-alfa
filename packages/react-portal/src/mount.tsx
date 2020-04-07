@@ -66,9 +66,12 @@ export function mount<T = any>(App: new() => React.Component<T & EmitterProps, a
 
       return (
         <ErrorBoundary logger={this.props.logger}>
-          <Context.Provider value={contextValue}>
-            <App {...Object.assign(getProps(this.props) || {})} />
-          </Context.Provider>
+          { Context ? (
+            <Context.Provider value={contextValue}>
+              <App {...Object.assign(getProps(this.props) || {})} />
+            </Context.Provider>
+          ) : <App {...Object.assign(getProps(this.props) || {})} />
+          }
         </ErrorBoundary>
       );
     }
