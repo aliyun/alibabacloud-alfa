@@ -2,6 +2,23 @@
 # yarn lockfile v1
 
 
+"@alicloud/console-os-browser-vm@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-browser-vm/-/console-os-browser-vm-0.3.0.tgz#20de6121063e5b3708b56ed6664398a9bb0b36cf"
+  integrity sha512-5IxG0wNw4sOIuKAzsxHUkk7CBmaGANLQ4P+1chWG0W3h5EvQO7ZtspwVLBPyLyT0xs8sw+HAk6tdIsSKIi9hcg==
+
+"@alicloud/console-os-events@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-events/-/console-os-events-0.3.0.tgz#b653e2e334971dbdc8cdc6ea6f984a05d3edb8f7"
+  integrity sha512-3qlt/tBdCwqLmWp0X8U2eCNiRvzJDP/PdKMPJ7KYCjKtj4PLiIa06NyJz6tszl5V1NDlUhEFoWK8KOdjk5h5cw==
+
+"@alicloud/console-os-loader@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-loader/-/console-os-loader-0.3.0.tgz#8df3a7028b25f6bb6e24d6b70893417faf7f67d9"
+  integrity sha512-1hqV3P6g7WNiTYC1blYX+cAjGOI5aLtm62PIqQpDd2/2AtDJWPErPfrbWkhWtyBipfOsReSMMOaexCLdXhv0Mw==
+  dependencies:
+    debug "^4.1.1"
+
 "@alicloud/console-toolkit-cli@^1.0.0":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-cli/-/console-toolkit-cli-1.0.3.tgz#a065a9fd21ddde7a99a1b1a89d285b4c7f577940"
@@ -18,7 +35,6 @@
     figlet "^1.2.1"
     inquirer "^7.0.0"
     update-notifier "^3.0.0"
-
 
 "@alicloud/console-toolkit-core@^1.0.0-rc.7", "@alicloud/console-toolkit-core@^1.0.1":
   version "1.0.1"
@@ -11049,10 +11065,10 @@ os-locale@^3.0.0, os-locale@^3.1.0:
     lcid "^2.0.0"
     mem "^4.0.0"
 
-os-single-spa@^4.3.7:
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/os-single-spa/-/os-single-spa-4.4.4.tgz#b8c84d9c1b2fdbba063400f094eafff0b0b7a501"
-  integrity sha512-tyZoP/SxOJutxZ3EloG7E5aGzcQQZxFfthwYgbzxvQ9F2ksxUfiT5TeVPsyanJauBuciQnCYlKanKB4oGF5YBQ==
+os-single-spa@^4.4.5:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/os-single-spa/-/os-single-spa-4.4.5.tgz#337a549ba9360dc93d5cc412c25daebfd553e675"
+  integrity sha512-GaGE33AsIQG0qmIzUZdXihbYEzjo6fNBxnYNMYiVXpTVcdAPfc0ey/4K9qhLn/0+xbEToodiCukOFmWBFBdTEA==
 
 os-tmpdir@^1.0.0, os-tmpdir@^1.0.1, os-tmpdir@~1.0.2:
   version "1.0.2"

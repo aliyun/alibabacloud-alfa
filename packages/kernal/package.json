@@ -32,7 +32,7 @@
     "@alicloud/console-os-loader": "^0.3.0",
     "axios": "^0.19.0",
     "lru-cache": "^4.1.5",
-    "os-single-spa": "^4.3.7"
+    "os-single-spa": "^4.4.5"
   },
   "gitHead": "298b4b2fb1b5d20a1b0efb2b1fdf226a3798ce6b"
 }
