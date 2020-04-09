@@ -43,6 +43,7 @@ export const bootstrap = (options: BootstrapOptions) => {
         (props) => {
           const { emitter } = getProps(props);
           bindEvents(emitter);
+          // @ts-ignore
           return lifecycles.mount(props)
         }
       ],
@@ -50,6 +51,7 @@ export const bootstrap = (options: BootstrapOptions) => {
         (props) => {
           const { emitter } = getProps(props);
           unbindEvents(emitter);
+          // @ts-ignore
           return lifecycles.mount(props)
         }
       ],
