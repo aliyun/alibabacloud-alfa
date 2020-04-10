@@ -43,6 +43,11 @@ class Context {
 
       document.body.append( iframe );
 
+      // the onload will no trigger when src is about:blank
+      if (conf.url === 'about:blank') {
+        return resolve(new this( conf, iframe ));
+      }
+
       iframe.onload = () => {
         resolve(new this( conf, iframe ));
       }

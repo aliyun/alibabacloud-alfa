@@ -212,7 +212,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     }
 
     return (
-      <>
+      <div>
       {
         this.state.loading ? <Skeleton active /> : null
       }
@@ -223,7 +223,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
           React.createElement('body', { ref: this.handleRef })
         )
       }
-      </>
+      </div>
     );
   }
 }
