@@ -44,7 +44,7 @@ export const bootstrap = (options: BootstrapOptions) => {
           const { emitter } = getProps(props);
           bindEvents(emitter);
           // @ts-ignore
-          return lifecycles.mount(props)
+          return lifecycles.mount(options, props)
         }
       ],
       unmount: [
@@ -52,7 +52,11 @@ export const bootstrap = (options: BootstrapOptions) => {
           const { emitter } = getProps(props);
           unbindEvents(emitter);
           // @ts-ignore
-          return lifecycles.mount(props)
+          if (!options.bootstrappedModule) {
+            return Promise.resolve();
+          }
+          // @ts-ignore
+          return lifecycles.unmount(options, props)
         }
       ],
       update: []
