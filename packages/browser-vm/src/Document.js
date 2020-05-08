@@ -46,6 +46,7 @@ class Document{
             return ( ...args ) => {
               const el = document.createElement( ...args );
               el.ownerAppWindow = context.window;
+              el.appId = options.id
               return el;
             }
 
