@@ -63,6 +63,14 @@ export class Application {
     this.parcel = parcel;
   }
 
+  public update(option: AppInfo) {
+    option.id = this.appinfo.id;
+    this.appinfo = option;
+    if (option.dom && this.context.updateBody) {
+      this.context.updateBody(option.dom);
+    }
+  }
+
   private emitLocaitonChange = () => {
     eventBus.emit(`${this.appinfo.id}:history-change`, this.context.location)
   }
@@ -84,6 +92,7 @@ export class Application {
 export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
   let app = getApp(appInfo.id);
   if (app && sandBoxOption.singleton) {
+    app.update(appInfo);
     return app;
   }
 

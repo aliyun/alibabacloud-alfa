@@ -5,6 +5,7 @@ interface VMContext {
   history: History;
   location: Location;
   baseFrame?: HTMLFrameElement;
+  updateBody?: (body: Element) => void;
 }
 
 interface ContextOption {
