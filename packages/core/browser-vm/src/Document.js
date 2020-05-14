@@ -9,11 +9,6 @@ import notImplemented from './not-implemented';
 
 class Document{
   constructor( options = {}, context, frame ){
-    let body = options.body;
-    if (!options.body) {
-      body = document.createElement( 'body' );
-      document.documentElement.appendChild( body );
-    }
 
     const eventListeners = [];
 
@@ -32,7 +27,7 @@ class Document{
       get( target, name ){
         switch( name ){
           case 'body':
-            return body;
+            return context.body;
           case 'location':
             return context.location
           case 'defaultView':
@@ -46,6 +41,7 @@ class Document{
             return ( ...args ) => {
               const el = document.createElement( ...args );
               el.ownerAppWindow = context.window;
+              el.appId = options.id
               return el;
             }
 

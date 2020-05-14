@@ -15,6 +15,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   let app = AppCachePool.getApp(appInfo.id);
 
   if (app && sandBoxOption.singleton) {
+    app.context.updateBody(appInfo.dom)
     return app;
   }
 

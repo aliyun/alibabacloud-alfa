@@ -1,13 +1,16 @@
 import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
 
-import { Parcel } from 'os-single-spa';
-import { serializeData } from '../misc/util';
+import { Parcel, mountRootParcel } from 'os-single-spa';
+import { serializeData, flattenFnArray } from '../misc/util';
 import { AppInfo, SandBoxOption } from '../type';
 import { createEventBus } from './createEventBus';
 import { createAppLoader } from './createAppLoader';
 
 const eventBus = createEventBus();
 
+/**
+ * Application
+ */
 export class Application {
   public readonly context: VMContext;
   public parcel?: Parcel;
@@ -35,7 +38,7 @@ export class Application {
   /**
    * 
    */
-  public async getAppLoader() {
+  public async load() {
     if (!this.remoteApp) {
       this.remoteApp = await createAppLoader(this.appInfo, this.context);
     }
@@ -45,13 +48,38 @@ export class Application {
   /**
    * public api for mount logic for app
    */
-  public mount() {
+  public async mount(mountInfo: AppInfo) {
     const { baseFrame } = this.context;
     if (baseFrame) {
       // listen for message and popstate evt 
       baseFrame.contentWindow.addEventListener('popstate', this._emitLocaitonChange);
       baseFrame.contentWindow.addEventListener('message', this._emitGlobalEvent);
     }
+
+    const parcel = mountRootParcel({
+      name: this.appInfo.id,
+      customProps:{},
+      domElement: undefined,
+      bootstrap: flattenFnArray(this.remoteApp.bootstrap, 'bootstrap'),
+      mount: flattenFnArray(this.remoteApp.mount, 'mount'),
+      unmount: flattenFnArray(this.remoteApp.unmount, 'unmount'),
+      update: flattenFnArray(this.remoteApp.update, 'update'),
+    }, {
+      domElement: mountInfo.dom || this.appInfo.dom,
+      appProps: {
+        emitter: createEventBus(),
+        ...(mountInfo.customProps || this.appInfo.customProps)
+      }
+    });
+
+    this.attachParcel(parcel);
+
+    return this.parcel.mountPromise;
+  }
+
+  public async update(props: any) {
+    // @ts-ignore
+    return this.parcel.update && this.parcel.update(props)
   }
 
   /**

@@ -1,15 +1,13 @@
-import { start as startSpa, mountRootParcel, toggleNavigationCalling, getAppNames } from 'os-single-spa';
-import { AppInfo, AppOption } from './type';
-import { flattenFnArray } from './misc/util';
+import { start as startSpa, toggleNavigationCalling, getAppNames } from 'os-single-spa';
+import { AppInfo, AppOption, GlobalOption } from './type';
 import { createApplication } from './application/createApp';
-import { createEventBus } from './application/createEventBus';
-import { createCachePool } from 'application/AppCachePool';
+import { createCachePool } from './application/AppCachePool';
+import * as ManifestCachePool from './misc/ManifestCachePool';
 
-let globalOptions: AppOption = {};
+let globalOptions: GlobalOption = {};
 
 export const mountApp = async (appInfo: AppInfo, options: AppOption = {}) => {
-  const { id } = appInfo;
-
+  // process the options
   const sandBox = {
     singleton: true,
     ...globalOptions.sandBox,
@@ -20,26 +18,12 @@ export const mountApp = async (appInfo: AppInfo, options: AppOption = {}) => {
     appInfo.deps = globalOptions.deps || {};
   }
 
+  // create application
   const app = await createApplication(appInfo, sandBox);
-  const remoteApp = await app.getAppLoader();
-
-  const parcel = mountRootParcel({
-    name: id,
-    customProps:{},
-    domElement: undefined,
-    bootstrap: flattenFnArray(remoteApp.bootstrap, 'bootstrap'),
-    mount: flattenFnArray(remoteApp.mount, 'mount'),
-    unmount: flattenFnArray(remoteApp.unmount, 'unmount'),
-    update: flattenFnArray(remoteApp.update, 'update'),
-  }, {
-    domElement: appInfo.dom,
-    appProps: {
-      emitter: createEventBus(),
-      ...appInfo.customProps
-    }
-  });
-
-  app.attachParcel(parcel);
+  // load application
+  await app.load();
+  // mount application
+  await app.mount(appInfo);
 
   return app;
 }
@@ -48,10 +32,11 @@ export const isAppRegistered = (appName: string) => {
   return getAppNames().indexOf(appName) !== -1;
 }
 
-export const start = (options?: AppOption) => {
+export const start = (options?: GlobalOption) => {
   globalOptions = options || {};
   // @ts-ignore
   toggleNavigationCalling(true);
   startSpa();
-  createCachePool({})
+  createCachePool({});
+  ManifestCachePool.createCachePool();
 }

@@ -1,4 +1,5 @@
 import { AppManifest } from '../type';
+import * as ManifestCachePool from './ManifestCachePool';
 import { getFromCdn } from './util';
 
 export const handleManifest = (manifest: AppManifest) => {
@@ -17,5 +18,41 @@ export const handleManifest = (manifest: AppManifest) => {
  * @param url 
  */
 export const getManifest = async (url: string) => {
-  return await getFromCdn(url) as AppManifest;
+  let manifestInfo = ManifestCachePool.getAppManifest(url);
+
+  if(manifestInfo && manifestInfo.loaded) {
+    return manifestInfo.manifest;
+  }
+
+  const promises: Promise<any>[] = [];
+
+  if (!manifestInfo || !manifestInfo.loaded) {
+    if (manifestInfo) {
+      return manifestInfo.promise;
+    } else {
+      const promise = new Promise<AppManifest>(function(resolve, reject) {
+        manifestInfo = {
+          resolve: resolve,
+          reject: reject,
+          manifest: null,
+          loading: true,
+          loaded: false,
+          promise: promise,
+        }
+        ManifestCachePool.setAppManifest(url, manifestInfo);
+      });
+      manifestInfo.promise = promise
+      promises.push(promise);
+    }
+  }
+
+  try {
+    const manifest = await getFromCdn(url) as AppManifest;
+    manifestInfo.loaded = true;
+    manifestInfo.loading = false;
+    manifestInfo.resolve(manifest);
+    return manifest;
+  } catch (e) {
+    manifestInfo.reject(e);
+  }
 }

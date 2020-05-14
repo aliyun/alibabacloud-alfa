@@ -5,6 +5,9 @@
     "example/HostApp/*",
     "example/SubApp/*",
     "packages/core/*",
+    "packages/ng/*",
+    "packages/vue/*",
+    "packages/react/*",
     "packages/*"
   ],
   "publish": {

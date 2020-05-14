@@ -55,9 +55,8 @@ const merge = require('webpack-merge');
 const { chainOsWebpack } = require('@alicloud/console-toolkit-plugin-os')
 
 const chain = new Chain();
-const config = chainOsWebpack(chain, { id: 'app-id' });
-
-module.exports = merge(/*you webpack conf*/, config.toConfig());
+chainOsWebpack({ id: 'app-id' })(chain);
+module.exports = merge(/*you webpack conf*/, chain.toConfig());
 ```
 
 ### Consol OS Toolkit

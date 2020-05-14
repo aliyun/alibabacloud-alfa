@@ -36,7 +36,6 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
   if (appInfo.manifest) {
     // TODO: log manifest
     const manifest = await getManifest(appInfo.manifest);
-
     if (manifest) {
       // TODO: validate the manifest
       id = manifest.name;

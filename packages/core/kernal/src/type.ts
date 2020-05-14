@@ -33,7 +33,6 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   deps?: {
     [key: string]: any;
   };
-  activityFn: () => boolean;
 }
 
 export interface AppCreationOption<E> {
@@ -52,6 +51,9 @@ export interface SandBoxOption {
 export interface AppOption {
   sandBox?: SandBoxOption;
   parcel?: boolean;
+}
+
+export interface GlobalOption extends AppOption {
   deps?: {
     [key: string]: any;
   };
