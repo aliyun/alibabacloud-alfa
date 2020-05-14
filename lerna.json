@@ -4,6 +4,7 @@
   "packages": [
     "example/HostApp/*",
     "example/SubApp/*",
+    "packages/core/*",
     "packages/*"
   ],
   "publish": {

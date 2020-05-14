@@ -1,5 +1,5 @@
 import LRU from 'lru-cache';
-import { Application } from './createApp';
+import { Application } from './Application';
 
 let cache: LRU<string, Application> = null;
 
@@ -16,10 +16,18 @@ export function createCachePool(option) {
   })
 }
 
+/**
+ * get application cache by app id
+ * @param id 
+ */
 export function getApp(id: string) {
   return cache.get(id);
 }
 
+/**
+ * set application cache by app id
+ * @param id 
+ */
 export function setApp(id: string, app: Application) {
   cache.set(id, app);
 }

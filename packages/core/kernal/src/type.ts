@@ -18,6 +18,7 @@ export interface AppInstance<T = any> extends LifeCycles<T> {
 export interface BasicModule {
   id: string;
   url?: string;
+  manifest?: string;
 }
 
 export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {

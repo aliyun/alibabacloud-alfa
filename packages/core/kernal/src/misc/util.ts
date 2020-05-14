@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Lifecycle, AppInstance } from './type';
+import { Lifecycle, AppInstance } from '../type';
 
 export const getFromCdn = async (url: string) => {
   const resp = await axios.get(url);
@@ -72,4 +72,21 @@ export const getRealUrl = (urlStr: string, base: string) => {
 
 export const serializeData = (data: any) => {
   return JSON.parse(JSON.stringify(data))
+}
+
+/**
+ * 
+ * @param rawModule 
+ */
+export const extractModule = (rawModule: any) =>  {
+  return rawModule.default ? rawModule.default : rawModule;
+}
+
+/**
+ * 
+ * @param url 
+ * @param manifest 
+ */
+export const formatUrl = (url: string, manifest: string) => {
+  return getRealUrl(url, manifest);
 }

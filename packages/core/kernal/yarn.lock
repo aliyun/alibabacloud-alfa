@@ -2,23 +2,6 @@
 # yarn lockfile v1
 
 
-"@alicloud/console-os-browser-vm@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-browser-vm/-/console-os-browser-vm-0.3.0.tgz#20de6121063e5b3708b56ed6664398a9bb0b36cf"
-  integrity sha512-5IxG0wNw4sOIuKAzsxHUkk7CBmaGANLQ4P+1chWG0W3h5EvQO7ZtspwVLBPyLyT0xs8sw+HAk6tdIsSKIi9hcg==
-
-"@alicloud/console-os-events@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-events/-/console-os-events-0.3.0.tgz#b653e2e334971dbdc8cdc6ea6f984a05d3edb8f7"
-  integrity sha512-3qlt/tBdCwqLmWp0X8U2eCNiRvzJDP/PdKMPJ7KYCjKtj4PLiIa06NyJz6tszl5V1NDlUhEFoWK8KOdjk5h5cw==
-
-"@alicloud/console-os-loader@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-loader/-/console-os-loader-0.3.0.tgz#8df3a7028b25f6bb6e24d6b70893417faf7f67d9"
-  integrity sha512-1hqV3P6g7WNiTYC1blYX+cAjGOI5aLtm62PIqQpDd2/2AtDJWPErPfrbWkhWtyBipfOsReSMMOaexCLdXhv0Mw==
-  dependencies:
-    debug "^4.1.1"
-
 "@alicloud/console-toolkit-cli@^1.0.0":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-cli/-/console-toolkit-cli-1.0.3.tgz#a065a9fd21ddde7a99a1b1a89d285b4c7f577940"
@@ -2358,6 +2341,11 @@
   version "23.3.14"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.14.tgz#37daaf78069e7948520474c87b80092ea912520a"
   integrity sha512-Q5hTcfdudEL2yOmluA1zaSyPbzWPmJ3XfSWeP3RyoYvS9hnje1ZyagrZOuQ6+1nQC1Gw+7gap3pLNL3xL6UBug==
+
+"@types/lru-cache@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@types/lru-cache/-/lru-cache-5.1.0.tgz#57f228f2b80c046b4a1bd5cac031f81f207f4f03"
+  integrity sha512-RaE0B+14ToE4l6UqdarKPnXwVDuigfFv+5j9Dze/Nqr23yyuqdNvzcZi3xB+3Agvi5R4EOgAksfv3lXX4vBt9w==
 
 "@types/minimatch@*", "@types/minimatch@^3.0.3":
   version "3.0.3"

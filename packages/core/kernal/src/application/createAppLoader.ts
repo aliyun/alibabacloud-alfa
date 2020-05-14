@@ -1,29 +1,9 @@
 import { loadBundle, loadScriptsWithContext } from '@alicloud/console-os-loader';
-import { getFromCdn, invokeLifeCycle, getRealUrl, validateAppInstance } from './util';
 
-import { AppInfo, AppInstance, AppManifest, BasicModule } from './type';
-import { handleManifest } from './manifest';
-
-const formatUrl = (url: string, manifest: string) => {
-  return getRealUrl(url, manifest);
-}
-
-const getManifest = async (url: string) => {
-  return await getFromCdn(url) as AppManifest;
-}
-
-const addStyles = (urls: string[], manifest: string) => {
-  urls.forEach((url) => {
-    const styleSheet = document.createElement('link');
-    styleSheet.rel = 'stylesheet';
-    styleSheet.href = formatUrl(url, manifest);
-    document.head.appendChild(styleSheet);
-  });
-}
-
-export const extractModule = (rawModule: any) =>  {
-  return rawModule.default ? rawModule.default : rawModule;
-}
+import { addStyles } from '../misc/style';
+import { AppInfo, AppInstance, BasicModule } from '../type';
+import { handleManifest, getManifest } from '../misc/manifest';
+import { invokeLifeCycle, validateAppInstance, formatUrl, extractModule } from '../misc/util';
 
 /**
  * Load the app external from url
@@ -31,7 +11,6 @@ export const extractModule = (rawModule: any) =>  {
  * @param {VMContext} context
  */
 export const loadRuntime = async (runtime: BasicModule, context: VMContext) => {
-
   if (!runtime.url) {
     return Promise.resolve(null);
   }
@@ -45,7 +24,6 @@ export const loadRuntime = async (runtime: BasicModule, context: VMContext) => {
   );
 }
 
-
 /**
  * Create an app loader for single spa
  * @param {AppInfo} appInfo App info for os
@@ -56,12 +34,16 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
   let style: string[] | null = null;
 
   if (appInfo.manifest) {
-    const manifest = await getManifest(appInfo.manifest)
+    // TODO: log manifest
+    const manifest = await getManifest(appInfo.manifest);
+
     if (manifest) {
       // TODO: validate the manifest
       id = manifest.name;
 
       const { js, css } = handleManifest(manifest);
+
+      // TODO: log runtime
       if (manifest.runtime) {
         const runtime = await loadRuntime(manifest.runtime, { window, document, location, history });
         if (runtime) {
@@ -83,8 +65,6 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
       style = css;
     }
-
-    await loadRuntime(appInfo, context);
   }
 
   if (style) {
