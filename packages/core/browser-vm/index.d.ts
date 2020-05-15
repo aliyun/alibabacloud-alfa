@@ -18,9 +18,12 @@ interface ContextOption {
 interface BrowserVM {
   createContext: (opts: ContextOption) => Promise<VMContext>;
   removeContext: (VMContext) => void;
+  ContextOption;
 }
 
 declare var browserVM: BrowserVM;
+
+declare var contextOption: ContextOption;
 
 declare module "@alicloud/console-os-browser-vm" {
   export = browserVM;

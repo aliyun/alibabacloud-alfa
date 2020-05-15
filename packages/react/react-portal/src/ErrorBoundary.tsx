@@ -28,6 +28,8 @@ class ErrorBoundary extends React.Component<IProp, State> {
     // You can also log the error to an error reporting service
     if (this.props.logger) {
       this.props.logger.error(error, errorInfo);
+    } else {
+      console.error(error)
     }
   }
 

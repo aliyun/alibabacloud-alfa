@@ -22,6 +22,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   let context: VMContext = { window, document, location, history };
 
   if (!sandBoxOption.disable) {
+    // todo: wait for createContext success
     context = await createContext({
       body: appInfo.dom,
       id: appInfo.id,
