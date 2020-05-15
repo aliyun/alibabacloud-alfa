@@ -28,7 +28,11 @@ class ErrorBoundary extends React.Component<IProp, State> {
     // You can also log the error to an error reporting service
     if (this.props.logger) {
       this.props.logger.error(error, errorInfo);
+    } else {
+      // @ts-ignore
+      window.__bl && window.__bl.error(error, errorInfo);
     }
+    console.log(error);
   }
 
   public render() {
