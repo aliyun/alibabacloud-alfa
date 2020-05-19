@@ -5,8 +5,6 @@
  * @createAt 2019085
  */
 
-import notImplemented from './not-implemented';
-
 class Document{
   constructor( options = {}, context, frame ){
 

@@ -23,6 +23,6 @@ export const evalScripts = async (code, conf = {}) => {
       with(window.__CONSOLE_OS_GLOBAL_VARS_) { 
         ${code}
       }
-    })//@sourceURL=${conf.name}`);
+    }//@sourceURL=${conf.name}`);
   return resolver({ ...ctx });
 }

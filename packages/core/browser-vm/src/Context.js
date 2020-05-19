@@ -28,6 +28,23 @@ class Context {
     this._listenerMap = new Map();
     this.window.__IS_CONSOLE_OS_CONTEXT__ = true
   }
+  
+  async loadScripts(url) {
+    const resp = await fetch(url);
+    const code = await resp.text();
+    const resolver = new Function(`
+      return function ({window, location, history, document}){ 
+        with(window.__CONSOLE_OS_GLOBAL_VARS_) {
+          try {
+            ${code}
+          }
+          catch(e) {
+            console.log(e)
+          }
+        }
+      }//@ sourceMappingURL=${url}`)
+    resolver()({...this})
+  }
 
   updateBody(dom) {
     this.body = dom;
@@ -48,6 +65,12 @@ class Context {
   static create( conf ){
     return new Promise((resolve) => {
       const iframe = document.createElement( 'iframe' );
+
+      iframe.onload = () => {
+        resolve(new this( conf, iframe ));
+      };
+
+      document.body.appendChild( iframe );
 
       // TODO: change src to a reasonable value.
       iframe.setAttribute( 'src', conf.url ? conf.url : '/api.json');

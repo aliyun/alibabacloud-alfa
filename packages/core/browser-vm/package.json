@@ -11,6 +11,7 @@
     "babel:esm": "breezr build --engine babel --es-module",
     "build": "breezr build --engine webpack",
     "storybook": "breezr start-storybook",
+    "test": "breezr test:unit --coverage --env jsdom",
     "clean": "rm -rf es build lib yarn.lock"
   },
   "author": "Boelroy",
@@ -26,7 +27,8 @@
     "@storybook/react": "^5.1.10",
     "axios": "^0.19.0",
     "babel-loader": "^8.0.6",
-    "js-beautify": "^1.10.1"
+    "js-beautify": "^1.10.1",
+    "jsdom": "^16.2.2"
   },
   "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
 }

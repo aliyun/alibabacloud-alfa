@@ -1,6 +1,6 @@
 class History {
   constructor( id, frame ) {
-    if (!id) { return; }
+    if (!id) { return frame.history; }
     const postMessage = () => {
       frame.postMessage({
         type: `${id}:history-change`,
@@ -12,6 +12,7 @@ class History {
     const originalReplaceStatus = frame.history.replaceState
 
     frame.history.pushState = (...args) => {
+      console.log(frame.history)
       const returnValue = originalPushStatus.call(frame.history, ...args);
       postMessage();
       return returnValue;
