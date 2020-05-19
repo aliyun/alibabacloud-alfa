@@ -45,29 +45,39 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.SFC, history:
   return Wrapper;
 }
 
+
+export class Wrapper extends React.Component<IProps> {
+  public static displayName = `withSyncHistory`;
+
+  public componentDidMount() {
+    const { history } = this.props;
+    updateHistory(history, this.props.path);
+  }
+
+  public componentDidUpdate(preprops) {
+    const { history } = this.props;
+    if (this.props.path != preprops.path) {
+      updateHistory(history, this.props.path);
+    }
+  }
+
+  public render() {
+    const { Comp } = this.props;
+    return React.createElement(Comp, this.props);
+  }
+}
+
 /**
  * Sync route with children Compatible with react15
  * @param Comp 
  * @param history 
  */
 export const withCompatibleSyncHistory = (Comp: React.ComponentClass | React.SFC, history: History) => {
-  class Wrapper extends React.Component<IProps> {
-    public static displayName = `withSyncHistory(${Comp.displayName})`;
-
-    public componentDidMount() {
-      updateHistory(history,this.props.path);
-    }
-
-    public componentDidUpdate(preprops) {
-      if (this.props.path != preprops.path) {
-        updateHistory(history, this.props.path);
-      }
-    }
-
-    public render() {
-      return React.createElement(Comp, this.props);
-    }
-  }
-
-  return Wrapper;
+  
+  const WrapperComp = (props: IProps) => React.createElement(Wrapper, {
+    Comp: Comp,
+    history: history,
+    props,
+  });
+  return WrapperComp
 }

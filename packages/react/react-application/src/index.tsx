@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { mountApp, OSApplication } from '@alicloud/console-os-kernal'
+import { OSApplication, createMicroApp, mount, load, unmount, distroy } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
@@ -49,6 +49,8 @@ interface IProps<T = any> {
    * if externalsVars = ['test']. the window.test in subapp equals window.test
    */
   externalsVars?: string[];
+
+  disableBodyTag: boolean;
 
   appProps: T;
 }
@@ -124,32 +126,28 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       if (externalsVars) {
         sandBox.externalsVars = externalsVars;
       }
-
-      this.app = await mountApp({
+      const appInfo = {
         url,
         id,
         manifest,
-        activityFn: () => { 
-          return true
-        },
         dom: domElement,
         customProps: {
           ...getParcelProps(this.props)
         }
-      }, {
+      };
+
+      this.app = await createMicroApp(appInfo, {
         sandBox
+      })
+
+      await load(this.app);
+      await mount(this.app, appInfo);
+
+      this.setState({
+        loading: false
       });
 
-      if (this.app && this.app.parcel) {
-        this.app.parcel.mountPromise.then(() => {
-          this.setState({
-            loading: false
-          });
-          this.props.appDidMount && this.props.appDidMount()
-        });
-        this.app.mount()
-        return this.app.parcel.mountPromise;
-      }
+      this.props.appDidMount && this.props.appDidMount();
     })
   }
 
@@ -158,7 +156,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       // @ts-ignore
       if (this.app && this.app.parcel && this.app.parcel.update) {
         // @ts-ignore
-        return this.app.parcel.update(getParcelProps(this.props))
+        return this.app.update(getParcelProps(this.props))
       }
     })
   }
@@ -167,7 +165,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     this.addThingToDo('unmount', () => {
       const { singleton = true } = this.props;
       if (this.app && this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
-        return singleton ? this.app.unmount() : this.app.dispose();
+        return singleton ? unmount(this.app) : distroy(this.app);
       }
     })
 
@@ -201,6 +199,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
         if (this.props.appDidCatch) {
           this.props.appDidCatch(err)
         }
+        console.error(err);
       });
   }
 
@@ -213,16 +212,16 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
     return (
       <div>
-      {
-        this.state.loading ? <Skeleton active /> : null
-      }
-      {
-        React.createElement(
-          id,
-          {},
-          React.createElement('body', { ref: this.handleRef })
-        )
-      }
+        {
+          this.state.loading ? <Skeleton active /> : null
+        }
+        {
+          React.createElement(
+            id,
+            {},
+            React.createElement(this.props.disableBodyTag ? 'div' : 'body', { ref: this.handleRef })
+          )
+        }
       </div>
     );
   }
@@ -230,4 +229,4 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
 export default Application;
 
-export { start, createEventBus, isAppRegistered, registerApplication, mountApp } from '@alicloud/console-os-kernal';
+export { start, createEventBus, prefetch } from '@alicloud/console-os-kernal';

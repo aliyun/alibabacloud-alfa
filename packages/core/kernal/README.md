@@ -20,22 +20,27 @@ yarn add @alicloud/console-os-kernal --save
 tnpm i @alicloud/console-os-kernal --save
 ```
 
-Then you need to register you sub application using registerApplication method
+Then you create you sub application using createMicroApp
 
 ```javascript
-import { registerApplication } from '@alicloud/console-os-kernal';
+import { createMicroApp, load, mount, unmount } from '@alicloud/console-os-kernal';
 
-const vpc = await registerApplication({
-  manifest: 'https://g.alicdn.com/aliyun-next/vpc/manifest.json',
-  appWillMount() {
-    // your mount logic
-  },
-  appWillUnmount() {
-    // your unmount logic
-  },
-  activityFn: isActiveApp(appId),
-  dom: documnent.getElementById('app')
+const microApp = await createMicroApp({
+  id: 'micro-app-id-1',
+  manifest: 'https://xxx.micro-app-id-1.manifest.json';
 });
+
+//TODO: 确定渲染回调结束是否可行
+await load(microApp);
+
+await mount(microApp, {
+  dom: document.querySelector('#app'),
+  props
+});
+
+await update(microApp, {/* you props */});
+
+await unmount(microApp);
 ```
 
 Last, in the entry code of you main app, call start to start os

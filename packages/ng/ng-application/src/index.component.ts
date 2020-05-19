@@ -73,9 +73,6 @@ export class Application {
         url,
         id,
         manifest,
-        activityFn: () => { 
-          return true
-        },
         dom: domElement,
         customProps: {
           ...getParcelProps(this)
