@@ -7,11 +7,7 @@
     "lint": "tslint packages/",
     "test": "jest packages/",
     "pre-commit": "npm run lint",
-    "install:example": "npm run install:host-react && npm run install:sub-react && npm run install:sub-vue && npm run install:sub-ng",
-    "install:host-react": "cd example/HostApp/ReactHost && npm install",
-    "install:sub-react": "cd example/SubApp/React && npm install",
-    "install:sub-vue": "cd example/SubApp/Vue && npm install",
-    "install:sub-ng": "cd example/SubApp/Angular && npm install"
+    "install:example": "lerna bootstrap --scope @alicloud/demo-*"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
