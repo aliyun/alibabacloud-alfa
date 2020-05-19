@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // 加载 console os 的依赖
-import { start } from "@alicloud/console-os-react-app/node_modules/@alicloud/console-os-kernal";
+import { start } from "@alicloud/console-os-kernal";
 import Application from "@alicloud/console-os-react-app";
 
 // ng 的依赖
