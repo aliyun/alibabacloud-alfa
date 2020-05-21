@@ -1,28 +1,14 @@
 import VMContext from '@alicloud/console-os-browser-vm';
 
 import { Application } from './Application';
-import { createContext } from './creatContext';
+import { createContext } from './createContext';
 import * as AppCachePool from './AppCachePool';
 import { AppInfo, SandBoxOption } from '../type';
 
-/**
- * Create app instance in kernal
- * 
- * @param appInfo app basic meta info
- * @param sandBoxOption sandbox option for app
- */
-export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
-  let app = AppCachePool.getApp(appInfo.id);
-
-  if (app && sandBoxOption.singleton) {
-    app.context.updateBody(appInfo.dom)
-    return app;
-  }
-
+const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
   let context: VMContext = { window, document, location, history };
 
   if (!sandBoxOption.disable) {
-    // todo: wait for createContext success
     context = await createContext({
       body: appInfo.dom,
       id: appInfo.id,
@@ -36,7 +22,46 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     window.__IS_CONSOLE_OS_CONTEXT__ = true
   }
 
-  app = new Application(appInfo, context, sandBoxOption);
+  return new Application(appInfo, context, sandBoxOption);
+}
+
+/**
+ * Create app instance in kernal
+ * 
+ * @param appInfo app basic meta info
+ * @param sandBoxOption sandbox option for app
+ */
+export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
+  if (!sandBoxOption.singleton) {
+    return await createAppInstance(appInfo, sandBoxOption);
+  }
+
+  let app = AppCachePool.getApp(appInfo.id);
+
+  // if app is init and app is singleton, return the
+  // singleton instance for app
+  if (app && app.isInited()) {
+    app.context.updateBody(appInfo.dom)
+    return app;
+  }
+
+  // handle app loading status
+  // if app is loading
+  if (!app || !app.isInited()) {
+    if (app) {
+      return app.getPendingPromise();
+    }
+  } else {
+    if (app) {
+      const promise = new Promise<Application>((resolver) => {
+        app.setPendingResolver(resolver);
+      })
+      app.setPendingPromise(promise)
+    }
+  }
+
+  app = await createAppInstance(appInfo, sandBoxOption)
+  app.pendingResolver && app.pendingResolver(app);
   AppCachePool.setApp(appInfo.id, app);
 
   return app;

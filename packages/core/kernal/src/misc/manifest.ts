@@ -24,8 +24,6 @@ export const getManifest = async (url: string) => {
     return manifestInfo.manifest;
   }
 
-  const promises: Promise<any>[] = [];
-
   if (!manifestInfo || !manifestInfo.loaded) {
     if (manifestInfo) {
       return manifestInfo.promise;
@@ -41,8 +39,7 @@ export const getManifest = async (url: string) => {
         }
         ManifestCachePool.setAppManifest(url, manifestInfo);
       });
-      manifestInfo.promise = promise
-      promises.push(promise);
+      manifestInfo.promise = promise;
     }
   }
 

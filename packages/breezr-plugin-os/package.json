@@ -4,7 +4,7 @@
   "description": "long term cache plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
-    "ci": "tnpm run lint && tnpm run compile && tnpm run cov",
+    "ci": "npm run lint && npm run compile && npm run cov",
     "lint": "tslint --project .",
     "compile": "rm -rf ./lib && tsc -d true -p ./",
     "watch": "tsc -watch -d true -p ./",

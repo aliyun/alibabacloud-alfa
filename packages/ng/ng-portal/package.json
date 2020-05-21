@@ -18,6 +18,7 @@
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.0",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
+    "@angular/core": "^9.1.7",
     "@types/chai": "^4.1.7",
     "@types/jest": "^24.0.23",
     "@types/react": "^16.9.2",

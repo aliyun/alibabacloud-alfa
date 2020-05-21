@@ -4,7 +4,7 @@
   "description": "NG builder for Angular",
   "main": "lib/index.js",
   "scripts": {
-    "ci": "tnpm run lint && tnpm run compile && tnpm run cov",
+    "ci": "npm run lint && npm run compile && npm run cov",
     "compile": "rm -rf ./lib && tsc -d true -p ./",
     "watch": "tsc -watch -d true -p ./",
     "test": "jest",

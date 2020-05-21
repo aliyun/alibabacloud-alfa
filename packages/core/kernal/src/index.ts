@@ -11,4 +11,5 @@ export { triggerAppChange, unloadApplication, createEventBus, toggleNavigationCa
 
 export { prefetch } from './prefetch';
 
+export { SandBoxOption } from './type';
 export type OSApplication = Application;

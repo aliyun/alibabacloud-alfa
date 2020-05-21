@@ -22,7 +22,7 @@ function App() {
             initialPath: "/dashboard"
           }}
           // src="http://localhost:8080/img/logo.82b9c7a5.png"
-          manifest="http://localhost:3338/os-example.manifest.json"
+          manifest="http://localhost:8081/os-example.manifest.json"
         />
       </div>
 

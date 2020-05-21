@@ -8,6 +8,7 @@ import { createAppLoader } from './createAppLoader';
 
 const eventBus = createEventBus();
 
+type ApplicationResolver = (value: Application | PromiseLike<Application>) => Promise<Application> | void;
 /**
  * Application
  */
@@ -18,10 +19,14 @@ export class Application {
   public allowEvents: string[];
 
   private appInfo: AppInfo;
+  private inited: boolean;
+  private pendingPromise: Promise<Application>;
+  private _pendingResolver: ApplicationResolver;
 
   public constructor(appInfo: AppInfo, context: VMContext, option?: SandBoxOption) {
     this.appInfo = appInfo;
-    this.context = context; 
+    this.context = context;
+    this.inited = false;
 
     const DEFAULT_EVENTS = [
       this.historyEventName
@@ -35,6 +40,26 @@ export class Application {
     ];
   }
 
+  public isInited() {
+    return this.inited;
+  }
+
+  public setPendingPromise(p: Promise<Application>) {
+    this.pendingPromise = p;
+  }
+
+  public getPendingPromise() {
+    return this.pendingPromise;
+  }
+
+  public setPendingResolver(resolver: ApplicationResolver) {
+    this._pendingResolver = resolver;
+  }
+
+  public get pendingResolver() {
+    return this._pendingResolver;
+  }
+
   /**
    * 
    */
@@ -42,6 +67,7 @@ export class Application {
     if (!this.remoteApp) {
       this.remoteApp = await createAppLoader(this.appInfo, this.context);
     }
+    this.inited = true;
     return this.remoteApp;
   }
 
@@ -87,12 +113,14 @@ export class Application {
    * but no destory the sandbox for app
    */
   public async unmount() {
-    const { baseFrame } = this.context;
-    if (baseFrame) {
-      baseFrame.contentWindow.removeEventListener('popstate', this._emitLocaitonChange);
-      baseFrame.contentWindow.removeEventListener('message', this._emitGlobalEvent);
+    if (this.parcel && this.parcel.getStatus() === "MOUNTED") {
+      const { baseFrame } = this.context;
+      if (baseFrame) {
+        baseFrame.contentWindow.removeEventListener('popstate', this._emitLocaitonChange);
+        baseFrame.contentWindow.removeEventListener('message', this._emitGlobalEvent);
+      }
+      this.parcel.unmount();
     }
-    return this.parcel && this.parcel.unmount();
   }
 
   /**
@@ -100,8 +128,8 @@ export class Application {
    * sandbox
    */
   public async destory() {
+    await this.unmount();
     removeContext(this.context);
-    return this.parcel && this.parcel.unmount();
   }
 
   /**

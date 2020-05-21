@@ -50,9 +50,11 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
         }
       }
 
-      manifest.externals && await loadScriptsWithContext({
-        id, url: manifest.externals[0], context
-      });
+      if (manifest.externals && manifest.externals.length) {
+        await loadScriptsWithContext({
+          id, url: manifest.externals[0], context
+        });
+      }
 
       for (var index = 0; index < js.length - 1; index++) {
         await loadScriptsWithContext({

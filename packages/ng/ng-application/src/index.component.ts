@@ -1,7 +1,5 @@
 import { Component, Input, ElementRef } from '@angular/core';
-import { mountApp } from '@alicloud/console-os-kernal';
-import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
-import { Application as OsApplication } from '@alicloud/console-os-kernal/lib/createApp';
+import { OSApplication, load, mount, unmount, distroy, createMicroApp, SandBoxOption } from '@alicloud/console-os-kernal';
 
 const getParcelProps = (props) => {
   const parcelProps = {...props}
@@ -9,7 +7,6 @@ const getParcelProps = (props) => {
   delete parcelProps.mountParcel
   delete parcelProps.config
   delete parcelProps.wrapWith
-  delete parcelProps.appendTo
   delete parcelProps.handleError
   delete parcelProps.parcelDidMount
 
@@ -38,8 +35,7 @@ export class Application {
 
   private el: Element;
   private createdDomElement: Element;
-  private appendTo: Element;
-  private app: OsApplication;
+  private app: OSApplication;
 
   public constructor(private elementRef: ElementRef) { } 
 
@@ -51,9 +47,7 @@ export class Application {
         sandBox.externalsVars = externalsVars;
         sandBox.singleton = singleton;
       } else {
-        sandBox = {
-          singleton
-        };
+        sandBox = { singleton };
       }
 
       let domElement;
@@ -68,8 +62,7 @@ export class Application {
         // @ts-ignore
         sandBox.externalsVars = externalsVars;
       }
-
-      this.app = await mountApp({
+      const appInfo = {
         url,
         id,
         manifest,
@@ -77,25 +70,24 @@ export class Application {
         customProps: {
           ...getParcelProps(this)
         }
-      }, {
-        // @ts-ignore
-        sandBox
-      })
+      };
 
-      this.app.parcel.mountPromise.then(() => {
-        this.loading = false;
-        this.parcelDidMount && this.parcelDidMount()
-      })
-      return this.app.parcel.mountPromise
+      this.app = await createMicroApp(appInfo, {
+        sandBox
+      });
+
+      await load(this.app);
+      await mount(this.app, appInfo);
+
+      this.loading = false;
+      this.parcelDidMount && this.parcelDidMount();
     })
   }
 
   public ngOnDestroy() {
     this.addThingToDo('unmount', () => {
       const { singleton = true } = this;
-      if (this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
-        return singleton ? this.app.unmount() : this.app.dispose();
-      }
+      return singleton ? unmount(this.app) : distroy(this.app);
     })
 
     if (this.createdDomElement) {
