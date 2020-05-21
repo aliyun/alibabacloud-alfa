@@ -1,3 +1,27 @@
+# 3.2.0
+* Feature: add the new prefetch api for preload sub app
+* Feature: add the new kernal api
+``` javascript
+import { createMicroApp, load, mount, unmount } from '@alicloud/console-os-kernal';
+
+const microApp = await createMicroApp({
+  id: 'micro-app-id-1',
+  manifest: 'https://xxx.micro-app-id-1.manifest.json';
+});
+
+await load(microApp);
+
+await mount(microApp, {
+  dom: document.querySelector('#app'),
+  props
+});
+
+await update(microApp, {/* you props */});
+
+await unmount(microApp);
+```
+* Fix: withSyncRouter not working in react15
+
 # 0.2.16
 * Fix: Remove es6 syntax in umd release for console-os-kernal
 
