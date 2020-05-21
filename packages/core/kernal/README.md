@@ -30,7 +30,6 @@ const microApp = await createMicroApp({
   manifest: 'https://xxx.micro-app-id-1.manifest.json';
 });
 
-//TODO: 确定渲染回调结束是否可行
 await load(microApp);
 
 await mount(microApp, {

@@ -12,7 +12,6 @@ class History {
     const originalReplaceStatus = frame.history.replaceState
 
     frame.history.pushState = (...args) => {
-      console.log(frame.history)
       const returnValue = originalPushStatus.call(frame.history, ...args);
       postMessage();
       return returnValue;
