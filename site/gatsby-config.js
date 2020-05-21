@@ -11,12 +11,12 @@ module.exports = {
         // 用于SEO
         siteMetadata: {
           // 会生成标题如：文章名 · Demo Site
-          siteName: 'Console Toolkit',
+          siteName: 'Console OS',
           description:
-            'Console Toolkit 是阿里云控制台场景的工具链。',
+            'Console OS 是阿里云控制台场景的微前端解决方案。',
         },
         // 入口页面，即点击左上角logo跳转的地址，以及访问`/`跳转的地址
-        primaryPath: '/guides/quick-start',
+        primaryPath: '/guides/intro',
         // 从文件系统爬取.md和.mdx（我们会忽略不包含frontmatter.name的markdown文档）
         fileSystemCrawlers: [
           // {
@@ -27,6 +27,10 @@ module.exports = {
           {
             name: 'guides-crawler',
             rootDir: path.resolve(__dirname, '../docs'),
+          },
+          {
+            name: 'guides-crawler',
+            rootDir: path.resolve(__dirname, '../docs/overview'),
           },
         ],
         // 为每个文档添加元数据：它属于哪个类目

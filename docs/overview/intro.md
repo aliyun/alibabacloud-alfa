@@ -1,6 +1,6 @@
 ---
-name: quick-start
-zhName: 快速开始
+name: intro
+zhName: 概览
 sort: 0
 ---
 

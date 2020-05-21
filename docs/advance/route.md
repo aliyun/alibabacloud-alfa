@@ -1,7 +1,7 @@
 ---
 name: route
 zhName: 路由
-sort: 3
+sort: 6
 ---
 
 # 路由
