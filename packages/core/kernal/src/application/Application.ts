@@ -9,6 +9,7 @@ import { createAppLoader } from './createAppLoader';
 const eventBus = createEventBus();
 
 type ApplicationResolver = (value: Application | PromiseLike<Application>) => Promise<Application> | void;
+type ApplicationRejecter = (reason?: any) => Promise<Application> | void;
 /**
  * Application
  */
@@ -22,6 +23,7 @@ export class Application {
   private inited: boolean;
   private pendingPromise: Promise<Application>;
   private _pendingResolver: ApplicationResolver;
+  private _pendingRejecter: ApplicationRejecter;
 
   public constructor(appInfo: AppInfo, context: VMContext, option?: SandBoxOption) {
     this.appInfo = appInfo;
@@ -55,9 +57,18 @@ export class Application {
   public setPendingResolver(resolver: ApplicationResolver) {
     this._pendingResolver = resolver;
   }
+  
 
   public get pendingResolver() {
     return this._pendingResolver;
+  }
+
+  public setPendingRejecter(reject: ApplicationRejecter) {
+    this._pendingRejecter = reject;
+  }
+
+  public get pendingRejecter() {
+    return this._pendingRejecter;
   }
 
   /**

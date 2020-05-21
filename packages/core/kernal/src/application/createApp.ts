@@ -53,8 +53,9 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     }
   } else {
     if (app) {
-      const promise = new Promise<Application>((resolver) => {
+      const promise = new Promise<Application>((resolver, reject) => {
         app.setPendingResolver(resolver);
+        app.setPendingRejecter(reject);
       })
       app.setPendingPromise(promise)
     }
