@@ -2,6 +2,43 @@
 # yarn lockfile v1
 
 
+"@alicloud/console-os-browser-vm@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-browser-vm/-/console-os-browser-vm-0.3.2.tgz#508af094be99439750d716666b5abb364c5884f0"
+  integrity sha512-iPumhRn5FAZntDx9GDLeNxj+gfyum7CCxfBrHpUhvYiqZR8kBrjx8dyqw/s1rwfS2e3x4Uy8Wka7NY548mY/hA==
+
+"@alicloud/console-os-events@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-events/-/console-os-events-0.3.0.tgz#b653e2e334971dbdc8cdc6ea6f984a05d3edb8f7"
+  integrity sha512-3qlt/tBdCwqLmWp0X8U2eCNiRvzJDP/PdKMPJ7KYCjKtj4PLiIa06NyJz6tszl5V1NDlUhEFoWK8KOdjk5h5cw==
+
+"@alicloud/console-os-kernal@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-kernal/-/console-os-kernal-0.3.2.tgz#b1c93658f19701f24c32c12ee4d16dd12699d9fc"
+  integrity sha512-wizrfY805pXjpob2xI6U7kn65zFSvMmXBsDc6Rv1yD7OVsNzxMPA95xtNjU0203yjdVx0yOzsw7Hqlr0e3XwDA==
+  dependencies:
+    "@alicloud/console-os-browser-vm" "^0.3.2"
+    "@alicloud/console-os-events" "^0.3.0"
+    "@alicloud/console-os-loader" "^0.3.0"
+    axios "^0.19.0"
+    lru-cache "^4.1.5"
+    os-single-spa "^4.4.5"
+
+"@alicloud/console-os-loader@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-loader/-/console-os-loader-0.3.0.tgz#8df3a7028b25f6bb6e24d6b70893417faf7f67d9"
+  integrity sha512-1hqV3P6g7WNiTYC1blYX+cAjGOI5aLtm62PIqQpDd2/2AtDJWPErPfrbWkhWtyBipfOsReSMMOaexCLdXhv0Mw==
+  dependencies:
+    debug "^4.1.1"
+
+"@alicloud/console-os-react-app@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-react-app/-/console-os-react-app-0.3.2.tgz#34441fa65c526061603a6bbae1cf0d2cf1c7f986"
+  integrity sha512-lEKxwbW16RvcF+GNh7+25EApi1NS2BM2Wvjhl+AXtN/60Ano/f0j5gMA/Wj+Kj3cR7PXaOixq8DTnZMYglVU5Q==
+  dependencies:
+    "@alicloud/console-os-kernal" "^0.3.2"
+    classnames "^2.2.6"
+
 "@babel/code-frame@7.5.5":
   version "7.5.5"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.5.5.tgz#bc0782f6d69f7b7d49531219699b988f669a8f9d"
@@ -1849,6 +1886,13 @@ axios@0.19.0:
     follow-redirects "1.5.10"
     is-buffer "^2.0.2"
 
+axios@^0.19.0:
+  version "0.19.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
+  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
+  dependencies:
+    follow-redirects "1.5.10"
+
 axobject-query@^2.0.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-2.1.2.tgz#2bdffc0371e643e5f03ba99065d5179b9ca79799"
@@ -2484,7 +2528,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.2.6:
+classnames@2.2.6, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -6024,6 +6068,14 @@ lru-cache@5.1.1, lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+lru-cache@^4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.5.tgz#8bbe50ea85bed59bc9e33dcab8235ee9bcf443cd"
+  integrity sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==
+  dependencies:
+    pseudomap "^1.0.2"
+    yallist "^2.1.2"
+
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
@@ -6690,6 +6742,11 @@ os-locale@^3.0.0:
     execa "^1.0.0"
     lcid "^2.0.0"
     mem "^4.0.0"
+
+os-single-spa@^4.4.5:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/os-single-spa/-/os-single-spa-4.4.5.tgz#337a549ba9360dc93d5cc412c25daebfd553e675"
+  integrity sha512-GaGE33AsIQG0qmIzUZdXihbYEzjo6fNBxnYNMYiVXpTVcdAPfc0ey/4K9qhLn/0+xbEToodiCukOFmWBFBdTEA==
 
 os-tmpdir@~1.0.2:
   version "1.0.2"
@@ -7779,6 +7836,11 @@ prr@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/prr/-/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
   integrity sha1-0/wRS6BplaRexok/SEzrHXj19HY=
+
+pseudomap@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
+  integrity sha1-8FKijacOYYkX7wqKw0wa5aaChrM=
 
 psl@^1.1.28:
   version "1.8.0"
@@ -10056,6 +10118,11 @@ xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
   integrity sha512-r9S/ZyXu/Xu9q1tYlpsLIsa3EeLXXk0VwlxqTcFRfg9EhMW+17kbt9G0NrgCmhGb5vT2hyhJZLfDGx+7+5Uj/w==
+
+yallist@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
+  integrity sha1-HBH5IY8HYImkfdUS+TxmmaaoHVI=
 
 yallist@^3.0.2:
   version "3.1.1"

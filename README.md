@@ -61,11 +61,16 @@ see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/bl
 git clone https://github.com/aliyun/alibabacloud-console-os.git
 ```
 
+安装子应用
+
+```bash
+$ npm run install:example
+```
+
 运行 React 子应用
 
 ```bash
 $ cd example/SubApp/React
-$ yarn install # or npm install
 $ npm run start
 # you will visit app on http://localhost:8080/
 ```
@@ -74,7 +79,6 @@ $ npm run start
 
 ```bash
 $ cd example/SubApp/Vue
-$ yarn install # or npm install
 $ npm run serve
 # you will visit app on http://localhost:8081/
 ```
@@ -83,7 +87,6 @@ $ npm run serve
 
 ```bash
 $ cd example/HostApp/ReactHost
-$ yarn install # or npm install
 $ npm run start
 # you will visit app on http://localhost:3000/
 ```
