@@ -2,11 +2,12 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "ci": "lerna exec tnpm install && lerna run lint && lerna run compile && tnpm run cov",
+    "ci": "lerna bootstrap && lerna run lint && lerna run prepare && npm run cov",
     "cov": "jest  --coverage",
     "lint": "tslint packages/",
     "test": "jest packages/",
-    "pre-commit": "npm run lint"
+    "pre-commit": "npm run lint",
+    "install:example": "lerna bootstrap --scope @alicloud/demo-*"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
