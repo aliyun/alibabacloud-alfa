@@ -4,10 +4,14 @@
   "packages": [
     "example/HostApp/*",
     "example/SubApp/*",
+    "packages/core/*",
+    "packages/ng/*",
+    "packages/vue/*",
+    "packages/react/*",
     "packages/*"
   ],
   "publish": {
-    "npmClient": "tnpm",
+    "npmClient": "npm",
     "verifyAccess": false
   },
   "version": "0.3.2"

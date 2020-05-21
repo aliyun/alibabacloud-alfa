@@ -42,7 +42,8 @@ const Home =  () => (
 );
 export default Home;
 ```
-## 不同框架使用
+
+## 其他框架使用
 
 ## React 
 
