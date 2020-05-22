@@ -1,5 +1,7 @@
 ---
 name: ng
+tags: 
+  ecosystem: true
 zhName: 生态 - Angular
 sort: 100
 ---

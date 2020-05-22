@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   // 该页面会部署到 `aliyun.github.io/alibabacloud-console-components`路径下
   // 请根据你的项目名修改
-  pathPrefix: `/alibabacloud-console-toolkit`,
+  pathPrefix: `/alibabacloud-console-os`,
   plugins: [
     {
       resolve: `@alicloud/gatsby-theme-console-doc`,
@@ -28,10 +28,10 @@ module.exports = {
             name: 'guides-crawler',
             rootDir: path.resolve(__dirname, '../docs'),
           },
-          {
-            name: 'guides-crawler',
-            rootDir: path.resolve(__dirname, '../docs/overview'),
-          },
+          // {
+          //   name: 'guides-crawler',
+          //   rootDir: path.resolve(__dirname, '../docs/overview'),
+          // },
         ],
         // 为每个文档添加元数据：它属于哪个类目
         // 每个文档都需要有一个类目，文档的访问路径就是`/类目name/文档name`
@@ -46,6 +46,7 @@ module.exports = {
           if (docInfo.fileSystemCrawlerName === 'guides-crawler') {
             return {
               category: 'guides',
+              tags: docInfo.tags,
               labelInMenu: docInfo.zhName,
             }
           }
@@ -61,6 +62,7 @@ module.exports = {
         topNav: [
           { text: '指南', href: '/guides/quick-start' },
         ],
+        dynamicDocs: [],
         // 左侧导航
         // 左侧导航与顶部导航的区别：
         // 顶部导航是静态的，不随着“当前所在页面”而变化
@@ -68,7 +70,7 @@ module.exports = {
         sideNav: context => {
           // 同理，你可以在这里打断点，观察参数的结构
           const { pageMeta } = context
-
+          debugger
           const header = (() => {
             switch (pageMeta.category) {
               case 'components':
@@ -91,7 +93,33 @@ module.exports = {
               case 'guides':
                 // 如果当前页面是指南
                 // 则导航栏需要导航这个类目
-                return [{ categoryName: 'guides' }]
+                return [
+                  {
+                    tagSelector: {
+                      overview: true,
+                    },
+                    // 将选中的文档放在一个SubMenu中，指定这个SubMenu的label
+                    // 仅当flat不为true时有效
+                    label: '概述',
+                  },
+                  {
+                    tagSelector: {
+                      advance: true,
+                    },
+                    // 将选中的文档放在一个SubMenu中，指定这个SubMenu的label
+                    // 仅当flat不为true时有效
+                    label: '进阶',
+                  },
+                  {
+                    tagSelector: {
+                      ecosystem: true,
+                    },
+                    // 将选中的文档放在一个SubMenu中，指定这个SubMenu的label
+                    // 仅当flat不为true时有效
+                    label: '生态',
+                  },
+
+                ]
               default:
                 throw new Error(
                   `unexpected pageMeta.category ${pageMeta.category}`

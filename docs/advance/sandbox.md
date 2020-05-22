@@ -1,6 +1,8 @@
 ---
 name: sandbox
 zhName: 沙箱
+tags: 
+  advance: true
 sort: 9
 ---
 
