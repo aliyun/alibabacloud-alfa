@@ -14,6 +14,7 @@
   "devDependencies": {
     "@alicloud/gatsby-theme-console-doc": "^1.0.5",
     "gatsby": "^2.18.2",
+    "gh-pages": "^2.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "styled-components": "^4.4.1",

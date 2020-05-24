@@ -45,6 +45,7 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.SFC, history:
   return Wrapper;
 }
 
+
 export class Wrapper extends React.Component<IProps> {
   public static displayName = `withSyncHistory`;
 

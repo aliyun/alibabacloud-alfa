@@ -40,3 +40,6 @@ typings/
 
 # Output of 'npm pack'
 *.tgz
+
+# site
+site/public

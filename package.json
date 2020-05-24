@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "ci": "lerna exec npm install && lerna run lint && lerna run compile && npm run cov",
+    "ci": "lerna bootstrap && lerna run lint && lerna run prepare && npm run cov",
     "cov": "jest  --coverage",
     "lint": "tslint packages/",
     "test": "jest packages/",
