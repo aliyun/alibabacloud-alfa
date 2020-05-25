@@ -1,5 +1,14 @@
 # alibabacloud-console-os
 
+<p align="center">
+<a href=" https://www.alibabacloud.com"><img src="https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg"></a>
+</p>
+
+[![NPM version][npm-image]][npm-url]
+
+[npm-image]: https://img.shields.io/npm/v/@alicloud/console-os-kernal.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@alicloud/console-os-kernal
+
 ## 介绍
 ```console-os``` 是在阿里云控制台体系中孵化🐣的微前端方案， 定位是面向企业级的微前端体系化解决方案。
 
