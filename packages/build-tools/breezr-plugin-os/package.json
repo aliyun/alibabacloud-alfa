@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-toolkit-plugin-os",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "description": "long term cache plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "@alicloud/console-toolkit-shared-utils": "^1.0.0",
     "lodash": "^4.17.11",
     "package-json": "^6.5.0",
-    "postcss-prefix-wrapper": "0.3.0",
+    "postcss-prefix-wrapper": "^0.3.3",
     "webpack-assets-manifest": "^3.1.1",
     "webpack-sources": "^1.4.1"
   },
