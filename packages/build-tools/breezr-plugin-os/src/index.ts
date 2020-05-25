@@ -3,7 +3,7 @@ import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { DonePlugin } from './DonePlugins';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
-import { sandBoxCss } from './sandboxCss';
+import { wrapCss } from 'postcss-prefix-wrapper';
 
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
   const { jsonpCall, injectVars } = options;
@@ -42,7 +42,10 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   
   config.plugin('WebpackDonePlugin').use(DonePlugin, [{
     done: () => {
-      sandBoxCss(options.cssBuildDir || config.output.get('path'), options.id, options)
+      wrapCss(options.cssBuildDir || config.output.get('path'), options.id, {
+        ext: '.os.css',
+        disableOsCssExtends: options.disableOsCssExtends,
+      })
     }
   }])
 }
