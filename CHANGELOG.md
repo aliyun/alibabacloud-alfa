@@ -1,4 +1,7 @@
-# 3.2.0
+# 0.3.3
+* Feature: make css wrap as a independent package
+
+# 0.3.2
 * Feature: add the new prefetch api for preload sub app
 * Feature: add the new kernal api
 ``` javascript
