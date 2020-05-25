@@ -5,6 +5,7 @@
     "example/HostApp/*",
     "example/SubApp/*",
     "packages/core/*",
+    "packages/build-tools/*",
     "packages/ng/*",
     "packages/vue/*",
     "packages/react/*",
