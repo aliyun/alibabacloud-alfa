@@ -1,0 +1,16 @@
+{
+  "name": "site-zh",
+  "version": "1.0.3",
+  "private": true,
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "node ../node_modules/.bin/gatsby clean",
+    "develop": "npm run clean && node ../node_modules/.bin/gatsby develop  --port 8011",
+    "start": "npm run develop",
+    "build": "npm run clean && node ../node_modules/.bin/gatsby build --prefix-paths"
+  },
+  "devDependencies": {
+    "gatsby": "2.19.45"
+  }
+}
