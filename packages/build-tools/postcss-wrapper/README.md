@@ -25,3 +25,12 @@ div {
   color: 
 }
 ```
+
+## Direct Use
+
+```javascript
+const { wrapCss } = require('postcss-prefix-wrapper');
+wrapCss('./build', options.id, {
+  ext: '.os.css',
+});
+```
