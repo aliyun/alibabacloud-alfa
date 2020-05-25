@@ -28,10 +28,6 @@ module.exports = {
             name: 'guides-crawler',
             rootDir: path.resolve(__dirname, '../docs'),
           },
-          {
-            name: 'guides-crawler',
-            rootDir: path.resolve(__dirname, '../docs/overview'),
-          },
         ],
         // 为每个文档添加元数据：它属于哪个类目
         // 每个文档都需要有一个类目，文档的访问路径就是`/类目name/文档name`
@@ -120,6 +116,7 @@ module.exports = {
           // path.resolve(__dirname, '../../../node_modules'),
           'node_modules',
         ],
+        dynamicDocs: []
       },
     },
   ],
