@@ -1,3 +1,11 @@
+# 0.3.6
+* Fix: Context update body error when sandbox is disable
+* Fix: Type error for first args of mount function in react portal
+
+# 0.3.5
+* Fix: Add the Type Define for React Portal
+
+
 # 0.3.4
 * Optimization: now using react.fragment in for react16 and div in react15 for react-application.
 
