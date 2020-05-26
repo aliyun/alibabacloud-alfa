@@ -30,7 +30,6 @@
     "build": "npm run build:ng",
     "build:ng": "ng build --prod; echo",
     "test": "ng test",
-    "lint": "ng lint",
     "e2e": "ng e2e",
     "build:single-spa": "ng build --prod --deploy-url http://localhost:4200/",
     "serve:single-spa": "ng serve --disable-host-check --port 4200 --deploy-url http://localhost:4200/ --live-reload false"

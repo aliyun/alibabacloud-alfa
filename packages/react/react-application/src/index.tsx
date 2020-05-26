@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { OSApplication, createMicroApp, mount, load, unmount, distroy } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
 
-interface IProps<T = any> {
+interface IProps<T = any> extends HTMLAttributes<Element> {
   /**
    * App unique id
    */
@@ -204,25 +204,27 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
   }
 
   public render() {
-    const { id = '' } = this.props;
+    const { id = '', style = {}, className = '' } = this.props;
 
     if (this.state.hasError && this.state.error) {
       return (<ErrorPanel error={this.state.error}/>)
     }
 
+    const Wrapper = React.Fragment ? React.Fragment : 'div';
+
     return (
-      <div>
+      <Wrapper>
         {
           this.state.loading ? <Skeleton active /> : null
         }
         {
           React.createElement(
             id,
-            {},
+            { style, className },
             React.createElement(this.props.disableBodyTag ? 'div' : 'body', { ref: this.handleRef })
           )
         }
-      </div>
+      </Wrapper>
     );
   }
 }
