@@ -1,3 +1,6 @@
+# 0.3.4
+* Optimization: now using react.fragment in for react16 and div in react15 for react-application.
+
 # 0.3.3
 * Feature: make css wrap as a independent package
 
