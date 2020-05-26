@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   // 该页面会部署到 `aliyun.github.io/alibabacloud-console-components`路径下
   // 请根据你的项目名修改
-  pathPrefix: `/alibabacloud-console-os`,
+  pathPrefix: `/alibabacloud-console-toolkit/en`,
   plugins: [
     {
       resolve: `@alicloud/gatsby-theme-console-doc`,
@@ -13,10 +13,10 @@ module.exports = {
           // 会生成标题如：文章名 · Demo Site
           siteName: 'Console OS',
           description:
-            'Console OS 是阿里云控制台场景的微前端解决方案。',
+            'Console OS is a micro-frontend solution born in Alibaba Cloud console.',
         },
         // 入口页面，即点击左上角logo跳转的地址，以及访问`/`跳转的地址
-        primaryPath: '/guides/intro',
+        primaryPath: '/guides/concept',
         // 从文件系统爬取.md和.mdx（我们会忽略不包含frontmatter.name的markdown文档）
         fileSystemCrawlers: [
           // {
@@ -26,7 +26,7 @@ module.exports = {
           // },
           {
             name: 'guides-crawler',
-            rootDir: path.resolve(__dirname, '../docs'),
+            rootDir: path.resolve(__dirname, '../../docs-en'),
           },
         ],
         // 为每个文档添加元数据：它属于哪个类目
@@ -42,7 +42,6 @@ module.exports = {
           if (docInfo.fileSystemCrawlerName === 'guides-crawler') {
             return {
               category: 'guides',
-              tags: docInfo.tags,
               labelInMenu: docInfo.zhName,
             }
           }
@@ -52,13 +51,12 @@ module.exports = {
         },
         // 定义类目的中文名（展示在左侧导航、搜索结果中）
         categories: {
-          guides: '指南',
+          guides: 'guides',
         },
         // 顶部导航
         topNav: [
-          { text: '指南', href: '/guides/quick-start' },
+          { text: 'guides', href: '/guides/concept' },
         ],
-        dynamicDocs: [],
         // 左侧导航
         // 左侧导航与顶部导航的区别：
         // 顶部导航是静态的，不随着“当前所在页面”而变化
@@ -66,13 +64,11 @@ module.exports = {
         sideNav: context => {
           // 同理，你可以在这里打断点，观察参数的结构
           const { pageMeta } = context
-          debugger
+
           const header = (() => {
             switch (pageMeta.category) {
-              case 'components':
-                return '组件'
               case 'guides':
-                return '指南'
+                return 'guides'
               default:
                 throw new Error(
                   `unexpected pageMeta.category ${pageMeta.category}`
@@ -82,40 +78,10 @@ module.exports = {
 
           const navCategories = (() => {
             switch (pageMeta.category) {
-              case 'components':
-                // 如果当前页面是组件
-                // 则导航栏需要导航这个类目
-                return [{ categoryName: 'components' }]
               case 'guides':
                 // 如果当前页面是指南
                 // 则导航栏需要导航这个类目
-                return [
-                  {
-                    tagSelector: {
-                      overview: true,
-                    },
-                    // 将选中的文档放在一个SubMenu中，指定这个SubMenu的label
-                    // 仅当flat不为true时有效
-                    label: '概述',
-                  },
-                  {
-                    tagSelector: {
-                      advance: true,
-                    },
-                    // 将选中的文档放在一个SubMenu中，指定这个SubMenu的label
-                    // 仅当flat不为true时有效
-                    label: '进阶',
-                  },
-                  {
-                    tagSelector: {
-                      ecosystem: true,
-                    },
-                    // 将选中的文档放在一个SubMenu中，指定这个SubMenu的label
-                    // 仅当flat不为true时有效
-                    label: '生态',
-                  },
-
-                ]
+                return [{ categoryName: 'guides' }]
               default:
                 throw new Error(
                   `unexpected pageMeta.category ${pageMeta.category}`
