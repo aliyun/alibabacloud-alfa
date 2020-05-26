@@ -41,7 +41,8 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   // if app is init and app is singleton, return the
   // singleton instance for app
   if (app && app.isInited()) {
-    app.context.updateBody(appInfo.dom)
+    // app.context.updateBody is not defined when sandbox disable.
+    app.context.updateBody && app.context.updateBody(appInfo.dom)
     return app;
   }
 
