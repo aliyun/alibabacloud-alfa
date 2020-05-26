@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/demo-console-os-angular-app",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "dependencies": {
     "@alicloud/console-os-ng-builder": "^0.3.3",
