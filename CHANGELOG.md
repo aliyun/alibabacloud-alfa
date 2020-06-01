@@ -1,3 +1,7 @@
+# 0.3.7
+* Fix: sandbox context initialize fails sometimes, because the iframe url was assigned after the iframe append to body;
+* Feat: now props.appDidCatch can trigger when sub app has error in react application;
+
 # 0.3.6
 * Fix: Context update body error when sandbox is disable
 * Fix: Type error for first args of mount function in react portal
