@@ -15,6 +15,7 @@ interface EmitterProps {
 interface IProps {
   customProps: EmitterProps;
   appProps: EmitterProps;
+  appDidCatch?: (error: Error) => void;
   logger: Logger;
 }
 
@@ -66,7 +67,10 @@ export function mount<T = any>(App: AppComponent<T>, container: Element, id: str
       };
 
       return (
-        <ErrorBoundary logger={this.props.logger}>
+        <ErrorBoundary 
+          logger={this.props.logger}
+          appDidCatch={this.props.appDidCatch}
+        >
           { Context ? (
             <Context.Provider value={contextValue}>
               <App {...Object.assign(getProps(this.props) || {})} />
