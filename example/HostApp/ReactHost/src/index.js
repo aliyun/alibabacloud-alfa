@@ -28,7 +28,7 @@ function App() {
         />
       </div>
 
-      {/* <div className="vue">
+      <div className="vue">
         <Application
           id="os-example-vue"
           manifest="http://localhost:8080/os-example-vue.manifest.json"
@@ -40,7 +40,7 @@ function App() {
           id="os-exmaple-angular"
           manifest="http://localhost:4200/os-exmaple-angular.manifest.json"
         />
-      </div> */}
+      </div>
 
     </div>
   );
