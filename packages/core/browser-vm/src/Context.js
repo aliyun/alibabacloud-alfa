@@ -66,12 +66,6 @@ class Context {
     return new Promise((resolve) => {
       const iframe = document.createElement( 'iframe' );
 
-      iframe.onload = () => {
-        resolve(new this( conf, iframe ));
-      };
-
-      document.body.appendChild( iframe );
-
       // TODO: change src to a reasonable value.
       iframe.setAttribute( 'src', conf.url ? conf.url : '/api.json');
       iframe.style.cssText = 'position: absolute; top: -20000px; width: 1px; height: 1px;';

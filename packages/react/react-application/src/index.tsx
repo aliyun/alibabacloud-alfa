@@ -69,7 +69,6 @@ const getParcelProps = (props: Partial<IProps>) => {
   delete parcelProps.initialPath;
   delete parcelProps.externalsVars;
   delete parcelProps.sandBox;
-  delete parcelProps.appDidCatch;
   delete parcelProps.appDidMount;
 
   return parcelProps;
@@ -192,14 +191,12 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       })
       .catch((err) => {
         this.nextThingToDo = Promise.resolve(); // reset so we don't .then() the bad promise again
-        this.setState({hasError: true, loading: false, error: err})
-        if (err && err.message) {
-          err.message = `During '${action}', os application threw an error: ${err.message}`
-        }
+        const error = new Error(`During '${action}', os application threw an error: ${err.message}`)
+        this.setState({ hasError: true, loading: false, error })
         if (this.props.appDidCatch) {
-          this.props.appDidCatch(err)
+          this.props.appDidCatch(error)
         }
-        console.error(err);
+        console.error(error);
       });
   }
 

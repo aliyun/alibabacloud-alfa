@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // 加载 console os 的依赖
-import { start } from "@alicloud/console-os-kernal";
-import Application from "@alicloud/console-os-react-app";
+import Application, { start } from "@alicloud/console-os-react-app";
 
 // ng 的依赖
 import "core-js";
@@ -21,12 +20,15 @@ function App() {
           sandBox={{
             initialPath: "/dashboard"
           }}
+          appDidCatch={(e) => {
+            console.log(e)
+          }}
           // src="http://localhost:8080/img/logo.82b9c7a5.png"
           manifest="http://localhost:8081/os-example.manifest.json"
         />
       </div>
 
-      <div className="vue">
+      {/* <div className="vue">
         <Application
           id="os-example-vue"
           manifest="http://localhost:8080/os-example-vue.manifest.json"
@@ -38,7 +40,7 @@ function App() {
           id="os-exmaple-angular"
           manifest="http://localhost:4200/os-exmaple-angular.manifest.json"
         />
-      </div>
+      </div> */}
 
     </div>
   );
