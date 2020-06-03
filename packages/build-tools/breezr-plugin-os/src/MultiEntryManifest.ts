@@ -37,9 +37,7 @@ export class MultiEntryManifest {
 
           // @ts-ignore
           Object.values(manifest.entrypoints[entryId]).forEach((entryPaths: string[]) => {
-            console.log(entryPaths)
             entryPaths.forEach((entryPath) => {
-              console.log(`window.__CONSOLE_OS_GLOBAL_HOOK__("${this.options.entryName.replace('manifest.json', '')}`)
               compilation.assets[entryPath] = new RawSource(
                 compilation.assets[entryPath].source().replace(
                   `window.__CONSOLE_OS_GLOBAL_HOOK__("${this.options.entryName.replace('.manifest.json', '')}`,
