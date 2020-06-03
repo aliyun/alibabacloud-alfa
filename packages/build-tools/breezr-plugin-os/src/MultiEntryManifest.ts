@@ -27,14 +27,10 @@ export class MultiEntryManifest {
       if (isObject(webpackConfig.entry) && webpackConfig.output?.path) {
         // process the json
         const entries = Object.keys(webpackConfig.entry);
-
-
         entries.forEach((entryId) => {
-
           if (!manifest.entrypoints[entryId]) {
             return;
           }
-
           // @ts-ignore
           Object.values(manifest.entrypoints[entryId]).forEach((entryPaths: string[]) => {
             entryPaths.forEach((entryPath) => {
