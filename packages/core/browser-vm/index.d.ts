@@ -13,6 +13,7 @@ interface ContextOption {
   externals?: string[];
   url?: string;
   id?: string;
+  disableBody?: boolean;
 }
 
 interface BrowserVM {

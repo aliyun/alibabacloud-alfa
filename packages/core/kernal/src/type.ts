@@ -46,6 +46,7 @@ export interface SandBoxOption {
   initialPath?: string;
   externalsVars?: string[];
   allowEvents?: string[];
+  disableFakeBody?: boolean;
 }
 
 export interface AppOption {

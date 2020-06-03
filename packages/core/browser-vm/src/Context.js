@@ -17,12 +17,15 @@ class Context {
     this.window = new Window( conf, this, frame, location);
 
     let body = conf.body;
-    if (!conf.body) {
+
+    if (conf.disableBody) {
+      body = document.body;
+    } else if (!conf.body) {
       body = document.createElement( 'body' );
       document.documentElement.appendChild( body );
     }
-    this.body = body;
 
+    this.body = body;
     this.document = new Document( conf, this, frame, location );
     this.baseFrame = frame;
     this._listenerMap = new Map();
