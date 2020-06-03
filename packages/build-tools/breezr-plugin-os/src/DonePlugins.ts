@@ -1,9 +1,9 @@
-import { Compiler } from 'webpack';
+import { Compiler, Configuration } from 'webpack';
 
 const defaultOptions = {};
 
 interface DoneOptions {
-  done: () => void;
+  done: (option: Configuration) => void;
 }
 
 export class DonePlugin {
@@ -20,7 +20,7 @@ export class DonePlugin {
     compiler.hooks.done.tap(
       'DonePlugin', // <-- Set a meaningful name here for stacktraces
       (data) => {
-        this.options.done && this.options.done()
+        this.options.done && this.options.done(compiler.options)
         return data;
       }
     );

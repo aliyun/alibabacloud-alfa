@@ -2,6 +2,7 @@ import * as WebpackChain from 'webpack-chain';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { DonePlugin } from './DonePlugins';
+import { MultiEntryManifest } from './MultiEntryManifest';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { wrapCss } from 'postcss-prefix-wrapper';
 
@@ -39,9 +40,14 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     entrypoints: true,
     output: `${options.id}.manifest.json`
   }]);
+
+  config.plugin('MultiEntryManifest').use(MultiEntryManifest, [{
+    entryName: `${options.id}.manifest.json`,
+  }]);
   
   config.plugin('WebpackDonePlugin').use(DonePlugin, [{
     done: () => {
+      // process css
       wrapCss(options.cssBuildDir || config.output.get('path'), options.id, {
         ext: '.os.css',
         disableOsCssExtends: options.disableOsCssExtends,

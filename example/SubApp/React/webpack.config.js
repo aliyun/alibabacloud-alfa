@@ -10,7 +10,10 @@ chainOsWebpack({
 })(chain);
 
 module.exports = merge(chain.toConfig(), {
-  entry: './src/index.js',
+  entry: {
+    'os-example': './src/index.js',
+    'os-example2': './src/index2.js'
+  },
   devtool: 'source-map',
   devServer: {
     port: '8081',

@@ -29,6 +29,13 @@ function App() {
         />
       </div>
 
+      <div className="react">
+        <Application
+          id="os-example2"
+          manifest="http://localhost:8081/os-example2.manifest.json"
+        />
+      </div>
+
       <div className="vue">
         <Application
           id="os-example-vue"
