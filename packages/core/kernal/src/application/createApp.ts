@@ -42,7 +42,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   // singleton instance for app
   if (app && app.isInited()) {
     // app.context.updateBody is not defined when sandbox disable.
-    if (app.context.updateBody && sandBoxOption.disableFakeBody) {
+    if (app.context.updateBody && !sandBoxOption.disableFakeBody) {
       app.context.updateBody && app.context.updateBody(appInfo.dom);
     }
     return app;
