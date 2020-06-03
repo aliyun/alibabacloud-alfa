@@ -20,6 +20,10 @@ const AppContainer = () => {
 
 }
 
+const node = document.createElement('div');
+node.innerHTML = 'os test'
+document.body.appendChild(node);
+
 const App = (props) => {
   return (
     <Router>

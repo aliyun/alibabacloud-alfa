@@ -13,7 +13,8 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
       body: appInfo.dom,
       id: appInfo.id,
       externals: sandBoxOption ? sandBoxOption.externalsVars: [],
-      url: sandBoxOption.sandBoxUrl
+      url: sandBoxOption.sandBoxUrl,
+      disableBody: sandBoxOption.disableFakeBody,
     });
     context.history.replaceState(null, '' , sandBoxOption.initialPath || '/');
   } else {
@@ -41,7 +42,9 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   // singleton instance for app
   if (app && app.isInited()) {
     // app.context.updateBody is not defined when sandbox disable.
-    app.context.updateBody && app.context.updateBody(appInfo.dom)
+    if (app.context.updateBody && !sandBoxOption.disableFakeBody) {
+      app.context.updateBody && app.context.updateBody(appInfo.dom);
+    }
     return app;
   }
 

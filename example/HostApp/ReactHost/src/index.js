@@ -18,7 +18,8 @@ function App() {
         <Application
           id="os-example"
           sandBox={{
-            initialPath: "/dashboard"
+            initialPath: "/dashboard",
+            disableFakeBody: true,
           }}
           appDidCatch={(e) => {
             console.log(e)

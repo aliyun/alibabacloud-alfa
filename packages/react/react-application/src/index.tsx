@@ -202,7 +202,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   public render() {
     const { id = '', style = {}, className = '' } = this.props;
-
+    const { disableBodyTag, sandBox } = this.props;
     if (this.state.hasError && this.state.error) {
       return (<ErrorPanel error={this.state.error}/>)
     }
@@ -210,16 +210,18 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     const Wrapper = React.Fragment ? React.Fragment : 'div';
 
     return (
-      <Wrapper>
+      <Wrapper className="-os-wrapper">
         {
           this.state.loading ? <Skeleton active /> : null
         }
         {
-          React.createElement(
-            id,
-            { style, className },
-            React.createElement(this.props.disableBodyTag ? 'div' : 'body', { ref: this.handleRef })
-          )
+          (sandBox?.disableFakeBody) 
+            ? React.createElement(id, { style, className, ref: this.handleRef } ) 
+            : React.createElement(
+              id,
+              { style, className },
+              React.createElement(disableBodyTag ? 'div' : 'body', { ref: this.handleRef })
+            )
         }
       </Wrapper>
     );
