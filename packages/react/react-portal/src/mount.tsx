@@ -43,7 +43,7 @@ const getProps = (props) => {
 
 type AppComponent<T> = React.ComponentClass<T & EmitterProps, any> | React.FunctionComponent<T & EmitterProps> | string;
 
-export function mount<T = any>(App: AppComponent<T>, container: Element, id: string) {
+export function mount<T = any>(App: AppComponent<T>, container?: Element, id?: string) {
   class ConsoleApp extends React.Component<T & IProps> {
     public componentDidCatch() {/*Empty*/}
 
@@ -87,7 +87,7 @@ export function mount<T = any>(App: AppComponent<T>, container: Element, id: str
       React,
       ReactDOM,
       rootComponent: ConsoleApp,
-      domElementGetter: () => document.getElementById(id),
+      domElementGetter: () => document.getElementsByTagName(id)[0],
     });
 
     return {

@@ -20,6 +20,7 @@ export class MultiEntryManifest {
 
   public apply (compiler: Compiler) {
     compiler.hooks.emit.tap('MultiEntryManifest', (compilation) => {
+      console.log(Object.keys(compilation.assets))
       const webpackConfig = compiler.options;
       const manifestStr = compilation.assets[this.options.entryName];
       const manifest = JSON.parse(manifestStr.source());
@@ -31,9 +32,13 @@ export class MultiEntryManifest {
           if (!manifest.entrypoints[entryId]) {
             return;
           }
+
           // @ts-ignore
           Object.values(manifest.entrypoints[entryId]).forEach((entryPaths: string[]) => {
             entryPaths.forEach((entryPath) => {
+              if (!compilation.assets[entryPath]) {
+                return;
+              }
               compilation.assets[entryPath] = new RawSource(
                 compilation.assets[entryPath].source().replace(
                   `window.__CONSOLE_OS_GLOBAL_HOOK__("${this.options.entryName.replace('.manifest.json', '')}`,
@@ -52,8 +57,6 @@ export class MultiEntryManifest {
           }, null, 2));
         });
       }
-    });
-  }
-
-  
+    })
+  } 
 }

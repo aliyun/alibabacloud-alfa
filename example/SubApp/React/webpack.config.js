@@ -9,6 +9,8 @@ chainOsWebpack({
   id: 'os-example'
 })(chain);
 
+const regCommon = new RegExp(`[\\/]node_modules[\\/](_)?(${['react'].join('|')})[\\/|@]`);
+
 module.exports = merge(chain.toConfig(), {
   entry: {
     'os-example': './src/index.js',
@@ -47,6 +49,17 @@ module.exports = merge(chain.toConfig(), {
         use: ['style-loader', 'css-loader', 'less-loader'],
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: regCommon,
+          name: 'common',
+          chunks: 'all'
+        }
+      }
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
