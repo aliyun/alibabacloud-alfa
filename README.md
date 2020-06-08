@@ -56,11 +56,11 @@ export default Home;
 
 ## React 
 
-see [Console OS React Portal](https://github.com/aliyun/alibabacloud-console-os/tree/master/packages/react-portal)
+see [Console OS React Portal](https://github.com/aliyun/alibabacloud-console-os/tree/master/packages/react/react-portal)
 
 ## Vue 
 
-see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/blob/master/packages/vue-portal/README.md)
+see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/tree/master/packages/vue/vue-portal)
 
 ## Try Example
 
