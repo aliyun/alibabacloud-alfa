@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "escape-string-regexp": "^2.0.0",
+    "glob": "^7.1.6",
     "lodash": "^4.17.11",
     "object-assign": "^4.1.1",
     "postcss": "^7.0.17"
