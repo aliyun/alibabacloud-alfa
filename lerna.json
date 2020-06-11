@@ -15,5 +15,5 @@
     "npmClient": "npm",
     "verifyAccess": false
   },
-  "version": "0.3.8-alpha.1"
+  "version": "0.3.8"
 }
