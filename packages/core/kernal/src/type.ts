@@ -25,7 +25,7 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   version?: string;
   name?: string;
   dom?: Element;
-  logger: {
+  logger?: {
     debug: () => {};
     error: () => {};
     warn: () => {};
