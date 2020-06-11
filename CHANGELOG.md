@@ -1,3 +1,7 @@
+# 0.3.8
+* Feat: build multi sub app according to webpack multi entry config
+* Fix: css wrap not working for multiple dir
+
 # 0.3.7
 * Fix: sandbox context initialize fails sometimes, because the iframe url was assigned after the iframe append to body;
 * Feat: now props.appDidCatch can trigger when sub app has error in react application;
