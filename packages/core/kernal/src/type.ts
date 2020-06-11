@@ -25,6 +25,12 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   version?: string;
   name?: string;
   dom?: Element;
+  logger: {
+    debug: () => {};
+    error: () => {};
+    warn: () => {};
+    info: () => {};
+  };
   manifest?: string;
   externals?: BasicModule[];
   customProps?: {
