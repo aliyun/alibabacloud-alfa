@@ -52,6 +52,8 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
 
   disableBodyTag: boolean;
 
+  loading: boolean | React.ReactChild;
+
   appProps: T;
 }
 
@@ -201,8 +203,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
   }
 
   public render() {
-    const { id = '', style = {}, className = '' } = this.props;
-    const { disableBodyTag, sandBox } = this.props;
+    const { id = '', style = {}, className = '', disableBodyTag, sandBox, disableLoading } = this.props;
     if (this.state.hasError && this.state.error) {
       return (<ErrorPanel error={this.state.error}/>)
     }
