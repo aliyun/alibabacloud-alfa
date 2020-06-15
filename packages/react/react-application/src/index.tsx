@@ -203,7 +203,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
   }
 
   public render() {
-    const { id = '', style = {}, className = '', disableBodyTag, sandBox, disableLoading } = this.props;
+    const { id = '', style = {}, className = '', disableBodyTag, sandBox } = this.props;
     if (this.state.hasError && this.state.error) {
       return (<ErrorPanel error={this.state.error}/>)
     }
