@@ -202,8 +202,16 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       });
   }
 
+  private getLoading() {
+    const { loading } = this.props;
+    if (loading && React.isValidElement(loading)) {
+      return loading;
+    }
+    return <Skeleton active />;
+  }
+
   public render() {
-    const { id = '', style = {}, className = '', disableBodyTag, sandBox } = this.props;
+    const { id = '', style = {}, className = '', disableBodyTag, sandBox, loading } = this.props;
     if (this.state.hasError && this.state.error) {
       return (<ErrorPanel error={this.state.error}/>)
     }
@@ -213,7 +221,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     return (
       <Wrapper className="-os-wrapper">
         {
-          this.state.loading ? <Skeleton active /> : null
+          this.state.loading && loading ? this.getLoading() : null
         }
         {
           (sandBox?.disableFakeBody) 
