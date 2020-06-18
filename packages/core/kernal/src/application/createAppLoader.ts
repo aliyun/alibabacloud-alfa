@@ -58,7 +58,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
       for (var index = 0; index < js.length - 1; index++) {
         await loadScriptsWithContext({
-          id, url: js[index], context
+          id, url: formatUrl(js[index], appInfo.manifest), context
         });
       }
 

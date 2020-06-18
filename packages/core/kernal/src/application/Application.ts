@@ -116,7 +116,10 @@ export class Application {
 
   public async update(props: any) {
     // @ts-ignore
-    return this.parcel.update && this.parcel.update(props)
+    return this.parcel.update && this.parcel.update({
+      ...props,
+      emitter: createEventBus(),
+    })
   }
 
   /**

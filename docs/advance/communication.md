@@ -1,6 +1,8 @@
 ---
 name: communication
 zhName: 通信
+tags: 
+  advance: true
 sort: 4
 ---
 

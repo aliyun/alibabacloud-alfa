@@ -1,6 +1,8 @@
 ---
 name: route
 zhName: 路由
+tags: 
+  advance: true
 sort: 6
 ---
 

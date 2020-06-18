@@ -1,6 +1,6 @@
-import * as postcss from 'postcss';
-import * as objectAssign from 'object-assign';
-import * as escapeStringRegexp from 'escape-string-regexp';
+import postcss from 'postcss';
+import objectAssign from 'object-assign';
+import escapeStringRegexp from 'escape-string-regexp';
 
 const CSS_ESCAPED_TAB = '\\9';
 

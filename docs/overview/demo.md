@@ -2,6 +2,8 @@
 name: demo
 zhName: Live Demo
 sort: 1
+tags: 
+  overview: true
 ---
 
 # Try Demo

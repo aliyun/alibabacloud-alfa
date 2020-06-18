@@ -1,4 +1,26 @@
-# 3.2.0
+# 0.3.8
+* Feat: build multi sub app according to webpack multi entry config
+* Fix: css wrap not working for multiple dir
+
+# 0.3.7
+* Fix: sandbox context initialize fails sometimes, because the iframe url was assigned after the iframe append to body;
+* Feat: now props.appDidCatch can trigger when sub app has error in react application;
+
+# 0.3.6
+* Fix: Context update body error when sandbox is disable
+* Fix: Type error for first args of mount function in react portal
+
+# 0.3.5
+* Fix: Add the Type Define for React Portal
+
+
+# 0.3.4
+* Optimization: now using react.fragment in for react16 and div in react15 for react-application.
+
+# 0.3.3
+* Feature: make css wrap as a independent package
+
+# 0.3.2
 * Feature: add the new prefetch api for preload sub app
 * Feature: add the new kernal api
 ``` javascript

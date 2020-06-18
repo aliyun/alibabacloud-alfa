@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { OSApplication, createMicroApp, mount, load, unmount, distroy } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
 
-interface IProps<T = any> {
+interface IProps<T = any> extends HTMLAttributes<Element> {
   /**
    * App unique id
    */
@@ -52,6 +52,8 @@ interface IProps<T = any> {
 
   disableBodyTag: boolean;
 
+  loading: boolean | React.ReactChild;
+
   appProps: T;
 }
 
@@ -69,7 +71,6 @@ const getParcelProps = (props: Partial<IProps>) => {
   delete parcelProps.initialPath;
   delete parcelProps.externalsVars;
   delete parcelProps.sandBox;
-  delete parcelProps.appDidCatch;
   delete parcelProps.appDidMount;
 
   return parcelProps;
@@ -192,37 +193,38 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       })
       .catch((err) => {
         this.nextThingToDo = Promise.resolve(); // reset so we don't .then() the bad promise again
-        this.setState({hasError: true, loading: false, error: err})
-        if (err && err.message) {
-          err.message = `During '${action}', os application threw an error: ${err.message}`
-        }
+        const error = new Error(`During '${action}', os application threw an error: ${err.message}`)
+        this.setState({ hasError: true, loading: false, error })
         if (this.props.appDidCatch) {
-          this.props.appDidCatch(err)
+          this.props.appDidCatch(error)
         }
-        console.error(err);
+        console.error(error);
       });
   }
 
   public render() {
-    const { id = '' } = this.props;
-
+    const { id = '', style = {}, className = '', disableBodyTag, sandBox } = this.props;
     if (this.state.hasError && this.state.error) {
       return (<ErrorPanel error={this.state.error}/>)
     }
 
+    const Wrapper = React.Fragment ? React.Fragment : 'div';
+
     return (
-      <div>
+      <Wrapper className="-os-wrapper">
         {
           this.state.loading ? <Skeleton active /> : null
         }
         {
-          React.createElement(
-            id,
-            {},
-            React.createElement(this.props.disableBodyTag ? 'div' : 'body', { ref: this.handleRef })
-          )
+          (sandBox?.disableFakeBody) 
+            ? React.createElement(id, { style, className, ref: this.handleRef } ) 
+            : React.createElement(
+              id,
+              { style, className },
+              React.createElement(disableBodyTag ? 'div' : 'body', { ref: this.handleRef })
+            )
         }
-      </div>
+      </Wrapper>
     );
   }
 }

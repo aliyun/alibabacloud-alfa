@@ -15,6 +15,7 @@ interface EmitterProps {
 interface IProps {
   customProps: EmitterProps;
   appProps: EmitterProps;
+  appDidCatch?: (error: Error) => void;
   logger: Logger;
 }
 
@@ -40,8 +41,9 @@ const getProps = (props) => {
   return appProps || {};
 };
 
-export function mount<T = any>(App: new() => React.Component<T & EmitterProps, any>, container: Element, id: string) {
+type AppComponent<T> = React.ComponentClass<T & EmitterProps, any> | React.FunctionComponent<T & EmitterProps> | string;
 
+export function mount<T = any>(App: AppComponent<T>, container?: Element, id?: string) {
   class ConsoleApp extends React.Component<T & IProps> {
     public componentDidCatch() {/*Empty*/}
 
@@ -65,7 +67,10 @@ export function mount<T = any>(App: new() => React.Component<T & EmitterProps, a
       };
 
       return (
-        <ErrorBoundary logger={this.props.logger}>
+        <ErrorBoundary 
+          logger={this.props.logger}
+          appDidCatch={this.props.appDidCatch}
+        >
           { Context ? (
             <Context.Provider value={contextValue}>
               <App {...Object.assign(getProps(this.props) || {})} />
@@ -82,7 +87,7 @@ export function mount<T = any>(App: new() => React.Component<T & EmitterProps, a
       React,
       ReactDOM,
       rootComponent: ConsoleApp,
-      domElementGetter: () => document.getElementById(id),
+      domElementGetter: () => document.getElementsByTagName(id)[0],
     });
 
     return {

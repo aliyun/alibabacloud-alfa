@@ -1,6 +1,6 @@
 {
-  "name": "@alicloud/console-toolkit-plugin-os",
-  "version": "0.3.0",
+  "name": "postcss-prefix-wrapper",
+  "version": "0.3.8",
   "description": "long term cache plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
@@ -32,15 +32,11 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@alicloud/console-toolkit-shared-utils": "^1.0.0",
-    "@types/node": "^12.7.0",
     "escape-string-regexp": "^2.0.0",
+    "glob": "^7.1.6",
     "lodash": "^4.17.11",
     "object-assign": "^4.1.1",
-    "package-json": "^6.5.0",
-    "postcss": "^7.0.17",
-    "webpack-assets-manifest": "^3.1.1",
-    "webpack-sources": "^1.4.1"
+    "postcss": "^7.0.17"
   },
   "author": "流司",
   "license": "MIT",

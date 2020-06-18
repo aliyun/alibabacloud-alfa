@@ -2,31 +2,28 @@
 # yarn lockfile v1
 
 
-"@alicloud/console-os-events@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-events/-/console-os-events-0.3.0.tgz#b653e2e334971dbdc8cdc6ea6f984a05d3edb8f7"
-  integrity sha512-3qlt/tBdCwqLmWp0X8U2eCNiRvzJDP/PdKMPJ7KYCjKtj4PLiIa06NyJz6tszl5V1NDlUhEFoWK8KOdjk5h5cw==
+"@alicloud/console-os-events@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-events/-/console-os-events-0.3.3.tgz#8a04198a5701f23644963a18bf5bca513795e0a5"
+  integrity sha512-aAmwAqpvsyWBdEcXY65LPX+lBCWs39DK1hTRTe34KMftgrPqi3bvg0lRD3/IQcPv7bag8fNWsrbpZQJv/Lgbag==
 
-"@alicloud/console-os-react-portal@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-react-portal/-/console-os-react-portal-0.3.1.tgz#c1cac0b6cd01f2c2b9d0386267be1bc21f995093"
-  integrity sha512-JQkMDY/gkMbc2lJfJY9BkMNaA2oe2caYu70Etb+da2IPfHjFFSMppdccV5ueWU+yzQS1sFw8rJLTC5ZAl4Iuqw==
+"@alicloud/console-os-react-portal@^0.3.8-alpha.1":
+  version "0.3.8-alpha.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-react-portal/-/console-os-react-portal-0.3.8-alpha.1.tgz#edcdf341b4c190d3c4dc4f33a163588c3f4be3a7"
+  integrity sha512-M3oF1y+oULX3HwYibbRr4wMMp4C9Z+I9E9Wl0MREh13pf127TAbaJbsVb9mpFUM68FuLtajzfAlsJkNQDYzgfw==
   dependencies:
-    "@alicloud/console-os-events" "^0.3.0"
+    "@alicloud/console-os-events" "^0.3.3"
     single-spa-react "^2.10.2"
 
-"@alicloud/console-toolkit-plugin-os@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-os/-/console-toolkit-plugin-os-0.3.0.tgz#4daf8b44d89d8de0ad36e0c10404d87560279c15"
-  integrity sha512-pG86/9OWVK7GFQJwSQnYfz8LvpDqqo/pd7jxzR8QoPhflkyQYERv29gOH/RhFkveucxUII3XceFL9Xu9mYtNXg==
+"@alicloud/console-toolkit-plugin-os@^0.3.8-alpha.1":
+  version "0.3.8-alpha.1"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-os/-/console-toolkit-plugin-os-0.3.8-alpha.1.tgz#1be90906cd8dbd5f73fa068d0fedbca89b346056"
+  integrity sha512-KcpvttY1khpQ8SVW8zGSTQtbri0r9ZRDTSQFk2jdXEyVg+bET6L6qn6Rb2HucMzWzMd5Lnq/m/OV4j0Jmw4THA==
   dependencies:
     "@alicloud/console-toolkit-shared-utils" "^1.0.0"
-    "@types/node" "^12.7.0"
-    escape-string-regexp "^2.0.0"
     lodash "^4.17.11"
-    object-assign "^4.1.1"
     package-json "^6.5.0"
-    postcss "^7.0.17"
+    postcss-prefix-wrapper "^0.3.3"
     webpack-assets-manifest "^3.1.1"
     webpack-sources "^1.4.1"
 
@@ -883,11 +880,6 @@
   version "12.12.31"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.31.tgz#d6b4f9645fee17f11319b508fb1001797425da51"
   integrity sha512-T+wnJno8uh27G9c+1T+a1/WYCHzLeDqtsGJkoEdSp2X8RTh3oOCZQcUnjAx90CS8cmmADX51O0FI/tu9s0yssg==
-
-"@types/node@^12.7.0":
-  version "12.12.39"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.39.tgz#532d25c1e639d89dd6f3aa1d7b3962e3e7fa943d"
-  integrity sha512-pADGfwnDkr6zagDwEiCVE4yQrv7XDkoeVa4OfA9Ju/zRTk6YNDLGtQbkdL4/56mCQQCs4AhNrBIag6jrp7ZuOg==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
@@ -4529,6 +4521,16 @@ postcss-modules-values@^3.0.0:
     icss-utils "^4.0.0"
     postcss "^7.0.6"
 
+postcss-prefix-wrapper@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/postcss-prefix-wrapper/-/postcss-prefix-wrapper-0.3.3.tgz#5039c139e4a72a08bab78827f13b1a3fe9536f84"
+  integrity sha512-oEVt7Tb9TFVbZ0eDF1yCQWjukp/AU+ssy/tkwIeqRWsFdxglrdsYKlxK/vpObM4WA65gRvigiIek3MDNu78Wkg==
+  dependencies:
+    escape-string-regexp "^2.0.0"
+    lodash "^4.17.11"
+    object-assign "^4.1.1"
+    postcss "^7.0.17"
+
 postcss-selector-parser@^6.0.0, postcss-selector-parser@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.2.tgz#934cf799d016c83411859e09dcecade01286ec5c"
@@ -4553,9 +4555,9 @@ postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.23, postcss@^7.0.5, postcss@^7.0.
     supports-color "^6.1.0"
 
 postcss@^7.0.17:
-  version "7.0.30"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.30.tgz#cc9378beffe46a02cbc4506a0477d05fcea9a8e2"
-  integrity sha512-nu/0m+NtIzoubO+xdAlwZl/u5S5vi/y6BCsoL8D+8IxsD3XvBS8X4YEADNIVXKVuQvduiucnRv+vPIqj56EGMQ==
+  version "7.0.32"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.32.tgz#4310d6ee347053da3433db2be492883d62cec59d"
+  integrity sha512-03eXong5NLnNCD05xscnGKGDZ98CyzoqPSMjOe6SuoQY7Z2hIj0Ld1g/O/UQRuOle2aRtiIRDg9tDcTGAkLfKw==
   dependencies:
     chalk "^2.4.2"
     source-map "^0.6.1"
@@ -6074,9 +6076,9 @@ websocket-driver@>=0.5.1:
     websocket-extensions ">=0.1.1"
 
 websocket-extensions@>=0.1.1:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
-  integrity sha512-nqHUnMXmBzT0w570r2JpJxfiSD1IzoI+HGVdd3aZ0yNi3ngvQ4jv1dtHt5VGxfI2yj5yqImPhOK4vmIh2xMbGg==
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
+  integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
 
 which-module@^2.0.0:
   version "2.0.0"

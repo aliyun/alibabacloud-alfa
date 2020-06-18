@@ -2,6 +2,8 @@
 name: quick-start
 zhName: 快速开始
 sort: 2
+tags: 
+  overview: true
 ---
 # 快速开始
 

@@ -50,7 +50,6 @@ export const getManifest = async (url: string) => {
     manifestInfo.resolve(manifest);
     return manifest;
   } catch (e) {
-    console.error(e, '11111111111111')
     manifestInfo.reject(e);
     throw e;
   }

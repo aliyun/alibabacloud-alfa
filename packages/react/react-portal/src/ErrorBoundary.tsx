@@ -6,6 +6,7 @@ export interface Logger {
 
 interface IProp {
   logger: Logger;
+  appDidCatch?: (error: Error) => void;
 }
 
 interface State {
@@ -32,7 +33,10 @@ class ErrorBoundary extends React.Component<IProp, State> {
       // @ts-ignore
       window.__bl && window.__bl.error(error, errorInfo);
     }
-    console.log(error);
+
+    console.error(error);
+
+    this.props.appDidCatch && this.props.appDidCatch(error)
   }
 
   public render() {

@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-ng-builder",
-  "version": "0.3.0",
+  "version": "0.3.8",
   "description": "NG builder for Angular",
   "main": "lib/index.js",
   "scripts": {
@@ -32,9 +32,10 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^0.3.0",
+    "@alicloud/console-toolkit-plugin-os": "^0.3.8",
     "webpack-assets-manifest": "^3.1.1"
   },
   "author": "boelroy <boelroy@live.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "f502f98ad8940c4b6c70946084845d5fa7ec378f"
 }

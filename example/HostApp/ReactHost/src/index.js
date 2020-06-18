@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // 加载 console os 的依赖
-import { start } from "@alicloud/console-os-kernal";
-import Application from "@alicloud/console-os-react-app";
+import Application, { start } from "@alicloud/console-os-react-app";
 
 // ng 的依赖
 import "core-js";
@@ -19,10 +18,21 @@ function App() {
         <Application
           id="os-example"
           sandBox={{
-            initialPath: "/dashboard"
+            initialPath: "/dashboard",
+            disableFakeBody: true,
+          }}
+          appDidCatch={(e) => {
+            console.log(e)
           }}
           // src="http://localhost:8080/img/logo.82b9c7a5.png"
           manifest="http://localhost:8081/os-example.manifest.json"
+        />
+      </div>
+
+      <div className="react">
+        <Application
+          id="os-example2"
+          manifest="http://localhost:8081/os-example2.manifest.json"
         />
       </div>
 
