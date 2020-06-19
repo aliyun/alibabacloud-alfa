@@ -14,7 +14,7 @@ const regCommon = new RegExp(`[\\/]node_modules[\\/](_)?(${['react'].join('|')})
 module.exports = merge(chain.toConfig(), {
   entry: {
     'os-example': './src/index.js',
-    'os-example2': './src/index2.js'
+    // 'os-example2': './src/index2.js'
   },
   devtool: 'source-map',
   devServer: {

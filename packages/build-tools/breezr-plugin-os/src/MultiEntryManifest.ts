@@ -20,7 +20,6 @@ export class MultiEntryManifest {
 
   public apply (compiler: Compiler) {
     compiler.hooks.emit.tap('MultiEntryManifest', (compilation) => {
-      console.log(Object.keys(compilation.assets))
       const webpackConfig = compiler.options;
       const manifestStr = compilation.assets[this.options.entryName];
       const manifest = JSON.parse(manifestStr.source());

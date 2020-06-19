@@ -50,6 +50,7 @@ export interface SandBoxOption {
   sandBoxUrl?: string;
   singleton?: boolean;
   initialPath?: string;
+  syncInitHref?: boolean;
   externalsVars?: string[];
   allowEvents?: string[];
   disableFakeBody?: boolean;

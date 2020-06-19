@@ -1,3 +1,10 @@
+# 0.3.10
+* Feat: sync initial path for sandbox every app mount
+
+# 0.3.9
+* Feat: custorm loading for react app
+* Fix: sandbox box not working for prefetch
+
 # 0.3.8
 * Feat: build multi sub app according to webpack multi entry config
 * Fix: css wrap not working for multiple dir

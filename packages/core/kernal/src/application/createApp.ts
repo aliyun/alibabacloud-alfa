@@ -45,6 +45,11 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     if (app.context.updateBody && !sandBoxOption.disableFakeBody) {
       app.context.updateBody && app.context.updateBody(appInfo.dom);
     }
+    // update the to initialPath every time update the initialPath for iframe
+    if (sandBoxOption.syncInitHref && app.context.baseFrame) {
+      app.context.baseFrame.contentWindow.history.replaceState(null, null, sandBoxOption.initialPath || '/')
+    }
+
     return app;
   }
 
