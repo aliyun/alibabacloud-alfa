@@ -5,7 +5,7 @@ import { createCachePool } from './application/AppCachePool';
 import * as ManifestCachePool from './misc/ManifestCachePool';
 import { Application } from 'application/Application';
 
-let globalOptions: GlobalOption = {};
+export let globalOptions: GlobalOption = {};
 
 /**
  * Create a Micro Application intance

@@ -52,6 +52,9 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
 
   disableBodyTag: boolean;
 
+  /**
+   * loading status for consoleos app
+   */
   loading: boolean | React.ReactChild;
 
   appProps: T;
@@ -104,7 +107,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       const { jsUrl: url, id, manifest, externalsVars, singleton = true } = this.props;
 
       if (!id) {
-        throw Error('You should give a id for OS Application');
+        throw new Error('You should give a id for OS Application');
       }
 
       let sandBox = this.props.sandBox;
@@ -124,9 +127,6 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
         throw new Error('React dom element is no prepared. please check')
       }
 
-      if (externalsVars) {
-        sandBox.externalsVars = externalsVars;
-      }
       const appInfo = {
         url,
         id,
@@ -202,8 +202,16 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       });
   }
 
+  private getLoading() {
+    const { loading } = this.props;
+    if (loading && React.isValidElement(loading)) {
+      return loading;
+    }
+    return <Skeleton active />;
+  }
+
   public render() {
-    const { id = '', style = {}, className = '', disableBodyTag, sandBox } = this.props;
+    const { id = '', style = {}, className = '', disableBodyTag, sandBox, loading } = this.props;
     if (this.state.hasError && this.state.error) {
       return (<ErrorPanel error={this.state.error}/>)
     }
@@ -213,7 +221,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     return (
       <Wrapper className="-os-wrapper">
         {
-          this.state.loading ? <Skeleton active /> : null
+          this.state.loading && loading ? this.getLoading() : null
         }
         {
           (sandBox?.disableFakeBody) 

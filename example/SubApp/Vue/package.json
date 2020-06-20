@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/demo-console-os-vue-app",
-  "version": "0.3.8",
+  "version": "0.3.11",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -21,7 +21,7 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-cli-plugin-console-os": "^0.3.8",
+    "vue-cli-plugin-console-os": "^0.3.11",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
