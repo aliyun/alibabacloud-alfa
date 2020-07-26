@@ -11,7 +11,7 @@
     "core-js": "^3.6.3",
     "history": "4.10.1",
     "http-proxy-middleware": "^0.20.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "lru-cache": "5.1.1",
     "moment": "2.24.0",
     "react": "16.8.6",
