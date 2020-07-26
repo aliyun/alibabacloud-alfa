@@ -7,23 +7,23 @@
   resolved "https://registry.yarnpkg.com/@alicloud/console-os-events/-/console-os-events-0.3.3.tgz#8a04198a5701f23644963a18bf5bca513795e0a5"
   integrity sha512-aAmwAqpvsyWBdEcXY65LPX+lBCWs39DK1hTRTe34KMftgrPqi3bvg0lRD3/IQcPv7bag8fNWsrbpZQJv/Lgbag==
 
-"@alicloud/console-os-react-portal@^0.3.8-alpha.1":
-  version "0.3.8-alpha.1"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-react-portal/-/console-os-react-portal-0.3.8-alpha.1.tgz#edcdf341b4c190d3c4dc4f33a163588c3f4be3a7"
-  integrity sha512-M3oF1y+oULX3HwYibbRr4wMMp4C9Z+I9E9Wl0MREh13pf127TAbaJbsVb9mpFUM68FuLtajzfAlsJkNQDYzgfw==
+"@alicloud/console-os-react-portal@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-react-portal/-/console-os-react-portal-0.3.8.tgz#d76fb7355810a92a82a150a6e15a81a2effa4da0"
+  integrity sha512-LbfavJR1Vq4tWGtRomTkrShSaa89z/pLqKIj+PtvFb0868wIFe4HaHCUXFRU2jTx+XZM8FDlF6BrPJ5bqb27LA==
   dependencies:
     "@alicloud/console-os-events" "^0.3.3"
     single-spa-react "^2.10.2"
 
-"@alicloud/console-toolkit-plugin-os@^0.3.8-alpha.1":
-  version "0.3.8-alpha.1"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-os/-/console-toolkit-plugin-os-0.3.8-alpha.1.tgz#1be90906cd8dbd5f73fa068d0fedbca89b346056"
-  integrity sha512-KcpvttY1khpQ8SVW8zGSTQtbri0r9ZRDTSQFk2jdXEyVg+bET6L6qn6Rb2HucMzWzMd5Lnq/m/OV4j0Jmw4THA==
+"@alicloud/console-toolkit-plugin-os@^0.3.11":
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-toolkit-plugin-os/-/console-toolkit-plugin-os-0.3.11.tgz#b68bfb5dbc6995aa87ce2c2e62b0cf6b5caecb11"
+  integrity sha512-AByx8d+Q0aykw3Fs2PrKbyrwuQhOU+xeOP0tjSN/XiDvJkjI3T5fmTYFw5YiAAr1MedhlxravZyQ9A0asJxxaw==
   dependencies:
     "@alicloud/console-toolkit-shared-utils" "^1.0.0"
     lodash "^4.17.11"
     package-json "^6.5.0"
-    postcss-prefix-wrapper "^0.3.3"
+    postcss-prefix-wrapper "^0.3.8"
     webpack-assets-manifest "^3.1.1"
     webpack-sources "^1.4.1"
 
@@ -2785,7 +2785,7 @@ glob-parent@~5.1.0:
   dependencies:
     is-glob "^4.0.1"
 
-glob@^7.0.3, glob@^7.1.3, glob@^7.1.4:
+glob@^7.0.3, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
   version "7.1.6"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"
   integrity sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==
@@ -3726,10 +3726,10 @@ lodash.has@^4.0:
   resolved "https://registry.yarnpkg.com/lodash.has/-/lodash.has-4.5.2.tgz#d19f4dc1095058cccbe2b0cdf4ee0fe4aa37c862"
   integrity sha1-0Z9NwQlQWMzL4rDN9O4P5Ko3yGI=
 
-lodash@4.17.15, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.3:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+lodash@4.17.19, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.3:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 loglevel@^1.6.6:
   version "1.6.7"
@@ -4521,12 +4521,13 @@ postcss-modules-values@^3.0.0:
     icss-utils "^4.0.0"
     postcss "^7.0.6"
 
-postcss-prefix-wrapper@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/postcss-prefix-wrapper/-/postcss-prefix-wrapper-0.3.3.tgz#5039c139e4a72a08bab78827f13b1a3fe9536f84"
-  integrity sha512-oEVt7Tb9TFVbZ0eDF1yCQWjukp/AU+ssy/tkwIeqRWsFdxglrdsYKlxK/vpObM4WA65gRvigiIek3MDNu78Wkg==
+postcss-prefix-wrapper@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/postcss-prefix-wrapper/-/postcss-prefix-wrapper-0.3.8.tgz#30ebbaaa8b0bacdaed2b729847d80a0630a2a1af"
+  integrity sha512-Au8308jKSiKQGnsc9F3inXECqyQtHJokmRYqKe+wQ/kq8FFD37RXSy/ipoydLcX+7Om0OiBbBqoH1Iq5Mc+Waw==
   dependencies:
     escape-string-regexp "^2.0.0"
+    glob "^7.1.6"
     lodash "^4.17.11"
     object-assign "^4.1.1"
     postcss "^7.0.17"
