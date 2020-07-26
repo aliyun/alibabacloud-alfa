@@ -2,22 +2,22 @@
 # yarn lockfile v1
 
 
-"@alicloud/console-os-browser-vm@^0.3.8-alpha.0":
-  version "0.3.8-alpha.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-browser-vm/-/console-os-browser-vm-0.3.8-alpha.0.tgz#cd7f8d6335f90b8dd71a180692a309223c1eb6c9"
-  integrity sha512-m8E0qncm1bOt5lAgH1P4o7BF9TOrK2jOVJV/A4Ib/K7WQ8cXi3hbO63RZrGTvihNJje3J3exAQf9l0dK5yBaGw==
+"@alicloud/console-os-browser-vm@^0.3.9":
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-browser-vm/-/console-os-browser-vm-0.3.9.tgz#67d3f5cd1c7c0262d49aa66ef1074140586ba466"
+  integrity sha512-7BsDBqZHA2vlAcpd5UtOLEVbQHu6zjaniWc13EJ6RHkmvkl4NA7gNKbxGhRJwo2TPRDKgdbBhKtuQ/hG+YyLzQ==
 
 "@alicloud/console-os-events@^0.3.3":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@alicloud/console-os-events/-/console-os-events-0.3.3.tgz#8a04198a5701f23644963a18bf5bca513795e0a5"
   integrity sha512-aAmwAqpvsyWBdEcXY65LPX+lBCWs39DK1hTRTe34KMftgrPqi3bvg0lRD3/IQcPv7bag8fNWsrbpZQJv/Lgbag==
 
-"@alicloud/console-os-kernal@^0.3.8-alpha.0":
-  version "0.3.8-alpha.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-kernal/-/console-os-kernal-0.3.8-alpha.0.tgz#5de22f414a916e24d747b02c9d283152c3600579"
-  integrity sha512-07w/4ZnUviqWcwuNwXsnfP42iPRZSzoGgTTJLds7boBnehWB4xnL80CXQ7doCU7O2+rJmOoIxKPIwAHCGCygLw==
+"@alicloud/console-os-kernal@^0.3.11":
+  version "0.3.11"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-kernal/-/console-os-kernal-0.3.11.tgz#b20ed663bdb8a5d9e427d0d32b93cc7cd93a6d18"
+  integrity sha512-lKqS3JIuVka1WYgfzwsFqZPOIt2aJ5Ufd6SEUVYovHkSGlxMQnlDGcSG2Ya27fe3GTytuGP7sVn36XnMBwZ0hg==
   dependencies:
-    "@alicloud/console-os-browser-vm" "^0.3.8-alpha.0"
+    "@alicloud/console-os-browser-vm" "^0.3.9"
     "@alicloud/console-os-events" "^0.3.3"
     "@alicloud/console-os-loader" "^0.3.3"
     "@types/lru-cache" "^5.1.0"
@@ -32,12 +32,12 @@
   dependencies:
     debug "^4.1.1"
 
-"@alicloud/console-os-react-app@^0.3.8-alpha.0":
-  version "0.3.8-alpha.0"
-  resolved "https://registry.yarnpkg.com/@alicloud/console-os-react-app/-/console-os-react-app-0.3.8-alpha.0.tgz#c0152d19c21d0308b1623ea890ccc706b9a7b71a"
-  integrity sha512-lb1Q/AFu6Ujgpty3QxCdQaO1hroyMMBdEODqmbjWwwPeXR87bkwhBveWnjGwoo8P4DeOidd611Ap1eg6tqmpoQ==
+"@alicloud/console-os-react-app@^0.3.12":
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/@alicloud/console-os-react-app/-/console-os-react-app-0.3.12.tgz#e44e150040ef4b6623c7864fdffb3e4b872da6cb"
+  integrity sha512-2SmAVohFGlggVpluCJ1sxB1zmsbzBEQHrCjK8TBbFwTYzA2rqKTJJh0u7rvMggYwGbEoZ0JV997gn+wWIMePFw==
   dependencies:
-    "@alicloud/console-os-kernal" "^0.3.8-alpha.0"
+    "@alicloud/console-os-kernal" "^0.3.11"
     classnames "^2.2.6"
 
 "@babel/code-frame@7.5.5":
@@ -6045,10 +6045,10 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.15, "lodash@>=3.5 <5", lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.5:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+lodash@4.17.19, "lodash@>=3.5 <5", lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.5:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 loglevel@^1.4.1:
   version "1.6.7"
