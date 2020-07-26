@@ -31,9 +31,9 @@ export default mount({
 添加 Vue Cli ConsoleOS 插件:
 
 ```bash
-> npm install vue-cli-plugin-os -D
+> npm install vue-cli-plugin-console-os -D
 # or
-> yarn add vue-cli-plugin-os -D
+> yarn add vue-cli-plugin-console-os -D
 ```
 
 在 ```vue.config.js``` 增加 ConsoleOS 插件配置
