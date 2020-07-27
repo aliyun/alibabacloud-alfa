@@ -98,6 +98,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
     this.unmounted = false;
   }
+
   private handleRef = (el: HTMLElement) => {
     this.el = el
   }
@@ -239,4 +240,4 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
 export default Application;
 
-export { start, createEventBus, prefetch } from '@alicloud/console-os-kernal';
+export { start, createEventBus, prefetch, loadExposedModule } from '@alicloud/console-os-kernal';

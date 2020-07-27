@@ -1,4 +1,4 @@
 
 export { Context } from './Context';
-export { mount } from './mount'
+export { mount, registerExposedModule } from './mount'
 export { withSyncHistory, withCompatibleSyncHistory, isOsContext } from './utils';

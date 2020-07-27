@@ -106,6 +106,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
     ],
     update: [
       ...appInstance.update ? appInstance.update : []
-    ]
+    ],
+    exposedModule: appInstance.exposedModule
   }
 }

@@ -154,6 +154,14 @@ export class Application {
     return this.destory()
   }
 
+  public getExposedModule<T>(moduleName: string) {
+    if (!this.remoteApp.exposedModule) {
+      return undefined;
+    }
+
+    return this.remoteApp.exposedModule[moduleName] as (T | undefined);
+  }
+
   /**
    * 
    * @param parcel 

@@ -61,6 +61,19 @@ export const distroy = async (app: Application) => {
   await app.destory()
 }
 
+export const getExposedModule = <T>(app: Application, moduleName: string) => {
+  return app.getExposedModule<T>(moduleName);
+}
+
+export const loadExposedModule = async <T>(appInfo: AppInfo, moduleName: string, options: AppOption = {}) => {
+  // create application
+  const app = await createMicroApp(appInfo, options);
+  // load application
+  await load(app)
+
+  return getExposedModule<T>(app, moduleName);
+}
+
 /**
  * 
  * @param appInfo 

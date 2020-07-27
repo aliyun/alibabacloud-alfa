@@ -2,8 +2,10 @@ import React from 'react';
 import Home from './Home';
 import About from './About';
 import Dashboard from './Dashboard';
-import { mount } from '@alicloud/console-os-react-portal';
+import { mount, registerExposedModule, isOsContext } from '@alicloud/console-os-react-portal';
 import './index.less';
+
+registerExposedModule('About', About);
 
 import {
   BrowserRouter as Router,
@@ -19,10 +21,6 @@ window.title = '🤹FAKE ALIYUN FOR REACT';
 const AppContainer = () => {
 
 }
-
-const node = document.createElement('div');
-node.innerHTML = 'os test'
-document.body.appendChild(node);
 
 const App = (props) => {
   return (

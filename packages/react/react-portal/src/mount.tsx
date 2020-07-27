@@ -43,6 +43,17 @@ const getProps = (props) => {
 
 type AppComponent<T> = React.ComponentClass<T & EmitterProps, any> | React.FunctionComponent<T & EmitterProps> | string;
 
+const exposeModuleMap: Record<string, any> = {};
+
+export function registerExposedModule(moduleName: string, modules: any) {
+  if (exposeModuleMap[moduleName]) {
+    console.error('module has been registered in expose module map');
+    return;
+  }
+
+  exposeModuleMap[moduleName] = modules;
+}
+
 export function mount<T = any>(App: AppComponent<T>, container?: Element, id?: string) {
   class ConsoleApp extends React.Component<T & IProps> {
     public componentDidCatch() {/*Empty*/}
@@ -103,7 +114,8 @@ export function mount<T = any>(App: AppComponent<T>, container?: Element, id?: s
       update: [
         // @ts-ignore
         reactLifecycles.update,
-      ]
+      ],
+      exposedModule: exposeModuleMap
     }
   } else {
     // @ts-ignore
