@@ -1,4 +1,4 @@
-import { Compiler } from 'webpack';
+import { Compiler, compilation } from 'webpack';
 import { ConcatSource } from 'webpack-sources';
 
 export interface OSJsonpWebpackPluginOption {
@@ -15,31 +15,44 @@ export class OSJsonpWebpackPlugin {
   }
 
   public apply(compiler: Compiler) {
-    compiler.hooks.compilation.tap(
-      'OSJsonpPlugin', // <-- Set a meaningful name here for stacktraces
-      (compilation) => {
-        compilation.hooks.afterOptimizeChunkAssets.tap('OSJsonpPlugin', (chunks) => {
-          chunks.forEach(firstChunk => {
-            if (!firstChunk) {
-              return;
-            }
-            const entryFile = firstChunk.files.find((file) => file.endsWith('.js'));
-            if (!entryFile) {
-              return chunks;
-            }
-  
-            const entryAsset = compilation.assets[entryFile];
-            if (!entryAsset) {
-              return;
-            }
-  
-            const [prefix, suffix] = this._wrapCodeWithOSJsonp(this.getId(compiler));
-  
-            compilation.assets[entryFile] = new ConcatSource(prefix, entryAsset, suffix);
+    if (compiler.hooks) {
+      compiler.hooks.compilation.tap(
+        'OSJsonpPlugin', // <-- Set a meaningful name here for stacktraces
+        (compilation) => {
+          compilation.hooks.afterOptimizeChunkAssets.tap('OSJsonpPlugin', (chunks) => {
+            this.wrappChunks(compiler, compilation, chunks)
           });
+        }
+      );
+    } else {
+      compiler.plugin('compilation', (compilation) => {
+        // @ts-ignore
+        compilation.plugin('after-optimize-chunk-assets', (chunks) => {
+          this.wrappChunks(compiler, compilation, chunks)
         });
+      });
+    }
+  }
+
+  private wrappChunks(compiler: Compiler,compilation: compilation.Compilation, chunks: compilation.Chunk[]) {
+    chunks.forEach(firstChunk => {
+      if (!firstChunk) {
+        return;
       }
-    );
+      const entryFile = firstChunk.files.find((file) => file.endsWith('.js'));
+      if (!entryFile) {
+        return chunks;
+      }
+
+      const entryAsset = compilation.assets[entryFile];
+      if (!entryAsset) {
+        return;
+      }
+
+      const [prefix, suffix] = this._wrapCodeWithOSJsonp(this.getId(compiler));
+
+      compilation.assets[entryFile] = new ConcatSource(prefix, entryAsset, suffix);
+    });
   }
   
   private getId(compiler: Compiler): string {

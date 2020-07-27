@@ -1,0 +1,33 @@
+{
+  "name": "@alicloud/demo-console-os-webpack-3",
+  "version": "0.3.11",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "@alicloud/console-os-react-portal": "^0.3.8"
+  },
+  "devDependencies": {
+    "@alicloud/console-toolkit-plugin-os": "^0.3.11",
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-transform-react-jsx": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "babel-loader": "^8.0.6",
+    "typescript": "3.3.3",
+    "webpack": "^3.0.0",
+    "webpack-chain": "^6.3.0",
+    "webpack-cli": "^2.0.0",
+    "webpack-dev-server": "^2.0.0",
+    "webpack-merge": "^4.2.2"
+  },
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "private": true
+}
