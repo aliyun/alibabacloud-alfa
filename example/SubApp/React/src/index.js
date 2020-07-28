@@ -2,10 +2,8 @@ import React from 'react';
 import Home from './Home';
 import About from './About';
 import Dashboard from './Dashboard';
-import { mount, registerExposedModule, isOsContext } from '@alicloud/console-os-react-portal';
+import { mount, registerExposedModule } from '@alicloud/console-os-react-portal';
 import './index.less';
-
-registerExposedModule('About', About);
 
 import {
   BrowserRouter as Router,
@@ -55,6 +53,8 @@ const App = (props) => {
     </Router>
   );
 }
+
+registerExposedModule('About', About);
 
 export default mount(App, document.getElementById('app'), 'os-example')
 

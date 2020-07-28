@@ -5,18 +5,27 @@ start();
 
 const appInfo = {
   id: 'os-example',
-  manifest: 'http://localhost:8081/os-example.manifest.json'
+  manifest: 'http://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.5/os-example.manifest.json'
 }
 
 const About = lazy<React.FC<{test: string}>>(
   () => loadExposedModule(appInfo, 'About').then((c) => ({ default: c }))
 );
 
+const Dashboard = lazy<React.FC<{test: string}>>(
+  () => loadExposedModule(appInfo, 'Dashboard').then((c) => ({ default: c }))
+);
+
 storiesOf('Console OS Advance', module)
   .add('Remote Module', () => {
     return (
-      <Suspense fallback={<div>loading</div>}>
-        <About test="1" />
-      </Suspense>
+      <>
+        <Suspense fallback={<div>loading</div>}>
+          <About test="1" />
+        </Suspense>
+        <Suspense fallback={<div>loading</div>}>
+          <Dashboard test="1" />
+        </Suspense>
+      </>
     )
   });

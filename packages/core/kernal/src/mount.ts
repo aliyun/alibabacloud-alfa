@@ -69,7 +69,7 @@ export const loadExposedModule = async <T>(appInfo: AppInfo, moduleName: string,
   // create application
   const app = await createMicroApp(appInfo, options);
   // load application
-  await load(app)
+  await load(app);
 
   return getExposedModule<T>(app, moduleName);
 }
