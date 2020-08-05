@@ -19,12 +19,8 @@ const appInfo = {
 const Test = () => {
   return (
     <Application
-      manifest={"https://micro-front.alibaba.com/faas/query-protocol?appGroup=buff&appName=buff-sdk&name=micro-service%2Fcomponent&version=1.0.0&newsdk=true"}
-      id={"micro-service-component"} 
-      sandBox={{
-        disableFakeBody: true,
-        sandBoxUrl: 'http://aliyun.com'
-      }}
+      manifest={"http://30.37.65.55/project/file/sc-assets-trade-order/build/micro-service/bc-shipping-address-linx.manifest.json"}
+      id={"sc-assets-trade-order"}
     />
   )
 };

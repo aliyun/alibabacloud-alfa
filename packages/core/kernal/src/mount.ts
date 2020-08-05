@@ -34,6 +34,7 @@ export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) 
  */
 export const load = async (app: Application) => {
   await app.load();
+  return app;
 }
 
 /**
@@ -43,6 +44,7 @@ export const load = async (app: Application) => {
  */
 export const mount = async (app: Application, mountInfo: AppInfo) => {
   await app.mount(mountInfo);
+  return app;
 }
 
 /**
@@ -51,6 +53,7 @@ export const mount = async (app: Application, mountInfo: AppInfo) => {
  */
 export const unmount = async (app: Application) => {
   await app.unmount()
+  return app;
 }
 
 /**
@@ -59,6 +62,7 @@ export const unmount = async (app: Application) => {
  */
 export const distroy = async (app: Application) => {
   await app.destory()
+  return app;
 }
 
 export const getExposedModule = <T>(app: Application, moduleName: string) => {
