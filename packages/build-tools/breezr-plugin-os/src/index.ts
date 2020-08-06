@@ -12,8 +12,6 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     .output
     .library(options.id)
     .jsonpFunction(`webpackJsonp${options.id}`)
-    // @ts-ignore
-    .devtoolNamespace(options.id)
     .libraryTarget('umd');
 
   config
@@ -23,27 +21,34 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       jsonpCall
     }]);
 
-  config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
-    transform: (manifest: any) => {
-      const entrypoints = manifest.entrypoints;
-      if (entrypoints) {
-        delete manifest.entrypoints;
-      }
-      return {
-        name: options.id,
-        resources: manifest,
-        runtime: options.runtime || {},
-        entrypoints: entrypoints
-      };
-    },
-    publicPath: true,
-    entrypoints: true,
-    output: `${options.id}.manifest.json`
-  }]);
-
-  config.plugin('MultiEntryManifest').use(MultiEntryManifest, [{
-    entryName: `${options.id}.manifest.json`,
-  }]);
+  if (!options.webpack3) {
+    config
+    .output
+    // @ts-ignore
+    .devtoolNamespace(options.id);
+  
+    config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
+      transform: (manifest: any) => {
+        const entrypoints = manifest.entrypoints;
+        if (entrypoints) {
+          delete manifest.entrypoints;
+        }
+        return {
+          name: options.id,
+          resources: manifest,
+          runtime: options.runtime || {},
+          entrypoints: entrypoints
+        };
+      },
+      publicPath: true,
+      entrypoints: true,
+      output: `${options.id}.manifest.json`
+    }]);
+  
+    config.plugin('MultiEntryManifest').use(MultiEntryManifest, [{
+      entryName: `${options.id}.manifest.json`,
+    }]);
+  }
   
   config.plugin('WebpackDonePlugin').use(DonePlugin, [{
     done: () => {
