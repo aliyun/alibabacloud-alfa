@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/demo-console-os-react-app",
-  "version": "0.3.11",
+  "version": "0.3.13",
   "description": "",
   "keywords": [],
   "main": "src/index.js",
@@ -10,7 +10,7 @@
     "classnames": "2.2.6",
     "history": "4.10.1",
     "http-proxy-middleware": "^0.20.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "lru-cache": "5.1.1",
     "moment": "2.24.0",
     "react": "16.8.6",
@@ -19,7 +19,7 @@
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^0.3.11",
+    "@alicloud/console-toolkit-plugin-os": "^0.3.13",
     "@babel/core": "^7.7.2",
     "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
