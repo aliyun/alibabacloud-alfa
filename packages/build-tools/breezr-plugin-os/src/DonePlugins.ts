@@ -17,12 +17,20 @@ export class DonePlugin {
   }
 
   public apply (compiler: Compiler) {
-    compiler.hooks.done.tap(
-      'DonePlugin', // <-- Set a meaningful name here for stacktraces
-      (data) => {
+    if (compiler.hooks) {
+      compiler.hooks.done.tap(
+        'DonePlugin', // <-- Set a meaningful name here for stacktraces
+        (data) => {
+          this.options.done && this.options.done(compiler.options)
+          return data;
+        }
+      );
+    } else {
+      compiler.plugin('done', (data) => {
         this.options.done && this.options.done(compiler.options)
         return data;
-      }
-    );
+      })
+    }
+    
   }
 }

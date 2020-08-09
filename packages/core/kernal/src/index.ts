@@ -5,7 +5,7 @@ import { createEventBus } from './application/createEventBus';
 // @ts-ignore
 window.__CONSOLE_OS_GLOBAL_VARS_ = {};
 
-export { mountApp, isAppRegistered, start, createMicroApp, unmount, mount, load, distroy, getExposedModule, loadExposedModule } from './mount';
+export { mountApp, isAppRegistered, start, createMicroApp, unmount, mount, load, distroy, getExposedModule, loadExposedModule, update } from './mount';
 
 export { triggerAppChange, unloadApplication, createEventBus, toggleNavigationCalling }
 
