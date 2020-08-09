@@ -32,6 +32,15 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
         const entrypoints = manifest.entrypoints;
         if (entrypoints) {
           delete manifest.entrypoints;
+
+          Object.values(entrypoints).forEach((value) => {
+            // @ts-ignore
+            const entry = entrypoints[value]
+            if (entry && entry.css && !options.disableOsCssExtends) {
+              // @ts-ignore
+              entry.css = entry.css.map((cssBundle) => cssBundle.replace('.css', '.os.css'))
+            }
+          })
         }
         return {
           name: options.id,
@@ -53,7 +62,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   config.plugin('WebpackDonePlugin').use(DonePlugin, [{
     done: () => {
       // process css
-      wrapCss(options.cssBuildDir || config.output.get('path'), options.id, {
+      wrapCss(options.cssBuildDir || config.output.get('path'), options.cssPrefix || options.id, {
         ext: '.os.css',
         disableOsCssExtends: options.disableOsCssExtends,
       })

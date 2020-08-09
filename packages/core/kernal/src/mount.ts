@@ -46,6 +46,15 @@ export const mount = async (app: Application, mountInfo: AppInfo) => {
 }
 
 /**
+ * update the props to application
+ * @param app 
+ * @param props 
+ */
+export const update = async (app: Application, props: any) => {
+  await app.update(props)
+}
+
+/**
  * mount a app
  * @param app 
  */
