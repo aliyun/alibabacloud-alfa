@@ -33,9 +33,8 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
         if (entrypoints) {
           delete manifest.entrypoints;
 
-          Object.values(entrypoints).forEach((value) => {
+          Object.values(entrypoints).forEach((entry) => {
             // @ts-ignore
-            const entry = entrypoints[value]
             if (entry && entry.css && !options.disableOsCssExtends) {
               // @ts-ignore
               entry.css = entry.css.map((cssBundle) => cssBundle.replace('.css', '.os.css'))
