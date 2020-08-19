@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { storiesOf } from '@storybook/react';
+import { mount, EventEmitter } from '../src';
 
-storiesOf('CopyId', module)
-  .add('Default CopyId', () => {
-    return (<div id="app-wrapper">demo</div>);
-  });
+mount(
+  (props) => {
+    console.log(props.emitter)
+    return <div/>
+  }
+)
