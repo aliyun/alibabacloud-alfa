@@ -9,10 +9,12 @@ const appInfo = {
 }
 
 const About = lazy<React.FC<{test: string}>>(
+  // @ts-ignore
   () => loadExposedModule(appInfo, 'About').then((c) => ({ default: c }))
 );
 
 const Dashboard = lazy<React.FC<{test: string}>>(
+  // @ts-ignore
   () => loadExposedModule(appInfo, 'Dashboard').then((c) => ({ default: c }))
 );
 

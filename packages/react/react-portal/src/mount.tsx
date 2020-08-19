@@ -54,7 +54,7 @@ export function registerExposedModule(moduleName: string, modules: any) {
   exposeModuleMap[moduleName] = modules;
 }
 
-export function mount<T = any>(App: AppComponent<T>, container?: Element | null, id?: string) {
+export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: Element | null, id?: string) {
   class ConsoleApp extends React.Component<T & IProps> {
     public componentDidCatch() {/*Empty*/}
 

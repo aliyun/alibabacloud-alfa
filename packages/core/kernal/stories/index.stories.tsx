@@ -13,13 +13,13 @@ start({
 
 const appInfo = {
   id: 'os-example',
-  manifest: 'http://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.5/os-example.manifest.json'
+  manifest: 'http://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json'
 }
 
 const Test = () => {
   return (
     <Application
-      manifest={"http://30.37.65.55/project/file/sc-assets-trade-order/build/micro-service/bc-shipping-address-linx.manifest.json"}
+      manifest={"http://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json"}
       id={"sc-assets-trade-order"}
     />
   )
