@@ -7,12 +7,17 @@ import { Application } from 'application/Application';
 
 export let globalOptions: GlobalOption = {};
 
+export let isStart = false;
+
 /**
  * Create a Micro Application intance
  * @param appInfo 
  * @param options 
  */
 export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) => {
+  if (!isStart) {
+    start();
+  }
   // process the options
   const sandBox = {
     singleton: true,
@@ -90,12 +95,12 @@ export const isAppRegistered = (appName: string) => {
   return getAppNames().indexOf(appName) !== -1;
 }
 
-
 /**
  * Start consoleos instance
  * @param options 
  */
 export const start = (options?: GlobalOption) => {
+  isStart = true;
   globalOptions = options || {};
   // @ts-ignore
   toggleNavigationCalling(true);
