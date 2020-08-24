@@ -8,6 +8,15 @@ import { AppInfo, SandBoxOption } from '../type';
 const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
   let context: VMContext = { window, document, location, history };
 
+  const app = new Application(appInfo, context, sandBoxOption);
+  const promise = new Promise<Application>((resolver, reject) => {
+    app.setPendingResolver(resolver);
+    app.setPendingRejecter(reject);
+  })
+  app.setPendingPromise(promise);
+
+  AppCachePool.setApp(appInfo.id, app);
+
   if (!sandBoxOption.disable) {
     context = await createContext({
       body: appInfo.dom,
@@ -22,7 +31,8 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
     window.__IS_CONSOLE_OS_CONTEXT__ = true
   }
 
-  return new Application(appInfo, context, sandBoxOption);
+  app.context = context;
+  return app;
 }
 
 /**
@@ -49,7 +59,6 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     if (sandBoxOption.syncInitHref && app.context.baseFrame) {
       app.context.baseFrame.contentWindow.history.replaceState(null, null, sandBoxOption.initialPath || '/')
     }
-
     return app;
   }
 
@@ -59,19 +68,10 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     if (app) {
       return app.getPendingPromise();
     }
-  } else {
-    if (app) {
-      const promise = new Promise<Application>((resolver, reject) => {
-        app.setPendingResolver(resolver);
-        app.setPendingRejecter(reject);
-      })
-      app.setPendingPromise(promise)
-    }
   }
 
   app = await createAppInstance(appInfo, sandBoxOption)
-  app.pendingResolver && app.pendingResolver(app);
-  AppCachePool.setApp(appInfo.id, app);
 
+  app.pendingResolver && app.pendingResolver(app);
   return app;
 }

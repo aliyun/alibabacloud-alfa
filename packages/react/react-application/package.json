@@ -1,10 +1,6 @@
 {
   "name": "@alicloud/console-os-react-app",
-<<<<<<< HEAD
   "version": "0.4.0-alpha.3",
-=======
-  "version": "0.3.16",
->>>>>>> master
   "description": "Console OS React Sub Application",
   "main": "lib/index.js",
   "module": "es/index.js",

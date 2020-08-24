@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { storiesOf } from '@storybook/react';
-import { start, loadExposedModule } from '../src';
+import { start, loadExposedModule, createMicroApp } from '../src';
 start();
 
 const appInfo = {
@@ -20,13 +20,14 @@ const Dashboard = lazy<React.FC<{test: string}>>(
 
 storiesOf('Console OS Advance', module)
   .add('Remote Module', () => {
+    const app = createMicroApp(appInfo)
     return (
       <>
         <Suspense fallback={<div>loading</div>}>
           <About test="1" />
         </Suspense>
         <Suspense fallback={<div>loading</div>}>
-          <Dashboard test="1" />
+          {/* <Dashboard test="1" /> */}
         </Suspense>
       </>
     )

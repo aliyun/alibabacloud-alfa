@@ -14,7 +14,7 @@ type ApplicationRejecter = (reason?: any) => Promise<Application> | void;
  * Application
  */
 export class Application {
-  public readonly context: VMContext;
+  public context: VMContext;
   public parcel?: Parcel;
   public remoteApp;
   public allowEvents: string[];
@@ -57,7 +57,6 @@ export class Application {
   public setPendingResolver(resolver: ApplicationResolver) {
     this._pendingResolver = resolver;
   }
-  
 
   public get pendingResolver() {
     return this._pendingResolver;

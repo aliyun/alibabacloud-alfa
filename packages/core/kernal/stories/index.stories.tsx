@@ -20,7 +20,7 @@ const Test = () => {
   return (
     <Application
       manifest={"http://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json"}
-      id={"sc-assets-trade-order"}
+      id={"os-example"}
     />
   )
 };
