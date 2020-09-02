@@ -8,9 +8,7 @@ const globalFnName = ['setTimeout', 'setInterval', 'clearInterval', 'clearTimeou
 class Window {
   constructor( options = {}, context, frame ){
     const externals = options.externals || [];
-    const __CONSOLE_OS_GLOBAL_VARS_ = {
-      setTimeout: frame.contentWindow.setTimeout.bind(frame.contentWindow),
-    };
+    const __CONSOLE_OS_GLOBAL_VARS_ = {};
 
     globalFnName.forEach((name) => {
       if (externals.includes(name)) {
