@@ -3,11 +3,23 @@
  */
 import { addEventListener, removeEventListener } from './events';
 
+const globalFnName = ['setTimeout', 'setInterval', 'clearInterval', 'clearTimeout'];
+
 class Window {
   constructor( options = {}, context, frame ){
     const externals = options.externals || [];
-    const __CONSOLE_OS_GLOBAL_VARS_ = {};
-    return new Proxy( frame.contentWindow, {
+    const __CONSOLE_OS_GLOBAL_VARS_ = {
+      setTimeout: frame.contentWindow.setTimeout.bind(frame.contentWindow),
+    };
+
+    globalFnName.forEach((name) => {
+      if (externals.includes(name)) {
+        return;
+      }
+      __CONSOLE_OS_GLOBAL_VARS_[name] = frame.contentWindow[name].bind(frame.contentWindow);
+    })
+
+    return new Proxy(frame.contentWindow, {
       set( target, name, value ){
         target[ name ] = value;
         __CONSOLE_OS_GLOBAL_VARS_[ name ] = value
@@ -15,8 +27,12 @@ class Window {
       },
 
       get( target, name ){
-        if( externals.includes( name ) ){
-          return window[ name ];
+        if (externals.includes(name)){
+          if (typeof window[ name ] === 'function' && /^[a-z]/.test(name)){
+            return window[name].bind && window[name].bind(window);
+          } else {
+            return window[name];
+          }
         }
 
         switch( name ){
@@ -38,10 +54,10 @@ class Window {
           return __CONSOLE_OS_GLOBAL_VARS_[name];
         }
 
-        if( typeof target[ name ] === 'function' && /^[a-z]/.test( name ) ){
-          return target[ name ].bind && target[ name ].bind( target );
-        }else{
-          return target[ name ];
+        if (typeof target[ name ] === 'function' && /^[a-z]/.test(name)){
+          return target[name].bind && target[name].bind(target);
+        } else {
+          return target[name];
         }
       }
     } );
