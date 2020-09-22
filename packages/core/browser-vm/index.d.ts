@@ -1,5 +1,5 @@
 
-interface VMContext {
+export interface VMContext {
   window: Window;
   document: Document;
   history: History;
@@ -8,7 +8,7 @@ interface VMContext {
   updateBody?: (body: Element) => void;
 }
 
-interface ContextOption {
+export interface ContextOption {
   body?: Element;
   externals?: string[];
   url?: string;
@@ -16,16 +16,16 @@ interface ContextOption {
   disableBody?: boolean;
 }
 
-interface BrowserVM {
+export interface BrowserVM {
   createContext: (opts: ContextOption) => Promise<VMContext>;
   removeContext: (VMContext) => void;
   ContextOption;
 }
 
-declare var browserVM: BrowserVM;
+export declare var browserVM: BrowserVM;
 
-declare var contextOption: ContextOption;
+export declare var contextOption: ContextOption;
 
-declare module "@alicloud/console-os-browser-vm" {
+export declare module "@alicloud/console-os-browser-vm" {
   export = browserVM;
 }

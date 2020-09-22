@@ -1,7 +1,15 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
+import ErrorBoundary from '../src/ErrorBoundary'
+
+const A = ({a}) => { 
+  console.log(a.test())
+  return <div />
+};
 
 storiesOf('CopyId', module)
-  .add('Default CopyId', () => {
-    return (<div id="app-wrapper">demo</div>);
+  .add('ErrorBoundary', () => {
+  return (<ErrorBoundary>
+      <A a={{}}/>
+    </ErrorBoundary>);
   });

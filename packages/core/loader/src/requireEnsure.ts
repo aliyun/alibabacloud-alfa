@@ -60,19 +60,13 @@ function jsonpRequire(id: string, url: string) {
   document.head.appendChild(script);
 }
 
-// export async function fetchRequire(id: string, url: string, enableWrapper: boolean) {
-//   const resp = await fetch(url);
-//   const code = await resp.text();
-//   if (enableWrapper) {
-//     const resolver = new Function(`
-//       return function(require, module, exports, {window, location, history, document}){ 
-//         with(window.__CONSOLE_OS_GLOBAL_VARS_) { 
-//           ${code}
-//         }
-//       })//@sourceURL=${url}
-//     `)
-//   }
-// }
+export async function xmlRequire(id: string, url: string) {
+  const resp = await fetch(url);
+  const code = await resp.text();
+  window.eval(`__CONSOLE_OS_GLOBAL_HOOK__('${id}', function(require, module, exports, context){
+    ${code}
+  })`)
+}
 
 /**
  * async require the bundle from url
@@ -108,7 +102,12 @@ export async function requireEnsure<T>(bundle: IBundleOption) {
       });
       chunkRecord.promise = promise
       promises.push(promise);
-      jsonpRequire(bundle.id, bundle.url);
+
+      if (bundle.xmlrequest) {
+        xmlRequire(bundle.id, bundle.url)
+      } else {
+        jsonpRequire(bundle.id, bundle.url);
+      }
     }
   }
 

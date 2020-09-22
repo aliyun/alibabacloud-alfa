@@ -68,6 +68,11 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
   loading: boolean | React.ReactChild;
 
   appProps: T;
+
+  /**
+   * 关闭错误提示
+   */
+  error: boolean | React.ReactChild;
 }
 
 interface IState {
@@ -217,22 +222,36 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   private getLoading() {
     const { loading } = this.props;
-    if (loading && React.isValidElement(loading)) {
+    if (loading === false) {
+      return null;
+    } else if (loading && React.isValidElement(loading)) {
       return loading;
     }
+
     return <Skeleton active />;
+  }
+
+  private getError() {
+    const { error } = this.props;
+    if (error === false) {
+      return null;
+    } else if (error && React.isValidElement(error)) {
+      return error;
+    }
+    return this.state.error && <ErrorPanel error={this.state.error} />;
   }
 
   public render() {
     const { id = '', style = {}, className = '', disableBodyTag, sandBox } = this.props;
+
     if (this.state.hasError && this.state.error) {
-      return (<ErrorPanel error={this.state.error}/>)
+      return !this.getError()
     }
 
     const Wrapper = React.Fragment ? React.Fragment : 'div';
 
     return (
-      <Wrapper className="-os-wrapper">
+      <Wrapper>
         {
           this.state.loading ? this.getLoading() : null
         }

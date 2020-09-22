@@ -24,6 +24,13 @@ export const loadRuntime = async (runtime: BasicModule, context: VMContext) => {
   );
 }
 
+const getAppManifestUrl = (appInfo: AppInfo) => {
+  if (typeof appInfo.manifest === 'string') {
+    return appInfo.manifest;
+  }
+  return location.href;
+}
+
 /**
  * Create an app loader for single spa
  * @param {AppInfo} appInfo App info for os
@@ -35,14 +42,14 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
   if (appInfo.manifest) {
     // TODO: log manifest
-    const manifest = await getManifest(appInfo.manifest);
+    const manifest =  typeof appInfo.manifest === 'string' ? await getManifest(appInfo.manifest) : appInfo.manifest;
+
     if (manifest) {
       // TODO: validate the manifest
       id = manifest.name;
 
       const { js, css } = handleManifest(manifest);
 
-      // TODO: log runtime
       if (manifest.runtime) {
         const runtime = await loadRuntime(manifest.runtime, { window, document, location, history });
         if (runtime) {
@@ -58,18 +65,18 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
       for (var index = 0; index < js.length - 1; index++) {
         await loadScriptsWithContext({
-          id, url: formatUrl(js[index], appInfo.manifest), context
+          id, url: formatUrl(js[index], getAppManifestUrl(appInfo)), context
         });
       }
 
-      url = formatUrl(js[js.length - 1], appInfo.manifest);
+      url = formatUrl(js[js.length - 1], getAppManifestUrl(appInfo));
 
       style = css;
     }
   }
 
   if (style) {
-    addStyles(style, appInfo.manifest)
+    addStyles(style, getAppManifestUrl(appInfo))
   }
 
   const appInstance = extractModule(

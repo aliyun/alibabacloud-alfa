@@ -3,6 +3,7 @@ import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { DonePlugin } from './DonePlugins';
 import { MultiEntryManifest } from './MultiEntryManifest';
+import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { wrapCss } from 'postcss-prefix-wrapper';
 
@@ -67,6 +68,11 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       })
     }
   }])
+
+  registerConfigToRegistry(options.id, {
+    port: config.devServer.get('port'),
+    https: config.devServer.get('https'),
+  });
 }
 
 export default (api: PluginAPI, options: PluginOptions) => {

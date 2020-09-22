@@ -19,7 +19,7 @@ storiesOf('Basic Console OS', module)
       prefetch([appInfo]);
       setTimeout(() => {
         setLoading(false);
-        mountApp({ 
+        mountApp({
           ...appInfo,
           dom: appRef.current,
         }, {
@@ -32,5 +32,39 @@ storiesOf('Basic Console OS', module)
     }, []);
     return (
       <div ref={appRef}>{loading && 'loading...'}</div>
+    )
+  })
+  .add('No manifest Json', () => {
+    const appRef = useRef();
+    useEffect(() => {
+      mountApp({
+        id: "os-example",
+        manifest: {
+          name: "os-example",
+          resources: {
+            "index.css": "//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.css",
+            "index.js": "//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.js"
+          },
+          "runtime": {
+            "id": "OSRuntimeReact16",
+            "url": "https://dev.g.alicdn.com/ConsoleOS/runtime-react-16/0.0.1/index.js"
+          },
+          "entrypoints": {
+            "index": {
+              "css": [
+                "//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.css"
+              ],
+              "js": [
+                "//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.js"
+              ]
+            }
+          }
+        },
+        dom: appRef.current,
+      });
+    }, []);
+
+    return (
+      <div ref={appRef}></div>
     )
   })

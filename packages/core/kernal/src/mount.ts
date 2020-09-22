@@ -3,7 +3,7 @@ import { AppInfo, AppOption, GlobalOption } from './type';
 import { createApplication } from './application/createApp';
 import { createCachePool } from './application/AppCachePool';
 import * as ManifestCachePool from './misc/ManifestCachePool';
-import { Application } from 'application/Application';
+import { Application } from './application/Application';
 
 export let globalOptions: GlobalOption = {};
 
