@@ -18,7 +18,11 @@ if( typeof window.Element === 'function' ){
         injectScriptCallBack( el );
       }
 
-      return originMethod.apply( window, [el, ...args] );
+      try {
+        return originMethod.call( this, el, ...args );
+      } catch {
+        return originMethod.apply( this, [el, ...args] );
+      }
     }
   }
 }
