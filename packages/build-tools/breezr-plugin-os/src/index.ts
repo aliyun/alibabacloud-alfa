@@ -80,7 +80,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   });
 
   config.plugin('DefinedConsoleOSPlugin').use(webpack.DefinePlugin, [{
-    'process.env.CONSOLE_OS_PUBLIC_PATH': JSON.stringify(config.output.get('publicPath')),
+    'process.env.CONSOLE_OS_PUBLIC_PATH': JSON.stringify(config.output.get('publicPath') || ''),
   }])
 
   registerConfigToRegistry(options.id, {
