@@ -1,4 +1,5 @@
 import * as WebpackChain from 'webpack-chain';
+import * as webpack from 'webpack';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { DonePlugin } from './DonePlugins';
@@ -76,7 +77,11 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       commonjs: '@alicloud/console-os-environment',
       root: 'aliOSEnvironment',
     }
-  })
+  });
+
+  config.plugin('DefinedConsoleOSPlugin').use(webpack.DefinePlugin, [{
+    'process.env.CONSOLE_OS_PUBLIC_PATH': JSON.stringify(config.output.get('publicPath')),
+  }])
 
   registerConfigToRegistry(options.id, {
     port: config.devServer.get('port'),
