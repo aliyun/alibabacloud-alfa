@@ -69,6 +69,15 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     }
   }])
 
+  config.externals({
+    '@alicloud/console-os-environment': {
+      commonjs2: '@alicloud/console-os-environment',
+      amd: '@alicloud/console-os-environment',
+      commonjs: '@alicloud/console-os-environment',
+      root: 'aliOSEnvironment',
+    }
+  })
+
   registerConfigToRegistry(options.id, {
     port: config.devServer.get('port'),
     https: config.devServer.get('https'),

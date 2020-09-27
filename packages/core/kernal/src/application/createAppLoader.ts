@@ -3,7 +3,7 @@ import { loadBundle, loadScriptsWithContext } from '@alicloud/console-os-loader'
 import { addStyles } from '../misc/style';
 import { AppInfo, AppInstance, BasicModule } from '../type';
 import { handleManifest, getManifest } from '../misc/manifest';
-import { invokeLifeCycle, validateAppInstance, formatUrl, extractModule } from '../misc/util';
+import { invokeLifeCycle, validateAppInstance, formatUrl, extractModule, getUrlDir } from '../misc/util';
 
 /**
  * Load the app external from url
@@ -81,7 +81,12 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
   const appInstance = extractModule(
     await loadBundle<AppInstance>({
-      id, url, context, deps: appInfo.deps
+      id, url, context, deps: {
+        ...(appInfo.deps || {}),
+        '@alicloud/console-os-environment': {
+          publicPath:  appInfo.publicPath || getUrlDir(url)
+        }
+      }
     })
   );
 

@@ -1,0 +1,24 @@
+{
+  "name": "@alicloud/console-os-environment",
+  "version": "0.3.13",
+  "description": "console os environment package for sub app",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "index.d.ts",
+  "scripts": {
+    "prepublish": "npm run clean && npm run build && npm run babel && npm run babel:esm",
+    "babel": "breezr build --engine babel",
+    "babel:esm": "breezr build --engine babel --es-module",
+    "build": "breezr build --engine webpack",
+    "storybook": "breezr start-storybook",
+    "test": "breezr test:unit --coverage --env jsdom",
+    "clean": "rm -rf es build lib yarn.lock"
+  },
+  "author": "Boelroy",
+  "license": "ISC",
+  "devDependencies": {
+    "@alicloud/console-toolkit-cli": "^1.0.1",
+    "@alicloud/console-toolkit-preset-wind-component": "^1.0.1"
+  },
+  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
+}

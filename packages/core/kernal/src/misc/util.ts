@@ -90,3 +90,13 @@ export const extractModule = (rawModule: any) =>  {
 export const formatUrl = (url: string, manifest: string) => {
   return getRealUrl(url, manifest);
 }
+
+
+export const getUrlDir = (sourceUrl: string) => {
+  try {
+    const url = new URL(sourceUrl);
+    url.pathname = (url.pathname || '').split('/').slice(0, -1).join('/')
+  } catch(e) {
+    return '/';
+  }
+}
