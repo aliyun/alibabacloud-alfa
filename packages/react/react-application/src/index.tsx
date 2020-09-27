@@ -1,4 +1,3 @@
-
 import React, { HTMLAttributes } from 'react';
 import { OSApplication, createMicroApp, mount, load, unmount, distroy } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
@@ -26,6 +25,11 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
    * 沙箱配置
    */
   sandbox?: SandBoxOption;
+
+  /**
+   * app resource publicPath
+   */
+  publicPath?: string;
   /**
    * 处理错误的生命周期
    */
@@ -120,7 +124,10 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   public componentDidMount() {
     this.addThingToDo('mount',  async () => {
-      const { jsUrl: url, id, manifest, externalsVars, singleton = true, deps } = this.props;
+      const {
+        jsUrl: url, id, manifest, externalsVars, 
+        publicPath, singleton = true, deps
+      } = this.props;
 
       if (!id) {
         throw new Error('You should give a id for OS Application');
@@ -150,6 +157,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
         manifest,
         dom: domElement,
         deps,
+        publicPath,
         customProps: {
           ...getParcelProps(this.props)
         }

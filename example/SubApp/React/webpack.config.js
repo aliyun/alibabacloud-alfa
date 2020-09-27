@@ -4,7 +4,6 @@ const { chainOsWebpack } = require('@alicloud/console-toolkit-plugin-os');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const chain = new WepbackChain();
-chain.devServer.port(8087)
 chainOsWebpack({
   id: 'os-example'
 })(chain);
@@ -16,12 +15,9 @@ module.exports = merge(chain.toConfig(), {
     'os-example': './src/index.js',
     // 'os-example2': './src/index2.js'
   },
-  output: {
-    publicPath: 'http://localhost:8087/'
-  },
   devtool: 'source-map',
   devServer: {
-    port: '8087',
+    port: '8081',
     clientLogLevel: 'warning',
     disableHostCheck: true,
     compress: true,
