@@ -18,10 +18,14 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
    * App config url.
    */
   manifest?: string;
+
+  deps?: {
+    [key: string] : any
+  };
   /**
    * 沙箱配置
    */
-  sandBox?: SandBoxOption;
+  sandbox?: SandBoxOption;
   /**
    * 处理错误的生命周期
    */
@@ -50,6 +54,12 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
    */
   externalsVars?: string[];
 
+  /**
+   * @deprecated
+   * 沙箱配置
+   */
+  sandBox?: SandBoxOption;
+
   disableBodyTag: boolean;
 
   /**
@@ -74,6 +84,7 @@ const getParcelProps = (props: Partial<IProps>) => {
   delete parcelProps.initialPath;
   delete parcelProps.externalsVars;
   delete parcelProps.sandBox;
+  delete parcelProps.sandbox;
   delete parcelProps.appDidMount;
 
   return parcelProps;
@@ -104,15 +115,16 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   public componentDidMount() {
     this.addThingToDo('mount',  async () => {
-      const { jsUrl: url, id, manifest, externalsVars, singleton = true } = this.props;
+      const { jsUrl: url, id, manifest, externalsVars, singleton = true, deps } = this.props;
 
       if (!id) {
         throw new Error('You should give a id for OS Application');
       }
 
-      let sandBox = this.props.sandBox;
+      let sandBox = this.props.sandBox || this.props.sandbox;
+
       if (sandBox) {
-        sandBox.externalsVars = externalsVars;
+        sandBox.externalsVars = externalsVars || sandBox.externalsVars;
         sandBox.singleton = singleton;
       } else {
         sandBox = {
@@ -132,6 +144,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
         id,
         manifest,
         dom: domElement,
+        deps,
         customProps: {
           ...getParcelProps(this.props)
         }

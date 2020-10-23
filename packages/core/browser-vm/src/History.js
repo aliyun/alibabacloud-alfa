@@ -12,13 +12,13 @@ class History {
     const originalReplaceStatus = frame.history.replaceState
 
     frame.history.pushState = (...args) => {
-      const returnValue = originalPushStatus.call(frame.history, ...args);
+      const returnValue = originalPushStatus.apply(frame.history, [...args]);
       postMessage();
       return returnValue;
     }
 
     frame.history.replaceState = (...args) => {
-      const returnValue = originalReplaceStatus.call(frame.history, ...args);
+      const returnValue = originalReplaceStatus.apply(frame.history, [...args]);
       postMessage()
       return returnValue;
     }

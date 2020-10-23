@@ -17,7 +17,7 @@ const commonErrorStyle = {
   fontSize: 14
 }
 
-const ErrorPanel: React.SFC<IProps> = (props: { error: Error }) => {
+const ErrorPanel: React.FC<IProps> = (props: { error: Error }) => {
   const { error } = props;
   return (
     <div style={{padding}}>

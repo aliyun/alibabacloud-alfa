@@ -8,9 +8,9 @@ export const addEventListener = (context) => (type, listener, options) => {
   context._listenerMap.set(type, [...listeners, listener]);
 
   if (domEventsListeningTo.indexOf(type) === -1) {
-    return context.baseFrame.addEventListener.call(context.baseFrame.contentWindow, type, listener, options);
+    return context.baseFrame.addEventListener.apply(context.baseFrame.contentWindow, [type, listener, options]);
   }
-  return rawAddEventListener.call(window, type, listener, options);
+  return rawAddEventListener.apply(window, [type, listener, options]);
 }
 
 export const removeEventListener = (context) => (type, listener, options) => {
@@ -20,7 +20,7 @@ export const removeEventListener = (context) => (type, listener, options) => {
   }
 
   if (domEventsListeningTo.indexOf(type) === -1) {
-    return context.baseFrame.removeEventListener.call(context.baseFrame.contentWindow, type, listener, options);
+    return context.baseFrame.removeEventListener.apply(context.baseFrame.contentWindow, [type, listener, options]);
   }
-  return rawRemoveEventListener.call(window, type, listener, options);
+  return rawRemoveEventListener.apply(window, [type, listener, options]);
 }
