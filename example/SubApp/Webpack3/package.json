@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/demo-console-os-webpack-3",
-  "version": "0.3.18",
+  "version": "0.3.25",
   "description": "",
   "keywords": [],
   "main": "src/index.js",
@@ -8,7 +8,7 @@
     "@alicloud/console-os-react-portal": "^0.3.8"
   },
   "devDependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^0.3.18",
+    "@alicloud/console-toolkit-plugin-os": "^0.3.25",
     "@babel/core": "^7.7.2",
     "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
