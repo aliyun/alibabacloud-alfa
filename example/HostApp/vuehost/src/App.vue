@@ -1,32 +1,61 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="vue-host" class="App">
+      <div class="react">
+        <Application
+            id="os-example"
+            :sandBox="{
+              initialPath: '/dashboard',
+              disableFakeBody: true,
+            }"
+        manifest="http://localhost:8081/os-example.manifest.json"
+        />
+      </div>
+
+      <div class="vue">
+        <Application
+            id="os-example-vue"
+            manifest="http://localhost:8082/os-example-vue.manifest.json"
+        />
+      </div>
+
+      <div class="ng">
+        <Application
+            id="os-exmaple-angular"
+            manifest="http://localhost:4200/os-exmaple-angular.manifest.json"
+        />
+      </div>
+
     </div>
-    <router-view/>
-  </div>
 </template>
 
+<script>
+import Application from '@alicloud/console-os-vue-host-app'
+
+export default {
+  name: 'App',
+  components: {
+    Application
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.App {
+  font-family: sans-serif;
   text-align: center;
-  color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+.vue {
+  border: 4px solid #41b883;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.react {
+  border: 4px solid #ff6a00;
+  margin-bottom: 2px;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.ng {
+  border: 4px solid #eeeeee;
+  margin-bottom: 2px;
 }
 </style>
