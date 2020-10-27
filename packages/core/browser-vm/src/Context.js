@@ -73,7 +73,7 @@ class Context {
       iframe.setAttribute( 'src', conf.url ? conf.url : '/api.json');
       iframe.style.cssText = 'position: absolute; top: -20000px; width: 100%; height: 1px;';
 
-      document.body.append( iframe );
+      document.body.appendChild( iframe );
 
       // the onload will no trigger when src is about:blank
       if (conf.url === 'about:blank') {

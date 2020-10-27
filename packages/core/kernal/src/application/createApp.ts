@@ -5,7 +5,7 @@ import { createContext } from './createContext';
 import * as AppCachePool from './AppCachePool';
 import { AppInfo, SandBoxOption } from '../type';
 
-const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
+const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
   let context: VMContext = { window, document, location, history };
 
   const app = new Application(appInfo, context, sandBoxOption);
@@ -41,7 +41,7 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
  * @param appInfo app basic meta info
  * @param sandBoxOption sandbox option for app
  */
-export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption) => {
+export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
   if (!sandBoxOption.singleton) {
     return await createAppInstance(appInfo, sandBoxOption);
   }

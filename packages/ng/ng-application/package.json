@@ -20,7 +20,11 @@
     "typescript": "~3.5.0"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@alicloud/console-os-kernal": "^0.4.0-alpha.6"
+=======
+    "@alicloud/console-os-kernal": "^0.3.24"
+>>>>>>> master
   },
   "publishConfig": {
     "directory": "dist"

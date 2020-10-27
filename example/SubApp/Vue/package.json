@@ -21,7 +21,11 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+<<<<<<< HEAD
     "vue-cli-plugin-console-os": "^0.4.0-alpha.6",
+=======
+    "vue-cli-plugin-console-os": "^0.3.25",
+>>>>>>> master
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {

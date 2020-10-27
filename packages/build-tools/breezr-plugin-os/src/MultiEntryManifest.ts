@@ -38,6 +38,10 @@ export class MultiEntryManifest {
     if (isObject(webpackConfig.entry) && webpackConfig.output?.path) {
       // process the json
       const entries = Object.keys(webpackConfig.entry);
+      if (entries.length == 1) {
+        return;
+      }
+
       entries.forEach((entryId) => {
         if (!manifest.entrypoints[entryId]) {
           return;
