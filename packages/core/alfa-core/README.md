@@ -1,88 +1,73 @@
-# Console OS Kernal
+# Alfa Core
 
-Kernal for Console OS
+符合阿里集团微前端标准 API 的微前端框架 `@alicloud/alfa-core`。
 
-## TODO
+这是一个偏底层的包，建议使用更上层的包以简化开发：
+- `@alicloud/alfa-react`（适用于 React 项目）
 
-- [x] load app by single bundle
-- [x] load app by manifest
-- [x] security sandbox
-- [ ] cache by service work
+## 如何使用
 
-## How to use
+### 引入你的项目
 
-First 
 ```bash
-npm i @alicloud/console-os-kernal --save
+npm i @alicloud/alfa-core --save
 # or
-yarn add @alicloud/console-os-kernal --save
+yarn add @alicloud/alfa-core --save
 # or
-tnpm i @alicloud/console-os-kernal --save
+tnpm i @alicloud/alfa-core --save
 ```
 
-Then you create you sub application using createMicroApp
+### 加载和渲染微应用
 
-```javascript
-import { createMicroApp, load, mount, unmount } from '@alicloud/console-os-kernal';
+```jsx
+import React, { useEffect, useRef } from 'react';
+import { createMicroApp } from '@alicloud/alfa-core';
 
-const microApp = await createMicroApp({
-  id: 'micro-app-id-1',
-  manifest: 'https://xxx.micro-app-id-1.manifest.json';
-});
+// 微应用的资源描述。单独提出来是因为这部分内容一般来自于平台服务，而不会写死在代码中
+const exampleAppManifest = {
+  "name": "example",
+  "entry": {
+    "scripts": ["https://example.com/example.js"],
+    "styles": ["https://example.com/example.css"]
+  }
+};
 
-await load(microApp);
-
-await mount(microApp, {
-  dom: document.querySelector('#app'),
-  props
-});
-
-await update(microApp, {/* you props */});
-
-await unmount(microApp);
-```
-
-Last, in the entry code of you main app, call start to start os
-
-```javascript
-// in the start of main app
-
-import { start } from '@alicloud/console-os-kernal';
-
-start();
-```
-
-## React
-
-If you are using react as your UI framework, you can use sub app as a jsx element by using ```@alicloud/console-os-react-app```
-
-```javascript
-import ConsoleApp from '@alicloud/console-os-react-app'
-
-const MANIFEST_URL = 'http://g.alicdn.com/aliyun-next/slb.manifest.json'
-
-export default () => (
-  <ConsoleApp
-    manifest={MANIFEST_URL}
-  />
-)
-```
-
-
-## Build bundle
-
-In OS, an app bundle is built by breezr, you can use @alicloud/console-toolkit-plugin-os to build your bundle
-
-```javascript
-/* breezr.config.js */
-
-module.exports = {
-  /*
-   * other breezr config
-   */
-  plugins: [
-    '@alicloud/console-toolkit-plugin-os'
-  ]
+// 主应用使用 React 实现
+function HostApp(props) {
+  
+  const exampleApp = createMicroApp({
+    // 资源描述是微应用至少需要的配置项，更多的配置项参考 API 文档
+    ...exampleAppManifest
+  });
+  
+  const containerEl = useRef(null);
+  
+  useEffect(() => {
+    // 加载
+    exampleApp
+      .load()
+      .then((exampleApp) => {
+        // 渲染
+        exampleApp.mount(containerEl.current, {
+          title: `${props.title} - ${exampleApp.name}`
+        });
+      });
+    // 卸载
+    return () => {
+      exampleApp.unmount();
+    };
+  }, []);
+  
+  useEffect(() => {
+    // 更新
+    exampleApp.update({
+      title: `${props.title} - ${exampleApp.name}`
+    });
+  }, [props.title]);
+  
+  return (
+    <div ref={containerEl}></div>
+  );
+  
 }
-
 ```

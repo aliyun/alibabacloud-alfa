@@ -31,7 +31,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/alfa-kernal": "^0.4.0",
+    "@alicloud/alfa-core": "^0.4.0-alpha.1",
     "classnames": "^2.2.6"
   },
   "peerDependencies": {
