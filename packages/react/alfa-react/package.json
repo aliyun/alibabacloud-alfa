@@ -1,0 +1,40 @@
+{
+  "name": "@alicloud/alfa-react",
+  "version": "0.4.0",
+  "description": "Alfa Framework (React Version)",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "lib/index.d.ts",
+  "author": "pushiming",
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "npm run build && npm run babel && npm run babel:esm",
+    "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
+    "babel:esm": "breezr build --engine babel --es-module",
+    "build": "breezr build --engine webpack",
+    "clean": "rm -rf lib yarn.lock"
+  },
+  "devDependencies": {
+    "@alicloud/console-toolkit-cli": "^1.0.0",
+    "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
+    "@types/chai": "^4.1.7",
+    "@types/classnames": "^2.2.9",
+    "@types/jest": "^23.3.13",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "@types/single-spa-react": "^2.8.3",
+    "jest": "^23.6.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.8.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@alicloud/alfa-kernal": "^0.4.0",
+    "classnames": "^2.2.6"
+  },
+  "peerDependencies": {
+    "react": "^16"
+  }
+}
