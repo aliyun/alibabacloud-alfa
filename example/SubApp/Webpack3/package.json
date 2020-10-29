@@ -5,10 +5,10 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "@alicloud/console-os-react-portal": "^0.3.8"
+    "@alicloud/console-os-react-portal": "^0.4.0-alpha.6"
   },
   "devDependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^0.3.25",
+    "@alicloud/console-toolkit-plugin-os": "^0.4.0-alpha.6",
     "@babel/core": "^7.7.2",
     "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/preset-env": "^7.7.1",

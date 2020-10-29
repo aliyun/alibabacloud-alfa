@@ -23,7 +23,9 @@ export const hook = (id: string, resolver: BundleResolver) => {
     const chunkRecord = Module.record.get(id);
     const scriptRecord = Module.record.get(`${id}_scripts_`);
     if (!chunkRecord && !scriptRecord) {
-      preHook && preHook(id, resolver);
+      // @ts-ignore
+      // 为了防止一个 ConsoleOS 子应用作为容器单独加载的时候，__CONSOLE_OS_GLOBAL_HOOK__ 为空函数的问题
+      preHook && !window.__CONSOLE_OS_GLOBAL_HOOK__.standalone && preHook(id, resolver);
 
       // when a page contains two consoleos runtime
       // using __CONSOLE_OS_WHITE_LIST__ to invoke app directly

@@ -5,13 +5,27 @@ export interface Logger {
 }
 
 interface IProp {
-  logger: Logger;
+  logger?: Logger;
   appDidCatch?: (error: Error) => void;
 }
 
 interface State {
   hasError: boolean;
   error: Error;
+}
+
+const padding = 24;
+const containerBackground = '#fcebea';
+
+const containerStyle = {
+  background: containerBackground,
+  padding,
+}
+
+const commonErrorStyle = {
+  lineHeight: '22px',
+  color: '#d93026',
+  fontSize: 14
 }
 
 class ErrorBoundary extends React.Component<IProp, State> {
@@ -31,7 +45,7 @@ class ErrorBoundary extends React.Component<IProp, State> {
       this.props.logger.error(error, errorInfo);
     } else {
       // @ts-ignore
-      window.__bl && window.__bl.error(error, errorInfo);
+      window.__bl && window.__bl.error && window.__bl.error(error, errorInfo);
     }
 
     console.error(error);
@@ -40,14 +54,23 @@ class ErrorBoundary extends React.Component<IProp, State> {
   }
 
   public render() {
+    const { error } = this.state;
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <>
-        <h1>Error : {this.state.error.message}.</h1>
-        <pre>
-          {this.state.error.stack}
-        </pre>
-      </>;
+      return (
+        <div style={{padding}}>
+          { 
+            process.env.NODE_ENV === 'development'
+              ? (
+                <div style={containerStyle}>
+                  <div style={commonErrorStyle}>{error.message}</div>
+                  <pre style={{overflow: 'scroll'}}>{error.stack}</pre>
+                </div>
+              )
+              : <div style={commonErrorStyle}>Error</div>
+          }
+        </div>
+      );
     }
     return this.props.children;
   }

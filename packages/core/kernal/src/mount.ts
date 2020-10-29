@@ -3,14 +3,14 @@ import { AppInfo, AppOption, GlobalOption } from './type';
 import { createApplication } from './application/createApp';
 import { createCachePool } from './application/AppCachePool';
 import * as ManifestCachePool from './misc/ManifestCachePool';
-import { Application } from 'application/Application';
+import { Application } from './application/Application';
 
 export let globalOptions: GlobalOption = {};
 
 export let isStart = false;
 
 /**
- * Create a Micro Application intance
+ * Create a Micro Application instance
  * @param appInfo 
  * @param options 
  */
@@ -70,13 +70,16 @@ export const unmount = async (app: Application) => {
   return app;
 }
 
+export const destroy = async (app: Application) => {
+  await app.destroy()
+  return app;
+}
 /**
  * mount a app
  * @param app 
  */
 export const distroy = async (app: Application) => {
-  await app.destory()
-  return app;
+  return destroy(app)
 }
 
 export const getExposedModule = <T>(app: Application, moduleName: string) => {

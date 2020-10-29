@@ -1,7 +1,7 @@
 module.exports = {
   presets: [
     ['@alicloud/console-toolkit-preset-wind-component', {
-      moduleName: 'aliOSBrowserVM',
+      moduleName: 'aliOSEnvironment',
       useTypescript: true,
     }]
   ]

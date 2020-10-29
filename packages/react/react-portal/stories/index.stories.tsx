@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { mount, EventEmitter } from '../src';
+import { storiesOf } from '@storybook/react';
+import ErrorBoundary from '../src/ErrorBoundary'
 
-mount(
-  (props) => {
-    console.log(props.emitter)
-    return <div/>
-  }
-)
+const A = ({a}) => { 
+  console.log(a.test())
+  return <div />
+};
+
+storiesOf('CopyId', module)
+  .add('ErrorBoundary', () => {
+  return (<ErrorBoundary>
+      <A a={{}}/>
+    </ErrorBoundary>);
+  });

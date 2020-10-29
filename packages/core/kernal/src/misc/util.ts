@@ -26,7 +26,7 @@ function smellsLikeAPromise(promise) {
 
 export function validateAppInstance(appInstance: AppInstance) {
   if (!appInstance.bootstrap && !appInstance.mount && !appInstance.unmount) {
-    throw new Error(`The app ${appInstance.id}'s export is invalid, you should export bootstrap, mount, unmount`)
+    throw new Error(`The app ${appInstance.name}'s export is invalid, you should export bootstrap, mount, unmount`)
   }
 }
 
@@ -89,4 +89,14 @@ export const extractModule = (rawModule: any) =>  {
  */
 export const formatUrl = (url: string, manifest: string) => {
   return getRealUrl(url, manifest);
+}
+
+
+export const getUrlDir = (sourceUrl: string) => {
+  try {
+    const url = new URL(sourceUrl);
+    url.pathname = (url.pathname || '').split('/').slice(0, -1).join('/')
+  } catch(e) {
+    return '/';
+  }
 }

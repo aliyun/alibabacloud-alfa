@@ -1,4 +1,4 @@
-import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
+import { removeContext, VMContext } from '@alicloud/console-os-browser-vm';
 
 import { Parcel, mountRootParcel } from 'os-single-spa';
 import { serializeData, flattenFnArray } from '../misc/util';
@@ -93,7 +93,7 @@ export class Application {
     }
 
     const parcel = mountRootParcel({
-      name: this.appInfo.id,
+      name: this.appInfo.name,
       customProps:{},
       domElement: undefined,
       bootstrap: flattenFnArray(this.remoteApp.bootstrap, 'bootstrap'),
@@ -142,7 +142,7 @@ export class Application {
    * public api for destory the app, it with unmount all node and destroy the
    * sandbox
    */
-  public async destory() {
+  public async destroy() {
     await this.unmount();
     removeContext(this.context);
   }
@@ -152,7 +152,7 @@ export class Application {
    * public api for destory the app
    */
   public async dispose() {
-    return this.destory()
+    return this.destroy()
   }
 
   public getExposedModule<T>(moduleName: string) {
@@ -183,7 +183,7 @@ export class Application {
       return;
     }
 
-    payload.appId = this.appInfo.id;
+    payload.appId = this.appInfo.name;
 
     if (payload.type === this.historyEventName) {
       this._emitLocaitonChange()
@@ -193,6 +193,6 @@ export class Application {
   }
 
   private get historyEventName() {
-    return `${this.appInfo.id}:history-change`;
+    return `${this.appInfo.name}:history-change`;
   }
 }

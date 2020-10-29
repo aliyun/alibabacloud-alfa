@@ -1,4 +1,4 @@
-import VMContext from '@alicloud/console-os-browser-vm';
+import { VMContext } from '@alicloud/console-os-browser-vm';
 
 import { Application } from './Application';
 import { createContext } from './createContext';
@@ -15,12 +15,12 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
   })
   app.setPendingPromise(promise);
 
-  AppCachePool.setApp(appInfo.id, app);
+  AppCachePool.setApp(appInfo.name, app);
 
   if (!sandBoxOption.disable) {
     context = await createContext({
       body: appInfo.dom,
-      id: appInfo.id,
+      id: appInfo.name,
       externals: sandBoxOption ? sandBoxOption.externalsVars: [],
       url: sandBoxOption.sandBoxUrl,
       disableBody: sandBoxOption.disableFakeBody,
@@ -46,7 +46,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     return await createAppInstance(appInfo, sandBoxOption);
   }
 
-  let app = AppCachePool.getApp(appInfo.id);
+  let app = AppCachePool.getApp(appInfo.name);
 
   // if app is init and app is singleton, return the
   // singleton instance for app

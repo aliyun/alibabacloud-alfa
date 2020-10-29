@@ -65,6 +65,7 @@ export class Application {
       const appInfo = {
         url,
         id,
+        name: id,
         manifest,
         dom: domElement,
         customProps: {

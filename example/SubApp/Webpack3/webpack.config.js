@@ -8,7 +8,6 @@ const chain = new WepbackChain();
 
 chainOsWebpack({
   id: 'index',
-  webpack3: true,
 })(chain);
 
 
@@ -28,7 +27,5 @@ const conf = merge(chain.toConfig(), {
       ]
   },
 })
-
-console.log(conf);
 
 module.exports = conf;

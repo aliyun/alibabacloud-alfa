@@ -11,19 +11,17 @@ interface ExtendsAppLifeCycles<T> {
 }
 
 export interface AppInstance<T = any> extends LifeCycles<T> {
-  id: string;
   name: string;
 }
 
 export interface BasicModule {
-  id: string;
+  name: string;
   url?: string;
-  manifest?: string;
+  manifest?: string | AppManifest;
 }
 
 export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   version?: string;
-  name?: string;
   dom?: Element;
   logger?: {
     debug: () => {};
@@ -31,7 +29,7 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
     warn: () => {};
     info: () => {};
   };
-  manifest?: string;
+  manifest?: string | AppManifest;
   externals?: BasicModule[];
   customProps?: {
     [key: string]: any;
@@ -39,6 +37,7 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   deps?: {
     [key: string]: any;
   };
+  publicPath?: string;
 }
 
 export interface AppCreationOption<E> {
@@ -69,7 +68,7 @@ export interface GlobalOption extends AppOption {
 
 export interface AppManifest {
   name: string;
-  externals: string[];
+  externals?: string[];
   resources: {
     [key: string]: string;
   };
