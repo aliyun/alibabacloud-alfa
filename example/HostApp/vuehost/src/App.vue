@@ -3,27 +3,16 @@
       <div class="react">
         <Application
             id="os-example"
+            class="test-class"
             :sandBox="{
               initialPath: '/dashboard',
               disableFakeBody: true,
+              disable: false
             }"
         manifest="http://localhost:8081/os-example.manifest.json"
         />
       </div>
 
-      <div class="vue">
-        <Application
-            id="os-example-vue"
-            manifest="http://localhost:8082/os-example-vue.manifest.json"
-        />
-      </div>
-
-      <div class="ng">
-        <Application
-            id="os-exmaple-angular"
-            manifest="http://localhost:4200/os-exmaple-angular.manifest.json"
-        />
-      </div>
 
     </div>
 </template>
@@ -35,6 +24,12 @@ export default {
   name: 'App',
   components: {
     Application
+  },
+  created() {
+    console.log('====== in App.vue created')
+  },
+  mounted () {
+    console.log('in App.vue mounted')
   }
 }
 </script>
