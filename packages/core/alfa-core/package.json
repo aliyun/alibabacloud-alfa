@@ -1,5 +1,5 @@
 {
-  "name": "@alicloud/alfa-kernel",
+  "name": "@alicloud/alfa-core",
   "version": "0.4.0-alpha.6",
   "description": "MicroFront End SDK for alicloud",
   "main": "lib/index.js",
