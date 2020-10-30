@@ -35,35 +35,34 @@ const exampleAppManifest = {
 // 主应用使用 React 实现
 function HostApp(props) {
   
-  const exampleApp = createMicroApp({
-    // 资源描述是微应用至少需要的配置项，更多的配置项参考 API 文档
-    ...exampleAppManifest
-  });
-  
   const containerEl = useRef(null);
   
   useEffect(() => {
-    // 加载
-    exampleApp
-      .load()
-      .then((exampleApp) => {
-        // 渲染
-        exampleApp.mount(containerEl.current, {
-          title: `${props.title} - ${exampleApp.name}`
-        });
+
+    let exampleApp = {};
+
+    (async () => {
+  
+      exampleApp = await createMicroApp({
+        // 资源描述是微应用至少需要的配置项，更多的配置项参考 API 文档
+        ...exampleAppManifest
       });
+  
+      // 加载
+      await exampleApp.load();
+  
+      // 渲染
+      await exampleApp.mount(containerEl.current, {
+        title: `${props.title} - ${exampleApp.name}`
+      });
+  
+    })();
+
     // 卸载
     return () => {
       exampleApp.unmount();
     };
   }, []);
-  
-  useEffect(() => {
-    // 更新
-    exampleApp.update({
-      title: `${props.title} - ${exampleApp.name}`
-    });
-  }, [props.title]);
   
   return (
     <div ref={containerEl}></div>
