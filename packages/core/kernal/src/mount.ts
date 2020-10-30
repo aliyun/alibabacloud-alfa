@@ -11,8 +11,8 @@ export let isStart = false;
 
 /**
  * Create a Micro Application instance
- * @param appInfo 
- * @param options 
+ * @param appInfo
+ * @param options
  */
 export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) => {
   if (!isStart) {
@@ -21,8 +21,8 @@ export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) 
   // process the options
   const sandBox = {
     singleton: true,
-    ...globalOptions.sandBox,
-    ...options.sandBox,
+    ...globalOptions.sandbox,
+    ...options.sandbox,
   };
 
   if (!appInfo.deps) {
@@ -34,8 +34,8 @@ export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) 
 
 /**
  * Load app assets instance according to its manifest,
- * @param appInfo 
- * @param options 
+ * @param appInfo
+ * @param options
  */
 export const load = async (app: Application) => {
   await app.load();
@@ -44,8 +44,8 @@ export const load = async (app: Application) => {
 
 /**
  * Mount app to a dom
- * @param app 
- * @param mountInfo 
+ * @param app
+ * @param mountInfo
  */
 export const mount = async (app: Application, mountInfo: AppInfo) => {
   await app.mount(mountInfo);
@@ -54,8 +54,8 @@ export const mount = async (app: Application, mountInfo: AppInfo) => {
 
 /**
  * update the props to application
- * @param app 
- * @param props 
+ * @param app
+ * @param props
  */
 export const update = async (app: Application, props: any) => {
   await app.update(props)
@@ -63,7 +63,7 @@ export const update = async (app: Application, props: any) => {
 
 /**
  * mount a app
- * @param app 
+ * @param app
  */
 export const unmount = async (app: Application) => {
   await app.unmount()
@@ -76,7 +76,7 @@ export const destroy = async (app: Application) => {
 }
 /**
  * mount a app
- * @param app 
+ * @param app
  */
 export const distroy = async (app: Application) => {
   return destroy(app)
@@ -96,9 +96,9 @@ export const loadExposedModule = async <T>(appInfo: AppInfo, moduleName: string,
 }
 
 /**
- * 
- * @param appInfo 
- * @param options 
+ *
+ * @param appInfo
+ * @param options
  */
 export const mountApp = async (appInfo: AppInfo, options: AppOption = {}) => {
   // create application
@@ -117,7 +117,7 @@ export const isAppRegistered = (appName: string) => {
 
 /**
  * Start consoleos instance
- * @param options 
+ * @param options
  */
 export const start = (options?: GlobalOption) => {
   isStart = true;

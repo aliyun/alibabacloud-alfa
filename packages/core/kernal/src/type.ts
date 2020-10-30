@@ -56,7 +56,7 @@ export interface SandBoxOption {
 }
 
 export interface AppOption {
-  sandBox?: SandBoxOption;
+  sandbox?: SandBoxOption;
   parcel?: boolean;
 }
 

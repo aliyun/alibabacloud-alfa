@@ -12,7 +12,15 @@ export interface IAppConfig<T = any> {
   props?: Record<string, T>;
 }
 
-const createMicroApp = <T>(appConfig: IAppConfig<T>) => {
+export interface IOptions<T = any> {
+
+}
+
+const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions<T>) => {
+
+  // todo: 消费 options
+
+
   return createConsoleOSMicroApp({
     name: appConfig.name,
     manifest: {
@@ -29,4 +37,3 @@ const createMicroApp = <T>(appConfig: IAppConfig<T>) => {
 }
 
  export default createMicroApp;
- 

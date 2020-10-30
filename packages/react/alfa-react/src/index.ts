@@ -1,10 +1,10 @@
-// @ts-ignore
 import React, { HTMLAttributes } from 'react';
+import { IAppConfig, IOptions } from '@alicloud/alfa-core';
 
-// @ts-ignore
-export * from '@alicloud/alfa-core';
-
-
-interface IProps<T = any> extends HTMLAttributes<Element> {
+// 从 alfa-core 继承而来
+interface IProps<T = any> extends HTMLAttributes<Element>, IAppConfig, IOptions {
 
 }
+
+// todo
+// export * from '@alicloud/alfa-core';

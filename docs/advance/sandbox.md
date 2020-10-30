@@ -15,7 +15,7 @@ sort: 9
 ```jsx
 import { start } from '@ali/os-kernal'
 start({
-    sandBox: {
+    sandbox: {
     // 全局变量白名单，可选
     externalsVars: [],
     // url path, 可选默认 /api.json
