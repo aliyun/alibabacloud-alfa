@@ -16,13 +16,14 @@ export interface IOptions<T = any> {
 
 }
 
-const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions<T>) => {
+const createMicroApp = <T>(appConfig: IAppConfig<T>, options?: IOptions<T>) => {
 
   // todo: 消费 options
 
 
   return createConsoleOSMicroApp({
     name: appConfig.name,
+    dom: appConfig.container,
     manifest: {
       name: appConfig.name,
       resources: {},
