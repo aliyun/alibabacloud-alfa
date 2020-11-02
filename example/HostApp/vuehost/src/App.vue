@@ -9,11 +9,9 @@
               disableFakeBody: true,
               disable: false
             }"
-        manifest="http://localhost:8081/os-example.manifest.json"
+        manifest="https://g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json"
         />
       </div>
-
-
     </div>
 </template>
 
@@ -25,12 +23,6 @@ export default {
   components: {
     Application
   },
-  created() {
-    console.log('====== in App.vue created')
-  },
-  mounted () {
-    console.log('in App.vue mounted')
-  }
 }
 </script>
 
