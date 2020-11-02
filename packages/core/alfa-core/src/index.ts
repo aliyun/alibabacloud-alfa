@@ -13,13 +13,12 @@ export interface IAppConfig<T = any> {
 }
 
 export interface IOptions<T = any> {
-
+  // todo: 增加 sandbox 等参数
 }
 
 const createMicroApp = <T>(appConfig: IAppConfig<T>, options?: IOptions<T>) => {
 
   // todo: 消费 options
-
 
   return createConsoleOSMicroApp({
     name: appConfig.name,
