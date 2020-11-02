@@ -1,12 +1,14 @@
 import {
   // OSApplication,
-  createMicroApp, mount, load,
-  // unmount, distroy
+  createMicroApp,
+  mount,
+  load,
+  unmount,
+  distroy
 } from '@alicloud/console-os-kernal'
 import vueCustomElement from 'vue-custom-element'
 import Vue from 'vue'
 Vue.use(vueCustomElement)
-Vue.customElement('widget-vue');
 const getParcelProps = (props = {}) => {
   const parcelProps = {...props, ...(props.appProps || {})};
   
@@ -20,6 +22,7 @@ const getParcelProps = (props = {}) => {
   
   return parcelProps;
 }
+export { start } from '@alicloud/console-os-kernal';
 
 export default {
   name: 'Application',
@@ -56,19 +59,19 @@ export default {
   },
   render(h) {
     const REF_NAME = 'el'
-    const fragment = h('div', {
-      ref: REF_NAME
-    })
+    Vue.customElement(this.id, {});
+    
     if (this.removeBodyTag) {
       return h(this.id, {
         class: this.class,
         ref: 'el'
-      }, [fragment])
+      })
     } else {
       return h(this.id, {
         class: this.class
       }, [h('body', {ref: REF_NAME})])
     }
+
   },
   mounted() {
     this.$nextTick(() => {
@@ -106,10 +109,27 @@ export default {
     })
   },
   updated() {
-    console.log('vue host updated');
+    this.addThingToDo('update', () => {
+      // @ts-ignore
+      if (this.app && this.app.parcel && this.app.parcel.update) {
+        // @ts-ignore
+        return this.app.update(getParcelProps(this.$props))
+      }
+    })
   },
   beforeDestroy() {
-    console.log('vue host beforeDestroy');
+    this.addThingToDo('unmount', () => {
+      const { singleton = true } = this.$props;
+      if (this.app && this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
+        return singleton ? unmount(this.app) : distroy(this.app);
+      }
+    })
+  
+    if (this.createdDomElement && this.createdDomElement.parentNode) {
+      this.createdDomElement.parentNode.removeChild(this.createdDomElement)
+    }
+  
+    this.unmounted = true
   },
   methods: {
     addThingToDo(action, thing = () => {}) {
@@ -136,3 +156,4 @@ export default {
     }
   }
 }
+
