@@ -15,4 +15,5 @@ export interface IProps<T = any> extends HTMLAttributes<Element>, IAppConfig, IO
 
 export default class MicroAppBase<T> extends React.Component<Partial<IProps<T>>> {
 
+  // todo: 组合消费 generateEntry 和 createMicroApp
 }
