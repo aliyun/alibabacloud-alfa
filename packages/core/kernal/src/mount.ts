@@ -48,7 +48,7 @@ export const load = async (app: Application) => {
  * @param mountInfo
  */
 export const mount = async (app: Application, mountInfo: AppInfo) => {
-  await app.mount(mountInfo);
+  await app.mount(mountInfo.dom, { customProps: mountInfo.customProps });
   return app;
 }
 

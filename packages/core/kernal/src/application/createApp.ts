@@ -12,7 +12,8 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
   const promise = new Promise<Application>((resolver, reject) => {
     app.setPendingResolver(resolver);
     app.setPendingRejecter(reject);
-  })
+  });
+
   app.setPendingPromise(promise);
 
   AppCachePool.setApp(appInfo.name, app);

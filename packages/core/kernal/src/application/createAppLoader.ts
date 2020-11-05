@@ -117,6 +117,9 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       }
     ],
     update: [
+      async () => {
+        await invokeLifeCycle(appInfo.appWillUpdate, appInstance);
+      },
       ...appInstance.update ? appInstance.update : []
     ],
     exposedModule: appInstance.exposedModule

@@ -84,11 +84,11 @@ export class Application {
   /**
    * public api for mount logic for app
    */
-  public async mount(mountInfo: AppInfo) {
+  public async mount(dom?: Element, { customProps }: { customProps?: any } = {}) {
     const { baseFrame } = this.context;
     if (baseFrame) {
       // listen for message and popstate evt 
-      baseFrame.contentWindow.addEventListener('popstate', this._emitLocaitonChange);
+      baseFrame.contentWindow.addEventListener('popstate', this._emitLocationChange);
       baseFrame.contentWindow.addEventListener('message', this._emitGlobalEvent);
     }
 
@@ -101,10 +101,10 @@ export class Application {
       unmount: flattenFnArray(this.remoteApp.unmount, 'unmount'),
       update: flattenFnArray(this.remoteApp.update, 'update'),
     }, {
-      domElement: mountInfo.dom || this.appInfo.dom,
+      domElement: dom || this.appInfo.dom,
       appProps: {
         emitter: createEventBus(),
-        ...(mountInfo.customProps || this.appInfo.customProps)
+        ...(customProps || this.appInfo.customProps)
       }
     });
 
@@ -131,7 +131,7 @@ export class Application {
     if (this.parcel && this.parcel.getStatus() === "MOUNTED") {
       const { baseFrame } = this.context;
       if (baseFrame) {
-        baseFrame.contentWindow.removeEventListener('popstate', this._emitLocaitonChange);
+        baseFrame.contentWindow.removeEventListener('popstate', this._emitLocationChange);
         baseFrame.contentWindow.removeEventListener('message', this._emitGlobalEvent);
       }
       this.parcel.unmount();
@@ -139,7 +139,7 @@ export class Application {
   }
 
   /**
-   * public api for destory the app, it with unmount all node and destroy the
+   * public api for destroy the app, it with unmount all node and destroy the
    * sandbox
    */
   public async destroy() {
@@ -149,7 +149,7 @@ export class Application {
 
   /**
    * @deprecated
-   * public api for destory the app
+   * public api for destroy the app
    */
   public async dispose() {
     return this.destroy()
@@ -173,7 +173,7 @@ export class Application {
 
   /* ---------------------------------------------------- */
 
-  private _emitLocaitonChange = () => {
+  private _emitLocationChange = () => {
     eventBus.emit(this.historyEventName, this.context.location)
   }
 
@@ -186,7 +186,7 @@ export class Application {
     payload.appId = this.appInfo.name;
 
     if (payload.type === this.historyEventName) {
-      this._emitLocaitonChange()
+      this._emitLocationChange()
     } else {
       eventBus.emit(payload.type, serializeData(payload))
     }

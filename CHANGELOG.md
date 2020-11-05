@@ -1,3 +1,12 @@
+# 1.0.0
+
+## Breaking Changes
+
+### Kernel 
+ * change createMicroApp first option `id` to `name`
+ * change api `distroy` to `destroy`,
+
+
 # 0.3.10
 * Feat: sync initial path for sandbox every app mount
 

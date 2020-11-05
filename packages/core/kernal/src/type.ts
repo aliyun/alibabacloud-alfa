@@ -8,6 +8,7 @@ interface ExtendsAppLifeCycles<T> {
   appDidMount?: Lifecycle<T> | Lifecycle<T>[]; // function after app mount
   appWillUnmount?: Lifecycle<T> | Lifecycle<T>[]; // function after app unmount
   appDidUnmount?: Lifecycle<T> | Lifecycle<T>[]; // function after app unmount
+  appWillUpdate?: Lifecycle<T> | Lifecycle<T>[]; // function after app unmount
 }
 
 export interface AppInstance<T = any> extends LifeCycles<T> {
