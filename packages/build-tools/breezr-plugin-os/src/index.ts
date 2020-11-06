@@ -11,7 +11,6 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   config
     .output
     .library(options.id)
-    .jsonpFunction(`webpackJsonp${options.id}`)
     .libraryTarget('umd');
 
   config
@@ -20,6 +19,12 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       injectVars,
       jsonpCall
     }]);
+
+  if (!options.webpack5) {
+    config
+      .output
+      .jsonpFunction(`webpackJsonp${options.id}`)
+  }
 
   if (!options.webpack3) {
     config
