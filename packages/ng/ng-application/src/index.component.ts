@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef } from '@angular/core';
-import { OSApplication, load, mount, unmount, distroy, createMicroApp, SandBoxOption } from '@alicloud/console-os-kernal';
+import { OSApplication, load, mount, unmount, destroy, createMicroApp, SandBoxOption } from '@alicloud/console-os-kernal';
 
 const getParcelProps = (props) => {
   const parcelProps = {...props}
@@ -74,7 +74,7 @@ export class Application {
       };
 
       this.app = await createMicroApp(appInfo, {
-        sandBox
+        sandbox: sandBox
       });
 
       await load(this.app);
@@ -88,7 +88,7 @@ export class Application {
   public ngOnDestroy() {
     this.addThingToDo('unmount', () => {
       const { singleton = true } = this;
-      return singleton ? unmount(this.app) : distroy(this.app);
+      return singleton ? unmount(this.app) : destroy(this.app);
     })
 
     if (this.createdDomElement) {

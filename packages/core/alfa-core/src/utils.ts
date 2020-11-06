@@ -2,7 +2,6 @@ import template from 'lodash/template';
 
 import { ENV } from './env';
 import { AlfaFactoryOption, IAppConfig } from './types';
-import app from "../../../react/alfa-react/src/app";
 
 export const resolveReleaseUrl = (option: AlfaFactoryOption) => {
   // 如果没找环境到 fallback 到 prod

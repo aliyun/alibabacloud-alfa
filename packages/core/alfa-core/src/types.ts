@@ -50,10 +50,6 @@ export interface AlfaFactoryOption {
   name: string;
   version: string;
   env?: 'prod' | 'local' | 'pre' | 'daily';
-
-  // fixme
-  loading?: boolean | React.ReactChild;
-  url?: string;
 }
 
 export interface AlfaEnvConfigDescriptor {

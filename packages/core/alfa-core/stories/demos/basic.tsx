@@ -14,9 +14,7 @@ const Basic: React.FC<{}> = () => {
 
       await app.load()
   
-      await app.mount({
-        dom: appRef.current
-      });
+      await app.mount(appRef.current, {});
 
       return () => {
         app.unmount();

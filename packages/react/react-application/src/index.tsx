@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react';
-import { OSApplication, createMicroApp, mount, load, unmount, distroy } from '@alicloud/console-os-kernal'
+import { OSApplication, createMicroApp, mount, load, unmount, destroy } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
@@ -67,7 +67,6 @@ const getParcelProps = (props: Partial<IProps>) => {
   delete parcelProps.manifest;
   delete parcelProps.initialPath;
   delete parcelProps.externalsVars;
-  delete parcelProps.sandBox;
   delete parcelProps.sandbox;
   delete parcelProps.appDidMount;
 
@@ -102,14 +101,12 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     this.addThingToDo('mount',  async () => {
       const {
         jsUrl: url, id, manifest, 
-        publicPath, deps
+        publicPath, deps, sandbox
       } = this.props;
 
       if (!id) {
         throw new Error('You should give a id for OS Application');
       }
-
-      const sandBox = this.props.sandbox;
 
       let domElement;
       if (this.el) {
@@ -131,9 +128,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
         }
       };
 
-      this.app = await createMicroApp(appInfo, {
-        sandBox
-      })
+      this.app = await createMicroApp(appInfo, { sandbox })
 
       // @ts-ignore
       await load(this.app);
@@ -161,7 +156,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
   public componentWillUnmount() {
     this.addThingToDo('unmount', () => {
       if (this.app && this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
-        return this.props.sandbox?.singleton ? unmount(this.app) : distroy(this.app);
+        return this.props.sandbox?.singleton ? unmount(this.app) : destroy(this.app);
       }
     })
 

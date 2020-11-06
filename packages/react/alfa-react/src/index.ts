@@ -1,5 +1,5 @@
 import App from './app';
-import Widget from './widget';
+export { createAlfaWidget } from './widget';
 
 // todo
 // export * from '@alicloud/alfa-core';
