@@ -2,17 +2,31 @@ import template from 'lodash/template';
 
 import { ENV } from './env';
 import { AlfaFactoryOption, IAppConfig } from './types';
+import app from "../../../react/alfa-react/src/app";
 
 export const resolveReleaseUrl = (option: AlfaFactoryOption) => {
   // 如果没找环境到 fallback 到 prod
   const env = ENV[option.env] || ENV.prod;
-  
+
   return template(env.releaseUrl)({ appId: option.name })
 }
 
+export const getURL = (appConfig: IAppConfig) => {
+
+  const { entry } = appConfig;
+  let url = '';
+
+  if (typeof entry === 'string') {
+    url = entry;
+  }
+
+  return url;
+}
+
 export const getManifest = (appConfig: IAppConfig) => {
-  // Entry 优先生效
-  if (appConfig.entry) {
+
+  // 定义了 entry 时，优先从 entry 生成 manifest
+  if (appConfig.entry && typeof appConfig.entry !== 'string') {
     return {
       name: appConfig.name,
       resources: {},
@@ -23,10 +37,6 @@ export const getManifest = (appConfig: IAppConfig) => {
         }
       }
     };
-  }
-
-  if (!appConfig.manifest) {
-    new Error(`No entry or manifest in ${appConfig.name}`)
   }
 
   return appConfig.manifest;

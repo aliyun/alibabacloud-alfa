@@ -1,16 +1,24 @@
 import { createMicroApp as createConsoleOSMicroApp } from '@alicloud/console-os-kernal';
-import { getManifest } from './utils';
+import { getManifest, getURL } from './utils';
 import { IAppConfig, IOptions } from './types';
 
 export const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions<T> = {}) => {
+
+  const manifest = getManifest(appConfig);
+  const url = getURL(appConfig);
+
+  if (!manifest && !url) {
+    throw new Error(`No entry or manifest in ${appConfig.name}`);
+  }
+
   return createConsoleOSMicroApp({
     name: appConfig.name,
     dom: appConfig.container,
-    manifest: getManifest(appConfig),
+    manifest,
     customProps: appConfig.props,
     deps: appConfig.deps,
 
-    url: appConfig.jsUrl,
+    url,
 
     // @ts-ignore
     appWillMount: options.beforeMount,

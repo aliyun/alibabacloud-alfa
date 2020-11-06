@@ -1,21 +1,19 @@
-import { OSApplication, SandBoxOption, AppInfo } from '@alicloud/console-os-kernal';
+import { OSApplication, SandBoxOption } from '@alicloud/console-os-kernal';
 import React from 'React';
 
 export interface IAppManifest {
   scripts: string[];
-  styles: string[];
+  styles?: string[];
 }
 
 export interface IAppConfig<T = any> {
-  entry?: IAppManifest;
+  entry?: IAppManifest | string;
   name: string;
   container?: HTMLElement;
   props?: Record<string, T>;
-  dom?: Element;
 
   // alfa 的扩展属性
   manifest?: string;
-  jsUrl?: string;
   logger?: {
       debug: () => {};
       error: () => {};
@@ -51,8 +49,10 @@ export interface AlfaReleaseConfig {
 export interface AlfaFactoryOption {
   name: string;
   version: string;
-  loading?: boolean | React.ReactChild;
   env?: 'prod' | 'local' | 'pre' | 'daily';
+
+  // fixme
+  loading?: boolean | React.ReactChild;
   url?: string;
 }
 
