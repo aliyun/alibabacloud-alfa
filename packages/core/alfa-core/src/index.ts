@@ -1,2 +1,2 @@
 export { createMicroApp } from './createMicroApp';
-export { getManifestById } from './resolveAlfaManifest';
+export { getManifest } from './resolveAlfaManifest';
