@@ -14,6 +14,9 @@
     "build": "breezr build --engine webpack",
     "clean": "rm -rf lib yarn.lock"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.0",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
@@ -39,5 +42,5 @@
   "peerDependencies": {
     "react": "^16 | ^17"
   },
-  "gitHead": "e0528ed48aeb24f317cffd2b359d8cd2c4feff87"
+  "gitHead": "7793fa2f0c47e8d2260c07b7604f7cd95916cfef"
 }

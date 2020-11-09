@@ -7,6 +7,9 @@
   "typings": "lib/index.d.ts",
   "author": "Boelroy",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "prepublish": "npm run build && npm run babel && npm run babel:esm",
     "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d true --declarationDir ./lib",
@@ -29,5 +32,5 @@
   "dependencies": {
     "@alicloud/console-os-kernal": "^1.0.0-next.1"
   },
-  "gitHead": "e0528ed48aeb24f317cffd2b359d8cd2c4feff87"
+  "gitHead": "7793fa2f0c47e8d2260c07b7604f7cd95916cfef"
 }
