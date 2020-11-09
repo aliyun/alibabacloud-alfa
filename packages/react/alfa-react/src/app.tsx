@@ -67,6 +67,7 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
       <Suspense fallback={<Loading loading={loading}/>}>
         <AlfaApp
           {...option}
+          deps={option.dependencies || {}}
           {...props}
         />
       </Suspense>

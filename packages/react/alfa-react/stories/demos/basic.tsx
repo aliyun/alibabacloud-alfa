@@ -4,7 +4,7 @@ import { createAlfaApp } from '../../src';
 const AlfaApp = createAlfaApp({
   name: '@ali/alfa-xxxxxx', 
   version: '1.x',
-  env: 'pre'
+  env: 'pre',
 });
 
 const Basic: React.FC<{}> = () => {

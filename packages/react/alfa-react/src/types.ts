@@ -17,6 +17,7 @@ export interface AlfaFactoryOption {
   loading?: boolean | React.ReactChild;
   env?: 'prod' | 'local' | 'pre' | 'daily';
   url?: string;
+  dependencies?: Record<string, any>;
 }
 
 export interface AlfaEnvConfigDescriptor {
