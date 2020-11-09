@@ -43,7 +43,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
   if (appInfo.manifest) {
     // TODO: log manifest
-    const manifest =  typeof appInfo.manifest === 'string' ? await getManifest(appInfo.manifest) : appInfo.manifest;
+    const manifest = await getManifest(appInfo.manifest);
 
     if (manifest) {
       // TODO: validate the manifest

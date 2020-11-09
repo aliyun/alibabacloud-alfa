@@ -1,16 +1,20 @@
 import React, { useRef, useEffect } from 'react';
-import { mountApp } from '../../src';
+import { mountApp, prefetch } from '../../src';
 import { appInfo } from './constants';
+
+prefetch([ appInfo ]);
 
 const Basic: React.FC<{}> = () => {
   const appRef = useRef();
   useEffect(() => {
-    mountApp({
-      ...appInfo,
-      dom: appRef.current
-    });
+    setTimeout(() => {
+      mountApp({
+        ...appInfo,
+        dom: appRef.current
+      });
+    }, 4000)
   })
-  return <div ref={appRef}/>
+  return React.createElement(appInfo.name, { ref: appRef })
 }
 
 export default Basic;

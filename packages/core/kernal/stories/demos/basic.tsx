@@ -10,7 +10,7 @@ const Basic: React.FC<{}> = () => {
       dom: appRef.current
     });
   })
-  return <div ref={appRef}/>
+  return React.createElement(appInfo.name, { ref: appRef })
 }
 
 export default Basic;

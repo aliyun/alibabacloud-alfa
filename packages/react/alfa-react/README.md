@@ -41,7 +41,7 @@ import { createWidget } from '@alicloud/alfa-react';
 
 const AlfaWidget = createWidget({
   name: '@ali/example',
-  url: 'https://sone-url/index.js'
+  url: 'https://some-url/index.js'
 });
 
 

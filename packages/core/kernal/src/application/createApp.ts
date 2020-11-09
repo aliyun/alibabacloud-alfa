@@ -4,6 +4,7 @@ import { Application } from './Application';
 import { createContext } from './createContext';
 import * as AppCachePool from './AppCachePool';
 import { AppInfo, SandBoxOption } from '../type';
+import { getManifest } from '../misc/manifest';
 
 const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
   let context: VMContext = { window, document, location, history };
@@ -43,6 +44,9 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
  * @param sandBoxOption sandbox option for app
  */
 export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
+  const manifest = await getManifest(appInfo.manifest);
+  appInfo.name = manifest.name;
+
   if (!sandBoxOption.singleton) {
     return await createAppInstance(appInfo, sandBoxOption);
   }

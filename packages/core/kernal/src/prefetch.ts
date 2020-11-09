@@ -9,6 +9,6 @@ export const prefetch = (apps: BasicModule[]) => {
     }, {
       ...globalOptions.sandbox
     });
-    app.load();
+    await app.load();
   });
 }

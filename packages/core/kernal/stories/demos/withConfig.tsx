@@ -6,12 +6,12 @@ const WithConfig: React.FC<{}> = () => {
   const appRef = useRef();
   useEffect(() => {
     mountApp({
-      id: appManifest.name,
+      name: appManifest.name,
       manifest: appManifest,
       dom: appRef.current
     });
   })
-  return <div ref={appRef}/>
+  return React.createElement(appManifest.name, { ref: appRef })
 }
 
 export default WithConfig;

@@ -74,13 +74,6 @@ export const destroy = async (app: Application) => {
   await app.destroy()
   return app;
 }
-/**
- * mount a app
- * @param app
- */
-export const distroy = async (app: Application) => {
-  return destroy(app)
-}
 
 export const getExposedModule = <T>(app: Application, moduleName: string) => {
   return app.getExposedModule<T>(moduleName);
@@ -128,3 +121,6 @@ export const start = (options?: GlobalOption) => {
   createCachePool({});
   ManifestCachePool.createCachePool();
 }
+
+
+start();
