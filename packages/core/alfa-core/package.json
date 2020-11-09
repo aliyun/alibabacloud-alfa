@@ -29,5 +29,5 @@
   "dependencies": {
     "@alicloud/console-os-kernal": "^1.0.0-next.0"
   },
-  "gitHead": "298b4b2fb1b5d20a1b0efb2b1fdf226a3798ce6b"
+  "gitHead": "e0528ed48aeb24f317cffd2b359d8cd2c4feff87"
 }
