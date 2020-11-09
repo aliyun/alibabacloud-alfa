@@ -1,1 +1,0 @@
-export const publicPath = process.env.CONSOLE_OS_PUBLIC_PATH || '/';
