@@ -1,11 +1,11 @@
 import template from 'lodash/template';
 
-import { ENV } from './env';
+import { ENV, getConsoleEnv } from './env';
 import { AlfaFactoryOption, IAppConfig } from './types';
 
 export const resolveReleaseUrl = (option: AlfaFactoryOption) => {
   // 如果没找环境到 fallback 到 prod
-  const env = ENV[option.env] || ENV.prod;
+  const env = ENV[option.env || getConsoleEnv()] || ENV.prod;
 
   return template(env.releaseUrl)({ appId: option.name })
 }

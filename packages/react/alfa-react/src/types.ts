@@ -1,4 +1,5 @@
 import React from 'React';
+import { IOptions } from '@alicloud/alfa-core'
 
 export interface AlfaVersion {
   entry: string;
@@ -11,9 +12,9 @@ export interface AlfaReleaseConfig {
   'dist-tag': Record<string, string>;
 }
 
-export interface AlfaFactoryOption {
+export interface AlfaFactoryOption extends IOptions {
   name: string;
-  version: string;
+  version?: string;
   loading?: boolean | React.ReactChild;
   env?: 'prod' | 'local' | 'pre' | 'daily';
   url?: string;

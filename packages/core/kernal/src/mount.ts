@@ -122,5 +122,4 @@ export const start = (options?: GlobalOption) => {
   ManifestCachePool.createCachePool();
 }
 
-
 start();
