@@ -11,6 +11,7 @@ export interface IProps<T = any> extends HTMLAttributes<Element>, IAppConfig, IO
    * React 应用所需的特定属性
    */
 
+  loading?: boolean | React.ReactChild;
 }
 
 export default class MicroAppBase<T> extends React.Component<Partial<IProps<T>>> {

@@ -3,7 +3,7 @@ import template from 'lodash/template';
 
 import { AlfaFactoryOption, WidgetReleaseConfig } from '../types';
 
-export let cachedRelease = null;
+export let cachedRelease: Record<string, any> | null = null;
 
 const WIDGET_ENTRY_URL = 'https://g.alicdn.com/${id}/${version}/index.js';
 
@@ -16,7 +16,7 @@ export const getWidgetVersionById = async (option: AlfaFactoryOption) => {
   if (!option.version.endsWith('.x')) {
     return {
       version: option.version,
-      entryUrl: normalizeEntryUrl(option.id, option.version)
+      entryUrl: normalizeEntryUrl(option.name, option.version)
     }
   }
 
@@ -25,10 +25,10 @@ export const getWidgetVersionById = async (option: AlfaFactoryOption) => {
     cachedRelease = resp.data;
   }
 
-  const version = cachedRelease[option.id][option.version].latest;
+  const version = cachedRelease[option.name][option.version].latest;
 
   return {
     version,
-    entryUrl: normalizeEntryUrl(option.id, version)
+    entryUrl: normalizeEntryUrl(option.name, version)
   }
 }

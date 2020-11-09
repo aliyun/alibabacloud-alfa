@@ -26,7 +26,7 @@ export function createAlfaWidget<T>(option: AlfaFactoryOption) {
     const deps = await getWidgetDeps(config);
 
     return loadBundle({
-      id: option.id,
+      id: option.name,
       url: option.url || url,
       deps,
       xmlrequest: true,

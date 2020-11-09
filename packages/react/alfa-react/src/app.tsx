@@ -1,14 +1,15 @@
-import React, { Suspense, lazy, useRef, useEffect } from 'react';
-import axios from 'axios';
+import React, { Suspense, lazy, useRef, useEffect, useState } from 'react';
 
 import { getManifest, createMicroApp } from '@alicloud/alfa-core'
+import { IProps } from './base';
+import Loading from './components/Loading';
 import { AlfaFactoryOption } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
-import Loading from './components/Loading';
-import { IProps } from './base';
+import { normalizeName } from './utils';
 
 const Application: React.FC<IProps> = (props: IProps) => {
-  const { sandbox, name, loading } = props;
+  const { sandbox, name, loading, style, className } = props;
+  const [mounted, setMounted] = useState(false);
   const appRef = useRef(null);
 
   useEffect(() => {
@@ -21,28 +22,32 @@ const Application: React.FC<IProps> = (props: IProps) => {
   
       await app.mount(appRef.current, {});
 
+      setMounted(true);
+
       return () => {
         app.unmount();
       };
     })()
   });
+  const elementTagName = normalizeName(name);
 
   return (<>
-    <Loading loading={loading}/>
+    { !mounted && <Loading loading={loading}/> }
     {
-      (sandbox && sandbox.disableFakeBody) 
-      ? React.createElement(name, { style, className, ref: ref } ) 
+      (sandbox && sandbox !== true && sandbox.disableFakeBody) 
+      ? React.createElement(elementTagName, { style, className, ref: appRef } ) 
       : React.createElement(
-        name,
-        React.createElement('div', { ref: ref })
+        elementTagName,
+        React.createElement('div', { ref: appRef })
+      )
     }
   </>
   )
 }
 
 
-export function createAlfaApp(option: AlfaFactoryOption) {
-  const { loading, name } = option;
+export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
+  const { name, loading } = option;
   const AlfaApp = lazy(async () => {
     const manifest = await getManifest(option);
     const AlfaApp: React.FC<IProps> = (props: IProps) => {
@@ -57,11 +62,14 @@ export function createAlfaApp(option: AlfaFactoryOption) {
     return { default: AlfaApp }
   });
 
-  return (props: IProps) => (
+  return (props: T) => (
     <ErrorBoundary>
-      <AlfaApp
-        {...props}
-      />
+      <Suspense fallback={<Loading loading={loading}/>}>
+        <AlfaApp
+          {...option}
+          {...props}
+        />
+      </Suspense>
     </ErrorBoundary>
   )
 }

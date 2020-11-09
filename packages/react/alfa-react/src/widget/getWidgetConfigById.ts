@@ -7,10 +7,10 @@ const cachedConfig: Record<string, WidgetCWSConfig> = {};
 const WIDGET_CONFIG_URL = 'https://cws.alicdn.com/Release/pkgs/${id}/config.json';
 
 export const getWidgetConfigById = async (option: AlfaFactoryOption) => {
-  if (!cachedConfig[option.id]) {
-    const resp = await axios.get<WidgetCWSConfig>(template(WIDGET_CONFIG_URL)({id: option.id}),);
-    cachedConfig[option.id] = resp.data;
+  if (!cachedConfig[option.name]) {
+    const resp = await axios.get<WidgetCWSConfig>(template(WIDGET_CONFIG_URL)({id: option.name}),);
+    cachedConfig[option.name] = resp.data;
   }
 
-  return cachedConfig[option.id];
+  return cachedConfig[option.name];
 }
