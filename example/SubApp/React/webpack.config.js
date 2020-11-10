@@ -4,20 +4,21 @@ const { chainOsWebpack } = require('@alicloud/console-toolkit-plugin-os');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const chain = new WepbackChain();
+chain.devServer.port(8082)
 chainOsWebpack({
-  id: 'os-example'
+  id: 'alfa-xxxxxx'
 })(chain);
 
 const regCommon = new RegExp(`[\\/]node_modules[\\/](_)?(${['react'].join('|')})[\\/|@]`);
 
 module.exports = merge(chain.toConfig(), {
   entry: {
-    'os-example': './src/index.js',
+    'alfa-xxxxxx': './src/index.js',
     // 'os-example2': './src/index2.js'
   },
   devtool: 'source-map',
   devServer: {
-    port: '8081',
+    port: '8082',
     clientLogLevel: 'warning',
     disableHostCheck: true,
     compress: true,

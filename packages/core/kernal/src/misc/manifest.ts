@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AppManifest } from '../type';
+import { AppInfo, AppManifest } from '../type';
 import * as ManifestCachePool from './ManifestCachePool';
 import { getFromCdn } from './util';
 import { LoggerFactory } from './logger'
@@ -19,7 +19,8 @@ export const handleManifest = (manifest: AppManifest) => {
  * 
  * @param url 
  */
-export const getManifest = async (manifest: string | object, id?: string) => {
+export const getManifest = async (appInfo: AppInfo, id?: string) => {
+  const manifest = appInfo.manifest;
   if(typeof manifest !== 'string') {
     return manifest;
   }
@@ -56,7 +57,8 @@ export const getManifest = async (manifest: string | object, id?: string) => {
     if (process.env.NODE_ENV === 'development' && process.env.ENABLE_MICRO_APP_REGISTRY_URL) {
       const appConfig = await axios.get(`${process.env.MICRO_APP_REGISTRY_URI || '/__get_micro_app__'}?id=${id}&manifest=${url}`)
       // @ts-ignore
-      actualUrl = appConfig.manifest || actualUrl;
+      actualUrl = appConfig.data.manifest || actualUrl;
+      appInfo.manifest = actualUrl;
     }
     const manifest = await getFromCdn(actualUrl) as AppManifest;
     manifestInfo.manifest = manifest;

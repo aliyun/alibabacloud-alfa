@@ -64,6 +64,10 @@ export class OSJsonpWebpackPlugin {
     if (typeof library === 'string') {
       return library;
     }
+    if (typeof library === 'object') {
+      // @ts-ignore
+      return library.name;
+    }
     throw new Error('library for os jsonp plugin should be string');
   }
 

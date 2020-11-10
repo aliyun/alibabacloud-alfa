@@ -44,7 +44,7 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
  * @param sandBoxOption sandbox option for app
  */
 export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
-  const manifest = await getManifest(appInfo.manifest);
+  const manifest = await getManifest(appInfo, appInfo.name);
   appInfo.name = manifest.name;
 
   if (!sandBoxOption.singleton) {
