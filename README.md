@@ -1,7 +1,12 @@
 # Alfa
 
 <p align="center">
-<a href=" https://www.alibabacloud.com"><img src="https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg"></a>
+  <a href="https://www.alibabacloud.com">
+    <img src="https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg">
+  </a>
+  <a href="https://aliyun.github.io/alibabacloud-alfa/">
+    <img src="https://gw.alicdn.com/tfs/TB1pJiNh_M11u4jSZPxXXahcXXa-160-160.png">
+  </a>
 </p>
 
 [![NPM version][npm-image]][npm-url]
@@ -56,18 +61,18 @@ export default Home;
 
 ## React 
 
-see [Console OS React Portal](https://github.com/aliyun/alfa/tree/master/packages/react/react-portal)
+see [Console OS React Portal](https://github.com/aliyun/alibabacloud-alfa/tree/master/packages/react/react-portal)
 
 ## Vue 
 
-see [Console OS Vue Portal](https://github.com/aliyun/alfa/tree/master/packages/vue/vue-portal)
+see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-alfa/tree/master/packages/vue/vue-portal)
 
 ## Try Example
 
 克隆仓库到本地
 
 ```
-git clone https://github.com/aliyun/alfa.git
+git clone https://github.com/aliyun/alibabacloud-alfa.git
 ```
 
 安装子应用
