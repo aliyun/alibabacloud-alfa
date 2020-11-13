@@ -8,6 +8,10 @@ export const getManifest = async (option: AlfaFactoryOption) => {
   const resp = await axios.get<AlfaReleaseConfig>(resolveReleaseUrl(option));
   const releaseConfig = resp.data;
 
+  if (!option.version) {
+    option.version = releaseConfig["dist-tags"]?.latest;
+  }
+
   const configByVersion = releaseConfig.versions[option.version];
 
   if (!configByVersion) {

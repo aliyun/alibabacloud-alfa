@@ -20,6 +20,7 @@ const Application: React.FC<IProps> = (props: IProps) => {
 
       await app.load()
   
+      // @ts-ignore
       await app.mount(appRef.current, {});
 
       setMounted(true);

@@ -43,12 +43,12 @@ type Version = string;
 
 export interface AlfaReleaseConfig {
   versions: Record<Version, AlfaVersion>;
-  'dist-tag': Record<string, string>;
+  'dist-tags': Record<string, string>;
 }
 
 export interface AlfaFactoryOption {
   name: string;
-  version: string;
+  version?: string;
   env?: 'prod' | 'local' | 'pre' | 'daily';
 }
 

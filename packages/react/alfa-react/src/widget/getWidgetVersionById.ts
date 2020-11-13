@@ -13,6 +13,9 @@ const normalizeEntryUrl = (id: string, version: string) => {
 }
 
 export const getWidgetVersionById = async (option: AlfaFactoryOption) => {
+  if (!option.version) {
+    throw new Error('No Version for Widget')
+  }
   if (!option.version.endsWith('.x')) {
     return {
       version: option.version,

@@ -14,7 +14,7 @@ export interface AlfaReleaseConfig {
 
 export interface AlfaFactoryOption extends IOptions {
   name: string;
-  version: string;
+  version?: string;
   loading?: boolean | React.ReactChild;
   env?: 'prod' | 'local' | 'pre' | 'daily';
   url?: string;
