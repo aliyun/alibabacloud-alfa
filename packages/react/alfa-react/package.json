@@ -10,7 +10,7 @@
   "scripts": {
     "prepublish": "npm run build && npm run babel && npm run babel:esm",
     "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
-    "babel:esm": "breezr build --engine babel --es-module",
+    "babel:esm": "breezr build --engine babel --esModule",
     "build": "breezr build --engine webpack",
     "clean": "rm -rf lib yarn.lock"
   },

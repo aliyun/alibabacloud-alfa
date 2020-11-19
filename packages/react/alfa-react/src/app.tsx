@@ -3,14 +3,14 @@ import React, { Suspense, lazy, useRef, useEffect, useState } from 'react';
 import { getManifest, createMicroApp } from '@alicloud/alfa-core'
 import { IProps } from './base';
 import Loading from './components/Loading';
-import { AlfaFactoryOption, Application } from './types';
+import { AlfaFactoryOption, MicroApplication } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
 import { normalizeName } from './utils';
 
 const Application: React.FC<IProps> = (props: IProps) => {
   const { sandbox, name, loading, style, className } = props;
   const [mounted, setMounted] = useState(false);
-  const [app, setApp] = useState<Application | null>(null);
+  const [app, setApp] = useState<MicroApplication | null>(null);
   const appRef = useRef(null);
 
   useEffect(() => {

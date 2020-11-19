@@ -80,4 +80,4 @@ export interface WidgetRuntime {
 }
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
-export type Application = ThenArg<ReturnType<typeof createMicroApp>>;
+export type MicroApplication = ThenArg<ReturnType<typeof createMicroApp>>;
