@@ -1,5 +1,5 @@
 import React from 'React';
-import { IOptions } from '@alicloud/alfa-core'
+import { createMicroApp, IOptions } from '@alicloud/alfa-core'
 
 export interface AlfaVersion {
   entry: string;
@@ -78,3 +78,6 @@ export interface WidgetRuntime {
   '@ali/wind-intl/lib/withRcIntl': any;
   '@ali/widget-utils-console': any;
 }
+
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+export type Application = ThenArg<ReturnType<typeof createMicroApp>>;
