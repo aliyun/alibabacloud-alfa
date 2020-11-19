@@ -31,6 +31,6 @@ export const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions<T>
     // @ts-ignore
     appWillUpdate: options.beforeUpdate
   }, {
-    sandBox: options.sandbox
+    sandbox: options.sandbox
   });
 }
