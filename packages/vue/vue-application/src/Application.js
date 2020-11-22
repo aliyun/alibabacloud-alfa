@@ -37,7 +37,10 @@ export default {
     initialPath: String,
     singleton: Boolean,
     externalsVars: Array,
-    disableBodyTag: Boolean,
+    disableBodyTag: {
+      type: Boolean,
+      default: false,
+    },
     loading: Boolean,
     sandBox: {},
   },
@@ -59,9 +62,9 @@ export default {
     }
   },
   render(h) {
-    const REF_NAME = 'el'
-    Vue.customElement(this.id, {});
-    
+    Vue.customElement(this.id, {
+      render: (createNode => createNode())
+    });
     if (this.removeBodyTag) {
       return h(this.id, {
         class: this.class,
