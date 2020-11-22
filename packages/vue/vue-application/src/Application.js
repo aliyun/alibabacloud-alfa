@@ -62,24 +62,36 @@ export default {
     }
   },
   render(h) {
+    const _this = this
+    const loadingContent = this.$slots.loading
     Vue.customElement(this.id, {
-      render: (createNode => createNode())
+      render: function (createNode) {
+        const innerContent  = _this.subLoading ? loadingContent : this.$slots.default
+        if (!_this.removeBodyTag) {
+          return createNode('body', innerContent)
+        }
+        return innerContent
+      }
     });
-    if (this.removeBodyTag) {
-      return h(this.id, {
-        class: this.class,
-        ref: 'el'
-      })
-    } else {
-      return h(this.id, {
-        class: this.class
-      }, [h('body', {ref: REF_NAME})])
+    if (this.error) {
+      if (this.$slots.error) {
+        return this.$slots.error
+      }
+      return h('pre', { style: { color: 'red' }}, this.error.stack)
     }
-
+    return h(this.id, {
+      class: this.class,
+      ref: 'el'
+    })
   },
   mounted() {
     this.$nextTick(() => {
-      this.el = this.$refs.el
+      if (this.removeBodyTag) {
+        this.el = this.$refs.el
+      } else {
+        const [body] = this.$refs.el.children
+        this.el = body
+      }
     })
     this.addThingToDo('mount', async () => {
       if (!this.id) {
@@ -104,9 +116,13 @@ export default {
         sandBox,
       })
       //
-      await load(this.app);await mount(this.app, appInfo);
+      await load(this.app);
       this.subLoading = false;
-      
+      await this.$nextTick();
+      await this.$nextTick();
+      await this.$nextTick();
+      await mount(this.app, appInfo);
+  
       // dispatch appDidMount event
       this.$emit('appDidMount')
     })
