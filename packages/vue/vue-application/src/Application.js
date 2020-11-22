@@ -44,12 +44,13 @@ export default {
   data() {
     return {
       hasError: false,
-      // loading: true,
+      subLoading: true,
       nextThingToDo: Promise.resolve(),
       unmounted: false,
       error: null,
       app: null,
-      el: document.createDocumentFragment()
+      el: document.createDocumentFragment(),
+      createdDomElement: null,
     }
   },
   computed: {
@@ -100,9 +101,8 @@ export default {
         sandBox,
       })
       //
-      await load(this.app);
-      await mount(this.app, appInfo);
-      this.loading = false;
+      await load(this.app);await mount(this.app, appInfo);
+      this.subLoading = false;
       
       // dispatch appDidMount event
       this.$emit('appDidMount')
@@ -148,7 +148,7 @@ export default {
           this.nextThingToDo = Promise.resolve();
           const error = new Error(`During '${action}', os application threw an error: ${err.message}`)
           this.hasError = true;
-          this.loading = false;
+          this.subLoading = false;
           this.error = error;
           this.$emit('appDidCatch', error);
           console.error(error);
