@@ -118,9 +118,6 @@ export default {
       //
       await load(this.app);
       this.subLoading = false;
-      await this.$nextTick();
-      await this.$nextTick();
-      await this.$nextTick();
       await mount(this.app, appInfo);
   
       // dispatch appDidMount event
