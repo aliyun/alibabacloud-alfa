@@ -95,6 +95,7 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
 
   if (isOsContext()) {
     const reactLifecycles = SingleSpaReact({
+      // @ts-ignore
       React,
       ReactDOM,
       rootComponent: ConsoleApp,
