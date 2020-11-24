@@ -20,5 +20,8 @@
     "@alicloud/console-toolkit-cli": "^1.0.1",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.1"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
 }
