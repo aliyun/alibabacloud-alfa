@@ -1,6 +1,6 @@
 {
   "name": "postcss-prefix-wrapper",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "long term cache plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
