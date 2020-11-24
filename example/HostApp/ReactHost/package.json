@@ -1,11 +1,11 @@
 {
   "name": "@alicloud/demo-console-os-react-host-app",
-  "version": "0.4.0-alpha.6",
+  "version": "0.4.0",
   "description": "",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "@alicloud/console-os-react-app": "^0.4.0-alpha.6",
+    "@alicloud/console-os-react-app": "^0.4.0",
     "axios": "0.19.0",
     "classnames": "2.2.6",
     "core-js": "^3.6.3",
