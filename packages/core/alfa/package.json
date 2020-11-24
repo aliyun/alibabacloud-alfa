@@ -15,6 +15,9 @@
     "storybook": "breezr start-storybook",
     "clean": "rm -rf lib yarn.lock"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.0",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
