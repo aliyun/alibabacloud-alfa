@@ -1,17 +1,28 @@
-import VMContext from '@alicloud/console-os-browser-vm';
+import { VMContext } from '@alicloud/console-os-browser-vm';
 
 import { Application } from './Application';
 import { createContext } from './createContext';
 import * as AppCachePool from './AppCachePool';
 import { AppInfo, SandBoxOption } from '../type';
+import { getManifest } from '../misc/manifest';
 
 const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
   let context: VMContext = { window, document, location, history };
 
+  const app = new Application(appInfo, context, sandBoxOption);
+  const promise = new Promise<Application>((resolver, reject) => {
+    app.setPendingResolver(resolver);
+    app.setPendingRejecter(reject);
+  });
+
+  app.setPendingPromise(promise);
+
+  AppCachePool.setApp(appInfo.name, app);
+
   if (!sandBoxOption.disable) {
     context = await createContext({
       body: appInfo.dom,
-      id: appInfo.id,
+      id: appInfo.name,
       externals: sandBoxOption ? sandBoxOption.externalsVars: [],
       url: sandBoxOption.sandBoxUrl,
       disableBody: sandBoxOption.disableFakeBody,
@@ -22,7 +33,8 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
     window.__IS_CONSOLE_OS_CONTEXT__ = true
   }
 
-  return new Application(appInfo, context, sandBoxOption);
+  app.context = context;
+  return app;
 }
 
 /**
@@ -32,11 +44,14 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
  * @param sandBoxOption sandbox option for app
  */
 export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
+  const manifest = await getManifest(appInfo, appInfo.name);
+  appInfo.name = manifest.name;
+
   if (!sandBoxOption.singleton) {
     return await createAppInstance(appInfo, sandBoxOption);
   }
 
-  let app = AppCachePool.getApp(appInfo.id);
+  let app = AppCachePool.getApp(appInfo.name);
 
   // if app is init and app is singleton, return the
   // singleton instance for app
@@ -49,7 +64,6 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     if (sandBoxOption.syncInitHref && app.context.baseFrame) {
       app.context.baseFrame.contentWindow.history.replaceState(null, null, sandBoxOption.initialPath || '/')
     }
-
     return app;
   }
 
@@ -59,19 +73,10 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     if (app) {
       return app.getPendingPromise();
     }
-  } else {
-    if (app) {
-      const promise = new Promise<Application>((resolver, reject) => {
-        app.setPendingResolver(resolver);
-        app.setPendingRejecter(reject);
-      })
-      app.setPendingPromise(promise)
-    }
   }
 
   app = await createAppInstance(appInfo, sandBoxOption)
-  app.pendingResolver && app.pendingResolver(app);
-  AppCachePool.setApp(appInfo.id, app);
 
+  app.pendingResolver && app.pendingResolver(app);
   return app;
 }

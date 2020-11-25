@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-events",
-  "version": "0.3.3",
+  "version": "1.0.0-next.6",
   "description": "Console OS Event Bus",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "prepublish": "npm run build && npm run babel && npm run babel:esm",
-    "babel": "breezr build --engine babel",
+    "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d true --declarationDir ./lib",
     "babel:esm": "breezr build --engine babel --es-module",
     "build": "breezr build --engine webpack",
     "storybook": "breezr start-storybook",
@@ -25,5 +25,5 @@
     "tslint": "^5.8.0",
     "typescript": "^3.0.3"
   },
-  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
+  "gitHead": "7793fa2f0c47e8d2260c07b7604f7cd95916cfef"
 }

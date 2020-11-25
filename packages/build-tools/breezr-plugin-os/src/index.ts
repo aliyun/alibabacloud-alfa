@@ -1,8 +1,10 @@
 import * as WebpackChain from 'webpack-chain';
+import * as webpack from 'webpack';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { DonePlugin } from './DonePlugins';
 import { MultiEntryManifest } from './MultiEntryManifest';
+import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { wrapCss } from 'postcss-prefix-wrapper';
 
@@ -11,7 +13,6 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   config
     .output
     .library(options.id)
-    .jsonpFunction(`webpackJsonp${options.id}`)
     .libraryTarget('umd');
 
   config
@@ -20,6 +21,12 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       injectVars,
       jsonpCall
     }]);
+
+  if (!options.webpack5) {
+    config
+      .output
+      .jsonpFunction(`webpackJsonp${options.id}`)
+  }
 
   if (!options.webpack3) {
     config
@@ -67,6 +74,24 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       })
     }
   }])
+
+  config.externals({
+    '@alicloud/console-os-environment': {
+      commonjs2: '@alicloud/console-os-environment',
+      amd: '@alicloud/console-os-environment',
+      commonjs: '@alicloud/console-os-environment',
+      root: 'aliOSEnvironment',
+    }
+  });
+
+  config.plugin('DefinedConsoleOSPlugin').use(webpack.DefinePlugin, [{
+    'process.env.CONSOLE_OS_PUBLIC_PATH': JSON.stringify(config.output.get('publicPath') || ''),
+  }])
+
+  registerConfigToRegistry(options.id, {
+    port: config.devServer.get('port'),
+    https: config.devServer.get('https'),
+  });
 }
 
 export default (api: PluginAPI, options: PluginOptions) => {

@@ -1,4 +1,4 @@
-import VMContext, { removeContext } from '@alicloud/console-os-browser-vm';
+import { removeContext, VMContext } from '@alicloud/console-os-browser-vm';
 
 import { Parcel, mountRootParcel } from 'os-single-spa';
 import { serializeData, flattenFnArray } from '../misc/util';
@@ -14,7 +14,7 @@ type ApplicationRejecter = (reason?: any) => Promise<Application> | void;
  * Application
  */
 export class Application {
-  public readonly context: VMContext;
+  public context: VMContext;
   public parcel?: Parcel;
   public remoteApp;
   public allowEvents: string[];
@@ -57,7 +57,6 @@ export class Application {
   public setPendingResolver(resolver: ApplicationResolver) {
     this._pendingResolver = resolver;
   }
-  
 
   public get pendingResolver() {
     return this._pendingResolver;
@@ -85,16 +84,16 @@ export class Application {
   /**
    * public api for mount logic for app
    */
-  public async mount(mountInfo: AppInfo) {
+  public async mount(dom?: Element, { customProps }: { customProps?: any } = {}) {
     const { baseFrame } = this.context;
     if (baseFrame) {
       // listen for message and popstate evt 
-      baseFrame.contentWindow.addEventListener('popstate', this._emitLocaitonChange);
+      baseFrame.contentWindow.addEventListener('popstate', this._emitLocationChange);
       baseFrame.contentWindow.addEventListener('message', this._emitGlobalEvent);
     }
 
     const parcel = mountRootParcel({
-      name: this.appInfo.id,
+      name: this.appInfo.name,
       customProps:{},
       domElement: undefined,
       bootstrap: flattenFnArray(this.remoteApp.bootstrap, 'bootstrap'),
@@ -102,10 +101,10 @@ export class Application {
       unmount: flattenFnArray(this.remoteApp.unmount, 'unmount'),
       update: flattenFnArray(this.remoteApp.update, 'update'),
     }, {
-      domElement: mountInfo.dom || this.appInfo.dom,
+      domElement: dom || this.appInfo.dom,
       appProps: {
         emitter: createEventBus(),
-        ...(mountInfo.customProps || this.appInfo.customProps)
+        ...(customProps || this.appInfo.customProps)
       }
     });
 
@@ -117,8 +116,10 @@ export class Application {
   public async update(props: any) {
     // @ts-ignore
     return this.parcel && this.parcel.update && this.parcel.update({
-      ...props,
-      emitter: createEventBus(),
+      appProps: {
+        ...props,
+        emitter: createEventBus(),
+      }
     })
   }
 
@@ -130,7 +131,7 @@ export class Application {
     if (this.parcel && this.parcel.getStatus() === "MOUNTED") {
       const { baseFrame } = this.context;
       if (baseFrame) {
-        baseFrame.contentWindow.removeEventListener('popstate', this._emitLocaitonChange);
+        baseFrame.contentWindow.removeEventListener('popstate', this._emitLocationChange);
         baseFrame.contentWindow.removeEventListener('message', this._emitGlobalEvent);
       }
       this.parcel.unmount();
@@ -138,20 +139,28 @@ export class Application {
   }
 
   /**
-   * public api for destory the app, it with unmount all node and destroy the
+   * public api for destroy the app, it with unmount all node and destroy the
    * sandbox
    */
-  public async destory() {
+  public async destroy() {
     await this.unmount();
     removeContext(this.context);
   }
 
   /**
    * @deprecated
-   * public api for destory the app
+   * public api for destroy the app
    */
   public async dispose() {
-    return this.destory()
+    return this.destroy()
+  }
+
+  public getExposedModule<T>(moduleName: string) {
+    if (!this.remoteApp.exposedModule) {
+      return undefined;
+    }
+
+    return this.remoteApp.exposedModule[moduleName] as (T | undefined);
   }
 
   /**
@@ -164,7 +173,7 @@ export class Application {
 
   /* ---------------------------------------------------- */
 
-  private _emitLocaitonChange = () => {
+  private _emitLocationChange = () => {
     eventBus.emit(this.historyEventName, this.context.location)
   }
 
@@ -174,16 +183,16 @@ export class Application {
       return;
     }
 
-    payload.appId = this.appInfo.id;
+    payload.appId = this.appInfo.name;
 
     if (payload.type === this.historyEventName) {
-      this._emitLocaitonChange()
+      this._emitLocationChange()
     } else {
       eventBus.emit(payload.type, serializeData(payload))
     }
   }
 
   private get historyEventName() {
-    return `${this.appInfo.id}:history-change`;
+    return `${this.appInfo.name}:history-change`;
   }
 }

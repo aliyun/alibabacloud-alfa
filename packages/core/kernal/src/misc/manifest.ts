@@ -1,6 +1,8 @@
-import { AppManifest } from '../type';
+import axios from 'axios';
+import { AppInfo, AppManifest } from '../type';
 import * as ManifestCachePool from './ManifestCachePool';
 import { getFromCdn } from './util';
+import { LoggerFactory } from './logger'
 
 export const handleManifest = (manifest: AppManifest) => {
   const entrypoints = manifest.entrypoints;
@@ -17,7 +19,13 @@ export const handleManifest = (manifest: AppManifest) => {
  * 
  * @param url 
  */
-export const getManifest = async (url: string) => {
+export const getManifest = async (appInfo: AppInfo, id?: string) => {
+  const manifest = appInfo.manifest;
+  if(typeof manifest !== 'string') {
+    return manifest;
+  }
+
+  const url = manifest;
   let manifestInfo = ManifestCachePool.getAppManifest(url);
 
   if(manifestInfo && manifestInfo.loaded) {
@@ -43,14 +51,26 @@ export const getManifest = async (url: string) => {
     }
   }
 
+  let actualUrl = url;
   try {
-    const manifest = await getFromCdn(url) as AppManifest;
+    // dev 环境 请求本地服务
+    if (process.env.NODE_ENV === 'development' && process.env.ENABLE_MICRO_APP_REGISTRY_URL) {
+      const appConfig = await axios.get(`${process.env.MICRO_APP_REGISTRY_URI || '/__get_micro_app__'}?id=${id}&manifest=${url}`)
+      // @ts-ignore
+      actualUrl = appConfig.data.manifest || actualUrl;
+      appInfo.manifest = actualUrl;
+    }
+    const manifest = await getFromCdn(actualUrl) as AppManifest;
+    manifestInfo.manifest = manifest;
     manifestInfo.loaded = true;
     manifestInfo.loading = false;
     manifestInfo.resolve(manifest);
     return manifest;
   } catch (e) {
-    manifestInfo.reject(e);
-    throw e;
+    const error = LoggerFactory.manifest(e, {
+      url: actualUrl
+    });
+    manifestInfo.reject(error);
+    throw error;
   }
 }

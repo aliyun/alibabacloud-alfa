@@ -2,7 +2,7 @@ import React from 'react';
 import Home from './Home';
 import About from './About';
 import Dashboard from './Dashboard';
-import { mount } from '@alicloud/console-os-react-portal';
+import { mount, registerExposedModule } from '@alicloud/console-os-react-portal';
 import './index.less';
 
 import {
@@ -19,10 +19,6 @@ window.title = '🤹FAKE ALIYUN FOR REACT';
 const AppContainer = () => {
 
 }
-
-const node = document.createElement('div');
-node.innerHTML = 'os test'
-document.body.appendChild(node);
 
 const App = (props) => {
   return (
@@ -57,6 +53,8 @@ const App = (props) => {
     </Router>
   );
 }
+
+registerExposedModule('About', About);
 
 export default mount(App, document.getElementById('app'), 'os-example')
 

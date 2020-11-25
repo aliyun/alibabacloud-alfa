@@ -7,8 +7,8 @@ export const prefetch = (apps: BasicModule[]) => {
     const app = await createApplication({
       ...appInfo
     }, {
-      ...globalOptions.sandBox
+      ...globalOptions.sandbox
     });
-    app.load();
+    await app.load();
   });
 }

@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-toolkit-plugin-os",
-  "version": "0.3.25",
+  "version": "1.0.0-next.6",
   "description": "long term cache plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@alicloud/console-toolkit-core": "^1.0.0",
+    "@types/axios": "^0.14.0",
     "@types/chai": "^4.1.7",
     "@types/debug": "0.0.30",
     "@types/jest": "^23.3.13",
@@ -34,13 +35,15 @@
   },
   "dependencies": {
     "@alicloud/console-toolkit-shared-utils": "^1.0.0",
+    "axios": "^0.20.0",
     "lodash": "^4.17.11",
     "package-json": "^6.5.0",
-    "postcss-prefix-wrapper": "^0.3.8",
+    "postcss-prefix-wrapper": "^1.0.0-next.6",
+    "user-home": "^2.0.0",
     "webpack-assets-manifest": "^3.1.1",
-    "webpack-sources": "^1.4.1"
+    "webpack-sources": "^2.0.0"
   },
   "author": "流司",
   "license": "MIT",
-  "gitHead": "f502f98ad8940c4b6c70946084845d5fa7ec378f"
+  "gitHead": "7793fa2f0c47e8d2260c07b7604f7cd95916cfef"
 }

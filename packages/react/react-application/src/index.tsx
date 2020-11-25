@@ -1,6 +1,5 @@
-
 import React, { HTMLAttributes } from 'react';
-import { OSApplication, createMicroApp, mount, load, unmount, distroy } from '@alicloud/console-os-kernal'
+import { OSApplication, createMicroApp, mount, load, unmount, destroy } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
@@ -26,6 +25,11 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
    * 沙箱配置
    */
   sandbox?: SandBoxOption;
+
+  /**
+   * app resource publicPath
+   */
+  publicPath?: string;
   /**
    * 处理错误的生命周期
    */
@@ -34,31 +38,6 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
    * 引用完成加载之后生命周期
    */
   appDidMount?: () => void;
-  /**
-   * @deprecated
-   * initialPath for SandBox
-   */
-  initialPath?: string;
-  /**
-   * @deprecated
-   * @default true
-   * Set application singleton,
-   *     true:  it will cache the sandbox at the component umounted (better performance)
-   *     false: it will distroy the sandbox.
-   */
-  singleton?: boolean;
-  /**
-   * @deprecated
-   * window variable whitelist. For example:
-   * if externalsVars = ['test']. the window.test in subapp equals window.test
-   */
-  externalsVars?: string[];
-
-  /**
-   * @deprecated
-   * 沙箱配置
-   */
-  sandBox?: SandBoxOption;
 
   disableBodyTag: boolean;
 
@@ -68,6 +47,11 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
   loading: boolean | React.ReactChild;
 
   appProps: T;
+
+  /**
+   * 关闭错误提示
+   */
+  error: boolean | React.ReactChild;
 }
 
 interface IState {
@@ -83,7 +67,6 @@ const getParcelProps = (props: Partial<IProps>) => {
   delete parcelProps.manifest;
   delete parcelProps.initialPath;
   delete parcelProps.externalsVars;
-  delete parcelProps.sandBox;
   delete parcelProps.sandbox;
   delete parcelProps.appDidMount;
 
@@ -109,27 +92,20 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
     this.unmounted = false;
   }
+
   private handleRef = (el: HTMLElement) => {
     this.el = el
   }
 
   public componentDidMount() {
     this.addThingToDo('mount',  async () => {
-      const { jsUrl: url, id, manifest, externalsVars, singleton = true, deps } = this.props;
+      const {
+        jsUrl: url, id, manifest, 
+        publicPath, deps, sandbox
+      } = this.props;
 
       if (!id) {
         throw new Error('You should give a id for OS Application');
-      }
-
-      let sandBox = this.props.sandBox || this.props.sandbox;
-
-      if (sandBox) {
-        sandBox.externalsVars = externalsVars || sandBox.externalsVars;
-        sandBox.singleton = singleton;
-      } else {
-        sandBox = {
-          singleton
-        };
       }
 
       let domElement;
@@ -142,19 +118,21 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       const appInfo = {
         url,
         id,
+        name: id,
         manifest,
         dom: domElement,
         deps,
+        publicPath,
         customProps: {
           ...getParcelProps(this.props)
         }
       };
 
-      this.app = await createMicroApp(appInfo, {
-        sandBox
-      })
+      this.app = await createMicroApp(appInfo, { sandbox })
 
+      // @ts-ignore
       await load(this.app);
+      // @ts-ignore
       await mount(this.app, appInfo);
 
       this.setState({
@@ -177,9 +155,8 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   public componentWillUnmount() {
     this.addThingToDo('unmount', () => {
-      const { singleton = true } = this.props;
       if (this.app && this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
-        return singleton ? unmount(this.app) : distroy(this.app);
+        return this.props.sandbox?.singleton ? unmount(this.app) : destroy(this.app);
       }
     })
 
@@ -217,27 +194,41 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   private getLoading() {
     const { loading } = this.props;
-    if (loading && React.isValidElement(loading)) {
+    if (loading === false) {
+      return null;
+    } else if (loading && React.isValidElement(loading)) {
       return loading;
     }
+
     return <Skeleton active />;
   }
 
+  private getError() {
+    const { error } = this.props;
+    if (error === false) {
+      return null;
+    } else if (error && React.isValidElement(error)) {
+      return error;
+    }
+    return this.state.error && <ErrorPanel error={this.state.error} />;
+  }
+
   public render() {
-    const { id = '', style = {}, className = '', disableBodyTag, sandBox } = this.props;
+    const { id = '', style = {}, className = '', disableBodyTag, sandbox } = this.props;
+
     if (this.state.hasError && this.state.error) {
-      return (<ErrorPanel error={this.state.error}/>)
+      return !this.getError()
     }
 
     const Wrapper = React.Fragment ? React.Fragment : 'div';
 
     return (
-      <Wrapper className="-os-wrapper">
+      <Wrapper>
         {
           this.state.loading ? this.getLoading() : null
         }
         {
-          (sandBox?.disableFakeBody) 
+          (sandbox?.disableFakeBody) 
             ? React.createElement(id, { style, className, ref: this.handleRef } ) 
             : React.createElement(
               id,
@@ -252,4 +243,4 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
 export default Application;
 
-export { start, createEventBus, prefetch } from '@alicloud/console-os-kernal';
+export { start, createEventBus, prefetch, loadExposedModule } from '@alicloud/console-os-kernal';

@@ -1,0 +1,46 @@
+{
+  "name": "@alicloud/alfa-react",
+  "version": "1.0.0-next.6",
+  "description": "Alfa Framework (React Version)",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "lib/index.d.ts",
+  "author": "pushiming",
+  "license": "MIT",
+  "scripts": {
+    "prepublish": "npm run build && npm run babel && npm run babel:esm",
+    "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
+    "babel:esm": "breezr build --engine babel --esModule",
+    "build": "breezr build --engine webpack",
+    "clean": "rm -rf lib yarn.lock"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@alicloud/console-toolkit-cli": "^1.0.0",
+    "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
+    "@types/chai": "^4.1.7",
+    "@types/classnames": "^2.2.9",
+    "@types/jest": "^23.3.13",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "@types/single-spa-react": "^2.8.3",
+    "jest": "^23.6.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.8.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@alicloud/alfa-core": "^1.0.0-next.6",
+    "@alicloud/console-os-loader": "^1.0.0-next.6",
+    "@alicloud/widget-utils-console": "^0.1.6",
+    "classnames": "^2.2.6"
+  },
+  "peerDependencies": {
+    "react": "^16 | ^17"
+  },
+  "gitHead": "7793fa2f0c47e8d2260c07b7604f7cd95916cfef"
+}

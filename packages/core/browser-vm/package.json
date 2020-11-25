@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-browser-vm",
-  "version": "0.3.23",
+  "version": "1.0.0-next.6",
   "description": "browser virtual machine",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -30,5 +30,5 @@
     "js-beautify": "^1.10.1",
     "jsdom": "^16.2.2"
   },
-  "gitHead": "3f40c61ec1056de140884cd589fcd58f07da9073"
+  "gitHead": "7793fa2f0c47e8d2260c07b7604f7cd95916cfef"
 }

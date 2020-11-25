@@ -64,6 +64,10 @@ export class OSJsonpWebpackPlugin {
     if (typeof library === 'string') {
       return library;
     }
+    if (typeof library === 'object') {
+      // @ts-ignore
+      return library.name;
+    }
     throw new Error('library for os jsonp plugin should be string');
   }
 
@@ -72,7 +76,7 @@ export class OSJsonpWebpackPlugin {
     const jsonpCall = this.option.jsonpCall || 'window.__CONSOLE_OS_GLOBAL_HOOK__';
 
     return [`
-if (!window.__CONSOLE_OS_GLOBAL_HOOK__){window.__CONSOLE_OS_GLOBAL_VARS_={};window.__CONSOLE_OS_GLOBAL_HOOK__ = function(id, resolver) {resolver(undefined, undefined, undefined, {${injectVars.map((item) => `${item}: ${item}`).join(',')}})};}
+if (!window.__CONSOLE_OS_GLOBAL_HOOK__){window.__CONSOLE_OS_GLOBAL_VARS_={};window.__CONSOLE_OS_GLOBAL_HOOK__ = function(id, resolver) {resolver(undefined, undefined, undefined, {${injectVars.map((item) => `${item}: ${item}`).join(',')}})};window.__CONSOLE_OS_GLOBAL_HOOK__.standalone = true}
 ${jsonpCall}(${JSON.stringify(id)}, function(require, module, exports, context){ ${injectVars.map(item => `var ${item} = context.${item}`).join(';')};with(window.__CONSOLE_OS_GLOBAL_VARS_) { \n
 `, '\n}})']
   

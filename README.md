@@ -1,7 +1,12 @@
-# alibabacloud-console-os
+# Alfa
 
 <p align="center">
-<a href=" https://www.alibabacloud.com"><img src="https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg"></a>
+  <a href="https://www.alibabacloud.com">
+    <img src="https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg">
+  </a>
+  <a href="https://aliyun.github.io/alibabacloud-alfa/">
+    <img src="https://gw.alicdn.com/tfs/TB1pJiNh_M11u4jSZPxXXahcXXa-160-160.png">
+  </a>
 </p>
 
 [![NPM version][npm-image]][npm-url]
@@ -10,7 +15,7 @@
 [npm-url]: https://npmjs.org/package/@alicloud/console-os-kernal
 
 ## 介绍
-```console-os``` 是在阿里云控制台体系中孵化🐣的微前端方案， 定位是面向企业级的微前端体系化解决方案。
+`Alfa` 是在阿里云控制台体系中孵化🐣的微前端方案， 定位是面向企业级的微前端体系化解决方案。
 
 ## 特性
 
@@ -56,18 +61,18 @@ export default Home;
 
 ## React 
 
-see [Console OS React Portal](https://github.com/aliyun/alibabacloud-console-os/tree/master/packages/react/react-portal)
+see [Console OS React Portal](https://github.com/aliyun/alibabacloud-alfa/tree/master/packages/react/react-portal)
 
 ## Vue 
 
-see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/tree/master/packages/vue/vue-portal)
+see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-alfa/tree/master/packages/vue/vue-portal)
 
 ## Try Example
 
 克隆仓库到本地
 
 ```
-git clone https://github.com/aliyun/alibabacloud-console-os.git
+git clone https://github.com/aliyun/alibabacloud-alfa.git
 ```
 
 安装子应用
