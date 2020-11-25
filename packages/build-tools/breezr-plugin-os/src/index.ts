@@ -9,7 +9,7 @@ import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { wrapCss } from 'postcss-prefix-wrapper';
 
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
-  const { jsonpCall, injectVars } = options;
+  const { jsonpCall, injectVars, ignoreJsonpWrapFiles } = options;
   config
     .output
     .library(options.id)
@@ -19,7 +19,8 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     .plugin('OSJsonpPlugin')
     .use(OSJsonpWebpackPlugin, [{
       injectVars,
-      jsonpCall
+      jsonpCall,
+      ignoreJsonpWrapFiles
     }]);
 
   if (!options.webpack5) {

@@ -1,9 +1,11 @@
 import { Compiler, compilation } from 'webpack';
+import * as minimatch from 'minimatch';
 import { ConcatSource } from 'webpack-sources';
 
 export interface OSJsonpWebpackPluginOption {
   injectVars?: string[];
   jsonpCall?: string;
+  ignoreJsonpWrapFiles?: string[]
 }
 
 export class OSJsonpWebpackPlugin {
@@ -42,6 +44,15 @@ export class OSJsonpWebpackPlugin {
       const entryFile = firstChunk.files.find((file) => file.endsWith('.js'));
       if (!entryFile) {
         return chunks;
+      }
+
+      
+      const shouldEscape = (this.option.ignoreJsonpWrapFiles || []).reduce<boolean>((iter, pattern) => {
+        return iter && minimatch(entryFile, pattern)
+      }, false)
+
+      if (shouldEscape) {
+        return;
       }
 
       const entryAsset = compilation.assets[entryFile];

@@ -5,7 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const chain = new WepbackChain();
 chainOsWebpack({
-  id: 'os-example'
+  id: 'os-example',
+  ignoreJsonpWrapFiles: [
+    'common.js'
+  ]
 })(chain);
 
 const regCommon = new RegExp(`[\\/]node_modules[\\/](_)?(${['react'].join('|')})[\\/|@]`);
