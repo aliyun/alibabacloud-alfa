@@ -1,0 +1,39 @@
+{
+  "name": "@alicloud/console-os-vue-host-app",
+  "version": "0.0.0",
+  "description": "Console OS Vue Host Application",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mirco-fe",
+    "vue"
+  ],
+  "peerDependencies": {
+    "vue": "^2"
+  },
+  "author": "Wangchong",
+  "license": "MIT",
+  "dependencies": {
+    "@alicloud/console-os-kernal": "^0.3.24",
+    "vue-custom-element": "^3.2.14"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  }
+}
