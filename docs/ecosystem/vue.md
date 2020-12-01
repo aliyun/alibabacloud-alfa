@@ -48,3 +48,79 @@ module.export = {
   }
 }
 ```
+
+## 宿主应用
+
+
+### 安装依赖
+
+```bash
+> npm install @alicloud/console-os-vue-host-app
+# or
+> yarn add @alicloud/console-os-vue-host-app
+```
+
+### 修改main.js
+
+```javascript
+import Vue from 'vue'
+import App from './App.vue'
+
+import {start} from '@alicloud/console-os-vue-host-app'
+
+// 启动宿主应用的运行时
+start({
+  // 沙箱配置
+  sandBox: {
+    // true: 关闭沙箱, false: 打开沙箱
+    // 关闭沙箱之后，点击路由你可以看到路由发生了变化
+    // 再次开启之后，可以看到路由没有发生变化
+    disable: true,
+    // 宿主变量白名单
+    externalsVars: ["Zone"],
+    // 沙箱初始地址
+    // initialPath: '/'
+  },
+  // 注入应用依赖
+});
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
+
+```
+
+### 修改Vue组件
+与[React宿主应用](https://aliyun.github.io/alibabacloud-alfa/guides/react#%E5%AE%BF%E4%B8%BB%E5%BA%94%E7%94%A8 )一样，需要知道接入子应用的`manifest`文件的地址。
+
+```vue
+<template>
+  <div class="react">
+    <Application
+        id="os-example"
+        class="test-class"
+        :sandBox="{
+          initialPath: '/dashboard',
+          disableFakeBody: true,
+          disable: false
+        }"
+        manifest="https://g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json"
+    />
+  </div>
+</template>
+
+<script>
+// 引入@alicloud/console-os-vue-host-app依赖
+import Application from '@alicloud/console-os-vue-host-app'
+
+export default {
+  name: 'App',
+  components: {
+    Application
+  },
+}
+</script>
+
+```
+
+
