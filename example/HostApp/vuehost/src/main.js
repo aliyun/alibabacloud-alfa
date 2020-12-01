@@ -3,7 +3,6 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 import {start} from '@alicloud/console-os-vue-host-app'
-console.log('typeof start in main.js:', typeof start)
 
 start({
   // 沙箱配置
