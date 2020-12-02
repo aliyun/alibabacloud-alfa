@@ -108,7 +108,11 @@ $ npm run start
 
 ### Angular
 
-* [Angular 加载 React 应用](https://codesandbox.io/s/nameless-rain-1yv57)
+* [Angular 加载微应用](https://codesandbox.io/s/nameless-rain-1yv57)
+
+### Vue
+
+* [Vue 加载微应用](https://codesandbox.io/s/cool-grass-lbrfn?file=/src/components/HelloWorld.vue)
 
 ## 贡献指南
 

@@ -1,4 +1,7 @@
 # Alfa
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <p align="center">
   <a href="https://www.alibabacloud.com">
@@ -26,46 +29,7 @@
 
 ## 使用文档
 
-子应用
-
-```javascript
-import { mount }  from '@alicloud/console-os-react-portal';
-import App from './app';
-
-const appID = 'aliyun-console-slb'
-
-export default mount(
-  (props) => <App/>,
-  document.getElementById('app'),
-  appID
-);
-```
-
-宿主应用
-
-```javascript
-import Application from '@alicloud/console-os-react-app'
-
-const appConfigUrl = 'https://dev.g.alicdn.com/aliyun-next/endpoint/0.1.0/aliyun-console-slb.manifest.json';
-
-const Home =  () => (
-  <Application
-    manifest={appConfigUrl}
-    id="aliyun-console-slb"
-  />
-);
-export default Home;
-```
-
-## 其他框架使用
-
-## React 
-
-see [Console OS React Portal](https://github.com/aliyun/alibabacloud-alfa/tree/master/packages/react/react-portal)
-
-## Vue 
-
-see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-alfa/tree/master/packages/vue/vue-portal)
+参见： [https://aliyun.github.io/alibabacloud-alfa](https://aliyun.github.io/alibabacloud-alfa)
 
 ## Try Example
 
@@ -122,3 +86,16 @@ $ npm run start
 ## 贡献指南
 
 参见[贡献指南](https://github.com/aliyun/alibabacloud-console-toolkit/blob/master/CONTRIBUTING.md)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
