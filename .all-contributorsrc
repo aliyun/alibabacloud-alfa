@@ -47,6 +47,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "seekhow",
+      "name": "QiuHao",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/31029342?v=4",
+      "profile": "https://www.yuque.com/seekhow/blog",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
