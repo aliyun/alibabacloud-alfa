@@ -29,6 +29,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "csr632",
+      "name": "csr632",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/18747423?v=4",
+      "profile": "https://segmentfault.com/u/csryan",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

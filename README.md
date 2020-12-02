@@ -1,10 +1,15 @@
 # Alfa
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+[![NPM version][npm-image]][npm-url]
+
+[npm-image]: https://img.shields.io/npm/v/@alicloud/console-os-kernal.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@alicloud/console-os-kernal
 
 <p align="center">
   <a href="https://www.alibabacloud.com">
@@ -15,10 +20,6 @@
   </a>
 </p>
 
-[![NPM version][npm-image]][npm-url]
-
-[npm-image]: https://img.shields.io/npm/v/@alicloud/console-os-kernal.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/@alicloud/console-os-kernal
 
 ## 介绍
 `Alfa` 是在阿里云控制台体系中孵化🐣的微前端方案， 定位是面向企业级的微前端体系化解决方案。
@@ -100,6 +101,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/Boelroy"><img src="https://avatars0.githubusercontent.com/u/2794349?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Bowen</b></sub></a><br /><a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=Boelroy" title="Code">💻</a> <a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=Boelroy" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/royIdoodle"><img src="https://avatars3.githubusercontent.com/u/17637852?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Roy.idoodle</b></sub></a><br /><a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=royIdoodle" title="Code">💻</a> <a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=royIdoodle" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://segmentfault.com/u/csryan"><img src="https://avatars2.githubusercontent.com/u/18747423?v=4?s=100" width="100px;" alt=""/><br /><sub><b>csr632</b></sub></a><br /><a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=csr632" title="Code">💻</a></td>
   </tr>
 </table>
 
