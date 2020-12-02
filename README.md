@@ -87,6 +87,10 @@ $ npm run start
 
 * [Angular 加载 React 应用](https://codesandbox.io/s/nameless-rain-1yv57)
 
+### Vue
+
+* [Vue 加载微应用](https://codesandbox.io/s/cool-grass-lbrfn?file=/src/components/HelloWorld.vue)
+
 ## 贡献指南
 
 参见[贡献指南](https://github.com/aliyun/alibabacloud-console-toolkit/blob/master/CONTRIBUTING.md)
