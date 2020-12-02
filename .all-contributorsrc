@@ -1,0 +1,71 @@
+{
+  "projectName": "alibabacloud-alfa",
+  "projectOwner": "Boelroy",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "Boelroy",
+      "name": "Bowen",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2794349?v=4",
+      "profile": "https://github.com/Boelroy",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "royIdoodle",
+      "name": "Roy.idoodle",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/17637852?v=4",
+      "profile": "https://github.com/royIdoodle",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "csr632",
+      "name": "csr632",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/18747423?v=4",
+      "profile": "https://segmentfault.com/u/csryan",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "digu",
+      "name": "Digu",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/44129641?v=4",
+      "profile": "https://github.com/digu",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "seekhow",
+      "name": "QiuHao",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/31029342?v=4",
+      "profile": "https://www.yuque.com/seekhow/blog",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "yozman",
+      "name": "道玄",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11918866?v=4",
+      "profile": "https://fromyb.com/",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

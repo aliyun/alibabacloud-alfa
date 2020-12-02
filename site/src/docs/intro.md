@@ -6,10 +6,10 @@ tags:
   overview: true
 ---
 
-# alibabacloud-console-os
+# Alfa
 
 ## 介绍
-```console-os``` 是在阿里云控制台体系中孵化🐣的微前端方案， 定位是面向企业级的微前端体系化解决方案。
+```Alfa``` 是在阿里云控制台体系中孵化🐣的微前端方案， 定位是面向企业级的微前端体系化解决方案。
 
 ## 特性
 
@@ -55,11 +55,11 @@ export default Home;
 
 ## React 
 
-see [Console OS React Portal](https://github.com/aliyun/alibabacloud-console-os/tree/master/packages/react-portal)
+see [Alfa React Portal](https://github.com/aliyun/alibabacloud-console-os/tree/master/packages/react-portal)
 
 ## Vue 
 
-see [Console OS Vue Portal](https://github.com/aliyun/alibabacloud-console-os/blob/master/packages/vue-portal/README.md)
+see [Alfa Vue Portal](https://github.com/aliyun/alibabacloud-console-os/blob/master/packages/vue-portal/README.md)
 
 ## Try Example
 
@@ -108,7 +108,11 @@ $ npm run start
 
 ### Angular
 
-* [Angular 加载 React 应用](https://codesandbox.io/s/nameless-rain-1yv57)
+* [Angular 加载微应用](https://codesandbox.io/s/nameless-rain-1yv57)
+
+### Vue
+
+* [Vue 加载微应用](https://codesandbox.io/s/cool-grass-lbrfn?file=/src/components/HelloWorld.vue)
 
 ## 贡献指南
 
