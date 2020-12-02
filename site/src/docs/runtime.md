@@ -107,19 +107,3 @@ module.exports = {
 ```
 
 多个不同的项目可以配置同一个运行时，这个运行时只会被全局加载一遍。
-
-## 例子
-
-下面的例子演示如何构造两个运行时，如何微应用中如何使用运行时，以及主应用加载配置了两个运行时的应用：
-
-运行时：
-react 15 运行时 demo: http://gitlab.alibaba-inc.com/ConsoleOS/ConsoleRuntime/tree/daily/0.1.0
-react 16 运行时 demo: http://gitlab.alibaba-inc.com/ConsoleOS/runtime-react-16
-
-微应用
-
-使用React 16 运行时的微应用 包含了 react-hooks：http://gitlab.alibaba-inc.com/ConsoleOS/OSExample/tree/runtime/0.0.4
-使用React 15 运行时 使用了 fusion 0.x：http://gitlab.alibaba-inc.com/ConsoleOS/os-example-react15
-
-加载上面两个微应用的主应用：
-https://codesandbox.io/s/frosty-violet-psm4s?file=/src/index.js
