@@ -1,6 +1,6 @@
 # Alfa
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
@@ -104,6 +104,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://segmentfault.com/u/csryan"><img src="https://avatars2.githubusercontent.com/u/18747423?v=4?s=100" width="100px;" alt=""/><br /><sub><b>csr632</b></sub></a><br /><a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=csr632" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/digu"><img src="https://avatars2.githubusercontent.com/u/44129641?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Digu</b></sub></a><br /><a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=digu" title="Code">💻</a></td>
     <td align="center"><a href="https://www.yuque.com/seekhow/blog"><img src="https://avatars2.githubusercontent.com/u/31029342?v=4?s=100" width="100px;" alt=""/><br /><sub><b>QiuHao</b></sub></a><br /><a href="https://github.com/Boelroy/alibabacloud-alfa/issues?q=author%3Aseekhow" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://fromyb.com/"><img src="https://avatars1.githubusercontent.com/u/11918866?v=4?s=100" width="100px;" alt=""/><br /><sub><b>道玄</b></sub></a><br /><a href="https://github.com/Boelroy/alibabacloud-alfa/commits?author=yozman" title="Documentation">📖</a></td>
   </tr>
 </table>
 

@@ -56,6 +56,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "yozman",
+      "name": "道玄",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11918866?v=4",
+      "profile": "https://fromyb.com/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
