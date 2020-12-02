@@ -17,3 +17,7 @@ tags:
 ### Angular
 
 * [Angular 加载 React 应用](https://codesandbox.io/s/nameless-rain-1yv57)
+
+### Vue
+
+* [Vue 加载 微应用](https://codesandbox.io/s/cool-grass-lbrfn?file=/src/components/HelloWorld.vue)
