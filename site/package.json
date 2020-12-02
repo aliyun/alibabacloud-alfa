@@ -1,36 +1,19 @@
 {
-  "name": "alibaba-cloud-console-os-site",
-  "version": "1.0.3",
-  "private": true,
+  "name": "aliyun-open-source",
+  "version": "0.0.1",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
+  "authors": {
+    "name": "",
+    "email": ""
+  },
+  "repository": "/aliyun-open-source",
   "scripts": {
-    "postinstall": "rm -rf ./node_modules/gatsby/node_modules/gatsby-cli",
-    "start:zh": "npm run --prefix zh start",
-    "start:en": "npm run --prefix en start",
-    "build:zh": "npm run --prefix zh build",
-    "build:en": "npm run --prefix en build",
-    "start": "concurrently \"npm:start:zh\" \"npm:start:en\"",
-    "cp-build-out": "npm run clean && mkdir -p ./public && cp -r ./zh/public ./public/zh && cp -r ./en/public ./public/en",
-    "build": "concurrently \"npm:build:zh\" \"npm:build:en\" && npm run cp-build-out",
-    "clean": "rm -rf ./public ./alibabacloud-console-toolkit",
-    "build-serve": "cp -r ./public ./alibabacloud-console-toolkit && echo \"open: http://localhost:5000/alibabacloud-console-toolkit/zh/guides/quick-start \n or http://localhost:5000/alibabacloud-console-toolkit/en/guides/concept\" && serve"
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
   },
+  "license": "MIT",
   "devDependencies": {
-    "@alicloud/gatsby-theme-console-doc": "^1.0.5",
-    "concurrently": "^5.2.0",
-    "gatsby": "2.19.45",
-    "gatsby-cli": "2.10.11",
-    "gh-pages": "^2.2.0",
-    "open-cli": "^6.0.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "serve": "^11.3.1",
-    "styled-components": "^4.4.1",
-    "typescript": "^3.7.2",
-    "webpack-virtual-modules": "^0.2.2"
-  },
-  "dependencies": {
-    "@alicloud/console-chart": "^0.1.0-alpha.4"
+    "vuepress": "^1.5.3"
   }
 }
