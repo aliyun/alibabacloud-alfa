@@ -19,6 +19,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "royIdoodle",
+      "name": "Roy.idoodle",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/17637852?v=4",
+      "profile": "https://github.com/royIdoodle",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
