@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>自定义运行时 | Alibaba Cloud Alfa</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    <link rel="icon" href="https://gw.alicdn.com/tfs/TB1pJiNh_M11u4jSZPxXXahcXXa-160-160.png">
+    <meta name="description" content="">
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.0316ee7f.css" as="style"><link rel="preload" href="/assets/js/app.ad970973.js" as="script"><link rel="preload" href="/assets/js/2.426b1244.js" as="script"><link rel="preload" href="/assets/js/20.76baf37a.js" as="script"><link rel="prefetch" href="/assets/js/10.49de7ae6.js"><link rel="prefetch" href="/assets/js/11.9ae44d73.js"><link rel="prefetch" href="/assets/js/12.a45232d3.js"><link rel="prefetch" href="/assets/js/13.ee5a65a8.js"><link rel="prefetch" href="/assets/js/14.8bf3e55f.js"><link rel="prefetch" href="/assets/js/15.0638831a.js"><link rel="prefetch" href="/assets/js/16.1776c010.js"><link rel="prefetch" href="/assets/js/17.75822b55.js"><link rel="prefetch" href="/assets/js/18.e72b0793.js"><link rel="prefetch" href="/assets/js/19.e4a0bc8d.js"><link rel="prefetch" href="/assets/js/21.42ac8063.js"><link rel="prefetch" href="/assets/js/22.c87223c1.js"><link rel="prefetch" href="/assets/js/23.a7581130.js"><link rel="prefetch" href="/assets/js/3.92718df1.js"><link rel="prefetch" href="/assets/js/4.64bc30bb.js"><link rel="prefetch" href="/assets/js/5.1f8f9bfd.js"><link rel="prefetch" href="/assets/js/6.6bc9563b.js"><link rel="prefetch" href="/assets/js/7.42e7a6ad.js"><link rel="prefetch" href="/assets/js/8.130ed785.js"><link rel="prefetch" href="/assets/js/9.57d9da26.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.0316ee7f.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="https://gw.alicdn.com/tfs/TB1pJiNh_M11u4jSZPxXXahcXXa-160-160.png" alt="Alibaba Cloud Alfa" class="logo"> <span class="site-name can-hide">Alibaba Cloud Alfa</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/docs/intro.html" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/aliyun/alibabacloud-alfa" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/docs/intro.html" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/aliyun/alibabacloud-alfa" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>指南</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/intro.html" class="sidebar-link">Alfa</a></li><li><a href="/docs/quick-start.html" class="sidebar-link">快速开始</a></li><li><a href="/docs/concept.html" class="sidebar-link">概念介绍</a></li><li><a href="/docs/demo.html" class="sidebar-link">Try Demo</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>进阶</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/route.html" class="sidebar-link">路由</a></li><li><a href="/docs/sandbox.html" class="sidebar-link">沙箱</a></li><li><a href="/docs/communication.html" class="sidebar-link">通信</a></li><li><a href="/docs/optimization.html" class="sidebar-link">性能优化</a></li><li><a href="/docs/runtime.html" aria-current="page" class="active sidebar-link">自定义运行时</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/docs/runtime.html#背景" class="sidebar-link">背景</a></li><li class="sidebar-sub-header"><a href="/docs/runtime.html#运行时定义" class="sidebar-link">运行时定义</a></li></ul></li><li><a href="/docs/exposed-module.html" class="sidebar-link">共享子应用模块</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>生态</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/react.html" class="sidebar-link">React</a></li><li><a href="/docs/vue.html" class="sidebar-link">Vue</a></li><li><a href="/docs/ng.html" class="sidebar-link">Angular</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="自定义运行时"><a href="#自定义运行时" class="header-anchor">#</a> 自定义运行时</h1> <h2 id="背景"><a href="#背景" class="header-anchor">#</a> 背景</h2> <p>通常情况下为了减小应用体积，我们希望抽离出一套各个微应用共同依赖的库，来减小重复加载，以及便于管理 微应用的运行时，并且做统一的升级。 所以 ConsoleOS 提供出自定义业务自定义自己的业务 Runtime.</p> <h2 id="运行时定义"><a href="#运行时定义" class="header-anchor">#</a> 运行时定义</h2> <p>这里公共运行时，任然作为一个特殊的微前端应用，具体代码可以参考 这里 React16 的样例运行时，这个应用导出为你依赖的 React 和 React-Dom
+注意 Alfa 中实现了一个简单的 cmd 版本的加载器， 所以你导出对象中，必须以 react commonjs 的版本名字来导出。然后这里这个工程被打包成一个 ConsoleOS 应用，发布到cdn 上去。</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">import</span> React_ <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> ReactDOM_ <span class="token keyword">from</span> <span class="token string">'react-dom'</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token comment">// key 必须是 react, 不能是 React或者其他的</span>
+  <span class="token string">'react'</span><span class="token operator">:</span> React_<span class="token punctuation">,</span>
+  <span class="token string">'react-dom'</span><span class="token operator">:</span> ReactDOM_<span class="token punctuation">,</span>
+  <span class="token string">'__version'</span><span class="token operator">:</span> <span class="token string">'0.1.0'</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>注意每个微前端应用都有个唯一 id 表示，runtime 也不能例外:</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">// Alfa 的打包配置</span>
+plugins<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span><span class="token string">'@alicloud/console-toolkit-plugin-os'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      id<span class="token operator">:</span> <span class="token string">'OSRuntimeReact16'</span>
+    <span class="token punctuation">}</span><span class="token punctuation">]</span>
+  <span class="token punctuation">]</span>
+</code></pre></div><h3 id="指定微前端应用运行时"><a href="#指定微前端应用运行时" class="header-anchor">#</a> 指定微前端应用运行时</h3> <p>在微应用配置的时候这里以 console-toolkit-plugin-os 为例子, 你可以首先指定自己的 微前端应用 需要 external 掉那些库，比如下面代码展示的 react, react-dom, 在打包构建的时候被 external 出来，然后在 Alfa 应用打包的时候指定了 runtime 是上面打包出来的. https://dev.g.alicdn.com/ConsoleOS/runtime-react-16/0.0.1/index.js</p> <div class="language- extra-class"><pre class="language-text"><code>const path = require('path');
+module.exports = {
+  presets: [
+    [
+      '@ali/breezr-preset-wind', {
+        webpack(config) {
+          config.externals = {
+            react: {
+              root: 'React',
+              commonjs2: 'react',
+              commonjs: 'react',
+              amd: 'react',
+            },
+            'react-dom': {
+              root: 'ReactDOM',
+              commonjs2: 'react-dom',
+              commonjs: 'react-dom',
+              amd: 'react-dom',
+            }
+          }
+          return config;
+        }
+      }
+    ]
+  ],
+  plugins: [
+    ['@alicloud/console-toolkit-plugin-os', {
+      id: 'os-example',
+      runtime: {
+        id: 'OSRuntimeReact16',
+        url: 'https://dev.g.alicdn.com/ConsoleOS/runtime-react-16/0.0.1/index.js'
+      }
+    }]
+  ]
+}
+</code></pre></div><p>在打包之后你可以看到 manifest 中多出了一个 runtime 字段, 用来表示公共加载的运行时：</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;os-example&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;resources&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;index.css&quot;</span><span class="token operator">:</span> <span class="token string">&quot;//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.css&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;index.js&quot;</span><span class="token operator">:</span> <span class="token string">&quot;//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.js&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;runtime&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;id&quot;</span><span class="token operator">:</span> <span class="token string">&quot;OSRuntimeReact16&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;url&quot;</span><span class="token operator">:</span> <span class="token string">&quot;https://dev.g.alicdn.com/ConsoleOS/runtime-react-16/0.0.1/index.js&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;entrypoints&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">&quot;index&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">&quot;css&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">&quot;//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.css&quot;</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;js&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">&quot;//g.alicdn.com/ConsoleOS/OSExample/0.0.4/index.js&quot;</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>多个不同的项目可以配置同一个运行时，这个运行时只会被全局加载一遍。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/docs/optimization.html" class="prev">
+        性能优化
+      </a></span> <span class="next"><a href="/docs/exposed-module.html">
+        共享子应用模块
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.ad970973.js" defer></script><script src="/assets/js/2.426b1244.js" defer></script><script src="/assets/js/20.76baf37a.js" defer></script>
+  </body>
+</html>

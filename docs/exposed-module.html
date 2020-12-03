@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>共享子应用模块 | Alibaba Cloud Alfa</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    <link rel="icon" href="https://gw.alicdn.com/tfs/TB1pJiNh_M11u4jSZPxXXahcXXa-160-160.png">
+    <meta name="description" content="">
+    <meta name="theme-color" content="#ff6a00">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/assets/css/0.styles.0316ee7f.css" as="style"><link rel="preload" href="/assets/js/app.ad970973.js" as="script"><link rel="preload" href="/assets/js/2.426b1244.js" as="script"><link rel="preload" href="/assets/js/13.ee5a65a8.js" as="script"><link rel="prefetch" href="/assets/js/10.49de7ae6.js"><link rel="prefetch" href="/assets/js/11.9ae44d73.js"><link rel="prefetch" href="/assets/js/12.a45232d3.js"><link rel="prefetch" href="/assets/js/14.8bf3e55f.js"><link rel="prefetch" href="/assets/js/15.0638831a.js"><link rel="prefetch" href="/assets/js/16.1776c010.js"><link rel="prefetch" href="/assets/js/17.75822b55.js"><link rel="prefetch" href="/assets/js/18.e72b0793.js"><link rel="prefetch" href="/assets/js/19.e4a0bc8d.js"><link rel="prefetch" href="/assets/js/20.76baf37a.js"><link rel="prefetch" href="/assets/js/21.42ac8063.js"><link rel="prefetch" href="/assets/js/22.c87223c1.js"><link rel="prefetch" href="/assets/js/23.a7581130.js"><link rel="prefetch" href="/assets/js/3.92718df1.js"><link rel="prefetch" href="/assets/js/4.64bc30bb.js"><link rel="prefetch" href="/assets/js/5.1f8f9bfd.js"><link rel="prefetch" href="/assets/js/6.6bc9563b.js"><link rel="prefetch" href="/assets/js/7.42e7a6ad.js"><link rel="prefetch" href="/assets/js/8.130ed785.js"><link rel="prefetch" href="/assets/js/9.57d9da26.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.0316ee7f.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="https://gw.alicdn.com/tfs/TB1pJiNh_M11u4jSZPxXXahcXXa-160-160.png" alt="Alibaba Cloud Alfa" class="logo"> <span class="site-name can-hide">Alibaba Cloud Alfa</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/docs/intro.html" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/aliyun/alibabacloud-alfa" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/docs/intro.html" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/aliyun/alibabacloud-alfa" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>指南</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/intro.html" class="sidebar-link">Alfa</a></li><li><a href="/docs/quick-start.html" class="sidebar-link">快速开始</a></li><li><a href="/docs/concept.html" class="sidebar-link">概念介绍</a></li><li><a href="/docs/demo.html" class="sidebar-link">Try Demo</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>进阶</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/route.html" class="sidebar-link">路由</a></li><li><a href="/docs/sandbox.html" class="sidebar-link">沙箱</a></li><li><a href="/docs/communication.html" class="sidebar-link">通信</a></li><li><a href="/docs/optimization.html" class="sidebar-link">性能优化</a></li><li><a href="/docs/runtime.html" class="sidebar-link">自定义运行时</a></li><li><a href="/docs/exposed-module.html" aria-current="page" class="active sidebar-link">共享子应用模块</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/docs/exposed-module.html#子应用导出共享模块" class="sidebar-link">子应用导出共享模块</a></li><li class="sidebar-sub-header"><a href="/docs/exposed-module.html#宿主消费共享模块" class="sidebar-link">宿主消费共享模块</a></li></ul></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>生态</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/docs/react.html" class="sidebar-link">React</a></li><li><a href="/docs/vue.html" class="sidebar-link">Vue</a></li><li><a href="/docs/ng.html" class="sidebar-link">Angular</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="共享子应用模块"><a href="#共享子应用模块" class="header-anchor">#</a> 共享子应用模块</h1> <p>有时候为了从分治的角度出发，子应用的业务逻辑经常维护在子应用内部。但是有时候往往会出现宿主希望使用子应用中的某个逻辑或者组件，但是又不希望重新拷贝一份代码的情况。</p> <p>为了解决类似这种复用的问题， <code>Alfa</code> 中提供了一个 low level 的 API 帮你你共享子应用中的某些模块代码。这些被共享出去的模块被称为 <code>exposedModule</code>。</p> <h2 id="子应用导出共享模块"><a href="#子应用导出共享模块" class="header-anchor">#</a> 子应用导出共享模块</h2> <p>首先你需要在子应用中的代码中利用 <code>registerExposedModule</code> 显示的声明你要导出的模块. 如下面的代码所示</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">import</span> About <span class="token keyword">from</span> <span class="token string">'./About'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> restartECS <span class="token keyword">from</span> <span class="token string">'./restartECS'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> registerExposedModule <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@alicloud/console-os-react-portal'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 注册子应用的模块</span>
+<span class="token function">registerExposedModule</span><span class="token punctuation">(</span><span class="token string">'About'</span><span class="token punctuation">,</span> About<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">registerExposedModule</span><span class="token punctuation">(</span><span class="token string">'restart'</span><span class="token punctuation">,</span> restartECS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre></div><h2 id="宿主消费共享模块"><a href="#宿主消费共享模块" class="header-anchor">#</a> 宿主消费共享模块</h2> <p>然后你可以通过 <code>loadExposedModule</code> 的方法来在宿主中消费子应用中的注册的模块，如下所示。</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">// 宿主</span>
+<span class="token keyword">const</span> appInfo <span class="token operator">=</span> <span class="token punctuation">{</span>
+  id<span class="token operator">:</span> <span class="token string">'os-example'</span><span class="token punctuation">,</span>
+  manifest<span class="token operator">:</span> <span class="token string">'http://g.alicdn.com/ConsoleOS/OSExample/0.0.5/os-example.manifest.json'</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 使用组件</span>
+<span class="token keyword">const</span> About <span class="token operator">=</span> lazy<span class="token operator">&lt;</span>React<span class="token punctuation">.</span><span class="token constant">FC</span><span class="token operator">&lt;</span><span class="token punctuation">{</span>test<span class="token operator">:</span> string<span class="token punctuation">}</span><span class="token operator">&gt;&gt;</span><span class="token punctuation">(</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token function">loadExposedModule</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">,</span> <span class="token string">'About'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">c</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token keyword">default</span><span class="token operator">:</span> c <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 使用导出函数</span>
+<span class="token keyword">const</span> <span class="token function-variable function">restartServer</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> restartECS <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">loadExposedModule</span><span class="token punctuation">(</span>appInfo<span class="token punctuation">,</span> <span class="token string">'restart'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">restartECS</span><span class="token punctuation">(</span><span class="token comment">/*instanceID*/</span><span class="token punctuation">)</span> 
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">App</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span><span class="token operator">&gt;</span>
+      <span class="token operator">&lt;</span>Suspense fallback<span class="token operator">=</span><span class="token punctuation">{</span><span class="token operator">&lt;</span>div<span class="token operator">&gt;</span>loading<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">&gt;</span><span class="token punctuation">}</span><span class="token operator">&gt;</span>
+        <span class="token operator">&lt;</span>About test<span class="token operator">=</span><span class="token string">&quot;1&quot;</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>Suspense<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>这个例子中，我们消费了子应用中导出的一个组件，一个方法。对于 React 组件我们可以利用 <code>lazy</code> &amp; <code>Suspense</code> 来消费。 对于一般的方法就可以直接调用方法的形式来使用。</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/docs/runtime.html" class="prev">
+        自定义运行时
+      </a></span> <span class="next"><a href="/docs/react.html">
+        React
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.ad970973.js" defer></script><script src="/assets/js/2.426b1244.js" defer></script><script src="/assets/js/13.ee5a65a8.js" defer></script>
+  </body>
+</html>
