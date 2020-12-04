@@ -1,15 +1,18 @@
 import * as WebpackChain from 'webpack-chain';
 import * as webpack from 'webpack';
+import { wrapCss } from 'postcss-prefix-wrapper';
+import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
-import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { DonePlugin } from './DonePlugins';
+import { normalizeId } from './utils/normalizeId';
+import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { MultiEntryManifest } from './MultiEntryManifest';
 import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
-import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
-import { wrapCss } from 'postcss-prefix-wrapper';
 
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
   const { jsonpCall, injectVars } = options;
+  options.id = normalizeId(options.id);
+
   config
     .output
     .library(options.id)

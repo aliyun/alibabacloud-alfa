@@ -42,7 +42,7 @@ module.exports = merge(/*you webpack conf*/, chain.toConfig());
 
 ### 判断 Console OS 的环境
 
-有时候我们需要判断是不是在 ConsoleOS 运行环境从而选择一些功能的展示或者隐藏。
+有时候我们需要判断是不是在 Alfa 运行环境从而选择一些功能的展示或者隐藏。
 
 ```javascript
 import { Context }  from '@alicloud/console-os-react-portal';
@@ -82,7 +82,7 @@ const Home =  () => (
 export default Home;
 ```
 
-需要启动整个 ConsoleOS 的运行时：
+需要启动整个 Alfa 的运行时：
 
 ```javascript
 // 然后应用的入口调用

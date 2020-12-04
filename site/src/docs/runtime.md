@@ -14,7 +14,7 @@ sort: 6
 ## 运行时定义
 
 这里公共运行时，任然作为一个特殊的微前端应用，具体代码可以参考 这里 React16 的样例运行时，这个应用导出为你依赖的 React 和 React-Dom
-注意 ConsoleOS 中实现了一个简单的 cmd 版本的加载器， 所以你导出对象中，必须以 react commonjs 的版本名字来导出。然后这里这个工程被打包成一个 ConsoleOS 应用，发布到cdn 上去。
+注意 Alfa 中实现了一个简单的 cmd 版本的加载器， 所以你导出对象中，必须以 react commonjs 的版本名字来导出。然后这里这个工程被打包成一个 ConsoleOS 应用，发布到cdn 上去。
 
 ```javascript
 import React_ from 'react';
@@ -30,7 +30,7 @@ export default {
 注意每个微前端应用都有个唯一 id 表示，runtime 也不能例外:
 
 ```javascript
-// consoleos 的打包配置
+// Alfa 的打包配置
 plugins: [
     ['@alicloud/console-toolkit-plugin-os', {
       id: 'OSRuntimeReact16'
@@ -40,7 +40,7 @@ plugins: [
 
 ### 指定微前端应用运行时
 
-在微应用配置的时候这里以 console-toolkit-plugin-os 为例子, 你可以首先指定自己的 微前端应用 需要 external 掉那些库，比如下面代码展示的 react, react-dom, 在打包构建的时候被 external 出来，然后在 ConsoleOS 应用打包的时候指定了 runtime 是上面打包出来的. https://dev.g.alicdn.com/ConsoleOS/runtime-react-16/0.0.1/index.js 
+在微应用配置的时候这里以 console-toolkit-plugin-os 为例子, 你可以首先指定自己的 微前端应用 需要 external 掉那些库，比如下面代码展示的 react, react-dom, 在打包构建的时候被 external 出来，然后在 Alfa 应用打包的时候指定了 runtime 是上面打包出来的. https://dev.g.alicdn.com/ConsoleOS/runtime-react-16/0.0.1/index.js 
 
 ```
 const path = require('path');

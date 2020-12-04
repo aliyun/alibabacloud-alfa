@@ -13,3 +13,9 @@ features:
   details: 多实例兼容
 footer: Made by Alibaba Cloud
 ---
+
+
+```javascript
+// react
+npm i @alicloud/alfa-react --save
+```

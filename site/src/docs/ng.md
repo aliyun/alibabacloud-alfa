@@ -46,7 +46,7 @@ module.export = osBuild({
 
 ## 宿主应用
 
-目前可以使用 NG 的 模块注册，主页一个 ConsoleOS 的标签， 具体使用 Demo 请查看 ：
+目前可以使用 NG 的 模块注册，主页一个 Alfa 的标签， 具体使用 Demo 请查看 ：
 https://codesandbox.io/s/nameless-rain-1yv57
 
 1.首先在 app/app.module.ts 中 注册模块
@@ -74,7 +74,7 @@ import { ApplicationModule } from "@alicloud/console-os-ng-app";
  </console-os-app>
 ```
 
-需要在 main.ts 中启动 ConsoleOS 运行时：
+需要在 main.ts 中启动 Alfa 运行时：
 
 ```javascript
 // 然后应用的入口调用
