@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { createAlfaApp } from '../../src';
 
 const AlfaApp = createAlfaApp({ name: '@ali/alfa-xxxxxx', env: 'pre' });

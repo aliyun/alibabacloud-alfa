@@ -28,7 +28,7 @@ export default mount({
 
 ### 子应用构建修改
 
-添加 Vue Cli ConsoleOS 插件:
+添加 Vue Cli Alfa 插件:
 
 ```bash
 > npm install vue-cli-plugin-console-os -D
@@ -36,7 +36,7 @@ export default mount({
 > yarn add vue-cli-plugin-console-os -D
 ```
 
-在 ```vue.config.js``` 增加 ConsoleOS 插件配置
+在 ```vue.config.js``` 增加 Alfa 插件配置
 
 ```javascript
 module.export = {

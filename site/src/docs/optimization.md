@@ -35,7 +35,16 @@ config.externals = {
 
 然后你需要在宿主应用加载的时候指定你要共享的三方依赖
 
-```
+```javascript
+import React from 'react';
+import ReactDom from 'react-dom';
+
+start({
+  deps: {
+    'react': React
+    'react-dom': ReactDom
+  }
+})
 
 ```
 

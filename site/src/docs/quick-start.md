@@ -24,7 +24,7 @@ tags:
 
 2.在老应用中（或者完全新建基座应用）引入微前端的容器 SDK，在这个基座应用中组织，加载每个子应用。
 
-下面以 React 为例，介绍如何快速开始试用 ConsoleOS 做应用拆分。
+下面以 React 为例，介绍如何快速开始试用 Alfa 做应用拆分。
 
 ## 子应用
 
@@ -62,7 +62,7 @@ module.exports = merge(/*you webpack conf*/, chain.toConfig());
 
 ### 判断 Console OS 的环境
 
-有时候我们需要判断是不是在 ConsoleOS 运行环境从而选择一些功能的展示或者隐藏。
+有时候我们需要判断是不是在 Alfa 运行环境从而选择一些功能的展示或者隐藏。
 
 ```javascript
 import { Context }  from '@alicloud/console-os-react-portal';
@@ -103,7 +103,7 @@ const Home =  () => (
 export default Home;
 ```
 
-需要启动整个 ConsoleOS 的运行时：
+需要启动整个 Alfa 的运行时：
 
 ```javascript
 // 然后应用的入口调用

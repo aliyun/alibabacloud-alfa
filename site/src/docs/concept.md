@@ -42,7 +42,7 @@ import App from './app';
 +);
 ```
 
-先比与之前用 ```ReatDom.render``` 直接渲染到 ```app``` 这个节点上去, 在 ConsoleOS 子应用中 ```react-portal``` 的 ```mount``` 方法替换掉了 ```ReactDom.render```. 这个 ```mount``` 方法会处理判断是不是在 ConsoleOS 运行时中，如果不是则加载到了对应的 App 节点. 如果是就会导出提供给 ConsoleOS 加载的几个方法。
+先比与之前用 ```ReatDom.render``` 直接渲染到 ```app``` 这个节点上去, 在 Alfa 子应用中 ```react-portal``` 的 ```mount``` 方法替换掉了 ```ReactDom.render```. 这个 ```mount``` 方法会处理判断是不是在 Alfa 运行时中，如果不是则加载到了对应的 App 节点. 如果是就会导出提供给 Alfa 加载的几个方法。
 
 类似在 Vue 和 Ng，中也是类似的逻辑。
 
