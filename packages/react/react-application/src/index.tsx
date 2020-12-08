@@ -132,6 +132,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       };
 
       this.app = await createMicroApp(appInfo, {
+        // @ts-ignore
         sandBox
       })
 
