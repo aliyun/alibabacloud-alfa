@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react';
-import { OSApplication, createMicroApp, mount, load, unmount, distroy } from '@alicloud/console-os-kernal'
+import { OSApplication, createMicroApp, mount, load, unmount } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
