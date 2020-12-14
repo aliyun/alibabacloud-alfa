@@ -22,7 +22,7 @@ const getParcelProps = (props = {}) => {
   
   return parcelProps;
 }
-export { start } from '@alicloud/console-os-kernal';
+export { start, createEventBus, prefetch, loadExposedModule } from '@alicloud/console-os-kernal';
 
 export default {
   name: 'Application',
