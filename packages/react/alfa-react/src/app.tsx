@@ -37,16 +37,14 @@ const Application: React.FC<IProps> = (props: IProps) => {
     app.update(props.props);
   }
 
-  const elementTagName = normalizeName(name);
-
   return (<>
     { !mounted && <Loading loading={loading}/> }
     {
       (sandbox && sandbox !== true && sandbox.disableFakeBody) 
-      ? React.createElement(elementTagName, { style, className, ref: appRef } ) 
+      ? React.createElement(name, { style, className, ref: appRef, dataId: name } ) 
       : React.createElement(
-        elementTagName,
-        React.createElement('div', { ref: appRef })
+        name,
+        { children: React.createElement('div', { ref: appRef }) }
       )
     }
   </>
@@ -55,15 +53,20 @@ const Application: React.FC<IProps> = (props: IProps) => {
 
 
 export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
-  const { name, loading } = option;
+  const { name, loading, manifest } = option;
+
   const AlfaApp = lazy(async () => {
-    const manifest = await getManifest(option);
+    let resolvedManifest = manifest;
+    if (!manifest) {
+      resolvedManifest = await getManifest(option);
+    }
+
     const AlfaApp: React.FC<IProps> = (props: IProps) => {
       return (
         <Application
+          manifest={resolvedManifest}
           {...props}
-          id={name.replace('@ali/', '')}
-          manifest={manifest}
+          name={normalizeName(name)}
         />
       )
     }
@@ -71,7 +74,7 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
   });
 
   return (props: T) => (
-    <ErrorBoundary>
+    <ErrorBoundary {...props}>
       <Suspense fallback={<Loading loading={loading}/>}>
         <AlfaApp
           {...option}

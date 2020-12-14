@@ -18,6 +18,7 @@ export interface AlfaFactoryOption extends IOptions {
   loading?: boolean | React.ReactChild;
   env?: 'prod' | 'local' | 'pre' | 'daily';
   url?: string;
+  manifest?: string;
   dependencies?: Record<string, any>;
 }
 

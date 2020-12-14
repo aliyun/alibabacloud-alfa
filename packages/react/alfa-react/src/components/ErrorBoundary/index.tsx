@@ -1,4 +1,5 @@
 import React, { ErrorInfo } from 'react';
+import isFunction from 'lodash/isFunction';
 import ErrorPanel from './ErrorPanel'
 
 export interface Logger {
@@ -31,6 +32,9 @@ class ErrorBoundary extends React.Component<IProp, State> {
     // You can also log the error to an error reporting service
     if (this.props.logger) {
       this.props.logger.error(error, errorInfo);
+    } else {
+      // @ts-ignore
+      isFunction(window?.__bl?.error) && window.__bl.error(error, errorInfo);
     }
     console.error(error);
 

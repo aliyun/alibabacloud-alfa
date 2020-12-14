@@ -28,7 +28,7 @@ export const registerConfigToRegistry = (id: string, {
 
   Object.values(registries).forEach((registryPath) => {
     console.log(`${registryPath}?${query}`)
-    axios.get(`${registryPath}?${query}` as string)
+    axios.get(`${registryPath}?${query}` as string).catch(() => {})
   });
 
   process.on('exit', () => {
@@ -37,8 +37,7 @@ export const registerConfigToRegistry = (id: string, {
           id: id,
           manifest: ''
         });
-        console.log(registryPath + "?" + query);
-        axios.get(registryPath + "?" + query);
+        axios.get(registryPath + "?" + query).catch(() => {});
     });
   })
 }

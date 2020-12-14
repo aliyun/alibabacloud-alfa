@@ -36,7 +36,7 @@ export function createAlfaWidget<T>(option: AlfaFactoryOption) {
 
   return (props: T) => (
     <Suspense fallback={<Loading loading={option.loading}/>}>
-      <ErrorBoundary>
+      <ErrorBoundary {...props}>
         <AlfaWidget {...props} />
       </ErrorBoundary>
     </Suspense>
