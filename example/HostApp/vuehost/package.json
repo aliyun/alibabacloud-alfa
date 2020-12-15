@@ -1,6 +1,6 @@
 {
   "name": "vuehost",
-  "version": "1.0.0-next.10",
+  "version": "1.0.0-next.11",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@alicloud/console-os-vue-host-app": "^1.0.0-next.10",
+    "@alicloud/console-os-vue-host-app": "^1.0.0-next.11",
     "core-js": "^3.6.5",
     "vue": "^2.6.11"
   },
