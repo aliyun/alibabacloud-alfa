@@ -17,6 +17,7 @@ const Application: React.FC<IProps> = (props: IProps) => {
     (async () => {
       const app = await createMicroApp({
         ...props,
+        container: appRef.current
       }, { sandbox })
 
       await app.load()
@@ -34,7 +35,7 @@ const Application: React.FC<IProps> = (props: IProps) => {
   });
 
   if (app) {
-    app.update(props.props);
+    app.update(props);
   }
 
   return (<>

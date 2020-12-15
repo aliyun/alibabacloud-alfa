@@ -67,7 +67,7 @@ class ErrorBoundary extends React.Component<IProp, State> {
                   <pre style={{overflow: 'scroll'}}>{error.stack}</pre>
                 </div>
               )
-              : <div style={commonErrorStyle}>Error</div>
+              : null
           }
         </div>
       );

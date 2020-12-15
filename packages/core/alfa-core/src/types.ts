@@ -9,7 +9,7 @@ export interface IAppManifest {
 export interface IAppConfig<T = any> {
   entry?: IAppManifest | string;
   name: string;
-  container?: HTMLElement;
+  container?: HTMLElement | null;
   props?: Record<string, T>;
 
   // alfa 的扩展属性

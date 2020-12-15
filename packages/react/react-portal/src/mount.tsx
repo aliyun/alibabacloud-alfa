@@ -73,14 +73,15 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
     }
 
     public render () {
+      const { logger, appDidCatch } = getProps(this.props);
       const contextValue: IContextProps = {
         inOsSandBox: isOsContext()
       };
 
       return (
         <ErrorBoundary 
-          logger={this.props.logger}
-          appDidCatch={this.props.appDidCatch}
+          logger={logger}
+          appDidCatch={appDidCatch}
         >
           { Context ? (
             <Context.Provider value={contextValue}>
