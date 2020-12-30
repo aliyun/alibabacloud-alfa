@@ -7,7 +7,7 @@
 创建 Alfa 微应用
 
 ```javascript
-import { createMicroApp } from '@alicloud/alfa-react';
+import { createAlfaWidget, createAlfaApp } from '@alicloud/alfa-react';
 
 const AlfaMicroApp = createMicroApp({
   name: '@ali/example',
@@ -23,7 +23,7 @@ const App = () => {
 创建历史 Widget
 
 ```javascript
-import { createWidget } from '@alicloud/alfa-react';
+import { createAlfaWidget } from '@alicloud/alfa-react';
 
 const AlfaWidget = createWidget({
   name: '@ali/example',
@@ -37,9 +37,9 @@ const App = () => {
 ```
 
 ```javascript
-import { createWidget } from '@alicloud/alfa-react';
+import { createAlfaWidget } from '@alicloud/alfa-react';
 
-const AlfaWidget = createWidget({
+const AlfaWidget = createAlfaWidget({
   name: '@ali/example',
   url: 'https://some-url/index.js'
 });
@@ -58,7 +58,7 @@ const App = () => {
 
 | 属性名         | 类型                                       | 说明                    | 默认值    |
 | ------------- | ------------------------------------------ | ---------------------- | --------- |
-| id            | `id: string;`                              | widget or alfa app ID  | -  |
+| name            | `id: string;`                              | widget or alfa app ID  | -  |
 | version       | `version: string;`                         | 微应用版本               | -  |
 | env           | `env?: 'prod' | 'local' | 'pre' | 'daily'` | 当前环境                 | -  |
 | loading       | `loading?: boolean | React.ReactChild;`    | 微应用加载的 loading 展示 | -  |
