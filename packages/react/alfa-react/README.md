@@ -9,7 +9,7 @@
 ```javascript
 import { createAlfaWidget, createAlfaApp } from '@alicloud/alfa-react';
 
-const AlfaMicroApp = createMicroApp({
+const AlfaMicroApp = createAlfaWidget({
   name: '@ali/example',
   version: '1.0'
 });
@@ -25,7 +25,7 @@ const App = () => {
 ```javascript
 import { createAlfaWidget } from '@alicloud/alfa-react';
 
-const AlfaWidget = createWidget({
+const AlfaWidget = createAlfaWidget({
   name: '@ali/example',
   version: '1.x'
 });
@@ -52,7 +52,7 @@ const App = () => {
 
 # API
 
-```createWidget(AlfaFactoryOption)``` or ```createWidget(AlfaFactoryOption)```
+```createAlfaWidget(AlfaFactoryOption)``` or ```createAlfaApp(AlfaFactoryOption)```
 
 ## AlfaFactoryOption
 
