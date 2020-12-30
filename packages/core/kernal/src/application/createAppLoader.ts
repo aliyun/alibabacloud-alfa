@@ -59,9 +59,15 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       }
 
       if (manifest.externals && manifest.externals.length) {
-        await loadScriptsWithContext({
-          id: name, url: manifest.externals[0], context
-        });
+        for (var index = 0; index < manifest.externals.length; index++) {
+          if (manifest.externals[index].endsWith('.css')) {
+            addStyles([manifest.externals[index]], getAppManifestUrl(appInfo))
+            continue;
+          }
+          await loadScriptsWithContext({
+            id: name, url: manifest.externals[index], context, xmlrequest: true,
+          });
+        }
       }
 
       for (var index = 0; index < js.length - 1; index++) {

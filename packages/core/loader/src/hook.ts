@@ -12,6 +12,29 @@ const getContext = (id: string, chunkRecord: Record) => {
 }
 
 let preHook = null;
+
+/**
+ * 在前面加载的模块系统中寻找模块
+ */
+const findModuleInParent = (id: string, resolver: BundleResolver) => {
+  preHook && !preHook.standalone && preHook(id, resolver);
+}
+
+/**
+ * 脚本类型的模块加载，这里是为了那些没导出，但是需要被沙箱 wrap 的脚本
+ */
+const resolveExternalScript = (id: string, resolver: BundleResolver, scriptRecord: Record<any>) => {
+  try {
+    const context = getContext(id, scriptRecord);
+    resolver.call(context.window, undefined, undefined, undefined, { ...context });
+    Module.record.delete(`${id}_scripts_`);
+    scriptRecord.loaded = true;
+    scriptRecord.resolve();
+  } catch(e) {
+    scriptRecord.reject(e);
+  }
+}
+
 /**
  * inject the global hooks for jsonp loader
  * 
@@ -20,44 +43,36 @@ let preHook = null;
  */
 export const hook = (id: string, resolver: BundleResolver) => {
   if (id && resolver) {
+
     const chunkRecord = Module.record.get(id);
     const scriptRecord = Module.record.get(`${id}_scripts_`);
+
+    // 做循环加载，如果子模块中需要加载某个模块优先去父模块去找
     if (!chunkRecord && !scriptRecord) {
-      // @ts-ignore
       // 为了防止一个 ConsoleOS 子应用作为容器单独加载的时候，__CONSOLE_OS_GLOBAL_HOOK__ 为空函数的问题
-      preHook && !window.__CONSOLE_OS_GLOBAL_HOOK__.standalone && preHook(id, resolver);
-
-      // when a page contains two consoleos runtime
-      // using __CONSOLE_OS_WHITE_LIST__ to invoke app directly
-      // rather than render by another consoleos runtime
-      if (!preHook
-        && window.__CONSOLE_OS_WHITE_LIST__
-        && window.__CONSOLE_OS_WHITE_LIST__.indexOf(id) !== -1) {
-        window.__CONSOLE_OS_GLOBAL_VARS_ || (window.__CONSOLE_OS_GLOBAL_VARS_ = {});
-        resolver.call(this, undefined, undefined, undefined, { window, location, history, document })
-      }
-      return;
+      return findModuleInParent(id, resolver)
     }
 
+    // 为了在沙箱中加载前置脚本
     if (scriptRecord) {
-      try {
-        const context = getContext(id, scriptRecord);
-        resolver.call(context.window, undefined, undefined, undefined, { ...context });
-        Module.record.delete(`${id}_scripts_`);
-        scriptRecord.loaded = true;
-        scriptRecord.resolve();
-      } catch(e) {
-        scriptRecord.reject(e);
-      }
+      return resolveExternalScript(id, resolver, scriptRecord);
+    }
+
+    // 如果不存在这个模块的记录，则直接返回
+    if (!chunkRecord) {
       return;
     }
 
+    // 处理模块
     const module = globalModule.resolveModule(id);
+
     try {
       let context = getContext(id, chunkRecord);
+
+      // 如果有前置的依赖，则把前置的依赖注册到当前的模块系统中去
       if (chunkRecord.deps) {
-        // Check the deps undefined
         Object.entries(chunkRecord.deps).forEach(([depsName, exports]) => {
+          // Check the deps undefined
           if (!exports) {
             console.warn(`${depsName} is null or undefined, please check the import statement for ${depsName}`);
           }
@@ -67,14 +82,17 @@ export const hook = (id: string, resolver: BundleResolver) => {
       }
 
       module.resolver = resolver;
-
       context = context || globalModule.context;
-      resolver(module.require, module, module.exports, { ...context })
+      module.context = context;
+
+      resolver(module.require, module, module.exports, { ...context });
+
+      chunkRecord.resolve(chunkRecord);
     } catch(e) {
       chunkRecord.reject(e);
     }
+
     chunkRecord.loaded = true;
-    chunkRecord.resolve(chunkRecord);
   }
 };
 
@@ -82,7 +100,7 @@ export const hook = (id: string, resolver: BundleResolver) => {
  * inject the global hooks for jsonp loader
  * please use webpack-jsonp-loader-plugin to build bundle
  * code will be wrapped as follow:
- *  window.__CONSOLE_OS_GLOBAL_HOOK__(function(require, module, exports, { dependencies }){ / wepback build umd code /})
+ *  window.__CONSOLE_OS_GLOBAL_HOOK__(id, function(require, module, exports, { dependencies }){ / wepback build umd code /})
  */
 if (window.__CONSOLE_OS_GLOBAL_HOOK__) {
   preHook = window.__CONSOLE_OS_GLOBAL_HOOK__

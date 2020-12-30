@@ -30,6 +30,12 @@ export function createAlfaWidget<T>(option: AlfaFactoryOption) {
       url: option.url || url,
       deps,
       xmlrequest: true,
+      context:{
+        window,
+        location,
+        history,
+        document
+      }
     });
 
   });

@@ -19,7 +19,7 @@ export const getWidgetDeps = async (config: WidgetCWSConfig): Promise<WidgetRunt
     name: WIDGET_RUNTIME_ID,
     version: '1.x'
   });
-
+  
   if (!cachedRuntime) {
     cachedRuntime = await loadBundle<WidgetRuntime>({
       id: WIDGET_RUNTIME_ID,
@@ -30,6 +30,12 @@ export const getWidgetDeps = async (config: WidgetCWSConfig): Promise<WidgetRunt
         'prop-types': propTypes
       },
       xmlrequest: true,
+      context:{
+        window,
+        location,
+        history,
+        document
+      }
     }) as WidgetRuntime;
 
     const components = cachedRuntime.default['@ali/wind'];

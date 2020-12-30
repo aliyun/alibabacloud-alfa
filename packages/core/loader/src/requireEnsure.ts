@@ -63,8 +63,10 @@ function jsonpRequire(id: string, url: string) {
 export async function xmlRequire(id: string, url: string) {
   const resp = await fetch(url);
   const code = await resp.text();
-  window.eval(`__CONSOLE_OS_GLOBAL_HOOK__('${id}', function(require, module, exports, context){
-    ${code}
+  window.eval(`__CONSOLE_OS_GLOBAL_HOOK__('${id.replace('_scripts_', '')}', function(require, module, exports, {window, location, history, document}){
+    with(window.__CONSOLE_OS_GLOBAL_VARS_){
+      ${code}
+    }
   })`)
 }
 

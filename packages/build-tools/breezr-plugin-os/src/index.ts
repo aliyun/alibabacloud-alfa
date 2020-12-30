@@ -11,7 +11,7 @@ import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
 
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
   const { jsonpCall, injectVars } = options;
-  options.id = normalizeId(options.id);
+  options.id = normalizeId(options.name || options.id);
 
   config
     .output
@@ -22,7 +22,8 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     .plugin('OSJsonpPlugin')
     .use(OSJsonpWebpackPlugin, [{
       injectVars,
-      jsonpCall
+      jsonpCall,
+      id: options.id
     }]);
 
   if (!options.webpack5) {
@@ -54,6 +55,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
         return {
           name: options.id,
           resources: manifest,
+          externals: options.externals || [],
           runtime: options.runtime || {},
           entrypoints: entrypoints
         };

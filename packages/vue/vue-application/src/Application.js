@@ -135,9 +135,8 @@ export default {
   },
   beforeDestroy() {
     this.addThingToDo('unmount', () => {
-      const { singleton = true } = this.$props;
       if (this.app && this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
-        return singleton ? unmount(this.app) : distroy(this.app);
+        return unmount(this.app);
       }
     })
   

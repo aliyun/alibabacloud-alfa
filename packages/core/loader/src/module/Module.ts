@@ -44,7 +44,7 @@ export class Module {
 
   public require = (id: string) => {
     const module = this.resolveModule(id);
-    return module.exports;
+    return this.context?.window[id] || module.exports;
   }
 
   public requireIsolateWithContext(id: string, context: any) {

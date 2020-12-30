@@ -6,7 +6,8 @@ const Basic: React.FC<{}> = () => {
   const appRef = useRef();
   useEffect(() => {
     mountApp({
-      ...appInfo,
+      // name: 'os-example',
+      manifest: 'http://g.alicdn.com/ConsoleOS/OSExample/0.0.5/os-example.manifest.json',
       dom: appRef.current
     });
   })

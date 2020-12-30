@@ -4,8 +4,8 @@ import { IBundleOption } from './type';
 
 /**
  * Load bundle for url
- * @param {IBundleOption} option loader option
- * @returns {Promise<T>} module exports
+ * @param option loader option
+ * @returns module exports
  */
 export async function loadBundle<T>(option: IBundleOption) {
   return await requireEnsure<T>(option);

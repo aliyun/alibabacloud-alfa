@@ -4,6 +4,7 @@ import { ConcatSource } from 'webpack-sources';
 export interface OSJsonpWebpackPluginOption {
   injectVars?: string[];
   jsonpCall?: string;
+  id: string;
 }
 
 export class OSJsonpWebpackPlugin {
@@ -49,7 +50,7 @@ export class OSJsonpWebpackPlugin {
         return;
       }
 
-      const [prefix, suffix] = this._wrapCodeWithOSJsonp(this.getId(compiler));
+      const [prefix, suffix] = this._wrapCodeWithOSJsonp(this.option.id || this.getId(compiler));
 
       compilation.assets[entryFile] = new ConcatSource(prefix, entryAsset, suffix);
     });
