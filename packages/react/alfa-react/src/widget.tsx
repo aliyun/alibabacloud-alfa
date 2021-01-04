@@ -1,12 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { loadBundle } from '@alicloud/console-os-loader'
 
-import { AlfaFactoryOption, WidgetCWSConfig } from './types';
+import { WidgetFactoryOption, WidgetCWSConfig } from './types';
 import { getWidgetVersionById, getWidgetDeps, getWidgetConfigById } from './widget/index';
 import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
 
-export function createAlfaWidget<T>(option: AlfaFactoryOption) {
+export function createAlfaWidget<T>(option: WidgetFactoryOption) {
   const AlfaWidget = lazy(async () => {
     let url = option.url;
 
@@ -23,7 +23,7 @@ export function createAlfaWidget<T>(option: AlfaFactoryOption) {
       config = await getWidgetConfigById({ ...option, version });
     }
 
-    const deps = await getWidgetDeps(config);
+    const deps = await getWidgetDeps(config, option);
 
     return loadBundle({
       id: option.name,

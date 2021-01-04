@@ -12,26 +12,35 @@ export interface AlfaReleaseConfig {
   'dist-tag': Record<string, string>;
 }
 
+
+export type EnvEnum = 'prod' | 'local' | 'pre' | 'daily';
 export interface AlfaFactoryOption extends IOptions {
   name: string;
   version?: string;
   loading?: boolean | React.ReactChild;
-  env?: 'prod' | 'local' | 'pre' | 'daily';
+  env?: EnvEnum;
   url?: string;
   manifest?: string;
   dependencies?: Record<string, any>;
 }
 
+type OmitKeys = 'manifest';
+export interface WidgetFactoryOption extends Omit<AlfaFactoryOption, OmitKeys> {
+  runtimeVersion?: string;
+}
+
 export interface AlfaEnvConfigDescriptor {
   releaseUrl: string;
-  cdnBackupUrl: string;
+  configUrl?: string;
+  cdnBackupUrl?: string;
+  resourceUrl?: string;
 }
 
 export interface AlfaEnvConfig {
-  daily?: AlfaEnvConfigDescriptor;
-  local?: AlfaEnvConfigDescriptor;
-  pre?: AlfaEnvConfigDescriptor;
-  prod?: AlfaEnvConfigDescriptor;
+  daily: AlfaEnvConfigDescriptor;
+  local: AlfaEnvConfigDescriptor;
+  pre: AlfaEnvConfigDescriptor;
+  prod: AlfaEnvConfigDescriptor;
 }
 
 export interface WidgetReleaseConfig {

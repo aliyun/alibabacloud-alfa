@@ -3,8 +3,8 @@ import reactDom from 'react-dom';
 import axios from 'axios';
 import kebabCase from 'lodash/kebabCase'
 import * as propTypes from 'prop-types';
-import { loadBundle } from '@alicloud/console-os-loader'
-import { WidgetCWSConfig, WidgetRuntime } from '../types';
+import { loadBundle } from '@alicloud/console-os-loader';
+import { WidgetCWSConfig, WidgetRuntime, WidgetFactoryOption } from '../types';
 import { getWidgetVersionById } from './getWidgetVersionById';
 // @ts-ignore
 import * as widgetUtils from '@alicloud/widget-utils-console'
@@ -14,10 +14,10 @@ let cachedRuntime: any = null;
 const WIDGET_RUNTIME_ID = '@ali/widget-wind-runtime';
 const WIDGET_UTILS_PKG_NAME = '@ali/widget-utils-console';
 
-export const getWidgetDeps = async (config: WidgetCWSConfig): Promise<WidgetRuntime> => {
+export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFactoryOption): Promise<WidgetRuntime> => {
   const { entryUrl } = await getWidgetVersionById({
     name: WIDGET_RUNTIME_ID,
-    version: '1.x'
+    version: option?.runtimeVersion || '1.x'
   });
   
   if (!cachedRuntime) {
@@ -48,7 +48,7 @@ export const getWidgetDeps = async (config: WidgetCWSConfig): Promise<WidgetRunt
     getChannelLink: widgetUtils.channelLinkFactory(() => config.links[widgetUtils.getChannel() || 'OFFICIAL']),
     getChannelFeature: widgetUtils.channelFeatureFactory(() => (config.features[widgetUtils.getChannel() || 'OFFICIAL'])),
     getLocale: () => (widgetUtils.getLocale()  || 'zh-CN'),
-    getWidgetI18nMessages: () => ((config.locales[widgetUtils.getLocale() || 'zh-CN'] || {}).messages || {})
+    getWidgetI18nMessages: () => (((config.locales || {})[widgetUtils.getLocale() || 'zh-CN'] || {}).messages || {})
   };
 
   return {
