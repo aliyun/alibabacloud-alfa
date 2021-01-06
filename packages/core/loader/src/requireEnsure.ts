@@ -60,12 +60,12 @@ function jsonpRequire(id: string, url: string) {
   document.head.appendChild(script);
 }
 
-export async function xmlRequire(id: string, url: string) {
+export async function xmlRequire(id: string, url: string, transform: (source: string) => string) {
   const resp = await fetch(url);
   const code = await resp.text();
   window.eval(`__CONSOLE_OS_GLOBAL_HOOK__('${id.replace('_scripts_', '')}', function(require, module, exports, {window, location, history, document}){
     with(window.__CONSOLE_OS_GLOBAL_VARS_){
-      ${code}
+      ${transform(code)}
     }
   })`)
 }
@@ -75,6 +75,9 @@ export async function xmlRequire(id: string, url: string) {
  * @param bundle {IBundleOption}
  */
 export async function requireEnsure<T>(bundle: IBundleOption) {
+  if (!bundle.transform) {
+    bundle.transform = (source: string) => source;
+  }
   // if module has been resolved
   if (!bundle.noCache && globalModule.resolved(bundle.id)) {
     // if loader contains the context(window, location)
@@ -106,7 +109,7 @@ export async function requireEnsure<T>(bundle: IBundleOption) {
       promises.push(promise);
 
       if (bundle.xmlrequest) {
-        xmlRequire(bundle.id, bundle.url)
+        xmlRequire(bundle.id, bundle.url, bundle.transform)
       } else {
         jsonpRequire(bundle.id, bundle.url);
       }

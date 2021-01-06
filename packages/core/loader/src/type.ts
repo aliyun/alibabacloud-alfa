@@ -25,6 +25,8 @@ export interface IBundleOption {
   xmlrequest?: true;
 
   noCache?: boolean;
+
+  transform?: (source: string) => string;
 }
 
 declare global {

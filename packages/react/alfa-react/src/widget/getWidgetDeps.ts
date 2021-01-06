@@ -9,24 +9,37 @@ import { getWidgetVersionById } from './getWidgetVersionById';
 // @ts-ignore
 import * as widgetUtils from '@alicloud/widget-utils-console'
 
-let cachedRuntime: any = null;
+let cachedRuntime: any = {};
+let cachedMessage: any = null;
 
 const WIDGET_RUNTIME_ID = '@ali/widget-wind-runtime';
+const WIDGET_WIND_MESSAGE_ID = '@ali/wind-messages'
 const WIDGET_UTILS_PKG_NAME = '@ali/widget-utils-console';
-
 
 const createDynamicWindStylePrefix = (windRuntimeVersion: string) => {
   return 'v'.concat(windRuntimeVersion.split('.').join('-'), '-')
 }
 
 export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFactoryOption): Promise<WidgetRuntime> => {
-  const { entryUrl } = await getWidgetVersionById({
+  const { entryUrl, version } = await getWidgetVersionById({
     name: WIDGET_RUNTIME_ID,
     version: option?.runtimeVersion || '1.x'
   });
+
+  const { version: messageVersion } = await getWidgetVersionById({
+    name: WIDGET_WIND_MESSAGE_ID,
+    version: '0.x'
+  });
   
-  if (!cachedRuntime) {
-    cachedRuntime = await loadBundle<WidgetRuntime>({
+  if (!cachedMessage) {
+    try {
+      const resp = await axios.get(`https://g.alicdn.com/one-mcms/wind-v2/${messageVersion}/wind-v2_${(widgetUtils.getLocale()  || 'en-US').toLowerCase()}.json`);
+      cachedMessage = resp.data
+    } catch (e) { /* nothing */ }
+  }
+
+  if (!cachedRuntime[version]) {
+    cachedRuntime[version] = await loadBundle<WidgetRuntime>({
       id: WIDGET_RUNTIME_ID,
       url: entryUrl,
       deps: {
@@ -35,28 +48,30 @@ export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFact
         'prop-types': propTypes
       },
       xmlrequest: true,
-      context:{
-        window,
-        location,
-        history,
-        document
-      }
+      transform: (source: string) => {
+        return source.replace(/aliyun-widget-/g, createDynamicWindStylePrefix(version));
+      },
+      context:{ window, location, history, document }
     }) as WidgetRuntime;
 
-    const components = cachedRuntime.default['@ali/wind'];
+    const components = cachedRuntime[version].default['@ali/wind'];
 
     Object.keys(components).forEach((key) => {
-      cachedRuntime.default[`@ali/wind/lib/${kebabCase(key).toLowerCase()}`] = components[key];
+      cachedRuntime[version].default[`@ali/wind/lib/${kebabCase(key).toLowerCase()}`] = components[key];
     })
   }
+
   const injectedWidgetUtils = {
     ...widgetUtils,
     getChannelLink: widgetUtils.channelLinkFactory(() => config.links[widgetUtils.getChannel() || 'OFFICIAL']),
     getChannelFeature: widgetUtils.channelFeatureFactory(() => (config.features[widgetUtils.getChannel() || 'OFFICIAL'])),
-    getLocale: () => (widgetUtils.getLocale()  || 'zh-CN'),
-    getWidgetI18nMessages: () => (((config.locales || {})[widgetUtils.getLocale() || 'zh-CN'] || {}).messages || {}),
+    getLocale: () => (widgetUtils.getLocale()  || 'en-US'),
+    getWidgetI18nMessages: () => ({
+      ...cachedMessage,
+      ...(((config.locales || {})[widgetUtils.getLocale() || 'en-US'] || {}).messages || {})
+    }),
     getStylePrefixForWindComponent: () => {
-      return 'aliyun-widget-';
+      return createDynamicWindStylePrefix(version);
     }
   };
 
@@ -65,7 +80,7 @@ export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFact
     'react-dom': reactDom,
     'prop-types': propTypes,
     'axios': axios,
-    ...cachedRuntime.default,
+    ...cachedRuntime[version].default,
     [WIDGET_UTILS_PKG_NAME]: injectedWidgetUtils,
     // widget 1.x API 的兼容
     '@ali/widget-utils-config': injectedWidgetUtils

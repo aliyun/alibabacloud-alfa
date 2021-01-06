@@ -13,6 +13,10 @@ const WidgetProps = {
   namespace: 'nexconsole/component_web',
   slug: 'card',
 }
+// @ts-ignore
+window.ALIYUN_CONSOLE_CONFIG = {
+  LOCALE: 'zh-CN'
+}
 
 storiesOf('Alfa Wigets', module)
   .addDecorator(withKnobs)
