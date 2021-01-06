@@ -14,6 +14,11 @@ let cachedRuntime: any = null;
 const WIDGET_RUNTIME_ID = '@ali/widget-wind-runtime';
 const WIDGET_UTILS_PKG_NAME = '@ali/widget-utils-console';
 
+
+const createDynamicWindStylePrefix = (windRuntimeVersion: string) => {
+  return 'v'.concat(windRuntimeVersion.split('.').join('-'), '-')
+}
+
 export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFactoryOption): Promise<WidgetRuntime> => {
   const { entryUrl } = await getWidgetVersionById({
     name: WIDGET_RUNTIME_ID,
@@ -39,6 +44,7 @@ export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFact
     }) as WidgetRuntime;
 
     const components = cachedRuntime.default['@ali/wind'];
+
     Object.keys(components).forEach((key) => {
       cachedRuntime.default[`@ali/wind/lib/${kebabCase(key).toLowerCase()}`] = components[key];
     })
@@ -48,7 +54,10 @@ export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFact
     getChannelLink: widgetUtils.channelLinkFactory(() => config.links[widgetUtils.getChannel() || 'OFFICIAL']),
     getChannelFeature: widgetUtils.channelFeatureFactory(() => (config.features[widgetUtils.getChannel() || 'OFFICIAL'])),
     getLocale: () => (widgetUtils.getLocale()  || 'zh-CN'),
-    getWidgetI18nMessages: () => (((config.locales || {})[widgetUtils.getLocale() || 'zh-CN'] || {}).messages || {})
+    getWidgetI18nMessages: () => (((config.locales || {})[widgetUtils.getLocale() || 'zh-CN'] || {}).messages || {}),
+    getStylePrefixForWindComponent: () => {
+      return 'aliyun-widget-';
+    }
   };
 
   return {

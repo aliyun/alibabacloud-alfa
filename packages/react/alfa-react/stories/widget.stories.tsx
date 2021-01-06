@@ -29,7 +29,7 @@ storiesOf('Alfa Wigets', module)
     const version = select('Widget Version', Object.keys((reslease)[name] || {}), '0.x')
 
     // @ts-ignore
-    return React.createElement(createAlfaWidget({ name, version, loading: false, runtimeVersion: '1.9.3', env: 'prod' }), {
+    return React.createElement(createAlfaWidget({ name, version, loading: false, runtimeVersion: '1.9.3', env: 'pre' }), {
       ...WidgetProps,
     })
   })
