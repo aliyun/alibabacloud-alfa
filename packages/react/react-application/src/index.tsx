@@ -38,7 +38,7 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
   /**
    * 应用加载之前生命周期
    */
-  appWillMount?: () => void;
+  appWillMount?: () => void | Promise<void>;
   /**
    * 引用完成加载之后生命周期
    */
@@ -104,7 +104,10 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   public componentDidMount() {
     this.addThingToDo('mount',  async () => {
-      this.props.appWillMount && this.props.appWillMount();
+      if (this.props.appWillMount) {
+        await this.props.appWillMount();
+      }
+
       const {
         jsUrl: url, id, manifest, 
         publicPath, deps, sandbox

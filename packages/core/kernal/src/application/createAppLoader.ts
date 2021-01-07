@@ -91,7 +91,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       id: name, url, context, deps: {
         ...(appInfo.deps || {}),
         '@alicloud/console-os-environment': {
-          publicPath:  appInfo.publicPath || getUrlDir(url)
+          publicPath: appInfo.publicPath || getUrlDir(url),
         }
       }
     })

@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { loadBundle } from '@alicloud/console-os-loader'
 
 import { WidgetFactoryOption, WidgetCWSConfig } from './types';
-import { getWidgetVersionById, getWidgetDeps, getWidgetConfigById } from './widget/index';
+import { getWidgetVersionById, getWidgetDeps, getWidgetConfigById, eventEmitter } from './widget/index';
 import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
 
@@ -43,7 +43,7 @@ export function createAlfaWidget<T>(option: WidgetFactoryOption) {
   return (props: T) => (
     <Suspense fallback={<Loading loading={option.loading}/>}>
       <ErrorBoundary {...props}>
-        <AlfaWidget {...props} />
+        <AlfaWidget eventEmitter={eventEmitter} {...props} />
       </ErrorBoundary>
     </Suspense>
   )

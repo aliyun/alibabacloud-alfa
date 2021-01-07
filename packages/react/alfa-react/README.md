@@ -79,3 +79,14 @@ const App = () => {
 | loading       | `loading?: boolean | React.ReactChild;`    | 微应用加载的 loading 展示 | -  |
 | url           | ```url?: string;```                        | JS entry 的 URL         | - |
 | runtimeVersion| ```runtimeVersion?: string;```             | Widgtet runtime 版本     | - |
+
+## widgetEventEmitter
+
+```javascript
+import { widgetEventEmitter } from '@alicloud/alfa-react'; 
+
+widgetEventEmitter.on('event', handleEvent)
+
+widgetEventEmitter.emit('event', [a, b])
+```
+
