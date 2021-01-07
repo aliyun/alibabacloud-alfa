@@ -30,10 +30,15 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
    * app resource publicPath
    */
   publicPath?: string;
+  
   /**
    * 处理错误的生命周期
    */
   appDidCatch?: (err: Error) => void;
+  /**
+   * 应用加载之前生命周期
+   */
+  appWillMount?: () => void;
   /**
    * 引用完成加载之后生命周期
    */
@@ -99,6 +104,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   public componentDidMount() {
     this.addThingToDo('mount',  async () => {
+      this.props.appWillMount && this.props.appWillMount();
       const {
         jsUrl: url, id, manifest, 
         publicPath, deps, sandbox
