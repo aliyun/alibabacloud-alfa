@@ -42,14 +42,8 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
  * @param sandBoxOption sandbox option for app
  */
 export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
-  if (!sandBoxOption.singleton) {
-    return await createAppInstance(appInfo, sandBoxOption);
-  }
-
   let app = AppCachePool.getApp(appInfo.name);
 
-  // if app is init and app is singleton, return the
-  // singleton instance for app
   if (app && app.isInited()) {
     // app.context.updateBody is not defined when sandbox disable.
     if (app.context.updateBody && !sandBoxOption.disableFakeBody) {

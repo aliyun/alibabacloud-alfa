@@ -161,12 +161,6 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   public componentWillUnmount() {
     this.addThingToDo('unmount', () => {
-      let singleton = this.props.sandbox?.singleton;
-      
-      if(singleton === undefined) {
-        singleton = true;
-      }
-
       if (this.app && this.app.parcel && this.app.parcel.getStatus() === "MOUNTED") {
         return unmount(this.app);
       }

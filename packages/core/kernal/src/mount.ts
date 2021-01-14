@@ -20,7 +20,6 @@ export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) 
   }
   // process the options
   const sandBox = {
-    singleton: true,
     ...globalOptions.sandBox,
     ...options.sandBox,
   };

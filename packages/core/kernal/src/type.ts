@@ -47,7 +47,6 @@ export interface AppCreationOption<E> {
 export interface SandBoxOption {
   disable?: boolean;
   sandBoxUrl?: string;
-  singleton?: boolean;
   initialPath?: string;
   syncInitHref?: boolean;
   externalsVars?: string[];

@@ -24,7 +24,6 @@ export class Application {
   @Input() public url: string
   @Input() public id: string;
   @Input() public manifest: string;
-  @Input() public singleton: boolean;
   @Input() public externalsVars: string[];
 
   private error: Error;
@@ -41,13 +40,10 @@ export class Application {
 
   public ngAfterViewInit() {
     this.addThingToDo('mount',  async () => {
-      const { manifest, id, url, externalsVars, singleton = true } = this;
+      const { manifest, id, url, externalsVars } = this;
       let sandBox = this.sandBox;
       if (sandBox) {
         sandBox.externalsVars = externalsVars;
-        sandBox.singleton = singleton;
-      } else {
-        sandBox = { singleton };
       }
 
       let domElement;
@@ -87,8 +83,7 @@ export class Application {
 
   public ngOnDestroy() {
     this.addThingToDo('unmount', () => {
-      const { singleton = true } = this;
-      return singleton ? unmount(this.app) : distroy(this.app);
+      return unmount(this.app)
     })
 
     if (this.createdDomElement) {
