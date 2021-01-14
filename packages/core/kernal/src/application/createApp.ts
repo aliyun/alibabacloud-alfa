@@ -47,10 +47,6 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   const manifest = await getManifest(appInfo, appInfo.name);
   appInfo.name = manifest.name;
 
-  if (!sandBoxOption.singleton) {
-    return await createAppInstance(appInfo, sandBoxOption);
-  }
-
   let app = AppCachePool.getApp(appInfo.name);
 
   // if app is init and app is singleton, return the
@@ -71,7 +67,9 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   // if app is loading
   if (!app || !app.isInited()) {
     if (app) {
-      return app.getPendingPromise();
+      return new Promise((resolve) => {
+        resolve(app.getPendingPromise())
+      });
     }
   }
 

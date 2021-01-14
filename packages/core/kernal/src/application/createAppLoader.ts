@@ -1,7 +1,7 @@
 import { VMContext } from '@alicloud/console-os-browser-vm';
 import { loadBundle, loadScriptsWithContext } from '@alicloud/console-os-loader';
 
-import { addStyles } from '../misc/style';
+import { addScopedStyles, addStyles } from '../misc/style';
 import { AppInfo, AppInstance, BasicModule } from '../type';
 import { handleManifest, getManifest } from '../misc/manifest';
 import { invokeLifeCycle, validateAppInstance, formatUrl, extractModule, getUrlDir } from '../misc/util';
@@ -61,7 +61,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       if (manifest.externals && manifest.externals.length) {
         for (var index = 0; index < manifest.externals.length; index++) {
           if (manifest.externals[index].endsWith('.css')) {
-            addStyles([manifest.externals[index]], getAppManifestUrl(appInfo))
+            addScopedStyles([manifest.externals[index]], appInfo.name)
             continue;
           }
           await loadScriptsWithContext({

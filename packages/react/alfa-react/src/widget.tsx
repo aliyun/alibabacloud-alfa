@@ -28,7 +28,10 @@ export function createAlfaWidget<T>(option: WidgetFactoryOption) {
     return loadBundle({
       id: option.name,
       url: option.url || url,
-      deps,
+      deps: {
+        ...deps,
+        ...option.dependencies
+      },
       xmlrequest: true,
       context:{
         window,
