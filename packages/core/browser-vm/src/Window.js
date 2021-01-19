@@ -4,10 +4,25 @@
 import { addEventListener, removeEventListener } from './events';
 
 const globalFnName = ['setTimeout', 'setInterval', 'clearInterval', 'clearTimeout'];
+const defaultExternals = [
+  'requestAnimationFrame',
+  'webkitRequestAnimationFrame',
+  'mozRequestAnimationFrame',
+  'oRequestAnimationFrame',
+  'msRequestAnimationFrame',
+  'cancelAnimationFrame',
+  'webkitCancelAnimationFrame',
+  'mozCancelAnimationFrame',
+  'oCancelAnimationFrame',
+  'msCancelAnimationFrame',
+];
 
 class Window {
   constructor( options = {}, context, frame ){
-    const externals = options.externals || [];
+    const externals = [
+      ...defaultExternals,
+      ...(options.externals || [])
+    ];
     const __CONSOLE_OS_GLOBAL_VARS_ = {};
 
     globalFnName.forEach((name) => {
