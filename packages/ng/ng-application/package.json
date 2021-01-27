@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-ng-app",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Console OS Angular Sub Application",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,7 +20,7 @@
     "typescript": "~3.5.0"
   },
   "dependencies": {
-    "@alicloud/console-os-kernal": "^0.4.4"
+    "@alicloud/console-os-kernal": "^0.4.5"
   },
   "publishConfig": {
     "directory": "dist"
