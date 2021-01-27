@@ -20,7 +20,7 @@ const Application: React.FC<IProps> = (props: IProps) => {
         container: appRef.current
       }, { sandbox })
 
-      await app.load()
+      await app.load();
   
       // @ts-ignore
       await app.mount(appRef.current, {});

@@ -19,11 +19,15 @@ interface IProps extends React.Attributes {
   [key: string]: any;
 }
 
+const getPathNameWithQueryAndSearch = () => {
+  return location.href.replace(/^.*\/\/[^\/]+/, '');
+}
+
 const updateHistory = (history: History, path: string) => {
   if (!history) {
     return;
   }
-  if (path && path !== location.href) {
+  if (path && path !== getPathNameWithQueryAndSearch()) {
     history.push(path);
   }
 }

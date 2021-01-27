@@ -17,6 +17,10 @@ function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions) {
   rule.selectors = rule.selectors.map(function(selector: string) {
     // Apply it to the selector itself if the selector is a `root` level component
     // `html:not(#\\9):not(#\\9):not(#\\9)`
+    if (['from', 'to'].indexOf(selector) ) {
+      return selector;
+    }
+
     if(
       selector === 'html' ||
       selector === ':root' ||
@@ -63,7 +67,8 @@ export const postcssWrap = postcss.plugin('postcss-css-wrapper', function(option
     css.walkRules(function(rule: postcss.Rule) {
       // Avoid adding additional selectors (stackableRoot) to descendant rules of @keyframe {}
       // i.e. `from`, `to`, or `{number}%`
-      var isInsideKeyframes = rule.parent.type === 'atrule' && rule.parent.name === 'keyframes';
+      // console.log(rule.parent.name)
+      var isInsideKeyframes = rule.parent.type === 'atrule' && rule.parent.name.indexOf('keyframes') !== -1;
 
       if(!isInsideKeyframes) {
         increaseSpecifityOfRule(rule, opts);

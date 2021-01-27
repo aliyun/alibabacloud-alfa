@@ -9,7 +9,7 @@
 ```javascript
 import { createAlfaWidget, createAlfaApp } from '@alicloud/alfa-react';
 
-const AlfaMicroApp = createMicroApp({
+const AlfaMicroApp = createAlfaWidget({
   name: '@ali/example',
   version: '1.0'
 });
@@ -25,7 +25,7 @@ const App = () => {
 ```javascript
 import { createAlfaWidget } from '@alicloud/alfa-react';
 
-const AlfaWidget = createWidget({
+const AlfaWidget = createAlfaWidget({
   name: '@ali/example',
   version: '1.x'
 });
@@ -54,14 +54,14 @@ const App = () => {
 
 # API
 
-```createAlfaApp(AlfaFactoryOption)```
+```createAlfaWidget(AlfaFactoryOption)``` or ```createAlfaApp(AlfaFactoryOption)```
 
 ## AlfaFactoryOption
 
 | 属性名         | 类型                                       | 说明                    | 默认值    |
 | ------------- | ------------------------------------------ | ---------------------- | --------- |
 | name            | `id: string;`                              | widget or alfa app ID  | -  |
-| version       | `version: string;`                         | 微应用版本               | -  |
+| version       | `version?: string;`                         | 微应用版本               | -  |
 | env           | `env?: 'prod' | 'local' | 'pre' | 'daily'` | 当前环境                 | -  |
 | loading       | `loading?: boolean | React.ReactChild;`    | 微应用加载的 loading 展示 | -  |
 | url           | ```url?: string;```                        | JS entry 的 URL         | - |
