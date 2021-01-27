@@ -63,7 +63,7 @@ export const postcssWrap = postcss.plugin('postcss-css-wrapper', function(option
     css.walkRules(function(rule: postcss.Rule) {
       // Avoid adding additional selectors (stackableRoot) to descendant rules of @keyframe {}
       // i.e. `from`, `to`, or `{number}%`
-      var isInsideKeyframes = rule.parent.type === 'atrule' && rule.parent.name === 'keyframes';
+      var isInsideKeyframes = rule.parent.type === 'atrule' && rule.parent.name.indexOf('keyframes') !== -1;
 
       if(!isInsideKeyframes) {
         increaseSpecifityOfRule(rule, opts);
