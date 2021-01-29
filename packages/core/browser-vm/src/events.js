@@ -2,7 +2,8 @@ const rawAddEventListener = window.addEventListener;
 const rawRemoveEventListener = window.removeEventListener;
 
 export const domEventsListeningTo = [
-  'mousedown','mouseup','touchcancel','touchend','touchstart','auxclick',
+  'webkitmouseforcedown', 'webkitmouseforcewillbegin', 'visibilitychange', 'error',
+  'mousemove', 'mousedown','mouseup','touchcancel','touchend','touchstart','auxclick',
   'dblclick','pointercancel','pointerdown','pointerup','dragend','dragstart','drop',
   'compositionend','compositionstart','keydown','keypress','keyup','input','textInput',
   'close','cancel','copy','cut','paste','click','change','contextmenu','reset','submit',

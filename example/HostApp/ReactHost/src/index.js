@@ -17,7 +17,7 @@ function App() {
       <div className="react">
         <Application
           id="os-example"
-          sandBox={{
+          sandbox={{
             initialPath: "/dashboard",
             disableFakeBody: true,
           }}
@@ -51,7 +51,7 @@ window.title = "ALIYUN";
 
 start({
   // 沙箱配置
-  sandBox: {
+  sandbox: {
     // true: 关闭沙箱, false: 打开沙箱
     // 关闭沙箱之后，点击路由你可以看到路由发生了变化
     // 再次开启之后，可以看到路由没有发生变化

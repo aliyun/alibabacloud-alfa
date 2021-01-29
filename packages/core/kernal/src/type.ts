@@ -19,6 +19,9 @@ export interface BasicModule {
   name?: string;
   url?: string;
   manifest?: string | AppManifest;
+  deps?: {
+    [key: string]: any;
+  };
 }
 
 export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
@@ -33,9 +36,6 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   manifest?: string | AppManifest;
   externals?: BasicModule[];
   customProps?: {
-    [key: string]: any;
-  };
-  deps?: {
     [key: string]: any;
   };
   publicPath?: string;
