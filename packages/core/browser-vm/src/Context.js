@@ -46,7 +46,7 @@ class Context {
           }
         }
       }//@ sourceMappingURL=${url}`)
-    resolver()({...this})
+    resolver().call(this.window, {...this})
   }
 
   updateBody(dom) {
