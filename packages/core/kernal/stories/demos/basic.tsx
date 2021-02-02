@@ -7,7 +7,7 @@ const Basic: React.FC<{}> = () => {
   useEffect(() => {
     mountApp({
       // name: 'os-example',
-      manifest: 'http://g.alicdn.com/ConsoleOS/OSExample/0.0.6/os-example.manifest.json',
+      manifest: 'http://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.7/os-example.manifest.json',
       dom: appRef.current,
       sharingKernel: true,
     });
