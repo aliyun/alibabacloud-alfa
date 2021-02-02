@@ -5,8 +5,8 @@ export interface VMContext {
   history: History;
   location: Location;
   baseFrame?: HTMLFrameElement;
-  body: HTMLBodyElement;
-  loadScripts: (url: string) => Promise<void>;
+  body?: HTMLBodyElement;
+  loadScripts?: (url: string) => Promise<void>;
   updateBody?: (body: Element) => void;
 }
 

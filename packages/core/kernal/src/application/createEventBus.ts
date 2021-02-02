@@ -1,7 +1,11 @@
-import { EventEmitter } from '@alicloud/console-os-events';
+import { EventEmitter  } from '@alicloud/console-os-events';
 
-const eventBus = new EventEmitter();
+export const eventBus = new EventEmitter();
 
 export const createEventBus = () => {
+  try {
+    // @ts-ignore
+    return  typeof _aliOSKernel === undefined ? eventBus : ( _aliOSKernel.createEventBus ? _aliOSKernel.createEventBus() : eventBus)
+  } catch (e) {}
   return eventBus;
 }

@@ -16,7 +16,7 @@ import {
   getExposedModule as _getExposedModule,
   loadExposedModule as _loadExposedModule,
 } from './mount';
-import { createEventBus as _createEventBus } from './application/createEventBus';
+export { createEventBus as _createEventBus } from './application/createEventBus';
 import { prefetch as _prefetch } from './prefetch';
 
 import { wrapSharing } from './sharing';
@@ -33,9 +33,7 @@ export const loadExposedModule = wrapSharing(_loadExposedModule, 'loadExposedMod
 export const mount = wrapSharing(_mount, 'mount');
 export const unmount = wrapSharing(_unmount, 'unmount');
 export const createMicroApp = wrapSharing(_createMicroApp, 'createMicroApp');
-export const createEventBus = wrapSharing(_createEventBus, 'createEventBus');
 export const prefetch = wrapSharing(_prefetch, 'prefetch');
-
 // Export Type
 export { SandBoxOption, AppInfo } from './type';
 
