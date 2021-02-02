@@ -14,7 +14,7 @@ type ApplicationRejecter = (reason?: any) => Promise<Application> | void;
  * Application
  */
 export class Application {
-  public context: VMContext;
+  public context: VMContext & { _aliOSKernel?: any };
   public parcel?: Parcel;
   public remoteApp;
   public allowEvents: string[];

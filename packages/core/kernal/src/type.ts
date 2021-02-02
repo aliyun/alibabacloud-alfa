@@ -39,6 +39,7 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
     [key: string]: any;
   };
   publicPath?: string;
+  sharingKernel?: boolean;
 }
 
 export interface AppCreationOption<E> {

@@ -5,6 +5,7 @@ import { createContext } from './createContext';
 import * as AppCachePool from './AppCachePool';
 import { AppInfo, SandBoxOption } from '../type';
 import { getManifest } from '../misc/manifest';
+import * as _aliOSKernel from '../index';
 
 const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
   let context: VMContext = { window, document, location, history };
@@ -33,7 +34,10 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
     window.__IS_CONSOLE_OS_CONTEXT__ = true
   }
 
-  app.context = context;
+  app.context = {
+    ...context,
+    _aliOSKernel: appInfo.sharingKernel ? _aliOSKernel : null,
+  };
   return app;
 }
 

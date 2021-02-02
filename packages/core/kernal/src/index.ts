@@ -3,24 +3,37 @@ import { Application } from './application/Application';
 // @ts-ignore
 window.__CONSOLE_OS_GLOBAL_VARS_ = {};
 
-export { 
-  mountApp, 
-  isAppRegistered, 
-  start, 
-  createMicroApp,
-  unmount,
-  mount,
-  load,
-  destroy,
-  update,
-  getExposedModule,
-  loadExposedModule,
+import { 
+  mountApp as _mountApp, 
+  isAppRegistered as _isAppRegistered, 
+  start as _start,
+  createMicroApp as _createMicroApp,
+  unmount as _unmount,
+  mount as _mount,
+  load as _load,
+  destroy as _destroy,
+  update as _update,
+  getExposedModule as _getExposedModule,
+  loadExposedModule as _loadExposedModule,
 } from './mount';
+import { createEventBus as _createEventBus } from './application/createEventBus';
+import { prefetch as _prefetch } from './prefetch';
 
-export { createEventBus } from './application/createEventBus';
+import { wrapSharing } from './sharing';
 
-export { prefetch } from './prefetch';
 
+export const mountApp = wrapSharing(_mountApp, 'mountApp');
+export const isAppRegistered = wrapSharing(_mountApp, 'isAppRegistered');
+export const start = wrapSharing(_start, 'start');
+export const load = wrapSharing(_load, 'load');
+export const destroy = wrapSharing(_destroy, 'destroy');
+export const update = wrapSharing(_update, 'update');
+export const getExposedModule = wrapSharing(_getExposedModule, 'getExposedModule');
+export const loadExposedModule = wrapSharing(_loadExposedModule, 'loadExposedModule');
+export const createEventBus = wrapSharing(_createEventBus, 'createEventBus');
+export const prefetch = wrapSharing(_prefetch, 'prefetch');
+
+// Export Type
 export { SandBoxOption, AppInfo } from './type';
 
 export type OSApplication = Application;

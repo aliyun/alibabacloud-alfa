@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { mountApp, prefetch } from '../../src';
 import { appInfo } from './constants';
 
-prefetch([ appInfo ]);
+// prefetch([ appInfo ]);
 
 const Basic: React.FC<{}> = () => {
   const appRef = useRef();
@@ -14,7 +14,8 @@ const Basic: React.FC<{}> = () => {
     setTimeout(() => {
       mountApp({
         ...appInfo,
-        dom: appRef.current
+        dom: appRef.current,
+        sharingKernel: true
       });
     }, 4000)
   })
