@@ -16,7 +16,7 @@ import {
   getExposedModule as _getExposedModule,
   loadExposedModule as _loadExposedModule,
 } from './mount';
-export { createEventBus as _createEventBus } from './application/createEventBus';
+export { createEventBus } from './application/createEventBus';
 import { prefetch as _prefetch } from './prefetch';
 
 import { wrapSharing } from './sharing';
