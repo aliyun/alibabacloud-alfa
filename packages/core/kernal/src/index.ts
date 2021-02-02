@@ -30,6 +30,9 @@ export const destroy = wrapSharing(_destroy, 'destroy');
 export const update = wrapSharing(_update, 'update');
 export const getExposedModule = wrapSharing(_getExposedModule, 'getExposedModule');
 export const loadExposedModule = wrapSharing(_loadExposedModule, 'loadExposedModule');
+export const mount = wrapSharing(_mount, 'mount');
+export const unmount = wrapSharing(_unmount, 'unmount');
+export const createMicroApp = wrapSharing(_createMicroApp, 'createMicroApp');
 export const createEventBus = wrapSharing(_createEventBus, 'createEventBus');
 export const prefetch = wrapSharing(_prefetch, 'prefetch');
 
