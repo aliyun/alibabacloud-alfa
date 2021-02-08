@@ -8,6 +8,7 @@
   "author": "pushiming",
   "license": "MIT",
   "scripts": {
+    "start": "breezr start-storybook",
     "prepublish": "npm run build && npm run babel && npm run babel:esm",
     "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
     "babel:esm": "breezr build --engine babel --esModule",

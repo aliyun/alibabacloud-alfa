@@ -37,8 +37,8 @@ const updateHistory = (history: History, path: string) => {
  * @param Comp 
  * @param history 
  */
-export const withSyncHistory = (Comp: React.ComponentClass | React.SFC, history: History) => {
-  const Wrapper: React.SFC<IProps> = (props: IProps) => {
+export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
+  const Wrapper: React.FC<IProps> = (props: IProps) => {
     const { path } = props;
     useEffect(() => {
       updateHistory(history, path);
@@ -76,7 +76,7 @@ export class Wrapper extends React.Component<IProps> {
  * @param Comp 
  * @param history 
  */
-export const withCompatibleSyncHistory = (Comp: React.ComponentClass | React.SFC, history: History) => {
+export const withCompatibleSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   
   const WrapperComp = (props: IProps) => React.createElement(Wrapper, {
     Comp: Comp,

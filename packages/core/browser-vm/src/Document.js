@@ -5,6 +5,7 @@
  * @createAt 2019085
  */
 
+import { addEventListener, removeEventListener } from './utils/HTMLScriptElement'
 class Document{
   constructor( options = {}, context, frame ){
 
@@ -38,8 +39,11 @@ class Document{
           case 'createElement':
             return ( ...args ) => {
               const el = document.createElement( ...args );
-              el.ownerAppWindow = context.window;
-              el.appId = options.id
+              el.ownerContext = context;
+              el.appId = options.id;
+              el._listenerMap = new Map()
+              el.addEventListener = addEventListener(el, el.addEventListener)
+              el.removeEventListener = removeEventListener(el, el.removeEventListener)
               return el;
             }
 

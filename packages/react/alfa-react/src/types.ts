@@ -27,6 +27,7 @@ export interface AlfaFactoryOption extends IOptions {
 type OmitKeys = 'manifest';
 export interface WidgetFactoryOption extends Omit<AlfaFactoryOption, OmitKeys> {
   runtimeVersion?: string;
+  alfaLoader?: boolean;
 }
 
 export interface AlfaEnvConfigDescriptor {

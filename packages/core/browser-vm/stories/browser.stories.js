@@ -13,9 +13,18 @@ storiesOf('Loader', module)
         const fn = eval(`
           (() => function({window, history, locaiton, document}) {
             window.test = 1;
-            console.log(window.test);
-            const div = document.createElement('div')
-            document.body.appendChild(div)
+            console.log('test', window.test);
+            const script = document.createElement('script')
+            script.src = 'https://g.alicdn.com/code/lib/antv-g2/4.0.12/g2.min.js'
+            script.addEventListener('load', () => {
+              console.log('G2', window.G2)
+            })
+
+            script.addEventListener('error', () => {
+              console.log('G2', window.G2)
+            })
+ 
+            document.body.append(script)
           })()`
         );
         fn({ ...ctx });

@@ -13,7 +13,6 @@ sort: 9
 目前沙箱会创建 iframe 来保存 location, history, setTimeout。如果希望开启沙箱，提供一个和站点同域的 url。（为了保持 性能 请保证这个URL 的返回不包含任何内容）。
 
 ```jsx
-import { start } from '@ali/os-kernal'
 start({
     sandbox: {
     // 全局变量白名单，可选
@@ -34,13 +33,12 @@ start({
 
 ```jsx
 // Home.jsx
-import Application from '@ali/os-react-app'
 const appConfigUrl = 'https://dev.g.alicdn.com/aliyun-next/endpoint/0.1.0/endpoint.manifest.json';
 const Home = () => (
   <Application
     manifest={appConfigUrl}
     id="aliyun-console-slb"
-        externalsVars={[
+    externalsVars={[
       'USER'      
     ]}
   />

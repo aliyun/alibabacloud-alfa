@@ -22,7 +22,7 @@ export interface IBundleOption {
     [key: string]: any;
   };
   // TODO: 支持 xmlrequest load
-  xmlrequest?: true;
+  xmlrequest?: boolean;
 
   noCache?: boolean;
 

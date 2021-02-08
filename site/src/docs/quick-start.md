@@ -102,11 +102,3 @@ const Home =  () => (
 );
 export default Home;
 ```
-
-需要启动整个 Alfa 的运行时：
-
-```javascript
-// 然后应用的入口调用
-import { start } from '@alicloud/console-os-react-app';
-start();
-```

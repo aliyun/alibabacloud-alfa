@@ -5,6 +5,7 @@ import { WidgetFactoryOption, WidgetCWSConfig } from './types';
 import { getWidgetVersionById, getWidgetDeps, getWidgetConfigById, eventEmitter } from './widget/index';
 import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
+import { normalizeName } from './utils';
 
 export function createAlfaWidget<T>(option: WidgetFactoryOption) {
   const AlfaWidget = lazy(async () => {
@@ -26,13 +27,13 @@ export function createAlfaWidget<T>(option: WidgetFactoryOption) {
     const deps = await getWidgetDeps(config, option);
 
     return loadBundle({
-      id: option.name,
-      url: option.url || url,
+      id: normalizeName(option.name),
+      url: (option.url || url).replace('index.js', option?.alfaLoader ? 'index.alfa.js' : 'index.js'),
       deps: {
         ...deps,
         ...option.dependencies
       },
-      xmlrequest: true,
+      xmlrequest: !option.alfaLoader,
       context:{
         window,
         location,
@@ -40,7 +41,6 @@ export function createAlfaWidget<T>(option: WidgetFactoryOption) {
         document
       }
     });
-
   });
 
   return (props: T) => (

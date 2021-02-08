@@ -7,7 +7,7 @@ const Basic: React.FC<{}> = () => {
   useEffect(() => {
     mountApp({
       // name: 'os-example',
-      manifest: 'http://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.7/os-example.manifest.json',
+      manifest: 'https://dev.g.alicdn.com/home-microapp/home-scene-resources/0.1.1/ali-alfa-cloud-home-app-scene-resource.manifest.json',
       dom: appRef.current,
       sharingKernel: true,
     });

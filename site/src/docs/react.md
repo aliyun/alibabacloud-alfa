@@ -82,10 +82,83 @@ const Home =  () => (
 export default Home;
 ```
 
-需要启动整个 Alfa 的运行时：
 
-```javascript
-// 然后应用的入口调用
-import { start } from '@alicloud/console-os-react-app';
-start();
+## API
+
+### 子应用 @alicloud/console-os-react-portal
+#### mount
+
+```typescript
+mount<T extends EmitterProps>(App: AppComponent<T>, container?: Element | null)
 ```
+用来替换 ```ReactDom.mount```。 如果不是在宿主容器中，会以 ```ReactDom.mount``` 的方式加载到你指定的 ```container``` 节点中，如果是在宿主容器中，则会返回一下几个生命周期方法, 提供给宿主消费：
+
+```typescript
+{
+  bootstrap: [
+    reactLifecycles.bootstrap,
+  ],
+  mount: [
+    reactLifecycles.mount,
+  ],
+  unmount: [
+    reactLifecycles.unmount,
+  ],
+  update: [
+    reactLifecycles.update,
+  ],
+  exposedModule: exposeModuleMap
+}
+```
+
+注意你需要以 UMD 的方式导出 ```mount``` 方法的返回。
+
+#### registerExposedModule
+
+```typescript
+registerExposedModule(moduleName: string, modules: any) => void
+```
+
+注册可以被其他应用消费的模块，详细请参考[共享子应用模块](/docs/exposed-module.html)
+
+#### withSyncHistory
+
+```typescript
+withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => React.ComponentClass | React.FC
+```
+路由同步的高级组件，当应用被该高阶组件包裹时，会接收宿主传递的 path 属性，来自动的通过 history 来执行 history.push(props.path);
+
+注意： history 必须是传递给 react-router 的 history 对象。在 react-router 3 中，通过 ```createBrowserHistory``` 必须是传递给 Router 组件的同一个 history. react-router 4 中，必须是 ```<BrowserRouter>``` or ```<HashRouter>``` 中 prop 传递出来的 history
+
+详细请参考[指定路由定位到子应用的页面](/docs/exposed-module.html)
+
+#### withCompatibleSyncHistory
+
+```typescript
+withCompatibleSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => React.ComponentClass | React.FC
+```
+兼容 React 15 的 的路由同步 API.
+
+#### isOsContext
+
+```typescript
+isOsContext = () => boolean
+```
+用来判断子应用是是否处在 alfa 的容器中
+
+#### EventEmitter
+
+emitter 的类型导出
+
+### 宿主应用 @alicloud/console-os-react-app
+
+#### Application
+
+#### start
+
+#### createEventBus
+
+#### prefetch
+
+#### loadExposedModule
+

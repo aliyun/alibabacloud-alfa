@@ -26,7 +26,7 @@ const createWidget = (option: any) => {
   return ({id, version}: {id: string; version: string}) => createAlfaWidget({
     name: id,
     version: version,
-    dependencies: option.dependencies,
+    dependencies: option?.dependencies,
     runtimeVersion: option?.windRuntime?.runtimeVersion
   })
 }

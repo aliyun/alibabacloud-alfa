@@ -4,6 +4,7 @@ import { select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import { createAlfaWidget } from '../src';
 import { cachedRelease } from '../src/widget/getWidgetVersionById'
+import * as homeWidgetRuntime from '@ali/home-widget-runtime'
 
 const WidgetProps = {
   title:'',
@@ -29,11 +30,26 @@ storiesOf('Alfa Wigets', module)
         setRelease(resp.data)
       })()
     }, [])
-    const name = select('Widget ID', Object.keys(reslease), '@ali/widget-xconsole-article-content')
+    const name = select('Widget ID', Object.keys(reslease), '@ali/widget-home-resources-overview')
     const version = select('Widget Version', Object.keys((reslease)[name] || {}), '0.x')
 
     // @ts-ignore
-    return React.createElement(createAlfaWidget({ name, version, loading: false, runtimeVersion: '1.9.3', env: 'pre' }), {
-      ...WidgetProps,
-    })
+    return <>
+      {
+        React.createElement(
+          createAlfaWidget({
+            name,
+            version: '1.0.1',
+            loading: false,
+            alfaLoader: true,
+            env: 'pre',
+            dependencies: {
+              '@ali/home-widget-runtime': homeWidgetRuntime
+            }}),
+            {
+              ...WidgetProps,
+            }
+        )
+      }
+    </>
   })

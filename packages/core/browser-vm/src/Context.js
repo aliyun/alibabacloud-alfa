@@ -15,7 +15,7 @@ class Context {
     this.location = new Location(frame.contentWindow.location);
     this.history = new History(conf.id, frame.contentWindow);
     this.window = new Window( conf, this, frame, location);
-
+    this.allowResources = conf.allowResources || [];
     let body = conf.body;
 
     if (conf.disableBody) {

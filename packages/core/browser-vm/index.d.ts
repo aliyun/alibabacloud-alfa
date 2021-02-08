@@ -16,6 +16,7 @@ export interface ContextOption {
   url?: string;
   id?: string;
   disableBody?: boolean;
+  allowResources?: string[];
 }
 
 export function removeContext(VMContext): void;
