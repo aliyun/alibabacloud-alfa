@@ -39,7 +39,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     .devtoolNamespace(options.id);
   
     config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
-      transform: (manifest: any) => {
+      transform: (manifest: any, plugin: any) => {
         const entrypoints = manifest.entrypoints;
         if (entrypoints) {
           delete manifest.entrypoints;
@@ -55,7 +55,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
         return {
           name: options.id,
           resources: manifest,
-          externals: options.externals || [],
+          externals: plugin.compiler.options.externals || {},
           runtime: options.runtime || {},
           entrypoints: entrypoints
         };

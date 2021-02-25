@@ -21,10 +21,14 @@ storiesOf('Loader', module)
             })
 
             script.addEventListener('error', () => {
-              console.log('G2', window.G2)
+              console.log('G2 error', window.G2)
             })
  
             document.body.append(script)
+
+            const script1 = document.createElement('script')
+            document.body.append(script1)
+            script1.innerHTML = "console.log('script1 test',window.test)"
           })()`
         );
         fn({ ...ctx });

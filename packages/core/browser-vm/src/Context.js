@@ -9,6 +9,7 @@ import Window from './Window';
 import Document from './Document';
 import Location from './Location';
 import History from './History';
+import { getFetchCredentials } from './utils/credentials';
 
 class Context {
   constructor( conf, frame ){
@@ -33,8 +34,12 @@ class Context {
   }
   
   async loadScripts(url) {
-    const resp = await fetch(url);
+    const resp = await fetch(url, {credentials: getFetchCredentials(url)});
     const code = await resp.text();
+    this.evalScript(code, url);
+  }
+
+  evalScript(code, url="") {
     const resolver = new Function(`
       return function ({window, location, history, document}){ 
         with(window.__CONSOLE_OS_GLOBAL_VARS_) {

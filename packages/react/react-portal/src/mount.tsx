@@ -73,9 +73,11 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
     }
 
     public render () {
-      const { logger, appDidCatch } = getProps(this.props);
+      const props = getProps(this.props);
+      const { logger, appDidCatch } = props;
       const contextValue: IContextProps = {
-        inOsSandBox: isOsContext()
+        inOsSandBox: isOsContext(),
+        appProps: props
       };
 
       return (
@@ -85,9 +87,9 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
         >
           { Context ? (
             <Context.Provider value={contextValue}>
-              <App {...Object.assign(getProps(this.props) || {})} />
+              <App {...Object.assign(props || {})} />
             </Context.Provider>
-          ) : <App {...Object.assign(getProps(this.props) || {})} />
+          ) : <App {...Object.assign(props || {})} />
           }
         </ErrorBoundary>
       );
