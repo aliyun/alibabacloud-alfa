@@ -35,10 +35,10 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
     window.__IS_CONSOLE_OS_CONTEXT__ = true
   }
 
-  app.context = {
-    ...context,
-    _aliOSKernel: appInfo.sharingKernel ? _aliOSKernel : null,
-  };
+  // @ts-ignore
+  context._aliOSKernel = appInfo.sharingKernel ? _aliOSKernel : null;
+
+  app.context = context;
   return app;
 }
 
