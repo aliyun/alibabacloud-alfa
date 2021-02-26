@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-toolkit-plugin-os",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "long term cache plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
