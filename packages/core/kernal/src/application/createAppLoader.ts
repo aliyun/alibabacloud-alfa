@@ -58,7 +58,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
         }
       }
 
-      if (manifest.externals && manifest.external.length) {
+      if (manifest.externals && manifest.externals.length) {
         for (var index = 0; index < manifest.externals.length; index++) {
           // 兼容之前代码
           if (!manifest.externals[index].startWith('http')) {
