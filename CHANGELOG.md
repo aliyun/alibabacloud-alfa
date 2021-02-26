@@ -1,7 +1,15 @@
+# 1.0.5
+## Feature
+### Build tools
+ * feat: Write the webpack externals to manifest.json
+
+# 1.0.2
+## Feature
+### Browser VM
+ * Feat: solve the problem of sandbox dynamic script escape 
 # 1.0.0
 
 ## Breaking Changes
-
 ### Kernel 
  * change createMicroApp first option `id` to `name`
  * change api `distroy` to `destroy`,
