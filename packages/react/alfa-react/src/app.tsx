@@ -7,6 +7,23 @@ import { AlfaFactoryOption, MicroApplication } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
 import { normalizeName } from './utils';
 
+const getProps = (props: Partial<IProps>) => {
+  const parcelProps = {...props};
+
+  delete parcelProps.manifest;
+  delete parcelProps.sandbox;
+  delete parcelProps.loading;
+  delete parcelProps.entry;
+  delete parcelProps.container;
+  delete parcelProps.logger;
+  // @ts-ignore
+  delete parcelProps.env;
+  // @ts-ignore
+  delete parcelProps.dependencies;
+
+  return parcelProps;
+}
+
 const Application: React.FC<IProps> = (props: IProps) => {
   const { sandbox, name, loading, style, className } = props;
   const [mounted, setMounted] = useState(false);
@@ -17,13 +34,16 @@ const Application: React.FC<IProps> = (props: IProps) => {
     (async () => {
       const app = await createMicroApp({
         ...props,
-        container: appRef.current
+        container: appRef.current,
+        props: getProps(props)
       }, { sandbox })
 
       await app.load();
   
       // @ts-ignore
-      await app.mount(appRef.current, {});
+      await app.mount(appRef.current, {
+        customProps: getProps(props)
+      });
 
       setMounted(true);
       setApp(app);
@@ -35,7 +55,7 @@ const Application: React.FC<IProps> = (props: IProps) => {
   });
 
   if (app) {
-    app.update(props);
+    app.update(getProps(props));
   }
 
   return (<>

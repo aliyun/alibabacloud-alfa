@@ -8,6 +8,14 @@
   </div>
 </template>
 
+<script>
+module.exports = {
+  created(){
+    alert(JSON.stringify(this.data))
+  }
+}
+</script>
+
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

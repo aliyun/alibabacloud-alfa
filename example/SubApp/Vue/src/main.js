@@ -8,5 +8,9 @@ Vue.config.productionTip = false
 export default mount({
   el: '#app',
   router,
-  render: h => h(App)
+  render(h) {
+    /* eslint-disable */
+    console.log('context', this.appProps)
+    return h(App)
+  }
 })

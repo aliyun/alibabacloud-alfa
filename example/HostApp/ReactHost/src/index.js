@@ -31,6 +31,7 @@ function App() {
 
       <div className="vue">
         <Application
+          testProps="ssss"
           id="os-example-vue"
           manifest="http://localhost:8080/os-example-vue.manifest.json"
         />
