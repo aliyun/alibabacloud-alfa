@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { Context } from './Context';
 import { History } from 'history';
 
 declare global {
@@ -39,7 +40,7 @@ const updateHistory = (history: History, path: string) => {
  */
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   const Wrapper: React.FC<IProps> = (props: IProps) => {
-    const { path } = props;
+    const { path } = useContext(Context).appProps || {};
     useEffect(() => {
       updateHistory(history, path);
     }, [path]);
