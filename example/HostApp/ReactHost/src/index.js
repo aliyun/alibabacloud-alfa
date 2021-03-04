@@ -25,7 +25,7 @@ function App() {
             console.log(e)
           }}
           // src="http://localhost:8080/img/logo.82b9c7a5.png"
-          manifest="http://localhost:8081/os-example.manifest.json"
+          manifest="http://localhost:8082/os-example.manifest.json"
         />
       </div>
 

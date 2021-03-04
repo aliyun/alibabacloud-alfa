@@ -6,14 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const chain = new WepbackChain();
 chain.devServer.port(8082)
 chainOsWebpack({
-  id: 'alfa-xxxxxx'
+  id: 'os-example'
 })(chain);
 
 const regCommon = new RegExp(`[\\/]node_modules[\\/](_)?(${['react'].join('|')})[\\/|@]`);
 
 module.exports = merge(chain.toConfig(), {
   entry: {
-    'alfa-xxxxxx': './src/index.js',
+    'os-example': './src/index.js',
     // 'os-example2': './src/index2.js'
   },
   devtool: 'source-map',
