@@ -42,14 +42,15 @@ class Window {
 
       get( target, name ){
         if (externals.includes(name)){
-          if (typeof window[ name ] === 'function' && !isBoundedFunction(value) && !isConstructable(value)) {
-            const bindFn = window[name].bind(window)
-            for (const key in value) {
-              boundValue[key] = value[key];
+          const windowValue = window[ name ];
+          if (typeof windowValue === 'function' && !isBoundedFunction(windowValue) && !isConstructable(windowValue)) {
+            const bindFn = windowValue.bind(window)
+            for (const key in windowValue) {
+              bindFn[key] = windowValue[key];
             }
             return bindFn;
           } else {
-            return window[name];
+            return windowValue;
           }
         }
 
