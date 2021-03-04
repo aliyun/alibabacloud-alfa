@@ -2,6 +2,7 @@
  * Window.js
  */
 import { addEventListener, removeEventListener } from './events';
+import { isConstructable, isBoundedFunction } from './utils/common';
 
 const globalFnName = ['setTimeout', 'setInterval', 'clearInterval', 'clearTimeout'];
 const defaultExternals = [
@@ -41,8 +42,12 @@ class Window {
 
       get( target, name ){
         if (externals.includes(name)){
-          if (typeof window[ name ] === 'function' && /^[a-z]/.test(name)){
-            return window[name].bind && window[name].bind(window);
+          if (typeof window[ name ] === 'function' && !isBoundedFunction(value) && !isConstructable(value)) {
+            const bindFn = window[name].bind(window)
+            for (const key in value) {
+              boundValue[key] = value[key];
+            }
+            return bindFn;
           } else {
             return window[name];
           }
@@ -67,7 +72,7 @@ class Window {
           return __CONSOLE_OS_GLOBAL_VARS_[name];
         }
 
-        if (typeof target[ name ] === 'function' && /^[a-z]/.test(name)){
+        if (typeof target[ name ] === 'function' && !isBoundedFunction(value) && !isConstructable(value)){
           return target[name].bind && target[name].bind(target);
         } else {
           return target[name];
