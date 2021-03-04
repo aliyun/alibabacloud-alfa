@@ -73,10 +73,11 @@ class Window {
           return __CONSOLE_OS_GLOBAL_VARS_[name];
         }
 
-        if (typeof target[ name ] === 'function' && !isBoundedFunction(value) && !isConstructable(value)){
-          return target[name].bind && target[name].bind(target);
+        const value = target[ name ];
+        if (typeof value === 'function' && !isBoundedFunction(value) && !isConstructable(value)){
+          return value.bind && value.bind(target);
         } else {
-          return target[name];
+          return value;
         }
       }
     } );

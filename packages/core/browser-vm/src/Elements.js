@@ -10,7 +10,12 @@ import injectScriptCallBack, { getJsonCallback } from './utils/injectScriptCallB
 const makeElInjector = (originMethod) => function( el, ...args ){
 
   // 如果不在 BrowserVM 的白名单内，尝试通过 context 的 load script 通过 xhr 获取脚本内容，并在沙箱中执行
-  if (el.ownerContext && el.nodeName === 'SCRIPT' && el.src && el.ownerContext.allowResources.indexOf(el.src) === -1 && !getJsonCallback(el.src)) {
+  if (
+    el._evalScriptInSandbox
+    && el.ownerContext && el.nodeName === 'SCRIPT' 
+    && el.src && el.ownerContext.allowResources.indexOf(el.src) === -1 
+    && !getJsonCallback(el.src)
+  ) {
     return el.ownerContext.loadScripts(el.src).then(() => {
       const fns = el._listenerMap.get('load');
       if (fns) {

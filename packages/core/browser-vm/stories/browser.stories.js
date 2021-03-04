@@ -4,7 +4,10 @@ import { storiesOf } from '@storybook/react';
 import { useEffect } from '@storybook/addons';
 
 
-const context = createContext( { initURL: 'https://www.example.com/home', id: 'test-1' } );
+const context = createContext( { initURL: 'https://www.example.com/home', id: 'test-1', enableScriptEscape: false, externals:['require'] } );
+
+window.require = function() {};
+window.require.xxx = 'test';
 
 storiesOf('Loader', module)
   .add('Loader', () => {
@@ -29,6 +32,7 @@ storiesOf('Loader', module)
             const script1 = document.createElement('script')
             document.body.append(script1)
             script1.innerHTML = "console.log('script1 test',window.test)"
+            console.log('window.require', window.require.xxx)
           })()`
         );
         fn({ ...ctx });

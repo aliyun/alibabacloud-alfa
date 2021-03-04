@@ -41,8 +41,9 @@ class Document{
               const el = document.createElement( ...args );
               el.ownerContext = context;
               el.appId = options.id;
-              // 
-              if (el.tagName === 'SCRIPT') {
+              // 对于 script 标签如果开启防逃逸，就直接 hack script 标签
+              if (el.tagName === 'SCRIPT' && !options.enableScriptEscape) {
+                el._evalScriptInSandbox = true;
                 injectHTMLScriptElement(el)
               }
               return el;

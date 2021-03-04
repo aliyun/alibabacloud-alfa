@@ -27,7 +27,8 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
       externals: sandBoxOption ? sandBoxOption.externalsVars: [],
       url: sandBoxOption.sandBoxUrl,
       disableBody: sandBoxOption.disableFakeBody,
-      allowResources: sandBoxOption.allowResources
+      allowResources: sandBoxOption.allowResources,
+      enableScriptEscape: false,
     });
     context.history.replaceState(null, '' , sandBoxOption.initialPath || '/');
   } else {

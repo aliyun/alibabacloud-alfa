@@ -27,7 +27,10 @@ class Context {
     }
 
     this.body = body;
-    this.document = new Document( conf, this, frame, location );
+    this.document = new Document( {
+      enableScriptEscape: true,
+      ...conf
+    }, this, frame, location );
     this.baseFrame = frame;
     this._listenerMap = new Map();
     this.window.__IS_CONSOLE_OS_CONTEXT__ = true

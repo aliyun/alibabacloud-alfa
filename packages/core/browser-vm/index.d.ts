@@ -17,6 +17,7 @@ export interface ContextOption {
   id?: string;
   disableBody?: boolean;
   allowResources?: string[];
+  enableScriptEscape?: boolean;
 }
 
 export function removeContext(VMContext): void;
