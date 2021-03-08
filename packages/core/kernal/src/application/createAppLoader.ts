@@ -62,7 +62,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
         for (var index = 0; index < manifest.externals.length; index++) {
           // 兼容之前代码
           // 之前的 externals 是带着 url 的来做加载的 后面换成了 只展示那些被 externals 了
-          if (!manifest.externals[index].startWith || !manifest.externals[index].startWith('http')) {
+          if (!manifest.externals[index].startsWith || !manifest.externals[index].startsWith('http')) {
             continue;
           }
           if (manifest.externals[index].endsWith('.css')) {
