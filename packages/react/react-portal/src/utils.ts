@@ -29,7 +29,9 @@ const updateHistory = (history: History, path: string) => {
     return;
   }
   if (path && path !== getPathNameWithQueryAndSearch()) {
-    history.push(path);
+    setTimeout(() => {
+      history.push(path);
+    }, 0)
   }
 }
 
