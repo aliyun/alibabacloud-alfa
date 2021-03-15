@@ -11,7 +11,7 @@ const makeElInjector = (originMethod) => function( el, ...args ){
 
   // 如果不在 BrowserVM 的白名单内，尝试通过 context 的 load script 通过 xhr 获取脚本内容，并在沙箱中执行
   if (
-    el._evalScriptInSandbox
+    el && el._evalScriptInSandbox
     && el.ownerContext && el.nodeName === 'SCRIPT' 
     && el.src && el.ownerContext.allowResources.indexOf(el.src) === -1 
     && !getJsonCallback(el.src)
@@ -38,7 +38,7 @@ const makeElInjector = (originMethod) => function( el, ...args ){
 
   // 如果有 scriptText, 证明在 append 之前被设置了 text
   // 所以直接执行这个 script
-  if (el.scriptText) {
+  if (el && el.scriptText) {
     el.ownerContext.evalScript(el.scriptText);
   }
 
