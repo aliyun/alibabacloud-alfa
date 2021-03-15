@@ -14,7 +14,7 @@ function onScriptComplete (id: string, script: HTMLScriptElement, timeout: numbe
   clearTimeout(timeout);
 
   const record = Module.record.get(id);
-  if (!id.endsWith('_scripts_') && record && !record.loaded) {
+  if (id && id.endsWith && !id.endsWith('_scripts_') && record && !record.loaded) {
     Module.record.delete(id);
   }
 }
