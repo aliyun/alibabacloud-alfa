@@ -7,11 +7,22 @@
 ## Feature
 ### Browser VM
  * Feat: solve the problem of sandbox dynamic script escape 
+
 # 1.0.0
+## Feature
+  * Add the Vue Application for Vue Application as Host App;
 
 ## Breaking Changes
+
+### React App, NG App
+ * change Application props `id` to `name`
+ * change Application props `sandBox` to `sandbox`
+ * remove Application props `externalsVars`
+ * remove Application props `initialPath`
+
 ### Kernel 
  * change createMicroApp first option `id` to `name`
+ * change createMicroApp first option `sandBox` to `sandbox`
  * change api `distroy` to `destroy`,
 
 
