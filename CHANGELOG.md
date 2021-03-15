@@ -17,8 +17,8 @@
 ### React App, NG App
  * change Application props `id` to `name`
  * change Application props `sandBox` to `sandbox`
- * remove Application props `externalsVars`
- * remove Application props `initialPath`
+ * remove Application props `externalsVars`, using `sandbox.externalsVars` instead
+ * remove Application props `initialPath`,  using `sandbox.initialPath` instead
 
 ### Kernel 
  * change createMicroApp first option `id` to `name`
