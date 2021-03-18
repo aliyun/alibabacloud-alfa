@@ -24,14 +24,22 @@ const getPathNameWithQueryAndSearch = () => {
   return location.href.replace(/^.*\/\/[^\/]+/, '');
 }
 
+let isFirstEnter = true;
+
 const updateHistory = (history: History, path: string) => {
   if (!history) {
     return;
   }
   if (path && path !== getPathNameWithQueryAndSearch()) {
-    setTimeout(() => {
+    // 防止还没发生 第一渲染 破坏 path 的状态
+    if (isFirstEnter) {
+      isFirstEnter = false;
+      setTimeout(() => {
+        history.push(path);
+      }, 0)
+    } else {
       history.push(path);
-    }, 0)
+    }
   }
 }
 
