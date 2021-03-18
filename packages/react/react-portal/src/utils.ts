@@ -33,7 +33,6 @@ const updateHistory = (history: History, path: string) => {
   if (path && path !== getPathNameWithQueryAndSearch()) {
     // 防止还没发生 第一渲染 破坏 path 的状态
     if (isFirstEnter) {
-      isFirstEnter = false;
       setTimeout(() => {
         history.push(path);
       }, 0)
@@ -41,6 +40,7 @@ const updateHistory = (history: History, path: string) => {
       history.push(path);
     }
   }
+  isFirstEnter = false;
 }
 
 /**
@@ -53,6 +53,7 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: 
     const { path } = useContext(Context).appProps || {};
     useEffect(() => {
       updateHistory(history, path);
+      isFirstEnter = false;
     }, [path]);
     return React.createElement(Comp, props);
   }
