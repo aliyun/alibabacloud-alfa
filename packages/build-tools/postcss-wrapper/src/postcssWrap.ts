@@ -17,7 +17,7 @@ function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions) {
   rule.selectors = rule.selectors.map(function(selector: string) {
     // Apply it to the selector itself if the selector is a `root` level component
     // `html:not(#\\9):not(#\\9):not(#\\9)`
-    if (['from', 'to'].indexOf(selector) ) {
+    if (['from', 'to'].indexOf(selector) !== -1) {
       return selector;
     }
 
