@@ -2,6 +2,22 @@ div {
   color: #fff;
 }
 
+:root{
+  --range-scale-item-position-top:initial;
+}
+
+
+@font-face {
+  font-family: NextIcon;
+  src: url("//at.alicdn.com/t/font_1899989_e0hzok75tkg.eot");
+}
+
+.next-icon {
+  display: inline-block;
+  font-family: NextIcon;
+}
+
+
 @-webkit-keyframes a {
   from {}
   to {}

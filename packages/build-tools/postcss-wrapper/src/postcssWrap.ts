@@ -4,6 +4,10 @@ import escapeStringRegexp from 'escape-string-regexp';
 
 const CSS_ESCAPED_TAB = '\\9';
 
+export const normalizeId = (id: string) => {
+  return id.replace('@', '').replace('/', '').replace('-', '');
+}
+
 interface IOptions {
   // The number of times `:not(#\\9)` is appended in front of the selector
   repeat: number;
@@ -33,6 +37,10 @@ function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions) {
     // Otherwise just make it a descendant (this is what will happen most of the time)
     // `:not(#\\9):not(#\\9):not(#\\9) .foo`
     return opts.stackableRoot.repeat(opts.repeat) + ' ' + selector;
+  });
+
+  rule.walkDecls('font-family', function(decl) {
+    decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
   });
 
   if(opts.overrideIds) {
@@ -74,5 +82,11 @@ export const postcssWrap = postcss.plugin('postcss-css-wrapper', function(option
         increaseSpecifityOfRule(rule, opts);
       }
     });
+
+    css.walkAtRules('font-face', (rule: postcss.AtRule) => {
+      rule.walkDecls('font-family', function(decl) {
+        decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
+      });
+    })
   };
 });
