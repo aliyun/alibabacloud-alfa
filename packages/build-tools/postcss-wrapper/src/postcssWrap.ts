@@ -27,7 +27,7 @@ function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions) {
       selector === ':host' ||
       selector === opts.stackableRoot
     ) {
-      return selector + opts.stackableRoot.repeat(opts.repeat);
+      return opts.stackableRoot.repeat(opts.repeat);
     }
 
     // Otherwise just make it a descendant (this is what will happen most of the time)
