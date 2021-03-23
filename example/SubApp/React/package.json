@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/demo-console-os-react-app",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "",
   "keywords": [],
   "main": "src/index.js",
@@ -19,7 +19,7 @@
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^1.0.17",
+    "@alicloud/console-toolkit-plugin-os": "^1.0.18",
     "@babel/core": "^7.7.2",
     "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
