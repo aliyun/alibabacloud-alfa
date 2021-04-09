@@ -1,3 +1,13 @@
+# 1.0.20
+## Feature
+### postcss-prefix-wrapper
+ * fix [#63](https://github.com/aliyun/alibabacloud-alfa/issues/63): postcss-prefix-wrapper isolation incorrectly for normal font-family
+
+# 1.0.19
+## Feature
+### postcss-prefix-wrapper
+ * feat: icon font isolation
+
 # 1.0.5
 ## Feature
 ### Build tools
