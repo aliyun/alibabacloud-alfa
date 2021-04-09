@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-console-os",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "long term cache plugin for breezr",
   "main": "index.js",
   "scripts": {},
@@ -13,7 +13,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^1.0.19"
+    "@alicloud/console-toolkit-plugin-os": "^1.0.20"
   },
   "author": "流司",
   "license": "MIT",
