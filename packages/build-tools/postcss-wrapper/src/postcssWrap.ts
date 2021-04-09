@@ -17,7 +17,7 @@ interface IOptions {
   stackableRoot: string;
 }
 
-function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions) {
+function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions, cachedIconName: Record<string, boolean>) {
   rule.selectors = rule.selectors.map(function(selector: string) {
     // Apply it to the selector itself if the selector is a `root` level component
     // `html:not(#\\9):not(#\\9):not(#\\9)`
@@ -40,7 +40,9 @@ function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions) {
   });
 
   rule.walkDecls('font-family', function(decl) {
-    decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
+    if (cachedIconName[decl.value]) {
+      decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
+    }
   });
 
   if(opts.overrideIds) {
@@ -70,8 +72,16 @@ const defaultOptions = {
 export const postcssWrap = postcss.plugin('postcss-css-wrapper', function(options: IOptions | undefined) {
 
   const opts = objectAssign({}, defaultOptions, options);
+  const cachedIconName: Record<string, boolean> = {}
 
   return function(css: postcss.Root) {
+    css.walkAtRules('font-face', (rule: postcss.AtRule) => {
+      rule.walkDecls('font-family', function(decl) {
+        cachedIconName[decl.value] = true;
+        decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
+      });
+    })
+
     css.walkRules(function(rule: postcss.Rule) {
       // Avoid adding additional selectors (stackableRoot) to descendant rules of @keyframe {}
       // i.e. `from`, `to`, or `{number}%`
@@ -79,14 +89,8 @@ export const postcssWrap = postcss.plugin('postcss-css-wrapper', function(option
       var isInsideKeyframes = rule.parent.type === 'atrule' && rule.parent.name.indexOf('keyframes') !== -1;
 
       if(!isInsideKeyframes) {
-        increaseSpecifityOfRule(rule, opts);
+        increaseSpecifityOfRule(rule, opts, cachedIconName);
       }
     });
-
-    css.walkAtRules('font-face', (rule: postcss.AtRule) => {
-      rule.walkDecls('font-family', function(decl) {
-        decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
-      });
-    })
   };
 });
