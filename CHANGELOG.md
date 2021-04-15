@@ -1,3 +1,8 @@
+# 1.0.21
+## Feature
+### Alfa React
+ * feat: resolve aliyun dynamic config for cdn
+
 # 1.0.20
 ## Feature
 ### postcss-prefix-wrapper
