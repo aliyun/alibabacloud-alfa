@@ -22,6 +22,7 @@ export interface AlfaFactoryOption extends IOptions {
   url?: string;
   manifest?: string;
   dependencies?: Record<string, any>;
+  dynamicConfig?: boolean;
 }
 
 type OmitKeys = 'manifest';

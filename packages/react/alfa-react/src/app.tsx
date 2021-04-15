@@ -5,6 +5,7 @@ import { IProps } from './base';
 import Loading from './components/Loading';
 import { AlfaFactoryOption, MicroApplication } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
+import { getConsoleConfig } from './app/getConsoleConfig';
 import { normalizeName } from './utils';
 
 const getProps = (props: Partial<IProps>) => {
@@ -25,7 +26,7 @@ const getProps = (props: Partial<IProps>) => {
 }
 
 const Application: React.FC<IProps> = (props: IProps) => {
-  const { sandbox, name, loading, style, className } = props;
+  const { sandbox, name, loading, style, className, consoleConfig } = props;
   const [mounted, setMounted] = useState(false);
   const [app, setApp] = useState<MicroApplication | null>(null);
   const appRef = useRef(null);
@@ -36,7 +37,12 @@ const Application: React.FC<IProps> = (props: IProps) => {
         ...props,
         container: appRef.current,
         props: getProps(props)
-      }, { sandbox })
+      }, { sandbox });
+
+      if (app.context && app.context.baseFrame) {
+        // @ts-ignore
+        app.context.baseFrame?.contentWindow.ALIYUN_CONSOLE_CONFIG = consoleConfig;
+      }
 
       await app.load();
   
@@ -82,12 +88,19 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
       resolvedManifest = await getManifest(option);
     }
 
+    // @ts-ignore
+    let consoleConfig = window.ALIYUN_CONSOLE_CONFIG || {};
+    if (option.dynamicConfig) {
+      consoleConfig = await getConsoleConfig(option, consoleConfig);
+    }
+
     const AlfaApp: React.FC<IProps> = (props: IProps) => {
       return (
         <Application
           manifest={resolvedManifest}
           {...props}
           name={normalizeName(name)}
+          consoleConfig={consoleConfig}
         />
       )
     }

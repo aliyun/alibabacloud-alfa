@@ -7,8 +7,15 @@ export const resolveReleaseUrl = (option: AlfaFactoryOption) => {
   // 如果没找环境到 fallback 到 prod
   const env = ENV[option.env || getConsoleEnv()] || ENV.prod;
 
-  return template(env.releaseUrl)({ appId: option.name })
+  return template(env.releaseUrl)({ appId: option.name });
 }
+
+export const resolveConfigUrl = (option: AlfaFactoryOption) => {
+  // 如果没找环境到 fallback 到 prod
+  const env = ENV[option.env || getConsoleEnv()] || ENV.prod;
+  return template(env.configUrl)({ appId: option.name });
+}
+
 
 export const getURL = (appConfig: IAppConfig) => {
 

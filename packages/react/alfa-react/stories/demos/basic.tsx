@@ -1,7 +1,11 @@
 import React from 'react';
 import { createAlfaApp } from '../../src';
 
-const AlfaApp = createAlfaApp({ name: '@ali/alfa-cloud-sas-app-overview', env: 'pre', sandbox: {disable: true}});
+const AlfaApp = createAlfaApp({
+  name: '@ali/alfa-cloud-home-app-scene-resource',
+  version: '0.1.0',
+  env: 'prod'
+});
 
 const Basic: React.FC<{}> = () => {
   return (

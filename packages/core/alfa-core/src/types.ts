@@ -1,5 +1,4 @@
 import { OSApplication, SandBoxOption } from '@alicloud/console-os-kernal';
-import React from 'React';
 
 export interface IAppManifest {
   scripts: string[];
@@ -46,6 +45,15 @@ export interface AlfaReleaseConfig {
   'dist-tags': Record<string, string>;
 }
 
+
+type AlfaChannelLinks = Record<string, Record<string, string>>;
+type AlfaChannelFeatures = Record<string, Record<string, any>>;
+
+export interface AlfaDynamicConfig {
+  ALL_CHANNEL_LINKS: AlfaChannelLinks;
+  ALL_CHANNEL_FEATURE_STATUS: AlfaChannelFeatures;
+}
+
 export interface AlfaFactoryOption {
   name: string;
   version?: string;
@@ -55,6 +63,7 @@ export interface AlfaFactoryOption {
 export interface AlfaEnvConfigDescriptor {
   releaseUrl: string;
   cdnBackupUrl: string;
+  configUrl: string;
 }
 
 export interface AlfaEnvConfig {
