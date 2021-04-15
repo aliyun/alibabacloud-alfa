@@ -41,7 +41,7 @@ const Application: React.FC<IProps> = (props: IProps) => {
 
       if (app.context && app.context.baseFrame) {
         // @ts-ignore
-        app.context.baseFrame?.contentWindow.ALIYUN_CONSOLE_CONFIG = consoleConfig;
+        app.context.baseFrame.contentWindow.ALIYUN_CONSOLE_CONFIG = consoleConfig;
       }
 
       await app.load();
