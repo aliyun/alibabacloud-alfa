@@ -1,6 +1,8 @@
 import * as WebpackChain from 'webpack-chain';
 import * as webpack from 'webpack';
+import * as minimist from 'minimist'
 import { wrapCss } from 'postcss-prefix-wrapper';
+import * as path from 'path'
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { DonePlugin } from './DonePlugins';
@@ -8,6 +10,7 @@ import { normalizeId } from './utils/normalizeId';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { MultiEntryManifest } from './MultiEntryManifest';
 import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
+import { getEnv, error, info, exit, debug, done } from "@alicloud/console-toolkit-shared-utils";
 
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
   const { jsonpCall, injectVars } = options;
@@ -45,7 +48,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
           delete manifest.entrypoints;
 
           Object.values(entrypoints).forEach((entry: any) => {
-            if (entry && entry.css && !options.disableOsCssExtends) {
+            if (entry && entry.css && !options.disableOsCssExtends && !options.disableCssPrefix) {
               entry.css = entry.css.map((cssBundle: any) => cssBundle.replace('.css', '.os.css'))
             }
           })
@@ -71,6 +74,10 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   config.plugin('WebpackDonePlugin').use(DonePlugin, [{
     done: () => {
       // process css
+      if (options.disableCssPrefix) {
+        return;
+      }
+
       wrapCss(options.cssBuildDir || config.output.get('path'), options.cssPrefix || options.id, {
         ext: '.os.css',
         disableOsCssExtends: options.disableOsCssExtends,
@@ -97,8 +104,59 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   });
 }
 
+const buildOsBundle = async (api: PluginAPI, opts: PluginOptions) => {
+  try {
+    info('building console os bundle');
+
+    process.env.IS_CONSOLE_OS_BUNDLE = 'true';
+
+    const config = new WebpackChain();
+    await api.emit('onChainWebpack', config, getEnv());
+
+    // server config
+    config.output.path(path.join(config.output.get('path'), 'microApp'));
+
+    // config output
+    chainOsWebpack({
+      disableOsCssExtends: true,
+      ...opts,
+    })(config);
+
+    debug('ssr', config.toConfig());
+
+    await api.dispatch('webpack', {
+      config: config.toConfig(),
+      /* 强制复写用户的 自定义 webpack */
+      webpack: (conf: any, ...args: any[]) => {
+        if (opts.webpack) {
+          return opts.webpack(config.toConfig(), ...args)
+        }
+        return config.toConfig()
+      }
+    });
+
+
+  process.env.IS_CONSOLE_OS_BUNDLE = undefined;
+
+    done('console os bundle build successfully!');
+  } catch(e) {
+    error(e.toString());
+    debug('ssr', e.stack);
+    exit(0);
+  }
+};
+
+
 export default (api: PluginAPI, options: PluginOptions) => {
-  api.on('onChainWebpack', chainOsWebpack(options));
+  const args = minimist(process.argv.slice(2))
+  // ssr for prod build
+  if (getEnv().isProd() && (options.enableStandaloneBundle || args.enableStandaloneBundle)) {
+    api.dispatchSync('registerBeforeBuildStart',  async () => {
+      await buildOsBundle(api, options);
+    });
+  } else {
+    api.on('onChainWebpack', chainOsWebpack(options));
+  }
 
   api.dispatchSync('addHtmlHeadScript', `
 <style>

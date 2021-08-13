@@ -4,8 +4,27 @@ div {
 
 :root{
   --range-scale-item-position-top:initial;
+  --range-scale-item-font-family: NextIcon;
 }
 
+@font-face {
+  font-family: "iconfont";  /* project id 124257 */
+  src: url('//at.alicdn.com/t/font_124257_4b9wm3ho0c6.eot');
+  src: url('//at.alicdn.com/t/font_124257_4b9wm3ho0c6.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_124257_4b9wm3ho0c6.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_124257_4b9wm3ho0c6.woff') format('woff'),
+  url('//at.alicdn.com/t/font_124257_4b9wm3ho0c6.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_124257_4b9wm3ho0c6.svg#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family:"iconfont";
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 @font-face {
   font-family: NextIcon;

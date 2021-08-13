@@ -1,7 +1,7 @@
 {
   "name": "@alicloud/console-toolkit-plugin-os",
-  "version": "1.0.20",
-  "description": "long term cache plugin for breezr",
+  "version": "1.0.24",
+  "description": "console os plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
     "ci": "npm run lint && npm run compile && npm run cov",

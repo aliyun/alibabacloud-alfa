@@ -3,9 +3,14 @@ import objectAssign from 'object-assign';
 import escapeStringRegexp from 'escape-string-regexp';
 
 const CSS_ESCAPED_TAB = '\\9';
+const RE_VAR = /(--(.+))/;
 
 export const normalizeId = (id: string) => {
-  return id.replace('@', '').replace('/', '').replace('-', '');
+  return id.replace(/@/g, '').replace(/\./g, '').replace(/\//g, '').replace(/-/g, '');
+}
+
+export const normalizeFontName = (id: string) => {
+  return id.replace(/["']/g, '')
 }
 
 interface IOptions {
@@ -40,8 +45,9 @@ function increaseSpecifityOfRule(rule: postcss.Rule, opts: IOptions, cachedIconN
   });
 
   rule.walkDecls('font-family', function(decl) {
-    if (cachedIconName[decl.value]) {
-      decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
+    const fontName = normalizeFontName(decl.value);
+    if (cachedIconName[fontName]) {
+      decl.value = `${normalizeId(opts.stackableRoot)}${fontName}`;
     }
   });
 
@@ -77,9 +83,19 @@ export const postcssWrap = postcss.plugin('postcss-css-wrapper', function(option
   return function(css: postcss.Root) {
     css.walkAtRules('font-face', (rule: postcss.AtRule) => {
       rule.walkDecls('font-family', function(decl) {
-        cachedIconName[decl.value] = true;
-        decl.value = `${normalizeId(opts.stackableRoot)}${decl.value}`;
+        const fontName = normalizeFontName(decl.value);
+        cachedIconName[fontName] = true;
+        decl.value = `${normalizeId(opts.stackableRoot)}${fontName}`;
       });
+    });
+
+    css.walkDecls(function(decl) {
+      if (RE_VAR.test(decl.prop) && decl.prop.indexOf('font-family') !== -1) {
+        const fontName = normalizeFontName(decl.value);
+        if (cachedIconName[fontName]) {
+          decl.value = `${normalizeId(opts.stackableRoot)}${fontName}`;
+        }
+      }
     })
 
     css.walkRules(function(rule: postcss.Rule) {
