@@ -9,18 +9,18 @@ sort: 6
 # 自定义运行时
 
 ## 背景
-通常情况下为了减小应用体积，我们希望抽离出一套各个微应用共同依赖的库，来减小重复加载，以及便于管理 微应用的运行时，并且做统一的升级。 所以 Alfa 提供出自定义业务自定义自己的业务 Runtime.
+通常情况下为了减小应用体积，我们希望抽离出一套各个微应用共同依赖的库，来减小重复加载，以及便于管理 微应用 的运行时，并且做统一的升级。 所以 Alfa 提供出自定义业务自定义自己的业务 Runtime.
 
 ## 运行时定义
 
-这里公共运行时，任然作为一个特殊的微前端应用，具体代码可以参考 这里 React16 的样例运行时，这个应用导出为你依赖的 React 和 React-Dom
-注意 Alfa 中实现了一个简单的 cmd 版本的加载器， 所以你导出对象中，必须以 react commonjs 的版本名字来导出。然后这里这个工程被打包成一个 Alfa 应用，发布到cdn 上去。
+这里公共运行时，仍然作为一个特殊的微前端应用，具体代码可以参考 这里 React16 的样例运行时，这个应用导出为你依赖的 React 和 React-Dom  
+注意 Alfa 中实现了一个简单的 cmd 版本的加载器，所以你导出对象中，必须以 react commonjs 的版本名字来导出。然后这里这个工程被打包成一个 Alfa 应用，发布到 cdn 上去。
 
 ```javascript
 import React_ from 'react';
 import ReactDOM_ from 'react-dom';
 export default {
-  // key 必须是 react, 不能是 React或者其他的
+  // key 必须是 react, 不能是 React 或者其他的
   'react': React_,
   'react-dom': ReactDOM_,
   '__version': '0.1.0',
