@@ -8,8 +8,8 @@ import { Context } from './Context';
 import { IContextProps } from './types';
 import ErrorBoundary, { Logger } from './ErrorBoundary';
 
-interface EmitterProps {
-  emitter: EventEmitter;
+interface EmitterProps extends Record<string, any> {
+  emitter?: EventEmitter;
 }
 
 interface IProps {
@@ -54,22 +54,50 @@ export function registerExposedModule(moduleName: string, modules: any) {
   exposeModuleMap[moduleName] = modules;
 }
 
-export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: Element | null, id?: string) {
+export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: Element | null, id?: string, options?: any) {
   class ConsoleApp extends React.Component<T & IProps> {
+
+    constructor(props) {
+      super(props);
+
+      if (props.__enableInitialHistoryAction && props?.appProps?.path) {
+        window.history.replaceState(null, null, props?.appProps?.path);
+      }
+    }
+    /**
+     * 针对 外跳 的路由提供简单的方式通知宿主
+     * @param e 点击事件 
+     */
+    private handleExternalLinks = (e: Event) => {
+      const target = e.target as HTMLAnchorElement;
+      const { emitter, id, name } = getProps(this.props);
+      if (target.tagName === 'A' && target.hasAttribute('data-consoleos-external-route')) {
+        e.preventDefault();
+        e.stopPropagation();
+        emitter && emitter.emit(`${name||id}:external-router`, target.href);
+      }
+    }
+
     public componentDidCatch() {/*Empty*/}
 
     public componentDidMount() {
       const props = getProps(this.props);
-      if (!props) {
-        return;
-      }
+      if (!props) { return; }
       const { emitter } = props;
-      bindEvents(emitter)
+      bindEvents(emitter);
+
+      if(isOsContext()) {
+        document.body.addEventListener('click',this.handleExternalLinks, true);
+      }
     }
 
     public componentWillUnmount() {
       const { emitter } = getProps(this.props);
-      unbindEvents(emitter)
+      unbindEvents(emitter);
+
+      if(isOsContext()) {
+        document.body.removeEventListener('click',this.handleExternalLinks, true);
+      }
     }
 
     public render () {
@@ -116,7 +144,6 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
         reactLifecycles.unmount,
       ],
       update: [
-        // @ts-ignore
         reactLifecycles.update,
       ],
       exposedModule: exposeModuleMap
