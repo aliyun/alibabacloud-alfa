@@ -74,7 +74,7 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
       if (target.tagName === 'A' && target.hasAttribute('data-consoleos-external-router')) {
         e.preventDefault();
         e.stopPropagation();
-        emitter && emitter.emit(`${name||id}:external-router`, target.href);
+        emitter && emitter.emit(`${name||id}:external-router`, target.getAttribute('href'));
       }
     }
 
