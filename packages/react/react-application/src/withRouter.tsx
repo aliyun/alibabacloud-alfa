@@ -32,7 +32,7 @@ export const withRouter = (App: React.Component<{}, IProps>) => {
       };
 
       const externalRouterHandler = (href: string) => {
-        externalRouterHandler ? externalRouterHandler(href)  : history?.push?.(href);
+        props.externalRouterHandler ? props.externalRouterHandler(href)  : history?.push?.(href);
       }
 
       eventBus.on(`${id}:history-change`, historyChangeHandle);

@@ -71,7 +71,7 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
     private handleExternalLinks = (e: Event) => {
       const target = e.target as HTMLAnchorElement;
       const { emitter, id, name } = getProps(this.props);
-      if (target.tagName === 'A' && target.hasAttribute('data-consoleos-external-route')) {
+      if (target.tagName === 'A' && target.hasAttribute('data-consoleos-external-router')) {
         e.preventDefault();
         e.stopPropagation();
         emitter && emitter.emit(`${name||id}:external-router`, target.href);
