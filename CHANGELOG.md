@@ -1,3 +1,20 @@
+# 1.2.0
+## Feature
+针对宿主提供了 React 针对默认路由处理的同步逻辑
+
+import Application,  { withDefaultRouterHandler } from  '@alicloud/console-os-react-app';
+
+
+const App = withDefaultRouterHandler(Application);
+
+<App 
+  history={history} // react router 的 history
+/>
+并且在子应用中提供了 data-alfa-external-router 的属性来作为不属于子应用中链接，通知宿主做跳转
+
+<a data-alfa-external-router  href="/xxx"/> 
+
+
 # 1.0.21
 ## Feature
 ### Alfa React
