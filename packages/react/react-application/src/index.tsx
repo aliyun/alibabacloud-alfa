@@ -1,10 +1,10 @@
 import React, { HTMLAttributes } from 'react';
-import { OSApplication, createMicroApp, mount, load, unmount, destroy } from '@alicloud/console-os-kernal'
+import { OSApplication, createMicroApp, mount, load, unmount } from '@alicloud/console-os-kernal'
 import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
 
-interface IProps<T = any> extends HTMLAttributes<Element> {
+export interface IProps<T = any> extends HTMLAttributes<Element> {
   /**
    * App unique id
    */
@@ -44,19 +44,19 @@ interface IProps<T = any> extends HTMLAttributes<Element> {
    */
   appDidMount?: () => void;
 
-  disableBodyTag: boolean;
+  disableBodyTag?: boolean;
 
   /**
    * loading status for consoleos app
    */
-  loading: boolean | React.ReactChild;
+  loading?: boolean | React.ReactChild;
 
-  appProps: T;
+  appProps?: T;
 
   /**
    * 关闭错误提示
    */
-  error: boolean | React.ReactChild;
+  error?: boolean | React.ReactChild;
 }
 
 interface IState {
@@ -257,5 +257,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 }
 
 export default Application;
+
+export { withRouter as withDefaultRouterHandler } from './withRouter';
 
 export { start, createEventBus, prefetch, loadExposedModule } from '@alicloud/console-os-kernal';
