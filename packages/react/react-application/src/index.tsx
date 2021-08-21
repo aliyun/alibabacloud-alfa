@@ -44,19 +44,19 @@ export interface IProps<T = any> extends HTMLAttributes<Element> {
    */
   appDidMount?: () => void;
 
-  disableBodyTag: boolean;
+  disableBodyTag?: boolean;
 
   /**
    * loading status for consoleos app
    */
-  loading: boolean | React.ReactChild;
+  loading?: boolean | React.ReactChild;
 
-  appProps: T;
+  appProps?: T;
 
   /**
    * 关闭错误提示
    */
-  error: boolean | React.ReactChild;
+  error?: boolean | React.ReactChild;
 }
 
 interface IState {
