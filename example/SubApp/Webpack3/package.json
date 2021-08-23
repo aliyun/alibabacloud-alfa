@@ -1,11 +1,11 @@
 {
   "name": "@alicloud/demo-console-os-webpack-3",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "@alicloud/console-os-react-portal": "^1.2.0"
+    "@alicloud/console-os-react-portal": "^1.2.2"
   },
   "devDependencies": {
     "@alicloud/console-toolkit-plugin-os": "^1.2.0",
