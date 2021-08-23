@@ -20,7 +20,7 @@ interface IProps extends React.Attributes {
   [key: string]: any;
 }
 
-const getPathNameWithQueryAndSearch = () => {
+export const getPathNameWithQueryAndSearch = () => {
   return location.href.replace(/^.*\/\/[^\/]+/, '');
 }
 

@@ -34,7 +34,10 @@ export const mount = wrapSharing(_mount, 'mount');
 export const unmount = wrapSharing(_unmount, 'unmount');
 export const createMicroApp = wrapSharing(_createMicroApp, 'createMicroApp');
 export const prefetch = wrapSharing(_prefetch, 'prefetch');
+
 // Export Type
-export { SandBoxOption, AppInfo } from './type';
+import { SandBoxOption as ISandBoxOption, AppInfo as IAppInfo } from './type';
 
 export type OSApplication = Application;
+export type SandBoxOption = ISandBoxOption;
+export type AppInfo = IAppInfo;

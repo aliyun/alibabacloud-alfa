@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import SingleSpaReact from 'single-spa-react';
 import { EventEmitter } from '@alicloud/console-os-events'
 
-import { isOsContext } from './utils';
+import { getPathNameWithQueryAndSearch, isOsContext } from './utils';
 import { Context } from './Context';
 import { IContextProps } from './types';
 import ErrorBoundary, { Logger } from './ErrorBoundary';
@@ -60,7 +60,7 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
     constructor(props) {
       super(props);
 
-      if (props.__enableInitialHistoryAction && props?.appProps?.path) {
+      if (props.__enableInitialHistoryAction && props?.appProps?.path && props?.appProps?.path !== getPathNameWithQueryAndSearch()) {
         window.history.replaceState(null, null, props?.appProps?.path);
       }
     }
