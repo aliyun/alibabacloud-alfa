@@ -13,9 +13,11 @@ import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
 import { getEnv, error, info, exit, debug, done } from "@alicloud/console-toolkit-shared-utils";
 
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
+  if (process.env.IS_SSR === 'true') {
+    return;
+  }
   const { jsonpCall, injectVars } = options;
   options.id = normalizeId(options.name || options.id);
-
   config
     .output
     .library(options.id)

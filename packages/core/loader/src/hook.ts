@@ -102,7 +102,10 @@ export const hook = (id: string, resolver: BundleResolver) => {
  * code will be wrapped as follow:
  *  window.__CONSOLE_OS_GLOBAL_HOOK__(id, function(require, module, exports, { dependencies }){ / wepback build umd code /})
  */
-if (window.__CONSOLE_OS_GLOBAL_HOOK__) {
+if (
+  window.__CONSOLE_OS_GLOBAL_HOOK__ &&
+  typeof document !== undefined // only cache pre hooks in browser environment
+) {
   preHook = window.__CONSOLE_OS_GLOBAL_HOOK__
 }
 
