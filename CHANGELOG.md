@@ -1,3 +1,9 @@
+# 1.2.3
+## Feature
+### Loader 
+
+ * 新增对 SSR 环境的适配
+
 # 1.2.2
 ## Fix
 ### Kernel 
