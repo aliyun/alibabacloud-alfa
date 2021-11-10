@@ -7,11 +7,11 @@ const cachedConfig: Record<string, WidgetCWSConfig> = {};
 
 export const getWidgetConfigById = async (option: AlfaFactoryOption) => {
   const env = ENV[option.env || getConsoleEnv()];
-  console.log(env.configUrl)
+
   if (!cachedConfig[option.name]) {
-    const resp = await axios.get<WidgetCWSConfig>(template(env.configUrl)({id: option.name}),);
+    const resp = await axios.get<WidgetCWSConfig>(template(env.configUrl)({ id: option.name }));
     cachedConfig[option.name] = resp.data;
   }
 
   return cachedConfig[option.name];
-}
+};

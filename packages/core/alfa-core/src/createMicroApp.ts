@@ -1,10 +1,9 @@
 import { createMicroApp as createConsoleOSMicroApp } from '@alicloud/console-os-kernal';
-import { getManifest, getURL } from './utils';
+import { getManifestFromConfig, getURL } from './utils';
 import { IAppConfig, IOptions } from './types';
 
-export const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions<T> = {}) => {
-
-  const manifest = getManifest(appConfig);
+export const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions = {}) => {
+  const manifest = getManifestFromConfig(appConfig);
   const url = getURL(appConfig);
 
   if (!manifest && !url) {
@@ -29,8 +28,8 @@ export const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions<T>
     // @ts-ignore
     appDidUnmount: options.afterUnmount,
     // @ts-ignore
-    appWillUpdate: options.beforeUpdate
+    appWillUpdate: options.beforeUpdate,
   }, {
-    sandbox: options.sandbox
+    sandbox: options.sandbox,
   });
-}
+};

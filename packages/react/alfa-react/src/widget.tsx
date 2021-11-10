@@ -1,22 +1,28 @@
 import React, { lazy, Suspense } from 'react';
-import { loadBundle } from '@alicloud/console-os-loader'
+import { loadBundle } from '@alicloud/console-os-loader';
 
 import { WidgetFactoryOption, WidgetCWSConfig } from './types';
+import { createAlfaApp } from './app';
 import { getWidgetVersionById, getWidgetDeps, getWidgetConfigById, eventEmitter } from './widget/index';
 import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
 
 export function createAlfaWidget<T>(option: WidgetFactoryOption) {
+  if (!option.name.match(/@ali\/widget-/)) {
+    // TODO load style
+    return createAlfaApp<T>(option);
+  }
+
   const AlfaWidget = lazy(async () => {
-    let url = option.url;
+    let { url } = option;
 
     let config: WidgetCWSConfig = {
       links: {},
       features: {},
       locales: {},
-      conf: {}
-    }
+      conf: {},
+    };
 
     if (!url) {
       const { version, entryUrl } = await getWidgetVersionById(option);
@@ -31,23 +37,23 @@ export function createAlfaWidget<T>(option: WidgetFactoryOption) {
       url: (option.url || url).replace('index.js', option?.alfaLoader ? 'index.alfa.js' : 'index.js'),
       deps: {
         ...deps,
-        ...option.dependencies
+        ...option.dependencies,
       },
       xmlrequest: !option.alfaLoader,
-      context:{
+      context: {
         window,
         location,
         history,
-        document
-      }
+        document,
+      },
     });
   });
 
   return (props: T) => (
-    <Suspense fallback={<Loading loading={option.loading}/>}>
+    <Suspense fallback={<Loading loading={option.loading} />}>
       <ErrorBoundary {...props}>
         <AlfaWidget eventEmitter={eventEmitter} {...props} />
       </ErrorBoundary>
     </Suspense>
-  )
+  );
 }

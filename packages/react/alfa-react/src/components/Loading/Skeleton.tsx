@@ -47,23 +47,23 @@ function getParagraphBasicProps(hasTitle: boolean): SkeletonParagraphProps {
 }
 
 class Skeleton extends React.Component<SkeletonProps, any> {
-  public static defaultProps: Partial<SkeletonProps> = {
+  static defaultProps: Partial<SkeletonProps> = {
     title: true,
     paragraph: true,
   };
 
-  public componentDidMount() {
+  componentDidMount() {
     const id = '-os-skeleton-style';
     if (document.getElementById('-os-skeleton-style')) {
       return;
     }
     const styleSheet = document.createElement('style');
-    styleSheet.innerHTML= style;
+    styleSheet.innerHTML = style;
     styleSheet.id = id;
     document.head.appendChild(styleSheet);
   }
 
-  public renderSkeleton = () => {
+  renderSkeleton = () => {
     const {
       prefixCls = '-os-skeleton',
       loading,
@@ -126,7 +126,7 @@ class Skeleton extends React.Component<SkeletonProps, any> {
     return children;
   };
 
-  public render() {
+  render() {
     return this.renderSkeleton();
   }
 }

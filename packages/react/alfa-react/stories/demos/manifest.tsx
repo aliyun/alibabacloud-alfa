@@ -9,8 +9,8 @@ const AlfaApp = createAlfaApp<{}>({
 
 const Demo: React.FC<{}> = () => {
   return (
-    <AlfaApp  />
-  )
-}
+    <AlfaApp />
+  );
+};
 
 export default Demo;

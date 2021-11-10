@@ -13,6 +13,10 @@ export interface IProps<T = any> extends HTMLAttributes<Element>, IAppConfig, IO
 
   loading?: boolean | React.ReactChild;
   consoleConfig?: any;
+  i18nMessages?: any;
+
+  env?: string;
+  dependencies?: any;
 }
 
 export default class MicroAppBase<T> extends React.Component<Partial<IProps<T>>> {

@@ -6,6 +6,8 @@
 !.gitattributes
 !.aoneci.yml
 !.editorconfig
+package-lock.json
+.npmrc
 
 # Logs
 logs

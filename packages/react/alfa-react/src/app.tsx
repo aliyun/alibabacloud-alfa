@@ -1,15 +1,15 @@
 import React, { Suspense, lazy, useRef, useEffect, useState } from 'react';
 
-import { getManifest, createMicroApp } from '@alicloud/alfa-core'
+import { getManifest, getLocale, createMicroApp, AlfaFactoryOption, IWin } from '@alicloud/alfa-core';
 import { IProps } from './base';
 import Loading from './components/Loading';
-import { AlfaFactoryOption, MicroApplication } from './types';
+import { MicroApplication } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
-import { getConsoleConfig } from './app/getConsoleConfig';
+import { getConsoleConfig } from './utils/getConsoleConfig';
 import { normalizeName } from './utils';
 
 const getProps = (props: Partial<IProps>) => {
-  const parcelProps = {...props};
+  const parcelProps = { ...props };
 
   delete parcelProps.manifest;
   delete parcelProps.sandbox;
@@ -17,42 +17,40 @@ const getProps = (props: Partial<IProps>) => {
   delete parcelProps.entry;
   delete parcelProps.container;
   delete parcelProps.logger;
-  // @ts-ignore
   delete parcelProps.env;
-  // @ts-ignore
   delete parcelProps.dependencies;
 
   return parcelProps;
-}
+};
 
 const Application: React.FC<IProps> = (props: IProps) => {
-  const { sandbox, name, loading, style, className, consoleConfig } = props;
+  const { sandbox, name, loading, style, className, consoleConfig, i18nMessages } = props;
   const [mounted, setMounted] = useState(false);
   const [app, setApp] = useState<MicroApplication | null>(null);
-  const appRef = useRef(null);
+  const appRef = useRef<HTMLElement | null | undefined>(null);
 
   useEffect(() => {
     (async () => {
-      const app = await createMicroApp({
+      const App = await createMicroApp({
         ...props,
         container: appRef.current,
-        props: getProps(props)
+        props: getProps(props),
       }, { sandbox });
 
-      if (app.context && app.context.baseFrame) {
-        // @ts-ignore
-        app.context.baseFrame.contentWindow.ALIYUN_CONSOLE_CONFIG = consoleConfig;
+      if (App.context && App.context.baseFrame && App.context.baseFrame.contentWindow) {
+        (App.context.baseFrame.contentWindow as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
+        (App.context.baseFrame.contentWindow as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
       }
 
-      await app.load();
-  
-      // @ts-ignore
-      await app.mount(appRef.current, {
-        customProps: getProps(props)
+      await App.load();
+
+      if (!appRef.current) return;
+      await App.mount(appRef.current, {
+        customProps: getProps(props),
       });
 
       setMounted(true);
-      setApp(app);
+      setApp(App);
     })();
 
     return () => {
@@ -64,19 +62,17 @@ const Application: React.FC<IProps> = (props: IProps) => {
     app.update(getProps(props));
   }
 
-  return (<>
-    { !mounted && <Loading loading={loading}/> }
-    {
-      (sandbox && sandbox !== true && sandbox.disableFakeBody) 
-      ? React.createElement(name, { style, className, ref: appRef, dataId: name } ) 
-      : React.createElement(
-        name,
-        { children: React.createElement('div', { ref: appRef }) }
-      )
-    }
-  </>
-  )
-}
+  return (
+    <>
+      { !mounted && <Loading loading={loading} /> }
+      {
+        (sandbox && sandbox !== true && sandbox.disableFakeBody)
+          ? React.createElement(name, { style, className, ref: appRef, dataId: name })
+          : React.createElement(name, {}, React.createElement('div', { ref: appRef }))
+      }
+    </>
+  );
+};
 
 
 export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
@@ -88,28 +84,34 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
       resolvedManifest = await getManifest(option);
     }
 
-    // @ts-ignore
-    let consoleConfig = window.ALIYUN_CONSOLE_CONFIG || {};
+    let consoleConfig = (window as IWin).ALIYUN_CONSOLE_CONFIG || {};
     if (option.dynamicConfig) {
       consoleConfig = await getConsoleConfig(option, consoleConfig);
     }
 
-    const AlfaApp: React.FC<IProps> = (props: IProps) => {
+    const messages = await getLocale(option);
+    const i18nMessages = {
+      ...(window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE,
+      ...messages,
+    };
+
+    const App: React.FC<IProps> = (props: IProps) => {
       return (
         <Application
           manifest={resolvedManifest}
           {...props}
           name={normalizeName(name)}
           consoleConfig={consoleConfig}
+          i18nMessages={i18nMessages}
         />
-      )
-    }
-    return { default: AlfaApp }
+      );
+    };
+    return { default: App };
   });
 
   return (props: T) => (
     <ErrorBoundary {...props}>
-      <Suspense fallback={<Loading loading={loading}/>}>
+      <Suspense fallback={<Loading loading={loading} />}>
         <AlfaApp
           {...option}
           deps={option.dependencies || {}}
@@ -117,7 +119,7 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
         />
       </Suspense>
     </ErrorBoundary>
-  )
+  );
 }
 
 export { AlfaFactoryOption } from './types';

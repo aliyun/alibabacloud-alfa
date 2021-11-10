@@ -11,21 +11,24 @@
     "pub:canary": "lerna publish --exact --npm-tag=canary --canary=canary"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.0",
     "@types/chai": "^4.1.7",
     "@types/jest": "^23.3.13",
-    "@typescript-eslint/eslint-plugin": "^1.11.0",
-    "@typescript-eslint/parser": "^1.11.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-react-hooks": "^1.1.0-alpha.1",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
+    "eslint-config-ali": "^12.2.2",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^1.1.2",
     "jest": "24.7.1",
     "lerna": "^3.6.0",
     "nyc": "^13.1.0",
     "ts-jest": "^23.10.5",
     "tslint": "^5.8.0",
-    "typescript": "^3.0.3"
+    "typescript": "^3.9.10"
   },
   "dependencies": {
     "@types/webpack": "^4.41.0",
