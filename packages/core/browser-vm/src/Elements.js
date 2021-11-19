@@ -6,6 +6,7 @@
  */
 
 import injectScriptCallBack, { getJsonCallback } from './utils/injectScriptCallBack';
+import { isSSR } from './utils/isSSR';
 
 const makeElInjector = (originMethod) => function( el, ...args ){
 
@@ -52,7 +53,7 @@ const makeElInjector = (originMethod) => function( el, ...args ){
   }
 }
 
-if( typeof window.Element === 'function' ){
+if(!isSSR() && typeof window.Element === 'function' ){
   const mountElementMethods = [ 'appendChild', 'insertBefore', 'append' ];
 
   for ( const method of mountElementMethods ) {

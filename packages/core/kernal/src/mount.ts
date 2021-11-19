@@ -1,4 +1,4 @@
-import { start as startSpa, toggleNavigationCalling, getAppNames } from 'os-single-spa';
+import { start as startSpa, getAppNames } from 'single-spa';
 import { AppInfo, AppOption, GlobalOption } from './type';
 import { createApplication } from './application/createApp';
 import { createCachePool } from './application/AppCachePool';
@@ -116,7 +116,7 @@ export const start = (options?: GlobalOption) => {
   isStart = true;
   globalOptions = options || {};
   // @ts-ignore
-  toggleNavigationCalling(true);
+  // toggleNavigationCalling(true);
   startSpa();
   createCachePool({});
   ManifestCachePool.createCachePool();

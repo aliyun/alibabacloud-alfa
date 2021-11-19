@@ -5,7 +5,8 @@
  * @createAt 2019085
  */
 
-import { injectHTMLScriptElement } from './utils/HTMLScriptElement'
+import { injectHTMLScriptElement } from './utils/HTMLScriptElement';
+
 class Document{
   constructor( options = {}, context, frame ){
 

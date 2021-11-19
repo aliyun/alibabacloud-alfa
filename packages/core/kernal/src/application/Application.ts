@@ -1,6 +1,6 @@
 import { removeContext, VMContext } from '@alicloud/console-os-browser-vm';
 
-import { Parcel, mountRootParcel } from 'os-single-spa';
+import { Parcel, mountRootParcel } from 'single-spa';
 import { serializeData, flattenFnArray } from '../misc/util';
 import { AppInfo, SandBoxOption } from '../type';
 import { createEventBus } from './createEventBus';
@@ -94,8 +94,6 @@ export class Application {
 
     const parcel = mountRootParcel({
       name: this.appInfo.name,
-      customProps:{},
-      domElement: undefined,
       bootstrap: flattenFnArray(this.remoteApp.bootstrap, 'bootstrap'),
       mount: flattenFnArray(this.remoteApp.mount, 'mount'),
       unmount: flattenFnArray(this.remoteApp.unmount, 'unmount'),
