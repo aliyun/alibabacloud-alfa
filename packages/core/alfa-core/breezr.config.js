@@ -3,6 +3,6 @@ module.exports = {
     ['@alicloud/console-toolkit-preset-wind-component', {
       moduleName: 'aliAlfa',
       useTypescript: true,
-    }]
-  ]
-}
+    }],
+  ],
+};

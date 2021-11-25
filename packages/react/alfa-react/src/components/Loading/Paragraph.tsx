@@ -24,7 +24,7 @@ class Paragraph extends React.Component<SkeletonParagraphProps, {}> {
     return undefined;
   }
 
-  public render() {
+  render() {
     const { prefixCls, className, style, rows } = this.props;
     const rowList = [...Array(rows)].map((_, index) => (
       // eslint-disable-next-line react/no-array-index-key

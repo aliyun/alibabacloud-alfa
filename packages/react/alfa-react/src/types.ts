@@ -1,5 +1,5 @@
 import React from 'React';
-import { createMicroApp, IOptions } from '@alicloud/alfa-core'
+import { createMicroApp, IOptions } from '@alicloud/alfa-core';
 
 export interface AlfaVersion {
   entry: string;
@@ -29,6 +29,9 @@ type OmitKeys = 'manifest';
 export interface WidgetFactoryOption extends Omit<AlfaFactoryOption, OmitKeys> {
   runtimeVersion?: string;
   alfaLoader?: boolean;
+
+  // 加载 XConsole 样式
+  theme?: string;
 }
 
 export interface AlfaEnvConfigDescriptor {
@@ -73,7 +76,7 @@ export interface WidgetCWSConfig {
     [locale: string]: {
       messages: {
         [key: string]: string;
-      }
+      };
     };
   };
 }

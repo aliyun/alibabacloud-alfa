@@ -1,7 +1,7 @@
 import React from 'react';
 import Skeleton from './Skeleton';
 
-export default function getLoading({loading}: {loading?: boolean | React.ReactChild}) {
+export default function getLoading({ loading }: {loading?: boolean | React.ReactChild}) {
   if (loading === false) {
     return null;
   } else if (loading && React.isValidElement(loading)) {

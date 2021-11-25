@@ -1,7 +1,7 @@
 import axios from 'axios';
 import template from 'lodash/template';
 
-import { EnvEnum, WidgetFactoryOption, WidgetReleaseConfig } from '../types';
+import { WidgetFactoryOption, WidgetReleaseConfig } from '../types';
 import { ENV, getConsoleEnv } from './env';
 
 export let cachedRelease: Record<string, any> | null = null;
@@ -9,21 +9,21 @@ export let cachedRelease: Record<string, any> | null = null;
 const WIDGET_ENTRY_URL = 'https://g.alicdn.com/${id}/${version}/index.js';
 
 const normalizeEntryUrl = (id: string, version: string, resourceUrl: string) => {
-  const gitRepoId = id.replace('@ali/', '').replace('widget-', 'widget/')
-  return template(resourceUrl)({id: gitRepoId, version})
-}
+  const gitRepoId = id.replace('@ali/', '').replace('widget-', 'widget/');
+  return template(resourceUrl)({ id: gitRepoId, version });
+};
 
 export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
   const env = ENV[option.env || getConsoleEnv()];
   if (!option.version) {
-    throw new Error('No Version for Widget')
+    throw new Error('No Version for Widget');
   }
 
   if (!option.version.endsWith('.x')) {
     return {
       version: option.version,
-      entryUrl: normalizeEntryUrl(option.name, option.version, env.resourceUrl || WIDGET_ENTRY_URL)
-    }
+      entryUrl: normalizeEntryUrl(option.name, option.version, env.resourceUrl || WIDGET_ENTRY_URL),
+    };
   }
 
   if (!cachedRelease) {
@@ -35,6 +35,6 @@ export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
 
   return {
     version,
-    entryUrl: normalizeEntryUrl(option.name, version, env.resourceUrl || WIDGET_ENTRY_URL)
-  }
-}
+    entryUrl: normalizeEntryUrl(option.name, version, env.resourceUrl || WIDGET_ENTRY_URL),
+  };
+};

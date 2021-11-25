@@ -1,4 +1,4 @@
-import { AlfaEnvConfig, EnvEnum } from '../types'
+import { AlfaEnvConfig, EnvEnum } from '../types';
 
 const cdnReleaseUrl = 'https://cws.alicdn.com/release.json';
 const cdnPrepubUrl = 'https://cws.aliyun-inc.com/release.json';
@@ -11,29 +11,29 @@ export const ENV: AlfaEnvConfig = {
   local: {
     releaseUrl: process.env.ALFA_RELEASE_URL || cdnPrepubUrl,
     configUrl: cdnPrepubConfigUrl,
-    resourceUrl: resourceDailyUrl
+    resourceUrl: resourceDailyUrl,
   },
   daily: {
     releaseUrl: cdnPrepubUrl,
     configUrl: cdnPrepubConfigUrl,
-    resourceUrl: resourceDailyUrl
+    resourceUrl: resourceDailyUrl,
   },
   pre: {
     releaseUrl: cdnPrepubUrl,
     configUrl: cdnPrepubConfigUrl,
-    resourceUrl: resourceDailyUrl
+    resourceUrl: resourceDailyUrl,
   },
   prod: {
     releaseUrl: cdnReleaseUrl,
     configUrl: cdnReleaseConfigUrl,
-    resourceUrl: resourceProdUrl
-  }
-}
+    resourceUrl: resourceProdUrl,
+  },
+};
 
 export const getConsoleEnv = (): EnvEnum => {
   if (process.env.NODE_ENV === 'development') {
     return 'local';
   }
   // @ts-ignore
-  return window?.ALIYUN_CONSOLE_CONFIG?.fEnv || 'prod'
-}
+  return window?.ALIYUN_CONSOLE_CONFIG?.fEnv || 'prod';
+};

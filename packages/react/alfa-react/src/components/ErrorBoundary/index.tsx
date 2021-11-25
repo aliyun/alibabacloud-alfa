@@ -1,6 +1,6 @@
 import React, { ErrorInfo } from 'react';
 import isFunction from 'lodash/isFunction';
-import ErrorPanel from './ErrorPanel'
+import ErrorPanel from './ErrorPanel';
 
 export interface Logger {
   error: (...args: any[]) => void;
@@ -17,16 +17,16 @@ interface State {
 }
 
 class ErrorBoundary extends React.Component<IProp, State> {
-  public constructor(props: IProp) {
+  constructor(props: IProp) {
     super(props);
     this.state = {
       hasError: false,
       // @ts-ignore
-      error: null
+      error: null,
     };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Display fallback UI
     this.setState({ hasError: true, error });
     // You can also log the error to an error reporting service
@@ -38,10 +38,10 @@ class ErrorBoundary extends React.Component<IProp, State> {
     }
     console.error(error);
 
-    this.props.appDidCatch && this.props.appDidCatch(error)
+    this.props.appDidCatch && this.props.appDidCatch(error);
   }
 
-  public render() {
+  render() {
     const { error } = this.state;
     if (this.state.hasError) {
       // You can render any custom fallback UI
