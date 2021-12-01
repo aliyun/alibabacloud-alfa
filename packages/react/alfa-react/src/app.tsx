@@ -1,9 +1,9 @@
 import React, { Suspense, lazy, useRef, useEffect, useState } from 'react';
 
-import { getManifest, getLocale, createMicroApp, AlfaFactoryOption, IWin } from '@alicloud/alfa-core';
+import { getManifest, getLocale, createMicroApp, IWin } from '@alicloud/alfa-core';
 import { IProps } from './base';
 import Loading from './components/Loading';
-import { MicroApplication } from './types';
+import { MicroApplication, AlfaFactoryOption } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
 import { getConsoleConfig } from './utils/getConsoleConfig';
 import { normalizeName } from './utils';

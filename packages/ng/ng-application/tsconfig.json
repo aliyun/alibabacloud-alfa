@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "paths": {

@@ -19,7 +19,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "@ali/home-widget-runtime": "^1.1.6",
     "@alicloud/console-toolkit-cli": "^1.0.0",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
     "@types/chai": "^4.1.7",

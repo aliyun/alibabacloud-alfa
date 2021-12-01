@@ -34,10 +34,11 @@ export const mount = wrapSharing(_mount, 'mount');
 export const unmount = wrapSharing(_unmount, 'unmount');
 export const createMicroApp = wrapSharing(_createMicroApp, 'createMicroApp');
 export const prefetch = wrapSharing(_prefetch, 'prefetch');
-
+export { default as createIsomorphicMicroApp } from './server';
 // Export Type
 import { SandBoxOption as ISandBoxOption, AppInfo as IAppInfo } from './type';
 
 export type OSApplication = Application;
 export type SandBoxOption = ISandBoxOption;
 export type AppInfo = IAppInfo;
+export type { IIsomorphicEnvironment } from './type';

@@ -1,4 +1,4 @@
-import { AppInfo } from '../type';
+import { AppInfo, IIsomorphicEnvironment } from '../type';
 
 /**
  * Application
@@ -21,9 +21,14 @@ export class Application {
   /**
    * 
    */
-  public load() {
+  public load(env: IIsomorphicEnvironment) {
+    this.remoteApp = env.getBundle(this.appInfo.manifest);
     if (!this.remoteApp) {
-      // this.remoteApp = await createAppLoader(this.appInfo, this.context);
+      /**
+       * 这里对于 Server App 来说通过 fetchBundle 通知服务实现方异步的去拉取 bundle
+       */
+      env.fetchBundle(this.appInfo.manifest);
+      return null;
     }
     this.inited = true;
     this.remoteApp.bootstrap();
@@ -34,7 +39,9 @@ export class Application {
    * public api for mount logic for app
    */
   public mount({ customProps }: { customProps?: any } = {}) {
-    this.remoteApp.bootstrap();
+    if (!this.inited) {
+      return null;
+    }
     return this.remoteApp.mount(customProps);
   }
 
@@ -42,12 +49,15 @@ export class Application {
    * public api for unmount logic for app, it will unmount the node of the app
    * but no destroy the sandbox for app
    */
-  public async unmount() {
+  public unmount() {
+    if (!this.remoteApp) {
+      return null;
+    }
     this.remoteApp.unmount();
   }
 
   public getExposedModule<T>(moduleName: string) {
-    if (!this.remoteApp.exposedModule) {
+    if (!this.remoteApp?.exposedModule) {
       return undefined;
     }
 

@@ -1,6 +1,7 @@
 import React, { HTMLAttributes } from 'react';
-import { OSApplication, createMicroApp, mount, load, unmount } from '@alicloud/console-os-kernal'
-import { SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
+import { OSApplication, createMicroApp, mount, load, unmount, createIsomorphicMicroApp } from '@alicloud/console-os-kernal'
+import { IIsomorphicEnvironment, SandBoxOption } from '@alicloud/console-os-kernal/lib/type';
+import EnvironmentContext from './Context';
 import Skeleton from './Skeleton';
 import ErrorPanel from './ErrorPanel';
 
@@ -83,7 +84,6 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
   private el?: HTMLElement;
   private nextThingToDo?: Promise<any>;
-  private createdDomElement?: HTMLElement;
   private app?: undefined | OSApplication;
 
   public constructor(props: IProps) {
@@ -108,14 +108,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
         await this.props.appWillMount();
       }
 
-      const {
-        jsUrl: url, id, manifest, 
-        publicPath, deps, sandbox
-      } = this.props;
-
-      if (!id) {
-        throw new Error('You should give a id for OS Application');
-      }
+      const { sandbox } = this.props;
 
       let domElement;
       if (this.el) {
@@ -125,16 +118,8 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
       }
 
       const appInfo = {
-        url,
-        id,
-        name: id,
-        manifest,
         dom: domElement,
-        deps,
-        publicPath,
-        customProps: {
-          ...getParcelProps(this.props)
-        }
+        ...this.getAppOption()
       };
 
       this.app = await createMicroApp(appInfo, { sandbox })
@@ -174,10 +159,6 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
         return unmount(this.app);
       }
     })
-
-    if (this.createdDomElement && this.createdDomElement.parentNode) {
-      this.createdDomElement.parentNode.removeChild(this.createdDomElement)
-    }
 
     this.unmounted = true
   }
@@ -228,6 +209,38 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     return this.state.error && <ErrorPanel error={this.state.error} />;
   }
 
+  private getAppOption() {
+    const {
+      jsUrl: url, id, manifest, 
+      publicPath, deps
+    } = this.props;
+
+    if (!id) {
+      throw new Error('You should give a id for OS Application');
+    }
+
+    return {
+      url,
+      id,
+      name: id,
+      manifest,
+      deps,
+      publicPath,
+      customProps: {
+        ...getParcelProps(this.props)
+      }
+    };
+  }
+
+  private renderServerApp(env: Partial<IIsomorphicEnvironment>) {
+    if (env.fetchBundle) {
+      return '';
+    }
+    const app = createIsomorphicMicroApp(this.getAppOption());
+    app.load(env as IIsomorphicEnvironment);
+    return app.mount(getParcelProps(this.props));
+  }
+
   public render() {
     const { id = '', style = {}, className = '', disableBodyTag, sandbox } = this.props;
 
@@ -237,6 +250,15 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
 
     const Wrapper = React.Fragment ? React.Fragment : 'div';
 
+    // render isomorphic micro app in server env
+    if (typeof document === 'undefined') {
+      return <Wrapper>
+          <EnvironmentContext.Consumer>
+            {(env) => this.renderServerApp(env)}
+          </EnvironmentContext.Consumer>
+        </Wrapper>
+    }
+  
     return (
       <Wrapper>
         {
@@ -261,3 +283,5 @@ export default Application;
 export { withRouter as withDefaultRouterHandler } from './withRouter';
 
 export { start, createEventBus, prefetch, loadExposedModule } from '@alicloud/console-os-kernal';
+
+export { default as EnvironmentContext } from './Context';
