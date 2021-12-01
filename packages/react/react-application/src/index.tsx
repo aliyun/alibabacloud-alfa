@@ -233,12 +233,12 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
   }
 
   private renderServerApp(env: Partial<IIsomorphicEnvironment>) {
-    if (env.fetchBundle) {
+    if (!env.fetchBundle) {
       return '';
     }
     const app = createIsomorphicMicroApp(this.getAppOption());
     app.load(env as IIsomorphicEnvironment);
-    return app.mount(getParcelProps(this.props));
+    return <div dangerouslySetInnerHTML={app.mount(getParcelProps(this.props))} />
   }
 
   public render() {
