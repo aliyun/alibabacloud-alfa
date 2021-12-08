@@ -20,24 +20,24 @@ const containerBackground = '#fcebea';
 const containerStyle = {
   background: containerBackground,
   padding,
-}
+};
 
 const commonErrorStyle = {
   lineHeight: '22px',
   color: '#d93026',
-  fontSize: 14
-}
+  fontSize: 14,
+};
 
 class ErrorBoundary extends React.Component<IProp, State> {
-  public constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       hasError: false,
-      error: null
+      error: null,
     };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Display fallback UI
     this.setState({ hasError: true, error });
     // You can also log the error to an error reporting service
@@ -50,21 +50,21 @@ class ErrorBoundary extends React.Component<IProp, State> {
 
     console.error(error);
 
-    this.props.appDidCatch && this.props.appDidCatch(error)
+    this.props.appDidCatch && this.props.appDidCatch(error);
   }
 
-  public render() {
+  render() {
     const { error } = this.state;
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
-        <div style={{padding}}>
-          { 
+        <div style={{ padding }}>
+          {
             process.env.NODE_ENV === 'development'
               ? (
                 <div style={containerStyle}>
                   <div style={commonErrorStyle}>{error.message}</div>
-                  <pre style={{overflow: 'scroll'}}>{error.stack}</pre>
+                  <pre style={{ overflow: 'scroll' }}>{error.stack}</pre>
                 </div>
               )
               : null

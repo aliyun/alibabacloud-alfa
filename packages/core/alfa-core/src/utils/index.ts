@@ -19,7 +19,7 @@ export const getAlfaEnv = () => {
  * @returns
  */
 export const getAlfaLocale = (): LOCALE => {
-  const locale = (window as IWin)?.ALIYUN_CONSOLE_CONFIG?.LOCALE.replace('-', '_');
+  const locale = ((window as IWin)?.ALIYUN_CONSOLE_CONFIG?.LOCALE || '').replace('-', '_');
 
   if (['zh_CN', 'en_US', 'ja_JP', 'zh_TW', 'zh-HK'].includes(locale)) return locale as LOCALE;
   return 'en_US';
@@ -78,12 +78,16 @@ export const getConfigUrl = (name?: string, env?: string): string | undefined =>
 };
 
 
-export const resolveReleaseUrl = (option: AlfaFactoryOption) => {
-  return getReleaseUrl(option.name, option.env || getAlfaEnv());
+export const resolveReleaseUrl = (config: IAppConfig) => {
+  const { name, env } = config;
+
+  return getReleaseUrl(name, env || getAlfaEnv());
 };
 
-export const resolveConfigUrl = (option: AlfaFactoryOption) => {
-  return getConfigUrl(option.name, option.env || getAlfaEnv());
+export const resolveConfigUrl = (config: IAppConfig) => {
+  const { name, env } = config;
+
+  return getConfigUrl(name, env || getAlfaEnv());
 };
 
 export const getURL = (appConfig: IAppConfig) => {

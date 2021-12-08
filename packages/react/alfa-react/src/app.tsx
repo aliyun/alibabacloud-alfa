@@ -1,9 +1,9 @@
 import React, { Suspense, lazy, useRef, useEffect, useState } from 'react';
 
-import { getManifest, getLocale, createMicroApp, AlfaFactoryOption, IWin } from '@alicloud/alfa-core';
-import { IProps } from './base';
+import { getManifest, getLocale, createMicroApp, IWin, IAppConfig } from '@alicloud/alfa-core';
+import { IProps } from './types/base';
 import Loading from './components/Loading';
-import { MicroApplication } from './types';
+import { MicroApplication, AlfaFactoryOption } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
 import { getConsoleConfig } from './utils/getConsoleConfig';
 import { normalizeName } from './utils';
@@ -37,9 +37,9 @@ const Application: React.FC<IProps> = (props: IProps) => {
         props: getProps(props),
       }, { sandbox });
 
-      if (App.context && App.context.baseFrame && App.context.baseFrame.contentWindow) {
-        (App.context.baseFrame.contentWindow as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
-        (App.context.baseFrame.contentWindow as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
+      if (App.context && App.context) {
+        (App.context.window as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
+        (App.context.window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
       }
 
       await App.load();
@@ -85,9 +85,7 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
     }
 
     let consoleConfig = (window as IWin).ALIYUN_CONSOLE_CONFIG || {};
-    if (option.dynamicConfig) {
-      consoleConfig = await getConsoleConfig(option, consoleConfig);
-    }
+    consoleConfig = await getConsoleConfig(option as IAppConfig, consoleConfig);
 
     const messages = await getLocale(option);
     const i18nMessages = {
@@ -122,4 +120,4 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
   );
 }
 
-export { AlfaFactoryOption } from './types';
+export { AlfaFactoryOption };

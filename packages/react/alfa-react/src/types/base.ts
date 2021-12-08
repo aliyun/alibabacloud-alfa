@@ -1,5 +1,5 @@
 import React, { HTMLAttributes } from 'react';
-import { IAppConfig, IOptions } from '@alicloud/alfa-core';
+import { IAppConfig, IOptions, AlfaEnvEnum } from '@alicloud/alfa-core';
 
 export interface IProps<T = any> extends HTMLAttributes<Element>, IAppConfig, IOptions {
   /*
@@ -15,7 +15,7 @@ export interface IProps<T = any> extends HTMLAttributes<Element>, IAppConfig, IO
   consoleConfig?: any;
   i18nMessages?: any;
 
-  env?: string;
+  env?: AlfaEnvEnum;
   dependencies?: any;
 }
 

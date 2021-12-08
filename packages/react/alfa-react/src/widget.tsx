@@ -8,12 +8,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
 
-export function createAlfaWidget<T>(option: WidgetFactoryOption) {
-  if (!option.name.match(/@ali\/widget-/)) {
-    // TODO load style
-    return createAlfaApp<T>(option);
-  }
-
+export function createCWSWidget<T>(option: WidgetFactoryOption) {
   const AlfaWidget = lazy(async () => {
     let { url } = option;
 
