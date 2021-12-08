@@ -42,7 +42,7 @@ loader.afterLoad.use(async (appConfig) => {
   if (app && app.context) {
     (app.context.window as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
     (app.context.window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
-    app.context.history = undefined;
+    app.context.history = {} as History;
   }
 
   return appConfig;

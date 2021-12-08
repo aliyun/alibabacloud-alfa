@@ -18,10 +18,11 @@ export const getConfig = async (config: IAppConfig) => {
 
   const version = releaseConfig['dist-tags']?.['config-latest'];
   const configEntry = releaseConfig['config-versions']?.[version]?.entry;
-  // when config is not valid, return empty
-  if (!version || configEntry) return {};
 
   let configData: AlfaDynamicConfig = defaultConfig;
+
+  // when config is not valid, return empty
+  if (!version || configEntry) return configData;
 
   try {
     configData = await cache.getRemote<AlfaDynamicConfig>(configEntry);

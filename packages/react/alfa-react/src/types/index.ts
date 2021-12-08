@@ -26,6 +26,10 @@ export interface AlfaFactoryOption extends IAppConfig {
   // style for container root
   className?: string;
   style?: Record<string, any>;
+  unstable_runtime?: {
+    css?: Record<string, string>;
+    js?: Record<string, string>;
+  };
 }
 
 type OmitKeys = 'manifest';
