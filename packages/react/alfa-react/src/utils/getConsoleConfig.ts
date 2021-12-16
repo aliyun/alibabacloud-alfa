@@ -1,4 +1,4 @@
-import { getConfig, AlfaConfig, AlfaFactoryOption, IWin } from '@alicloud/alfa-core';
+import { getConfig, AlfaConfig, IWin, IAppConfig } from '@alicloud/alfa-core';
 import md5 from 'crypto-js/md5';
 
 /**
@@ -51,8 +51,8 @@ const mergeConfigDataWithConsoleConfig = (configData: AlfaConfig, consoleConfig:
   };
 };
 
-export const getConsoleConfig = async (option: AlfaFactoryOption, consoleConfig: any) => {
+export const getConsoleConfig = async (config: IAppConfig, consoleConfig: any) => {
   // TODO: 容灾，获取 ConsoleConfig 失效的情况
-  const configData = await getConfig(option);
+  const configData = await getConfig(config);
   return mergeConfigDataWithConsoleConfig(configData, consoleConfig);
 };

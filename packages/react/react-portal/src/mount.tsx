@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SingleSpaReact from 'single-spa-react';
-import { EventEmitter } from '@alicloud/console-os-events'
+import { EventEmitter } from '@alicloud/console-os-events';
 
 import { getPathNameWithQueryAndSearch, isOsContext } from './utils';
 import { Context } from './Context';
@@ -21,15 +21,15 @@ interface IProps {
 
 const globalEventEmitter = (data: any) => {
   window.postMessage(data.data, null);
-}
+};
 
 const bindEvents = (emitter: EventEmitter) => {
   emitter && emitter.on('main:postMessage', globalEventEmitter);
-}
+};
 
 const unbindEvents = (emitter: EventEmitter) => {
   emitter && emitter.off('main:postMessage', globalEventEmitter);
-}
+};
 
 const getProps = (props) => {
   const appProps = { ...props, ...(props.appProps || {}) };
@@ -56,7 +56,6 @@ export function registerExposedModule(moduleName: string, modules: any) {
 
 export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: Element | null, id?: string, options?: any) {
   class ConsoleApp extends React.Component<T & IProps> {
-
     constructor(props) {
       super(props);
 
@@ -66,7 +65,7 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
     }
     /**
      * 针对 外跳 的路由提供简单的方式通知宿主
-     * @param e 点击事件 
+     * @param e 点击事件
      */
     private handleExternalLinks = (e: Event) => {
       const target = e.target as HTMLAnchorElement;
@@ -74,42 +73,42 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
       if (target.tagName === 'A' && target.hasAttribute('data-alfa-external-router')) {
         e.preventDefault();
         e.stopPropagation();
-        emitter && emitter.emit(`${name||id}:external-router`, target.getAttribute('href'));
+        emitter && emitter.emit(`${name || id}:external-router`, target.getAttribute('href'));
       }
-    }
+    };
 
-    public componentDidCatch() {/*Empty*/}
+    componentDidCatch() { /* Empty */ }
 
-    public componentDidMount() {
+    componentDidMount() {
       const props = getProps(this.props);
       if (!props) { return; }
       const { emitter } = props;
       bindEvents(emitter);
 
-      if(isOsContext()) {
-        document.body.addEventListener('click',this.handleExternalLinks, true);
+      if (isOsContext()) {
+        document.body.addEventListener('click', this.handleExternalLinks, true);
       }
     }
 
-    public componentWillUnmount() {
+    componentWillUnmount() {
       const { emitter } = getProps(this.props);
       unbindEvents(emitter);
 
-      if(isOsContext()) {
-        document.body.removeEventListener('click',this.handleExternalLinks, true);
+      if (isOsContext()) {
+        document.body.removeEventListener('click', this.handleExternalLinks, true);
       }
     }
 
-    public render () {
+    render() {
       const props = getProps(this.props);
       const { logger, appDidCatch } = props;
       const contextValue: IContextProps = {
         inOsSandBox: isOsContext(),
-        appProps: props
+        appProps: props,
       };
 
       return (
-        <ErrorBoundary 
+        <ErrorBoundary
           logger={logger}
           appDidCatch={appDidCatch}
         >
@@ -146,10 +145,10 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
       update: [
         reactLifecycles.update,
       ],
-      exposedModule: exposeModuleMap
-    }
+      exposedModule: exposeModuleMap,
+    };
   } else {
     // @ts-ignore
-    ReactDOM.render(<ConsoleApp />, container)
+    ReactDOM.render(<ConsoleApp />, container);
   }
 }

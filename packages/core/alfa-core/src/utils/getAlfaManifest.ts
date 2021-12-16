@@ -1,28 +1,26 @@
-import axios from 'axios';
+import { getRelease } from './getAlfaRelease';
+import { IAppConfig } from '../types';
 
-import { resolveReleaseUrl } from '.';
-import { AlfaFactoryOption, AlfaReleaseConfig } from '../types';
+export const getManifest = async (config: IAppConfig) => {
+  const { name } = config;
 
-export const getManifest = async (option: AlfaFactoryOption) => {
-  // TODO: cache
-  const resp = await axios.get<AlfaReleaseConfig>(resolveReleaseUrl(option));
-  const releaseConfig = resp.data;
+  let { version } = config;
 
-  let { version } = option;
+  const releaseConfig = await getRelease(config);
 
-  if (!option.version) {
+  if (!config.version) {
     version = releaseConfig['dist-tags']?.latest;
   }
 
   // if version is in dist-tags, return value
-  if (releaseConfig['dist-tags']?.[option.version]) {
-    version = releaseConfig['dist-tags'][option.version];
+  if (releaseConfig['dist-tags']?.[config.version]) {
+    version = releaseConfig['dist-tags'][config.version];
   }
 
   const configByVersion = releaseConfig.versions[version];
 
   if (!configByVersion) {
-    throw new Error(`${option.name}@${version} is not found, please check you release.`);
+    throw new Error(`${name}@${version} is not found, please check you release.`);
   }
 
   return releaseConfig.versions[version].entry;

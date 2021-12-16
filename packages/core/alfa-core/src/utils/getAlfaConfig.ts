@@ -1,11 +1,6 @@
-import axios from 'axios';
-
-import { resolveConfigUrl } from '.';
-import { AlfaFactoryOption, AlfaDynamicConfig } from '../types';
-
-const cachedConfig: Record<string, AlfaDynamicConfig> = {};
-
-const productReg = /@ali\/alfa-cloud-([a-zA-z]*)-(app|widget)-.*/;
+import { AlfaDynamicConfig, IAppConfig } from '../types';
+import { getRelease } from './getAlfaRelease';
+import cache from './cacheManager';
 
 const defaultConfig: AlfaDynamicConfig = {
   ALL_CHANNEL_FEATURE_STATUS: {},
@@ -15,31 +10,25 @@ const defaultConfig: AlfaDynamicConfig = {
 
 /**
  * 获取 Alfa 平台配置的 Config
- * @param option
+ * @param config
  * @returns
  */
-export const getConfig = async (option: AlfaFactoryOption) => {
-  const matches = option.name.match(productReg);
+export const getConfig = async (config: IAppConfig) => {
+  const releaseConfig = await getRelease(config);
 
-  if (!matches) {
-    return defaultConfig;
+  const version = releaseConfig['dist-tags']?.['config-latest'];
+  const configEntry = releaseConfig['config-versions']?.[version]?.entry;
+
+  let configData: AlfaDynamicConfig = defaultConfig;
+
+  // when config is not valid, return empty
+  if (!version || configEntry) return configData;
+
+  try {
+    configData = await cache.getRemote<AlfaDynamicConfig>(configEntry);
+  } catch {
+    // TODO: record
   }
 
-  const configId = matches[1] || option.name;
-
-  if (!cachedConfig[configId]) {
-    try {
-      const resp = await axios.get<AlfaDynamicConfig>(resolveConfigUrl({
-        ...option,
-        name: configId,
-      }));
-      const configData = resp.data;
-
-      cachedConfig[configId] = configData;
-    } catch (e) {
-      // Nothing
-    }
-  }
-
-  return cachedConfig[configId] || defaultConfig;
+  return configData;
 };

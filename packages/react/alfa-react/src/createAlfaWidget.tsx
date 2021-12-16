@@ -1,0 +1,78 @@
+import React, { Suspense, useRef, useEffect, useState } from 'react';
+import { BaseLoader, getManifest, getLocale, IWin } from '@alicloud/alfa-core';
+
+import ErrorBoundary from './components/ErrorBoundary';
+import Loading from './components/Loading';
+import { normalizeName } from './utils';
+import { getConsoleConfig } from './utils/getConsoleConfig';
+import { createCWSWidget } from './widget';
+import createApplication from './createApplication';
+import { AlfaFactoryOption, MicroApplication } from './types';
+
+const loader = BaseLoader.create();
+
+// get manifest before resolve
+// normalize name
+loader.beforeResolve.use(async (appConfig) => {
+  let { manifest: resolvedManifest } = appConfig;
+  if (!resolvedManifest) {
+    resolvedManifest = await getManifest(appConfig);
+  }
+
+  return {
+    ...appConfig,
+    manifest: resolvedManifest,
+  };
+}, undefined);
+
+// inject consoleConfig & locales after load
+// remove history in vm context
+loader.afterLoad.use(async (appConfig) => {
+  const { app } = appConfig;
+
+  const defaultConsoleConfig = (window as IWin).ALIYUN_CONSOLE_CONFIG || {};
+  const consoleConfig = await getConsoleConfig(appConfig, defaultConsoleConfig);
+
+  const messages = await getLocale(appConfig);
+  const i18nMessages = {
+    ...(window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE,
+    ...messages,
+  };
+
+  if (app && app.context) {
+    (app.context.window as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
+    (app.context.window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
+    app.context.history = {} as History;
+  }
+
+  return appConfig;
+}, undefined);
+
+const Application = createApplication(loader);
+
+function createAlfaApp<P = any>(option: AlfaFactoryOption) {
+  const { name, dependencies } = option || {};
+
+  if (!name.match(/@ali\/widget-/)) {
+    // TODO load style
+    return createCWSWidget<P>(option);
+  }
+
+  // check app option
+  if (!name) return () => null;
+
+  const passedInOption = option;
+
+  return React.memo((props: P) => (
+    <ErrorBoundary>
+      <Application<P>
+        {...passedInOption}
+        // name={name}
+        deps={dependencies || {}}
+        customProps={props}
+      />
+    </ErrorBoundary>
+  ));
+}
+
+export default createAlfaApp;

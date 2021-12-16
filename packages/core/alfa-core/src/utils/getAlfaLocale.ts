@@ -1,29 +1,32 @@
-import axios from 'axios';
+import { getAlfaLocale } from './index';
+import { getRelease } from './getAlfaRelease';
+import { IAppConfig } from '../types';
+import cache from './cacheManager';
 
-import { resolveReleaseUrl, getAlfaLocale } from './index';
-import { AlfaFactoryOption, AlfaReleaseConfig } from '../types';
 
-export const getLocale = async (option: AlfaFactoryOption) => {
-  // TODO: cache
-  const resp = await axios.get<AlfaReleaseConfig>(resolveReleaseUrl(option));
+/**
+ * 获取国际化文案
+ * @param config
+ * @returns
+ */
+export const getLocale = async (config: IAppConfig) => {
+  const releaseConfig = await getRelease(config);
+
   const locale = getAlfaLocale();
-  const releaseConfig = resp.data;
-
   const version = releaseConfig['dist-tags']?.['locales-latest'];
-
   const localeEntry = releaseConfig['locales-versions']?.[version]?.[locale];
-
-  if (!localeEntry) {
-    // throw new Error(`${option.name} ${locale} entry is not found, please check you release.`);
-  }
 
   let messages: Record<string, string> = {};
 
+  if (!localeEntry) {
+    // TODO: record
+    return messages;
+  }
+
   try {
-    const res = await axios.get<Record<string, string>>(localeEntry);
-    messages = res.data;
+    messages = await cache.getRemote<Record<string, string>>(localeEntry);
   } catch (e) {
-    // Nothing
+    // TODO: record
   }
 
   return messages;

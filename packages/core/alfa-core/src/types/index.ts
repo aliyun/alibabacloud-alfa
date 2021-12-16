@@ -1,4 +1,4 @@
-import { OSApplication, SandBoxOption } from '@alicloud/console-os-kernal';
+import { OSApplication, SandBoxOption, AppInfo } from '@alicloud/console-os-kernal';
 
 type Channel = string;
 
@@ -14,11 +14,11 @@ type ChannelFeatures = Partial<Record<string, {
   };
 }>>;
 
-type FeatureStatus = Partial<Record<string, string>>;
+type FeatureStatus = Partial<Record<string, boolean>>;
 
 export interface IWin {
   ALIYUN_CONSOLE_I18N_MESSAGE?: Record<string, string>;
-  ALIYUN_CONSOLE_CONFIG?: {
+  ALIYUN_CONSOLE_CONFIG?: Partial<{
     fEnv: string;
     LOCALE: string;
     CHANNEL: string;
@@ -29,7 +29,7 @@ export interface IWin {
     portalType: string;
     MAIN_ACCOUNT_PK: string;
     CURRENT_PK: string;
-  };
+  }>;
 }
 
 export interface IAppManifest {
@@ -37,14 +37,16 @@ export interface IAppManifest {
   styles?: string[];
 }
 
-export interface IAppConfig<T = any> {
+export interface IAppConfig<P = any> extends IOptions {
   entry?: IAppManifest | string;
   name: string;
+  version?: string;
   container?: HTMLElement | null;
-  props?: Record<string, T>;
+  props?: P;
 
   // alfa 的扩展属性
-  manifest?: string;
+  manifest?: AppInfo['manifest'];
+  url?: string;
   logger?: {
     debug: () => {};
     error: () => {};
@@ -54,16 +56,18 @@ export interface IAppConfig<T = any> {
   deps?: {
     [key: string]: any;
   };
+  app?: OSApplication;
+  env?: EnvEnum;
 }
 
 export interface IOptions {
-  sandbox?: boolean | SandBoxOption;
-  beforeMount?: (app: OSApplication) => void;
-  afterMount?: (app: OSApplication) => void;
-  beforeUnmount?: (app: OSApplication) => void;
-  afterUnmount?: (app: OSApplication) => void;
-  beforeUpdate?: (app: OSApplication) => void;
-  afterUpdate?: (app: OSApplication) => void;
+  sandbox?: SandBoxOption;
+  beforeMount?: AppInfo['appWillMount'];
+  afterMount?: AppInfo['appDidMount'];
+  beforeUnmount?: AppInfo['appWillUnmount'];
+  afterUnmount?: AppInfo['appDidUnmount'];
+  beforeUpdate?: AppInfo['appWillUpdate'];
+  afterUpdate?: AppInfo['appWillUpdate'];
 }
 
 export interface AlfaVersion {
@@ -76,12 +80,17 @@ export type AlfaLocaleVersion = {
   [key in LOCALE | 'entry']: string;
 };
 
-type Version = string;
+export type Version = string;
+
+export interface AlfaConfigVersion {
+  [key: string]: string;
+}
 
 export interface AlfaReleaseConfig {
-  'dist-tags': Record<string, string>;
-  versions: Record<Version, AlfaVersion>;
-  'locales-versions': Record<Version, AlfaLocaleVersion>;
+  'dist-tags'?: Partial<Record<string, string>>;
+  versions?: Record<Version, Partial<AlfaVersion>>;
+  'locales-versions'?: Record<Version, Partial<AlfaLocaleVersion>>;
+  'config-versions'?: Record<Version, Partial<AlfaConfigVersion>>;
 }
 
 type AlfaChannelLinks = Partial<Record<Channel, ChannelLinks>>;
@@ -107,7 +116,10 @@ export interface AlfaDynamicConfig {
 
 export type EnvEnum = 'prod' | 'local' | 'pre' | 'daily';
 
-export interface AlfaFactoryOption extends IOptions {
+/**
+   * @deprecated
+   */
+export interface AlfaFactoryOption extends IAppConfig {
   name: string;
   version?: string;
   env?: EnvEnum;
@@ -115,5 +127,4 @@ export interface AlfaFactoryOption extends IOptions {
   url?: string;
   manifest?: string;
   dependencies?: Record<string, any>;
-  dynamicConfig?: boolean;
 }

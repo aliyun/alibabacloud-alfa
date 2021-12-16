@@ -4,7 +4,7 @@ import axios from 'axios';
 import kebabCase from 'lodash/kebabCase';
 import * as propTypes from 'prop-types';
 import { loadBundle } from '@alicloud/console-os-loader';
-import { createAlfaWidget } from '../widget';
+import { createCWSWidget } from '../widget';
 import { WidgetCWSConfig, WidgetRuntime, WidgetFactoryOption } from '../types';
 import { getWidgetVersionById } from './getWidgetVersionById';
 // @ts-ignore
@@ -23,7 +23,7 @@ const createDynamicWindStylePrefix = (windRuntimeVersion: string) => {
 
 
 const createWidget = (option: any) => {
-  return ({ id, version }: {id: string; version: string}) => createAlfaWidget({
+  return ({ id, version }: {id: string; version: string}) => createCWSWidget({
     name: id,
     version,
     dependencies: option?.dependencies,

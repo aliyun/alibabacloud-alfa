@@ -1,5 +1,5 @@
 import React from 'React';
-import { createMicroApp, IOptions } from '@alicloud/alfa-core';
+import { createMicroApp, IAppConfig } from '@alicloud/alfa-core';
 
 export interface AlfaVersion {
   entry: string;
@@ -14,15 +14,22 @@ export interface AlfaReleaseConfig {
 
 
 export type EnvEnum = 'prod' | 'local' | 'pre' | 'daily';
-export interface AlfaFactoryOption extends IOptions {
-  name: string;
-  version?: string;
+export interface AlfaFactoryOption extends IAppConfig {
+  // name: string;
+  // version?: string;
+  // env?: EnvEnum;
+  // url?: string;
+  // manifest?: string;
+  // deps?: Record<string, any>;
   loading?: boolean | React.ReactChild;
-  env?: EnvEnum;
-  url?: string;
-  manifest?: string;
   dependencies?: Record<string, any>;
-  dynamicConfig?: boolean;
+  // style for container root
+  className?: string;
+  style?: Record<string, any>;
+  unstable_runtime?: {
+    css?: Record<string, string>;
+    js?: Record<string, string>;
+  };
 }
 
 type OmitKeys = 'manifest';
