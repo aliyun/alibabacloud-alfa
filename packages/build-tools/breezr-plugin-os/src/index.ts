@@ -12,11 +12,13 @@ import { MultiEntryManifest } from './MultiEntryManifest';
 import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
 import { getEnv, error, info, exit, debug, done } from "@alicloud/console-toolkit-shared-utils";
 
+let globalSSREntry: string | null = null;
+
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
   if (process.env.IS_SSR === 'true') {
     return;
   }
-  const { jsonpCall, injectVars } = options;
+  const { jsonpCall, injectVars, ssrEntry } = options;
   options.id = normalizeId(options.name || options.id);
   config
     .output
@@ -60,7 +62,8 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
           resources: manifest,
           externals: plugin.compiler.options.externals || {},
           runtime: options.runtime || {},
-          entrypoints: entrypoints
+          entrypoints: entrypoints,
+          server_entrypoint: ssrEntry ? ssrEntry : globalSSREntry
         };
       },
       publicPath: true,
@@ -138,7 +141,7 @@ const buildOsBundle = async (api: PluginAPI, opts: PluginOptions) => {
     });
 
 
-  process.env.IS_CONSOLE_OS_BUNDLE = undefined;
+    process.env.IS_CONSOLE_OS_BUNDLE = undefined;
 
     done('console os bundle build successfully!');
   } catch(e) {
@@ -148,14 +151,16 @@ const buildOsBundle = async (api: PluginAPI, opts: PluginOptions) => {
   }
 };
 
-
 export default (api: PluginAPI, options: PluginOptions) => {
-  const args = minimist(process.argv.slice(2))
+  const args = minimist(process.argv.slice(2));
+
+  api.registerSyncAPI('configMicroAppSSREntry', (ssrEntryPath) => {
+    globalSSREntry = ssrEntryPath;
+  });
+
   // ssr for prod build
   if (getEnv().isProd() && (options.enableStandaloneBundle || args.enableStandaloneBundle)) {
-    api.dispatchSync('registerBeforeBuildStart',  async () => {
-      await buildOsBundle(api, options);
-    });
+    api.dispatchSync('registerBeforeBuildStart',  async () => { await buildOsBundle(api, options); });
   } else {
     api.on('onChainWebpack', chainOsWebpack(options));
   }

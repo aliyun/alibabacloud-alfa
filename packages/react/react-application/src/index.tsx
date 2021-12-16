@@ -238,7 +238,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     }
     const app = createIsomorphicMicroApp(this.getAppOption());
     app.load(env as IIsomorphicEnvironment);
-    return <div dangerouslySetInnerHTML={app.mount(getParcelProps(this.props))} />
+    return <div dangerouslySetInnerHTML={{__html: app.mount(getParcelProps(this.props))}} />
   }
 
   public render() {
