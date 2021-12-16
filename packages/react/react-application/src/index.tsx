@@ -254,7 +254,7 @@ class Application<T> extends React.Component<Partial<IProps<T>>, IState> {
     if (typeof document === 'undefined') {
       return <Wrapper>
           <EnvironmentContext.Consumer>
-            {(env) => this.renderServerApp(env)}
+            {(env) => React.createElement(id,{ children: this.renderServerApp(env) }) }
           </EnvironmentContext.Consumer>
         </Wrapper>
     }
