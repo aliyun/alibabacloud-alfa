@@ -6,7 +6,8 @@ import Loading from './components/Loading';
 import { AlfaFactoryOption, MicroApplication } from './types';
 import ErrorBoundary from './components/ErrorBoundary';
 import { getConsoleConfig } from './app/getConsoleConfig';
-import { normalizeName } from './utils';
+import { createIsomorphicAlfaApp } from './app/createIsomorphicMicroApp';
+import { normalizeName, isSSR } from './utils';
 
 const getProps = (props: Partial<IProps>) => {
   const parcelProps = {...props};
@@ -81,6 +82,10 @@ const Application: React.FC<IProps> = (props: IProps) => {
 
 export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
   const { name, loading, manifest } = option;
+
+  if (isSSR()) {
+    return createIsomorphicAlfaApp(option);
+  }
 
   const AlfaApp = lazy(async () => {
     let resolvedManifest = manifest;

@@ -28,8 +28,7 @@ const App = (props) => {
   );
 }
 
-export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
-
+export function createIsomorphicAlfaApp<T = any>(option: AlfaFactoryOption) {
   return (props: T) => (
     <ErrorBoundary {...props}>
       <App {...props} />
