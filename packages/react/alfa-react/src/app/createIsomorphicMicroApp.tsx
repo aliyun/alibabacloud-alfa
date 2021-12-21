@@ -31,7 +31,7 @@ const App = (props: any) => {
 export function createIsomorphicAlfaApp<T = any>(option: AlfaFactoryOption) {
   return (props: T) => (
     <ErrorBoundary {...props}>
-      <App {...props} />
+      <App {...{...props, ...option}} />
     </ErrorBoundary>
   )
 }

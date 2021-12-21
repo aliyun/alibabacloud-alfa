@@ -41,11 +41,10 @@ export const renderToString = <T>(props: IAppConfig<T>, env: IIsomorphicEnvironm
   if (!manifest) {
     const releaseUrl = resolveReleaseUrl(props);
     const releaseJson = env.getJson<AlfaReleaseConfig>(releaseUrl);
+    env.fetchJsonResource(releaseUrl);
     if (!releaseJson) {
-      env.fetchJsonResource(releaseUrl);
       return null;
     }
-
     manifest = parseManifestFromRelease(releaseJson, props);
   }
 

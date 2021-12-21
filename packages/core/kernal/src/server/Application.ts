@@ -28,7 +28,7 @@ export class Application {
        * 这里对于 Server App 来说通过 fetchBundle 通知服务实现方异步的去拉取 bundle
        */
       env.fetchBundle(this.appInfo.manifest);
-      return null;
+      return this;
     }
     this.inited = true;
     this.remoteApp.bootstrap();
