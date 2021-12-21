@@ -15,7 +15,9 @@ export default function getLoading({loading, microAppContainer }: IProps) {
     const node = document.querySelector(microAppContainer);
     //@ts-ignore
     if (initialPath === window.location.pathname && window.__isSSR) {
-      return <div dangerouslySetInnerHTML={{ __html: node ? node.innerHTML : '' }} />;
+      return React.createElement(microAppContainer, {
+        children: <div dangerouslySetInnerHTML={{ __html: node ? node.innerHTML : '' }} />
+      })
     }
   }
 
