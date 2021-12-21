@@ -83,3 +83,13 @@ export interface AppManifest {
     };
   };
 }
+
+export interface IIsomorphicEnvironment {
+  getJson: <T = any>(manifest: string) => T;
+
+  fetchJsonResource: <T = any>(url: string) => Promise<T>;
+
+  fetchBundle: <T = any>(manifest: string | AppManifest) => T;
+
+  getBundle: <T = any>(manifest: string | AppManifest) => Promise<T>;
+}

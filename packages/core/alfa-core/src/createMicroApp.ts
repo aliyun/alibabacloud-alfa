@@ -17,7 +17,6 @@ export const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions<T>
     manifest,
     customProps: appConfig.props,
     deps: appConfig.deps,
-
     url,
 
     // @ts-ignore

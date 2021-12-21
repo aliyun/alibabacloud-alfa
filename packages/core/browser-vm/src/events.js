@@ -1,5 +1,7 @@
-const rawAddEventListener = window.addEventListener;
-const rawRemoveEventListener = window.removeEventListener;
+import { isSSR } from './utils/isSSR';
+
+const rawAddEventListener = !isSSR() ? window.addEventListener: () => {};
+const rawRemoveEventListener = !isSSR() ? window.removeEventListener : () => {};
 
 export const domEventsListeningTo = [
   'webkitmouseforcedown', 'webkitmouseforcewillbegin', 'visibilitychange', 'error',

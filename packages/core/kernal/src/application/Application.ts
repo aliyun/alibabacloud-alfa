@@ -94,6 +94,7 @@ export class Application {
 
     const parcel = mountRootParcel({
       name: this.appInfo.name,
+      // @ts-ignore
       customProps:{},
       domElement: undefined,
       bootstrap: flattenFnArray(this.remoteApp.bootstrap, 'bootstrap'),

@@ -11,6 +11,7 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "skipDefaultLibCheck": true,
     "paths": {
       "~/*": [ "./src/*" ]
     },
