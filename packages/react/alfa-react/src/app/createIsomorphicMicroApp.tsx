@@ -5,6 +5,7 @@ import { AlfaFactoryOption } from '../types';
 import EnvContext from '../context';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Loading from '../components/Loading';
+import { normalizeName } from '../utils';
 
 const App = (props: any) => {
   const env = useContext(EnvContext);
@@ -22,7 +23,7 @@ const App = (props: any) => {
   }
 
   return (
-    React.createElement(props.name, {
+    React.createElement(normalizeName(props.name), {
       children:(
         <div
           dangerouslySetInnerHTML={{__html: renderString}}
