@@ -6,7 +6,7 @@ import EnvContext from '../context';
 import ErrorBoundary from '../components/ErrorBoundary';
 import Loading from '../components/Loading';
 
-const App = (props) => {
+const App = (props: any) => {
   const env = useContext(EnvContext);
 
   // 如果 env 为空，则返回 loading 
