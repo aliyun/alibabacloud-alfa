@@ -22,9 +22,13 @@ const App = (props: any) => {
   }
 
   return (
-    <div
-      dangerouslySetInnerHTML={{__html: renderString}}
-    />
+    React.createElement(props.name, {
+      children:(
+        <div
+          dangerouslySetInnerHTML={{__html: renderString}}
+        />
+      )
+    })
   );
 }
 
