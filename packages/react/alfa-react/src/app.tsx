@@ -66,7 +66,7 @@ const Application: React.FC<IProps> = (props: IProps) => {
   }
 
   return (<>
-    { !mounted && <Loading loading={loading}/> }
+    { !mounted && <Loading microAppContainer={name} loading={loading}/> }
     {
       (sandbox && sandbox !== true && sandbox.disableFakeBody) 
       ? React.createElement(name, { style, className, ref: appRef, dataId: name } ) 
@@ -114,7 +114,7 @@ export function createAlfaApp<T = any>(option: AlfaFactoryOption) {
 
   return (props: T) => (
     <ErrorBoundary {...props}>
-      <Suspense fallback={<Loading loading={loading}/>}>
+      <Suspense fallback={<Loading microAppContainer={normalizeName(name)} loading={loading}/>}>
         <AlfaApp
           {...option}
           deps={option.dependencies || {}}
