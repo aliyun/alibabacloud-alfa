@@ -15,7 +15,7 @@ interface IProps<C = any> extends AlfaFactoryOption {
  * @returns
  */
 export default function createApplication(loader: BaseLoader) {
-  function Application<C = any>(props: IProps<C>) {
+  return function Application<C = any>(props: IProps<C>) {
     const {
       name, manifest, loading, sandbox, customProps, className, style,
     } = props;
@@ -26,7 +26,7 @@ export default function createApplication(loader: BaseLoader) {
     useEffect(() => {
       // eslint-disable-next-line no-useless-catch
       (async () => {
-        const { app: App } = await loader.register<C>({
+        const { app: App, logger } = await loader.register<C>({
           name,
           manifest,
           container: appRef.current,
@@ -34,11 +34,15 @@ export default function createApplication(loader: BaseLoader) {
           sandbox,
         });
 
-        if (!App) throw new Error('[alfa-react] load app failed.');
+        if (!App) {
+          return logger?.error({ E_MSG: 'load app failed.' });
+        }
 
         await App.load();
 
-        if (!appRef.current) throw new Error('[alfa-react] container not found');
+        if (!appRef.current) {
+          return logger?.error({ E_MSG: 'cannot find container.' });
+        }
 
         await App.mount(appRef.current, {
           customProps,
@@ -70,6 +74,4 @@ export default function createApplication(loader: BaseLoader) {
       </Suspense>
     );
   }
-
-  return Application;
 }

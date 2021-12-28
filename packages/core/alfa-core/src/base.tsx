@@ -1,8 +1,17 @@
 import { createMicroApp } from '@alicloud/console-os-kernal';
 
-import { getManifestFromConfig, getURL } from './utils';
+import { getManifestFromConfig, getURL, getAlfaEnv } from './utils';
 import Hook, { ChainPromise, HookHandler } from './utils/hookManager';
 import { IAppConfig } from './types';
+import Logger from './utils/logger';
+
+const mergeConfig = (appConfig: IAppConfig, logger: Logger) => {
+  return {
+    ...appConfig,
+    env: appConfig.env || getAlfaEnv(),
+    logger: appConfig.logger || logger,
+  };
+};
 
 export default class BaseLoader {
   // just create instance, will be mounted in loader
@@ -23,10 +32,22 @@ export default class BaseLoader {
     this.afterLoad = new Hook<IAppConfig>();
   }
 
-  async register<P = {}, C = {}>(config: IAppConfig<P> & C) {
-    // TODO: check config
-    if (!config) return Promise.reject(new Error('[alfa-core] register config is not existed.'));
-    this.config = config;
+  async register<P = {}, C = {}>(passInConfig: IAppConfig<P> & C) {
+    const logger = new Logger();
+    if (!passInConfig) {
+      logger.error({ E_MSG: 'cannot find config before start.' });
+      return Promise.reject(new Error('[alfa-core] cannot find config before start.'));
+    }
+
+    this.config = mergeConfig(passInConfig, logger);
+
+    const { name, version, env } = this.config;
+
+    logger.set({
+      NAME: name,
+      VERSION: version,
+      ENV: env,
+    });
 
     const chains: Array<ChainPromise<IAppConfig<P> | (IAppConfig<P> & C)>> = [];
 
@@ -101,7 +122,7 @@ export default class BaseLoader {
       afterUnmount,
       beforeUpdate,
       sandbox,
-      logger,
+      // logger,
     } = config;
 
     const app = await createMicroApp({
@@ -111,7 +132,7 @@ export default class BaseLoader {
       customProps: props,
       deps,
       url,
-      logger,
+      // logger,
 
       appWillMount: beforeMount,
       appDidMount: afterMount,

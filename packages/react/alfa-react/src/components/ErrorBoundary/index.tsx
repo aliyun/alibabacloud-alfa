@@ -1,43 +1,45 @@
 import React, { ErrorInfo } from 'react';
 import isFunction from 'lodash/isFunction';
+import { AlfaLogger } from '@alicloud/alfa-core';
+
 import ErrorPanel from './ErrorPanel';
 
-export interface Logger {
-  error: (...args: any[]) => void;
-}
-
-interface IProp {
-  logger?: Logger;
-  appDidCatch?: (error: Error) => void;
+interface IProps {
+  appDidCatch?: (error?: Error, info?: ErrorInfo) => void;
+  logger?: AlfaLogger;
 }
 
 interface State {
   hasError: boolean;
-  error: Error;
+  error: Error | null;
 }
 
-class ErrorBoundary extends React.Component<IProp, State> {
-  constructor(props: IProp) {
+interface GlobalBl {
+  __bl?: {
+    error: (...args: any) => void;
+  };
+}
+
+class ErrorBoundary extends React.Component<IProps, State> {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       hasError: false,
-      // @ts-ignore
       error: null,
     };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    const { appDidCatch, logger } = this.props;
+
     // Display fallback UI
     this.setState({ hasError: true, error });
-    // You can also log the error to an error reporting service
-    if (this.props.logger) {
-      this.props.logger.error(error, errorInfo);
-    } else {
-      // @ts-ignore
-      isFunction(window?.__bl?.error) && window.__bl.error(error, errorInfo);
-    }
 
-    this.props.appDidCatch && this.props.appDidCatch(error);
+    isFunction((window as GlobalBl)?.__bl?.error) && (window as GlobalBl)?.__bl?.error(error, errorInfo);
+
+    // You can also log the error to an error reporting service in appDidCatch
+    appDidCatch && appDidCatch(error, errorInfo);
+    logger?.error({ E_MSG: '', E_STACK: error, C_STACK: errorInfo });
   }
 
   render() {

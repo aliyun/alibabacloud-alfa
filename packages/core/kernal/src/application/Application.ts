@@ -4,7 +4,7 @@ import { Parcel, mountRootParcel } from 'os-single-spa';
 import { serializeData, flattenFnArray } from '../misc/util';
 import { AppInfo, SandBoxOption } from '../type';
 import { createEventBus } from './createEventBus';
-import { createAppLoader } from './createAppLoader';
+import { createAppLoader } from './createSingleSpaLoader';
 
 const eventBus = createEventBus();
 

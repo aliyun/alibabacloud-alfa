@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IProps {
-  error: Error;
+  error: Error | null;
 }
 const padding = 24;
 const containerBackground = '#fcebea';
@@ -17,7 +17,7 @@ const commonErrorStyle = {
   fontSize: 14,
 };
 
-const ErrorPanel: React.FC<IProps> = (props: { error: Error }) => {
+const ErrorPanel: React.FC<IProps> = (props) => {
   const { error } = props;
   return (
     <div style={{ padding }}>
@@ -25,8 +25,8 @@ const ErrorPanel: React.FC<IProps> = (props: { error: Error }) => {
         process.env.NODE_ENV === 'development'
           ? (
             <div style={containerStyle}>
-              <div style={commonErrorStyle}>{error.message}</div>
-              <pre style={{ overflow: 'scroll' }}>{error.stack}</pre>
+              <div style={commonErrorStyle}>{error?.message}</div>
+              <pre style={{ overflow: 'scroll' }}>{error?.stack}</pre>
             </div>
           )
           : <div style={commonErrorStyle}>Error</div>

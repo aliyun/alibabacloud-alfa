@@ -2,4 +2,4 @@ import { createContext as createBrowserVMContext, ContextOption } from '@aliclou
 
 export const createContext = async (option: ContextOption) => {
   return createBrowserVMContext(option);
-}
+};

@@ -1,52 +1,27 @@
-import React, { Suspense, useRef, useEffect, useState } from 'react';
-import { BaseLoader, getManifest, getLocale, IWin } from '@alicloud/alfa-core';
+import React from 'react';
+import { BaseLoader } from '@alicloud/alfa-core';
 
 import ErrorBoundary from './components/ErrorBoundary';
-import Loading from './components/Loading';
-import { normalizeName } from './utils';
-import { getConsoleConfig } from './utils/getConsoleConfig';
 import { createCWSWidget } from './widget';
+import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
-import { AlfaFactoryOption, MicroApplication } from './types';
+import beforeResolveHook from './hooks/beforeResolveHook';
+import afterLoadHook from './hooks/afterLoadHook';
 
 const loader = BaseLoader.create();
 
-// get manifest before resolve
-// normalize name
-loader.beforeResolve.use(async (appConfig) => {
-  let { manifest: resolvedManifest } = appConfig;
-  if (!resolvedManifest) {
-    resolvedManifest = await getManifest(appConfig);
-  }
-
-  return {
-    ...appConfig,
-    manifest: resolvedManifest,
-  };
-}, undefined);
-
-// inject consoleConfig & locales after load
-// remove history in vm context
+loader.beforeResolve.use(beforeResolveHook);
+loader.afterLoad.use(afterLoadHook);
 loader.afterLoad.use(async (appConfig) => {
   const { app } = appConfig;
 
-  const defaultConsoleConfig = (window as IWin).ALIYUN_CONSOLE_CONFIG || {};
-  const consoleConfig = await getConsoleConfig(appConfig, defaultConsoleConfig);
-
-  const messages = await getLocale(appConfig);
-  const i18nMessages = {
-    ...(window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE,
-    ...messages,
-  };
-
   if (app && app.context) {
-    (app.context.window as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
-    (app.context.window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
-    app.context.history = {} as History;
+    // disable history
+    (app.context.history as any) = {};
   }
 
   return appConfig;
-}, undefined);
+});
 
 const Application = createApplication(loader);
 
@@ -64,7 +39,9 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
   const passedInOption = option;
 
   return React.memo((props: P) => (
-    <ErrorBoundary>
+    // Compatible with old logic
+    // props should not passed in errorBoundary
+    <ErrorBoundary {...props}>
       <Application<P>
         {...passedInOption}
         // name={name}

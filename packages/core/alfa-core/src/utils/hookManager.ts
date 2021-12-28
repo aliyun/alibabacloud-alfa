@@ -13,7 +13,7 @@ export default class Hook<T> {
 
   use<C>(
     fulfilled: ChainPromise<T & C> | undefined,
-    rejected: ChainPromise<T & C> | undefined,
+    rejected: ChainPromise<T & C> | undefined = undefined,
   ): () => void {
     const handler = {
       fulfilled,
