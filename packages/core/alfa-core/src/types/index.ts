@@ -28,7 +28,7 @@ type FeatureStatus = Partial<Record<string, boolean>>;
 export interface IWin {
   ALIYUN_CONSOLE_I18N_MESSAGE?: Record<string, string>;
   ALIYUN_CONSOLE_CONFIG?: Partial<{
-    fEnv: string;
+    fEnv: EnvEnum;
     LOCALE: string;
     CHANNEL: string;
     CHANNEL_LINKS: ChannelLinks;

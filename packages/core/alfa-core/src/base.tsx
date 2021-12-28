@@ -5,7 +5,7 @@ import Hook, { ChainPromise, HookHandler } from './utils/hookManager';
 import { IAppConfig } from './types';
 import Logger from './utils/logger';
 
-const mergeConfig = (appConfig: IAppConfig, logger: Logger) => {
+const mergeConfig = (appConfig: IAppConfig, logger: Logger): IAppConfig => {
   return {
     ...appConfig,
     env: appConfig.env || getAlfaEnv(),

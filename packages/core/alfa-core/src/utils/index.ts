@@ -1,10 +1,10 @@
-import { AlfaFactoryOption, IAppConfig, IWin, LOCALE } from '../types';
+import { EnvEnum, IAppConfig, IWin, LOCALE } from '../types';
 
 /**
  * get alfa env
  * @returns
  */
-export const getAlfaEnv = () => {
+export const getAlfaEnv = (): EnvEnum => {
   if (process.env.NODE_ENV === 'development') {
     return 'local';
   }
