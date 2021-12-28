@@ -43,7 +43,7 @@ export default class BaseLoader {
 
     const { name, version, env } = this.config;
 
-    logger.set({
+    logger.setContext({
       NAME: name,
       VERSION: version,
       ENV: env,

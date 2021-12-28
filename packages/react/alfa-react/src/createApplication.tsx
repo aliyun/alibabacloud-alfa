@@ -73,5 +73,5 @@ export default function createApplication(loader: BaseLoader) {
         </>
       </Suspense>
     );
-  }
+  };
 }
