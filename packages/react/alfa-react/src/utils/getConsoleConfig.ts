@@ -5,7 +5,6 @@ import md5 from 'crypto-js/md5';
  * transform
  * @param features
  */
-//@ts-ignore
 const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
   return Object.keys(features).reduce<Partial<Record<string, boolean>>>((newFeatures, key) => {
     const feature = features[key];
@@ -40,7 +39,6 @@ const mergeConfigDataWithConsoleConfig = (configData: AlfaConfig, consoleConfig:
   const channel = (window as IWin)?.ALIYUN_CONSOLE_CONFIG?.CHANNEL || 'OFFICIAL';
   const channelLinks = configData.ALL_CHANNEL_LINKS?.[channel] || {};
   const channelFeatures = configData.ALL_CHANNEL_FEATURE_STATUS?.[channel] || {};
-  //@ts-ignore
   const features = configData.ALL_FEATURE_STATUS || {};
 
   return {

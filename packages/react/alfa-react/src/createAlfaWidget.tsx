@@ -28,7 +28,7 @@ const Application = createApplication(loader);
 function createAlfaApp<P = any>(option: AlfaFactoryOption) {
   const { name, dependencies } = option || {};
 
-  if (!name.match(/@ali\/widget-/)) {
+  if (name.match(/@ali\/widget-/)) {
     // TODO load style
     return createCWSWidget<P>(option);
   }

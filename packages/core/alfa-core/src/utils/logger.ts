@@ -75,7 +75,7 @@ export default class Logger implements AlfaLogger {
 
   private track(method: Method, topic: string, params: Params) {
     // do not track during development
-    if (this.context.env === 'local') return;
+    if (this.context.ENV === 'local') return;
     logger[method](topic, this.mergeData(params));
   }
 }

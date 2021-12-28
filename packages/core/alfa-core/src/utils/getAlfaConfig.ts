@@ -22,7 +22,7 @@ export const getConfig = async (config: IAppConfig) => {
   let configData: AlfaDynamicConfig = defaultConfig;
 
   // when config is not valid, return empty
-  if (!version || configEntry) return configData;
+  if (!version || !configEntry) return configData;
 
   try {
     configData = await cache.getRemote<AlfaDynamicConfig>(configEntry);

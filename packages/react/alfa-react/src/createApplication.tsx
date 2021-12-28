@@ -17,7 +17,9 @@ interface IProps<C = any> extends AlfaFactoryOption {
 export default function createApplication(loader: BaseLoader) {
   return function Application<C = any>(props: IProps<C>) {
     const {
-      name, manifest, loading, sandbox, customProps, className, style,
+      name, version, manifest, loading, sandbox, customProps, className, style, container,
+      entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
+      afterUnmount, beforeUpdate,
     } = props;
     const [app, setApp] = useState<MicroApplication | null>(null);
     const appRef = useRef<HTMLElement | null | undefined>(null);
@@ -27,11 +29,22 @@ export default function createApplication(loader: BaseLoader) {
       // eslint-disable-next-line no-useless-catch
       (async () => {
         const { app: App, logger } = await loader.register<C>({
+          entry,
+          url,
           name,
+          version,
           manifest,
-          container: appRef.current,
+          container: container || appRef.current,
           props: customProps,
           sandbox,
+          logger: customLogger,
+          deps,
+          env,
+          beforeMount,
+          afterMount,
+          beforeUnmount,
+          afterUnmount,
+          beforeUpdate,
         });
 
         if (!App) {
@@ -56,7 +69,10 @@ export default function createApplication(loader: BaseLoader) {
       })().catch((e) => {
         throw e;
       });
-    }, [name, manifest, customProps, sandbox]);
+    }, [
+      name, manifest, customProps, sandbox, entry, url, version, container,
+      customLogger, deps, env, beforeMount, afterMount, beforeUnmount, afterUnmount, beforeUpdate,
+    ]);
 
     if (app) {
       app.update(customProps);
