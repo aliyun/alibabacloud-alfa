@@ -9,11 +9,13 @@
   "license": "MIT",
   "scripts": {
     "start": "breezr start-storybook",
-    "prepublish": "npm run build && npm run babel && npm run babel:esm",
+    "precommit": "npm run version",
+    "prepublish": "npm run version && npm run build && npm run babel && npm run babel:esm",
     "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
     "babel:esm": "breezr build --engine babel --es-module",
     "build": "breezr build --engine webpack",
-    "clean": "rm -rf lib yarn.lock"
+    "clean": "rm -rf lib yarn.lock",
+    "version": "node -p \"'export const version = \\'' + require('./package.json').version + '\\';'\" > src/version.ts"
   },
   "publishConfig": {
     "access": "public"
@@ -29,6 +31,7 @@
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/single-spa-react": "^2.8.3",
+    "husky": "^7.0.4",
     "jest": "^23.6.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -37,8 +40,8 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/alfa-core": "1.3.0-canary.1",
-    "@alicloud/console-os-loader": "1.3.0-canary.0",
+    "@alicloud/alfa-core": "^1.3.0",
+    "@alicloud/console-os-loader": "^1.2.3",
     "@alicloud/widget-utils-console": "^0.1.6",
     "classnames": "^2.2.6",
     "crypto-js": "^4.1.1"

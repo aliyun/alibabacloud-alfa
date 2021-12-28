@@ -24,16 +24,16 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
     context = await createContext({
       body: appInfo.dom,
       id: appInfo.name,
-      externals: sandBoxOption ? sandBoxOption.externalsVars: [],
+      externals: sandBoxOption ? sandBoxOption.externalsVars : [],
       url: sandBoxOption.sandBoxUrl,
       disableBody: sandBoxOption.disableFakeBody,
       allowResources: sandBoxOption.allowResources,
       enableScriptEscape: false,
     });
-    context.history.replaceState(null, '' , sandBoxOption.initialPath || '/');
+    context.history.replaceState(null, '', sandBoxOption.initialPath || '/');
   } else {
     // @ts-ignore
-    window.__IS_CONSOLE_OS_CONTEXT__ = true
+    window.__IS_CONSOLE_OS_CONTEXT__ = true;
   }
 
   // @ts-ignore
@@ -41,11 +41,11 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
 
   app.context = context;
   return app;
-}
+};
 
 /**
  * Create app instance in kernal
- * 
+ *
  * @param appInfo app basic meta info
  * @param sandBoxOption sandbox option for app
  */
@@ -64,7 +64,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
     }
     // update the to initialPath every time update the initialPath for iframe
     if (sandBoxOption.syncInitHref && app.context.baseFrame) {
-      app.context.baseFrame.contentWindow.history.replaceState(null, null, sandBoxOption.initialPath || '/')
+      app.context.baseFrame.contentWindow.history.replaceState(null, null, sandBoxOption.initialPath || '/');
     }
     return app;
   }
@@ -74,13 +74,13 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   if (!app || !app.isInited()) {
     if (app) {
       return new Promise((resolve) => {
-        resolve(app.getPendingPromise())
+        resolve(app.getPendingPromise());
       });
     }
   }
 
-  app = await createAppInstance(appInfo, sandBoxOption)
+  app = await createAppInstance(appInfo, sandBoxOption);
 
   app.pendingResolver && app.pendingResolver(app);
   return app;
-}
+};

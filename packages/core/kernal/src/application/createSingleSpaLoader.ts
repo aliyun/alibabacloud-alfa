@@ -21,16 +21,16 @@ export const loadRuntime = async (runtime: BasicModule, context: VMContext) => {
       id: runtime.name,
       url: runtime.url,
       context,
-    })
+    }),
   );
-}
+};
 
 const getAppManifestUrl = (appInfo: AppInfo) => {
   if (typeof appInfo.manifest === 'string') {
     return appInfo.manifest;
   }
   return location.href;
-}
+};
 
 /**
  * Create an app loader for single spa
@@ -66,7 +66,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
             continue;
           }
           if (manifest.externals[index].endsWith('.css')) {
-            addScopedStyles([manifest.externals[index]], appInfo.name)
+            addScopedStyles([manifest.externals[index]], appInfo.name);
             continue;
           }
           await loadScriptsWithContext({
@@ -77,7 +77,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
 
       for (var index = 0; index < js.length - 1; index++) {
         await loadScriptsWithContext({
-          id: name, url: formatUrl(js[index], getAppManifestUrl(appInfo)), context
+          id: name, url: formatUrl(js[index], getAppManifestUrl(appInfo)), context,
         });
       }
 
@@ -88,18 +88,21 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
   }
 
   if (style) {
-    addStyles(style, getAppManifestUrl(appInfo))
+    addStyles(style, getAppManifestUrl(appInfo));
   }
 
   const appInstance = extractModule(
     await loadBundle<AppInstance>({
-      id: name, url, context, deps: {
+      id: name,
+      url,
+      context,
+      deps: {
         ...(appInfo.deps || {}),
         '@alicloud/console-os-environment': {
           publicPath: appInfo.publicPath || getUrlDir(url),
-        }
-      }
-    })
+        },
+      },
+    }),
   );
 
   validateAppInstance(appInstance);
@@ -116,7 +119,7 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       ...appInstance.mount,
       async () => {
         await invokeLifeCycle(appInfo.appDidMount, appInstance);
-      }
+      },
     ],
     unmount: [
       async () => {
@@ -124,15 +127,15 @@ export const createAppLoader = async (appInfo: AppInfo, context: VMContext) => {
       },
       ...appInstance.unmount,
       async () => {
-        await invokeLifeCycle(appInfo.appDidUnmount, appInstance)
-      }
+        await invokeLifeCycle(appInfo.appDidUnmount, appInstance);
+      },
     ],
     update: [
       async () => {
         await invokeLifeCycle(appInfo.appWillUpdate, appInstance);
       },
-      ...appInstance.update ? appInstance.update : []
+      ...appInstance.update ? appInstance.update : [],
     ],
-    exposedModule: appInstance.exposedModule
-  }
-}
+    exposedModule: appInstance.exposedModule,
+  };
+};

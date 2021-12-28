@@ -1,5 +1,14 @@
 import { OSApplication, SandBoxOption, AppInfo } from '@alicloud/console-os-kernal';
 
+export class AlfaLogger<P = any> {
+  record: (params: P) => void;
+  send: () => void;
+  info: (params: P) => void;
+  error: (params: P) => void;
+  warn: (params: P) => void;
+  debug: (params: P) => void;
+}
+
 type Channel = string;
 
 type ChannelLinks = Partial<Record<string, string>>;
@@ -19,7 +28,7 @@ type FeatureStatus = Partial<Record<string, boolean>>;
 export interface IWin {
   ALIYUN_CONSOLE_I18N_MESSAGE?: Record<string, string>;
   ALIYUN_CONSOLE_CONFIG?: Partial<{
-    fEnv: string;
+    fEnv: EnvEnum;
     LOCALE: string;
     CHANNEL: string;
     CHANNEL_LINKS: ChannelLinks;
@@ -47,12 +56,7 @@ export interface IAppConfig<P = any> extends IOptions {
   // alfa 的扩展属性
   manifest?: AppInfo['manifest'];
   url?: string;
-  logger?: {
-    debug: () => {};
-    error: () => {};
-    warn: () => {};
-    info: () => {};
-  };
+  logger?: AlfaLogger;
   deps?: {
     [key: string]: any;
   };
