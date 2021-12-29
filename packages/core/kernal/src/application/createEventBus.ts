@@ -3,6 +3,7 @@ import { EventEmitter } from '@alicloud/console-os-events';
 export const eventBus = new EventEmitter();
 
 export const createEventBus = () => {
+  // @ts-ignore
   const kernel = window._aliOSKernel;
 
   try {

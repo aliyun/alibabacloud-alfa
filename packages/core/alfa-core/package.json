@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@alicloud/console-logger-sls": "^1.2.31",
-    "@alicloud/console-os-kernal": "1.3.0"
+    "@alicloud/console-os-kernal": "^1.2.3"
   },
   "gitHead": "43925181e0a3e489559b7ab1bb6c68e59e00d58e"
 }

@@ -8,7 +8,8 @@
     "test": "jest packages/",
     "pre-commit": "npm run lint",
     "install:example": "lerna bootstrap --scope \"@alicloud/demo-*\"",
-    "pub:canary": "lerna publish --exact --npm-tag=canary --canary=canary"
+    "pub:canary": "lerna publish --exact --npm-tag=canary --canary=canary",
+    "pub": "lerna publish"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",

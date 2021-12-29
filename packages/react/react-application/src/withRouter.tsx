@@ -3,7 +3,7 @@ import { History } from 'history';
 import { createEventBus } from '@alicloud/console-os-kernal';
 import omit from 'lodash/omit';
 
-import { IProps } from './index'
+import { IProps } from './index';
 
 const eventBus = createEventBus();
 
