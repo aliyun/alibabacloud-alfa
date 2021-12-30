@@ -1,4 +1,4 @@
-import { start as startSpa, getAppNames } from 'single-spa';
+import { start as startSpa, getAppNames } from 'os-single-spa';
 import { AppInfo, AppOption, GlobalOption } from './type';
 import { createApplication } from './application/createApp';
 import { createCachePool } from './application/AppCachePool';
