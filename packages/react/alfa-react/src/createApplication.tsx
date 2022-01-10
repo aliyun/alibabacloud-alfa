@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import Loading from './components/Loading';
@@ -17,13 +17,24 @@ interface IProps<C = any> extends AlfaFactoryOption {
 export default function createApplication(loader: BaseLoader) {
   return function Application<C = any>(props: IProps<C>) {
     const {
-      name, version, manifest, loading, sandbox, customProps, className, style, container,
+      name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
-      afterUnmount, beforeUpdate,
+      afterUnmount, beforeUpdate, sandbox: customSandbox,
     } = props;
     const [app, setApp] = useState<MicroApplication | null>(null);
     const appRef = useRef<HTMLElement | null | undefined>(null);
     const tagName = normalizeName(props.name);
+
+    const sandbox = useMemo(() => {
+      return {
+        ...customSandbox,
+        externalsVars: [
+          ...(customSandbox?.externalsVars || []),
+          // global vars used in ConsoleBase.forApp
+          '_console_base_ready_',
+        ],
+      };
+    }, [customSandbox]);
 
     useEffect(() => {
       // eslint-disable-next-line no-useless-catch
@@ -51,8 +62,6 @@ export default function createApplication(loader: BaseLoader) {
           return logger?.error({ E_MSG: 'load app failed.' });
         }
 
-        await App.load();
-
         if (!appRef.current) {
           return logger?.error({ E_MSG: 'cannot find container.' });
         }
@@ -79,15 +88,16 @@ export default function createApplication(loader: BaseLoader) {
     }
 
     return (
-      <Suspense fallback={<Loading loading={loading} />}>
-        <>
-          {
-            (sandbox && sandbox !== true && sandbox.disableFakeBody)
-              ? React.createElement(tagName, { style, className, ref: appRef, dataId: name })
-              : React.createElement(tagName, {}, React.createElement('div', { ref: appRef }))
-          }
-        </>
-      </Suspense>
+      <>
+        {
+          !app ? <Loading loading={loading} /> : null
+        }
+        {
+          (sandbox && sandbox.disableFakeBody)
+            ? React.createElement(tagName, { style, className, ref: appRef, dataId: name })
+            : React.createElement(tagName, {}, React.createElement('div', { ref: appRef }))
+        }
+      </>
     );
   };
 }

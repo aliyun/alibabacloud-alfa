@@ -5,12 +5,12 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './hooks/beforeResolveHook';
-import afterLoadHook from './hooks/afterLoadHook';
+import beforeLoadHook from './hooks/beforeLoadHook';
 
 const loader = BaseLoader.create();
 
 loader.beforeResolve.use(beforeResolveHook);
-loader.afterLoad.use(afterLoadHook);
+loader.beforeLoad.use(beforeLoadHook);
 
 const Application = createApplication(loader);
 
@@ -22,15 +22,19 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
 
   const passedInOption = option;
 
-  return React.memo((props: P) => (
-    <ErrorBoundary {...props}>
-      <Application<P>
-        {...passedInOption}
-        deps={dependencies || {}}
-        customProps={props}
-      />
-    </ErrorBoundary>
-  ));
+  return React.memo((props: P) => {
+    return (
+      <ErrorBoundary {...props}>
+        <Application<P>
+          // 兼容历史逻辑，优先使用 option 中的 sandbox 参数
+          {...passedInOption}
+          sandbox={option.sandbox || (props as P & { sandbox: {} }).sandbox}
+          deps={dependencies || {}}
+          customProps={props}
+        />
+      </ErrorBoundary>
+    );
+  });
 }
 
 export default createAlfaApp;

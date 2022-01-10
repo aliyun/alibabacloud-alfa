@@ -65,6 +65,9 @@ export default class BaseLoader {
 
     // modify resolved config
     this.afterResolve.handlers.forEach(flattenHookHandlers);
+
+    chains.push(this.init, undefined);
+
     // update props before load
     this.beforeLoad.handlers.forEach(flattenHookHandlers);
 
@@ -80,7 +83,7 @@ export default class BaseLoader {
       promise = promise.then(chains.shift(), chains.shift());
     }
 
-    return promise;
+    return promise.catch((e) => { throw e; });
   }
 
   /**
@@ -104,11 +107,11 @@ export default class BaseLoader {
   }
 
   /**
-   * loadApp from remote
+   * init config for micro app
    * @param config
    * @returns
    */
-  private async load(config: IAppConfig) {
+  private async init(config: IAppConfig) {
     const {
       name,
       container,
@@ -144,11 +147,20 @@ export default class BaseLoader {
       // parcel
     });
 
-    await app.load();
-
     return {
       ...config,
       app,
     };
+  }
+
+  /**
+   * loadApp from remote
+   * @param config
+   * @returns
+   */
+  private async load(config: IAppConfig) {
+    await config?.app?.load();
+
+    return config;
   }
 }

@@ -4,7 +4,7 @@ import { select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import { createAlfaWidget } from '../src';
 import { cachedRelease } from '../src/widget/getWidgetVersionById';
-import * as homeWidgetRuntime from '@ali/home-widget-runtime';
+// import * as homeWidgetRuntime from '@ali/home-widget-runtime';
 
 // @ts-ignore
 const WidgetProps = {
@@ -46,7 +46,7 @@ storiesOf('Alfa Wigets', module)
               alfaLoader: true,
               env: 'pre',
               dependencies: {
-                '@ali/home-widget-runtime': homeWidgetRuntime,
+                // '@ali/home-widget-runtime': homeWidgetRuntime,
               } }),
             {
               ...WidgetProps,
