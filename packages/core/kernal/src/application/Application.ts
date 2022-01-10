@@ -1,6 +1,6 @@
 import { removeContext, VMContext } from '@alicloud/console-os-browser-vm';
 
-import { Parcel, mountRootParcel } from 'single-spa';
+import { Parcel, mountRootParcel } from 'os-single-spa';
 import { serializeData, flattenFnArray } from '../misc/util';
 import { AppInfo, SandBoxOption } from '../type';
 import { createEventBus } from './createEventBus';
