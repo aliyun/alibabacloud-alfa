@@ -2,26 +2,27 @@ import { getRelease } from './getAlfaRelease';
 import { IAppConfig } from '../types';
 
 export const getManifest = async (config: IAppConfig) => {
-  const { name } = config;
+  const { name, logger } = config;
 
   let { version } = config;
 
   const releaseConfig = await getRelease(config);
-
-  if (!config.version) {
-    version = releaseConfig['dist-tags']?.latest;
-  }
+  const latestVersion = releaseConfig['dist-tags']?.latest;
 
   // if version is in dist-tags, return value
-  if (releaseConfig['dist-tags']?.[config.version]) {
-    version = releaseConfig['dist-tags'][config.version];
+  if (releaseConfig['dist-tags']?.[version]) {
+    version = releaseConfig['dist-tags'][version];
   }
 
-  const configByVersion = releaseConfig.versions[version];
+  let versionEntry = releaseConfig.versions?.[version];
 
-  if (!configByVersion) {
-    throw new Error(`${name}@${version} is not found, please check you release.`);
+  if (!versionEntry) {
+    logger?.error({ E_MSG: `cannot find ${name}@${version}.` });
+
+    versionEntry = releaseConfig.versions?.[latestVersion];
+
+    if (!versionEntry) throw new Error(`cannot find ${name}@latest, please check release.`);
   }
 
-  return releaseConfig.versions[version].entry;
+  return versionEntry.entry;
 };

@@ -30,6 +30,8 @@ export interface AlfaFactoryOption extends IAppConfig {
     css?: Record<string, string>;
     js?: Record<string, string>;
   };
+  // used in cwsWidget
+  runtimeVersion?: string;
 }
 
 type OmitKeys = 'manifest';
