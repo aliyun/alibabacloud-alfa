@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/alfa-core",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "MicroFront End SDK for alicloud",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@alicloud/console-logger-sls": "^1.2.31",
-    "@alicloud/console-os-kernal": "^1.3.2"
+    "@alicloud/console-os-kernal": "^1.3.3"
   },
   "gitHead": "226b5899f3fc8b7929a7606f4ac6e7c7ec7cfdb7"
 }
