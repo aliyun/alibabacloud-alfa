@@ -18,11 +18,7 @@ const defaultExternals = [
   'msCancelAnimationFrame',
 ];
 
-const isExist = (value) => {
-  return typeof value !== 'undefined' && value !== null;
-};
-
-// 1. if var in externals, read it from window
+// 1. if var in externals, read it from cache or window
 // 2. if var in hack list, read it from iframe's window
 // 3. if var in cache which wrote by micro app, read it from cache
 // 4. if var is native, read it from window
@@ -34,11 +30,6 @@ class Window {
       ...(options.externals || []),
     ];
 
-    // if the var is native in context
-    const isNative = (variable) => {
-      return typeof variable === 'string' && variable in frame.contentWindow;
-    };
-
     const cache = {};
 
     const __CONSOLE_OS_GLOBAL_VARS_ = new Proxy(frame.contentWindow, {
@@ -47,8 +38,16 @@ class Window {
         return true;
       },
 
+      // eval will lose it context in with
+      has(target, name) {
+        if (name === 'eval') return false;
+        return name in target;
+      },
+
       get(target, name) {
         if (externals.includes(name)) {
+          if (name in cache) return cache[name];
+
           const windowValue = window[name];
           if (typeof windowValue === 'function' && !isBoundedFunction(windowValue) && !isConstructable(windowValue)) {
             const bindFn = windowValue.bind(window);
@@ -79,11 +78,12 @@ class Window {
             return removeEventListener(context);
         }
 
-        if (isExist(cache[name])) {
+        if (name in cache) {
           return cache[name];
         }
 
-        if (isNative(name)) {
+        // target has it when it is native
+        if (name in target) {
           const value = window[name];
           if (typeof value === 'function' && !isBoundedFunction(value) && !isConstructable(value)) {
             return value.bind && value.bind(window);

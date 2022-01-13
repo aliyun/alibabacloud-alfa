@@ -39,6 +39,7 @@ export default function createApplication(loader: BaseLoader) {
     useEffect(() => {
       // eslint-disable-next-line no-useless-catch
       (async () => {
+        if (app) return;
         const { app: App, logger } = await loader.register<C>({
           entry,
           url,
@@ -71,15 +72,15 @@ export default function createApplication(loader: BaseLoader) {
         });
 
         setApp(App);
-
-        return () => {
-          App && App.unmount();
-        };
       })().catch((e) => {
         throw e;
       });
+
+      return () => {
+        app && app.unmount();
+      };
     }, [
-      name, manifest, customProps, sandbox, entry, url, version, container,
+      app, name, manifest, customProps, sandbox, entry, url, version, container,
       customLogger, deps, env, beforeMount, afterMount, beforeUnmount, afterUnmount, beforeUpdate,
     ]);
 
