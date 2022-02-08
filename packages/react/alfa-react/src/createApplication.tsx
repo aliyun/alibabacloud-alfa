@@ -4,6 +4,7 @@ import { BaseLoader } from '@alicloud/alfa-core';
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
 import { AlfaFactoryOption, MicroApplication } from './types';
+import { version as loaderVersion } from './version';
 
 interface IProps<C = any> extends AlfaFactoryOption {
   customProps: C;
@@ -28,6 +29,10 @@ export default function createApplication(loader: BaseLoader) {
     const sandbox = useMemo(() => {
       return {
         ...customSandbox,
+        // allowResources: [
+        //   ...(customSandbox?.allowResources || []),
+        //   /^https?:\/\/at\.alicdn\.com\//,
+        // ],
         externalsVars: [
           ...(customSandbox?.externalsVars || []),
           // global vars used in ConsoleBase.forApp
@@ -37,9 +42,7 @@ export default function createApplication(loader: BaseLoader) {
     }, [customSandbox]);
 
     useEffect(() => {
-      // eslint-disable-next-line no-useless-catch
       (async () => {
-        if (app) return;
         const { app: App, logger } = await loader.register<C>({
           entry,
           url,
@@ -88,6 +91,12 @@ export default function createApplication(loader: BaseLoader) {
       app.update(customProps);
     }
 
+    const dataAttrs = {
+      dataId: version,
+      dataVersion: version,
+      dataLoader: loaderVersion,
+    };
+
     return (
       <>
         {
@@ -95,8 +104,8 @@ export default function createApplication(loader: BaseLoader) {
         }
         {
           (sandbox && sandbox.disableFakeBody)
-            ? React.createElement(tagName, { style, className, ref: appRef, dataId: name })
-            : React.createElement(tagName, {}, React.createElement('div', { ref: appRef }))
+            ? React.createElement(tagName, { style, className, ref: appRef, ...dataAttrs })
+            : React.createElement(tagName, { dataAttrs }, React.createElement('div', { ref: appRef, style, className }))
         }
       </>
     );
