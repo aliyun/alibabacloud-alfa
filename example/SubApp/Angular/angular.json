@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "62842641-77dd-4ca9-92f2-e3ef74882a57"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -58,7 +61,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/dev-server:generic",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "angular.io-example:build"
           },
