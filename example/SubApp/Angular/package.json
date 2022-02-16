@@ -5,14 +5,14 @@
   "dependencies": {
     "@alicloud/console-os-ng-builder": "^1.2.3",
     "@alicloud/console-os-ng-portal": "^1.0.0-next.11",
-    "@angular/animations": "8.2.14",
-    "@angular/common": "8.2.14",
-    "@angular/compiler": "8.2.14",
-    "@angular/core": "8.2.14",
-    "@angular/forms": "8.2.14",
-    "@angular/platform-browser": "8.2.14",
-    "@angular/platform-browser-dynamic": "8.2.14",
-    "@angular/router": "8.2.14",
+    "@angular/animations": "~8.2.3",
+    "@angular/common": "~8.2.4",
+    "@angular/compiler": "~8.2.4",
+    "@angular/core": "~8.2.4",
+    "@angular/forms": "~8.2.4",
+    "@angular/platform-browser": "~8.2.4",
+    "@angular/platform-browser-dynamic": "~8.2.4",
+    "@angular/router": "~8.2.4",
     "@babel/runtime": "^7.7.4",
     "angular-in-memory-web-api": "0.8.0",
     "core-js": "2.6.10",
@@ -35,12 +35,11 @@
     "serve:single-spa": "ng serve --disable-host-check --port 4200 --deploy-url http://localhost:4200/ --live-reload false"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^7.0.0",
-    "@angular-builders/dev-server": "^7.3.1",
-    "@angular-devkit/build-angular": "~0.13.0",
-    "@angular/cli": "^7.0.2",
-    "@angular/compiler-cli": "^7.0.0",
-    "@angular/language-service": "^7.0.0",
+    "@angular-builders/custom-webpack": "~8.2.0",
+    "@angular-devkit/build-angular": "~0.803.28",
+    "@angular/cli": "~8.2.2",
+    "@angular/compiler-cli": "~8.2.4",
+    "@angular/language-service": "~8.2.4",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
@@ -55,7 +54,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.1.1",
-    "webpack-assets-manifest": "^3.1.1"
+    "typescript": "~3.4.1",
+    "webpack-assets-manifest": "^3.1.1",
+    "webpack-chain": "^6.5.1"
   }
 }
