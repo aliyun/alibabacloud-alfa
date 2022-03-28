@@ -19,7 +19,7 @@ export const getConfig = async (config: IAppConfig) => {
 
   const { logger } = config;
 
-  const configVersion = releaseConfig['dist-tags']?.['config-latest'];
+  const configVersion = releaseConfig['dist-tags']?.['config-latest'] || '';
   const configEntry = releaseConfig['config-versions']?.[configVersion]?.entry;
 
   let configData: AlfaDynamicConfig = defaultConfig;

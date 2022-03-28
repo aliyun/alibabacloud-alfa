@@ -14,7 +14,7 @@ export const getLocale = async (config: IAppConfig) => {
   const { logger } = config;
 
   const locale = getAlfaLocale();
-  const localeVersion = releaseConfig['dist-tags']?.['locales-latest'];
+  const localeVersion = releaseConfig['dist-tags']?.['locales-latest'] || '';
   const localeEntry = releaseConfig['locales-versions']?.[localeVersion]?.[locale];
 
   let messages: Record<string, string> = {};
