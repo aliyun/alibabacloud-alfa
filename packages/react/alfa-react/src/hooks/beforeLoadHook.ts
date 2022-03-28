@@ -1,24 +1,26 @@
-import { IAppConfig, getLocale, IWin } from '@alicloud/alfa-core';
+import { IAppConfig, getConfig, getLocale, IWin } from '@alicloud/alfa-core';
+import { AlfaDynamicConfig } from '@alicloud/alfa-core/lib/types';
 
 import { getConsoleConfig } from '../utils/getConsoleConfig';
+import { getConsoleGlobal } from '../utils/getConsoleGlobal';
 
 // inject consoleConfig & locales after load
 async function afterLoadHook(appConfig: IAppConfig) {
   const { app, logger } = appConfig;
 
   const defaultConsoleConfig = (window as IWin).ALIYUN_CONSOLE_CONFIG || {};
+  const defaultConsoleGlobal = (window as IWin).ALIYUN_CONSOLE_GLOBAL || {};
 
   const CONFIG_START_TIME = Date.now();
 
-  const [consoleConfig, messages] =
-    await Promise.all([getConsoleConfig(appConfig, defaultConsoleConfig), getLocale(appConfig)])
-      .catch((e) => {
-        logger?.error({
-          E_MSG: 'fetch config & locale error.',
-          E_STACK: e,
-        });
-        return [{}, {}];
-      });
+  const configData = await getConfig(appConfig);
+
+  const [consoleConfig, consoleGlobal, messages] =
+    await Promise.all([
+      getConsoleConfig(configData, defaultConsoleConfig),
+      getConsoleGlobal(configData, defaultConsoleGlobal),
+      getLocale(appConfig),
+    ]);
 
   const CONFIG_END_TIME = Date.now();
 
@@ -27,21 +29,23 @@ async function afterLoadHook(appConfig: IAppConfig) {
     ...messages,
   };
 
+
+  // inject global variables
   if (app && app.context) {
     (app.context.window as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
+    (app.context.window as IWin).ALIYUN_CONSOLE_GLOBAL = consoleGlobal;
     (app.context.window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
-    // (app.context.history as any) = {};
   }
 
   const END_TIME = Date.now();
 
-  logger?.record({
+  logger?.record && logger.record({
     CONFIG_START_TIME,
     CONFIG_END_TIME,
     END_TIME,
   });
 
-  logger?.send();
+  logger?.send && logger.send();
 
   return appConfig;
 }

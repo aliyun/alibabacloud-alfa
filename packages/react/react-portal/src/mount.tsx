@@ -20,7 +20,7 @@ interface IProps {
 }
 
 const globalEventEmitter = (data: any) => {
-  window.postMessage(data.data, null);
+  window.postMessage(data.data, '*');
 };
 
 const bindEvents = (emitter: EventEmitter) => {

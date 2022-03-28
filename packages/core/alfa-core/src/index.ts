@@ -1,4 +1,5 @@
 export { createMicroApp } from './createMicroApp';
+export { getRelease } from './utils/getAlfaRelease';
 export { getManifest } from './utils/getAlfaManifest';
 export { getConfig } from './utils/getAlfaConfig';
 export { getLocale } from './utils/getAlfaLocale';

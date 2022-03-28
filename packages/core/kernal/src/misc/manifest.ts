@@ -2,10 +2,10 @@ import axios from 'axios';
 import { AppInfo, AppManifest } from '../type';
 import * as ManifestCachePool from './ManifestCachePool';
 import { getFromCdn } from './util';
-import { LoggerFactory } from './logger'
+import { LoggerFactory } from './logger';
 
 export const handleManifest = (manifest: AppManifest) => {
-  const entrypoints = manifest.entrypoints;
+  const { entrypoints } = manifest;
 
   const entrypointsArr = Object.values(entrypoints);
   if (entrypointsArr.length > 1) {
@@ -16,7 +16,7 @@ export const handleManifest = (manifest: AppManifest) => {
 }
 
 /**
- * 
+ * get manifest from cache or cdn
  * @param url 
  */
 export const getManifest = async (appInfo: AppInfo, id?: string) => {

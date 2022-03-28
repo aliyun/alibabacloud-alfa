@@ -23,7 +23,7 @@ export default class BaseLoader {
   afterResolve: Hook<IAppConfig>;
   beforeLoad: Hook<IAppConfig>;
   afterLoad: Hook<IAppConfig>;
-  config: IAppConfig;
+  config?: IAppConfig;
 
   constructor() {
     this.beforeResolve = new Hook<IAppConfig>();
@@ -32,7 +32,7 @@ export default class BaseLoader {
     this.afterLoad = new Hook<IAppConfig>();
   }
 
-  async register<P = {}, C = {}>(passInConfig: IAppConfig<P> & C) {
+  async register<P = {}>(passInConfig: IAppConfig<P>) {
     const logger = new Logger();
     if (!passInConfig) {
       logger.error({ E_MSG: 'cannot find config before start.' });
@@ -49,9 +49,9 @@ export default class BaseLoader {
       ENV: env,
     });
 
-    const chains: Array<ChainPromise<IAppConfig<P> | (IAppConfig<P> & C)>> = [];
+    const chains: Array<ChainPromise<IAppConfig<P>> | undefined> = [];
 
-    const flattenHookHandlers = (handler: HookHandler<IAppConfig<P> & C>) => {
+    const flattenHookHandlers = (handler: HookHandler<IAppConfig<P>>) => {
       const { fulfilled, rejected } = handler;
 
       chains.push(fulfilled, rejected);

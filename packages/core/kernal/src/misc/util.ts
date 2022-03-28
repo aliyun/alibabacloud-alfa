@@ -1,24 +1,30 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios';
 import { Lifecycle, AppInstance } from '../type';
 
 export const getFromCdn = async (url: string) => {
-  const resp = await axios.get(url);
+  let resp: AxiosResponse;
+  try {
+    resp = await axios.get(url);
+  } catch (e) {
+    resp = await axios.get(url);
+  }
+
   if (resp.status === 200) {
     return resp.data;
   }
   throw resp;
-}
+};
 
 export const invokeLifeCycle = async (fns: Lifecycle | Lifecycle[], app: AppInstance) => {
   if (!fns) {
     return;
   }
   if (fns instanceof Array) {
-    Promise.all(fns.map(fn => fn(app)))
+    Promise.all(fns.map((fn) => fn(app)));
   } else {
     fns(app);
   }
-}
+};
 
 function smellsLikeAPromise(promise) {
   return promise && typeof promise.then === 'function' && typeof promise.catch === 'function';
@@ -26,7 +32,7 @@ function smellsLikeAPromise(promise) {
 
 export function validateAppInstance(appInstance: AppInstance) {
   if (!appInstance.bootstrap && !appInstance.mount && !appInstance.unmount) {
-    throw new Error(`The app ${appInstance.name}'s export is invalid, you should export bootstrap, mount, unmount`)
+    throw new Error(`The app ${appInstance.name}'s export is invalid, you should export bootstrap, mount, unmount`);
   }
 }
 
@@ -36,7 +42,7 @@ export function flattenFnArray(fns, description) {
     fns = [() => Promise.resolve()];
   }
 
-  return function(props) {
+  return function (props) {
     return new Promise((resolve, reject) => {
       function waitForPromises(index) {
         const promise = fns[index](props);
@@ -56,7 +62,7 @@ export function flattenFnArray(fns, description) {
       }
       waitForPromises(0);
     });
-  }
+  };
 }
 
 export const getRealUrl = (urlStr: string, base: string) => {
@@ -67,36 +73,36 @@ export const getRealUrl = (urlStr: string, base: string) => {
   }
 
   const url = new URL(sourceUrl, base);
-  return url.toString()
+  return url.toString();
 };
 
 export const serializeData = (data: any) => {
-  return JSON.parse(JSON.stringify(data))
-}
+  return JSON.parse(JSON.stringify(data));
+};
 
 /**
- * 
- * @param rawModule 
+ *
+ * @param rawModule
  */
-export const extractModule = (rawModule: any) =>  {
+export const extractModule = (rawModule: any) => {
   return rawModule.default ? rawModule.default : rawModule;
-}
+};
 
 /**
- * 
- * @param url 
- * @param manifest 
+ *
+ * @param url
+ * @param manifest
  */
 export const formatUrl = (url: string, manifest: string) => {
   return getRealUrl(url, manifest);
-}
+};
 
 
 export const getUrlDir = (sourceUrl: string) => {
   try {
     const url = new URL(sourceUrl);
-    url.pathname = (url.pathname || '').split('/').slice(0, -1).join('/')
-  } catch(e) {
+    url.pathname = (url.pathname || '').split('/').slice(0, -1).join('/');
+  } catch (e) {
     return '/';
   }
-}
+};

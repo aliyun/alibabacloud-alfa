@@ -32,6 +32,8 @@ export interface AlfaFactoryOption extends IAppConfig {
   };
   // used in cwsWidget
   runtimeVersion?: string;
+  // render when throw error
+  fallbackRender?: (error: Error) => Element;
 }
 
 type OmitKeys = 'manifest';

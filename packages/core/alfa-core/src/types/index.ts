@@ -1,12 +1,12 @@
 import { OSApplication, SandBoxOption, AppInfo } from '@alicloud/console-os-kernal';
 
 export class AlfaLogger<P = any> {
-  record: (params: P) => void;
-  send: () => void;
-  info: (params: P) => void;
-  error: (params: P) => void;
-  warn: (params: P) => void;
-  debug: (params: P) => void;
+  record?: (params: P) => void;
+  send?: () => void;
+  info?: (params: P) => void;
+  error?: (params: P) => void;
+  warn?: (params: P) => void;
+  debug?: (params: P) => void;
 }
 
 type Channel = string;
@@ -27,6 +27,7 @@ type FeatureStatus = Partial<Record<string, boolean>>;
 
 export interface IWin {
   ALIYUN_CONSOLE_I18N_MESSAGE?: Record<string, string>;
+  ALIYUN_CONSOLE_GLOBAL?: Record<string, any>;
   ALIYUN_CONSOLE_CONFIG?: Partial<{
     fEnv: EnvEnum;
     LOCALE: string;
@@ -50,7 +51,7 @@ export interface IAppConfig<P = any> extends IOptions {
   entry?: IAppManifest | string;
   name: string;
   version?: string;
-  container?: HTMLElement | null;
+  container?: HTMLElement;
   props?: P;
 
   // alfa 的扩展属性
@@ -113,9 +114,10 @@ interface AlfaFeature {
 type AlfaFeatures = Partial<Record<string, AlfaFeature>>;
 
 export interface AlfaDynamicConfig {
-  ALL_CHANNEL_LINKS: AlfaChannelLinks;
-  ALL_CHANNEL_FEATURE_STATUS: AlfaChannelFeatures;
-  ALL_FEATURE_STATUS: AlfaFeatures;
+  ALL_CHANNEL_LINKS?: AlfaChannelLinks;
+  ALL_CHANNEL_FEATURE_STATUS?: AlfaChannelFeatures;
+  ALL_FEATURE_STATUS?: AlfaFeatures;
+  GLOBAL_DATA?: Record<string, any>;
 }
 
 export type EnvEnum = 'prod' | 'local' | 'pre' | 'daily';

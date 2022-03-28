@@ -3,13 +3,18 @@ import cache from './cacheManager';
 import { IAppConfig, AlfaReleaseConfig } from '../types';
 
 export const getRelease = async (config: IAppConfig) => {
-  const { name } = config;
+  const { logger } = config;
 
   try {
     const releaseConfig = await cache.getRemote<AlfaReleaseConfig>(resolveReleaseUrl(config));
 
     return releaseConfig;
   } catch (e) {
-    throw new Error(`${name} releaseConfig loading failed, please try again or connect developers.`);
+    logger?.error && logger.error({
+      E_CODE: 'GetReleaseError',
+      E_MSG: e.message,
+    });
   }
+
+  return {};
 };

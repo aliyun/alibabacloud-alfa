@@ -14,16 +14,16 @@ interface OSError<T = any> {
 const loggerFactory = (type: ErrorType) => {
   return <T>(error: Error, meta: T): OSError => {
     return {
-      type: type,
-      error: error,
-      meta: meta
-    }
-  }
-}
+      type,
+      error,
+      meta,
+    };
+  };
+};
 
 export const LoggerFactory = {
   manifest: loggerFactory(ErrorType.manifest),
   api: loggerFactory(ErrorType.api),
   error: loggerFactory(ErrorType.error),
   performance: loggerFactory(ErrorType.performance),
-}
+};

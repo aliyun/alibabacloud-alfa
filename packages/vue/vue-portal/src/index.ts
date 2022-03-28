@@ -3,16 +3,16 @@ import singleSpaVue from './singleSpaVue';
 import { EventEmitter } from '@alicloud/console-os-events';
 
 const globalEventEmitter = (data: any) => {
-  window.postMessage(data.data, null);
-}
+  window.postMessage(data.data, '*');
+};
 
 const bindEvents = (emitter: EventEmitter) => {
   emitter && emitter.on('main:postMessage', globalEventEmitter);
-}
+};
 
 const unbindEvents = (emitter: EventEmitter) => {
   emitter && emitter.off('main:postMessage', globalEventEmitter);
-}
+};
 
 const getProps = (props) => {
   const appProps = { ...props, ...(props.appProps || {}) };
@@ -26,7 +26,7 @@ const getProps = (props) => {
 
 
 export const mount = (option) => {
-  const el = option.el;
+  const { el } = option;
   delete option.el;
   // @ts-ignore
   if (window.__IS_CONSOLE_OS_CONTEXT__) {
@@ -38,18 +38,18 @@ export const mount = (option) => {
       mount: [(props) => {
         const { emitter } = getProps(props);
         bindEvents(emitter);
-        return spaInstance.mount(props)
+        return spaInstance.mount(props);
       }],
       unmount: [(props) => {
         const { emitter } = getProps(props);
         unbindEvents(emitter);
-        return spaInstance.mount(props)
+        return spaInstance.mount(props);
       }],
       update: [spaInstance.update],
-    }
+    };
   }
   return new Vue({
     ...option,
-    el
+    el,
   });
-}
+};

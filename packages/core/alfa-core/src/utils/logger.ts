@@ -9,7 +9,7 @@ const logger = createLogger({
 });
 
 interface Params {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | undefined;
 }
 
 enum Method {
@@ -21,7 +21,7 @@ enum Method {
 
 export default class Logger implements AlfaLogger {
   cache: Params;
-  caches: Params[];
+  // caches: Params[];
   context: Params;
 
   constructor(context: Params = {}) {

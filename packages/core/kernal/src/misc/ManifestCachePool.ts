@@ -1,5 +1,5 @@
 import LRU from 'lru-cache';
-import { AppManifest } from '../type'
+import { AppManifest } from '../type';
 
 interface ManifestInfo {
   resolve: (value: AppManifest | PromiseLike<AppManifest>) => Promise<AppManifest> | void;
@@ -14,17 +14,17 @@ let cache: LRU<string, ManifestInfo> = null;
 
 /**
  * using cache pools
- * @param option 
+ * @param option
  */
 export function createCachePool() {
   cache = new LRU<string, ManifestInfo>({
-    max: 30
-  })
+    max: 30,
+  });
 }
 
 /**
  * get application cache by app id
- * @param id 
+ * @param id
  */
 export function getAppManifest(id: string) {
   return cache.get(id);
@@ -32,7 +32,7 @@ export function getAppManifest(id: string) {
 
 /**
  * set application cache by app id
- * @param id 
+ * @param id
  */
 export function setAppManifest(id: string, manifestInfo: ManifestInfo) {
   cache.set(id, manifestInfo);

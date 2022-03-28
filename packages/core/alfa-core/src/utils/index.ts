@@ -110,7 +110,7 @@ export const getManifestFromConfig = (appConfig: IAppConfig) => {
       entrypoints: {
         index: {
           js: appConfig.entry.scripts,
-          css: appConfig.entry.styles,
+          css: appConfig.entry.styles || [],
         },
       },
     };

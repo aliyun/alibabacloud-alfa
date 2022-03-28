@@ -3,25 +3,26 @@ import { EventEmitter } from '@alicloud/console-os-events';
 
 interface BootstrapOptions {
   NgZone: any;
-  bootstrapFunction(props: any): Promise<any>;
+  bootstrapFunction: (props: any) => Promise<any>;
   template: string;
   Router?: any;
-  domElementGetter?(): HTMLElement;
+  domElementGetter?: () => HTMLElement;
   AnimationEngine?: any;
 }
 
 
 const globalEventEmitter = (data: any) => {
-  window.postMessage(data.data, null);
-}
+  // targetOrigin must be '*' in low level chrome, otherwise it will cause a bug
+  window.postMessage(data.data, '*');
+};
 
 const bindEvents = (emitter: EventEmitter) => {
   emitter && emitter.on('main:postMessage', globalEventEmitter);
-}
+};
 
 const unbindEvents = (emitter: EventEmitter) => {
   emitter && emitter.off('main:postMessage', globalEventEmitter);
-}
+};
 
 const getProps = (props) => {
   const appProps = { ...props, ...(props.appProps || {}) };
@@ -43,20 +44,20 @@ export const bootstrap = (options: BootstrapOptions) => {
           const { emitter } = getProps(props);
           bindEvents(emitter);
           // @ts-ignore
-          return lifecycles.mount(props)
-        }
+          return lifecycles.mount(props);
+        },
       ],
       unmount: [
         (props) => {
           const { emitter } = getProps(props);
           unbindEvents(emitter);
           // @ts-ignore
-          return lifecycles.unmount(props)
-        }
+          return lifecycles.unmount(props);
+        },
       ],
-      update: []
+      update: [],
     };
   } else {
     return options.bootstrapFunction({});
   }
-}
+};

@@ -23,7 +23,7 @@ export default function createApplication(loader: BaseLoader) {
       afterUnmount, beforeUpdate, sandbox: customSandbox,
     } = props;
     const [app, setApp] = useState<MicroApplication | null>(null);
-    const appRef = useRef<HTMLElement | null | undefined>(null);
+    const appRef = useRef<HTMLElement | undefined>(undefined);
     const tagName = normalizeName(props.name);
 
     const sandbox = useMemo(() => {
@@ -63,11 +63,11 @@ export default function createApplication(loader: BaseLoader) {
         });
 
         if (!App) {
-          return logger?.error({ E_MSG: 'load app failed.' });
+          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.' });
         }
 
         if (!appRef.current) {
-          return logger?.error({ E_MSG: 'cannot find container.' });
+          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find container.' });
         }
 
         await App.mount(appRef.current, {
@@ -92,9 +92,9 @@ export default function createApplication(loader: BaseLoader) {
     }
 
     const dataAttrs = {
-      dataId: version,
-      dataVersion: version,
-      dataLoader: loaderVersion,
+      'data-id': version,
+      'data-version': version,
+      'data-loader': loaderVersion,
     };
 
     return (
@@ -105,7 +105,7 @@ export default function createApplication(loader: BaseLoader) {
         {
           (sandbox && sandbox.disableFakeBody)
             ? React.createElement(tagName, { style, className, ref: appRef, ...dataAttrs })
-            : React.createElement(tagName, { dataAttrs }, React.createElement('div', { ref: appRef, style, className }))
+            : React.createElement(tagName, { ...dataAttrs }, React.createElement('div', { ref: appRef, style, className }))
         }
       </>
     );

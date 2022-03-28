@@ -11,11 +11,11 @@ export default class Hook<T> {
     this.handlers = [];
   }
 
-  use<C>(
-    fulfilled: ChainPromise<T & C> | undefined,
-    rejected: ChainPromise<T & C> | undefined = undefined,
+  use(
+    fulfilled: ChainPromise<T> | undefined,
+    rejected: ChainPromise<T> | undefined = undefined,
   ): () => void {
-    const handler = {
+    const handler: HookHandler<T> = {
       fulfilled,
       rejected,
     };

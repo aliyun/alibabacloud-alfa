@@ -1,4 +1,4 @@
-import { getConfig, AlfaConfig, IWin, IAppConfig } from '@alicloud/alfa-core';
+import { AlfaConfig, IWin } from '@alicloud/alfa-core';
 import md5 from 'crypto-js/md5';
 
 /**
@@ -6,12 +6,14 @@ import md5 from 'crypto-js/md5';
  * @param features
  */
 const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
+  if (!features) return {};
+
   return Object.keys(features).reduce<Partial<Record<string, boolean>>>((newFeatures, key) => {
-    const feature = features[key];
+    const feature = features?.[key];
 
     if (!feature) return newFeatures;
 
-    const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.CURRENT_PK || '';
+    const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK || '';
     const md5Uid = md5(uid).toString();
 
     const {
@@ -49,8 +51,6 @@ const mergeConfigDataWithConsoleConfig = (configData: AlfaConfig, consoleConfig:
   };
 };
 
-export const getConsoleConfig = async (config: IAppConfig, consoleConfig: any) => {
-  // TODO: 容灾，获取 ConsoleConfig 失效的情况
-  const configData = await getConfig(config);
+export const getConsoleConfig = async (configData: AlfaConfig, consoleConfig: any) => {
   return mergeConfigDataWithConsoleConfig(configData, consoleConfig);
 };
