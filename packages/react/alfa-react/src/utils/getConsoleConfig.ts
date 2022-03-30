@@ -37,16 +37,58 @@ const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
   }, {});
 };
 
+const getRegions = (regions: string[] | { region?: string[] }) => {
+  if (!Array.isArray(regions) && regions.region) {
+    return regions.region || [];
+  }
+
+  return [];
+};
+
+const processChannelFeatures = (allChannelFeatures: AlfaConfig['ALL_CHANNEL_FEATURE_STATUS'], channel: string) => {
+  const channelFeatures = allChannelFeatures?.[channel];
+
+  if (!channelFeatures) return {};
+
+  return Object.keys(channelFeatures).reduce<Record<string, {
+    status: boolean;
+    attribute: {
+      customAttrs: Record<string, unknown>;
+      regions: string[] | {
+        region: string[];
+      };
+    };
+  }>>((newChannelFeatures, key) => {
+    const channelFeature = channelFeatures[key];
+
+    if (!channelFeature) return newChannelFeatures;
+
+    if (newChannelFeatures) {
+      const { status, attribute } = channelFeature;
+
+      newChannelFeatures[key] = {
+        status,
+        attribute: {
+          ...attribute,
+          regions: getRegions(channelFeature.attribute.regions),
+        },
+      };
+    }
+
+    return newChannelFeatures;
+  }, {});
+};
+
 const mergeConfigDataWithConsoleConfig = (configData: AlfaConfig, consoleConfig: IWin['ALIYUN_CONSOLE_CONFIG']) => {
   const channel = (window as IWin)?.ALIYUN_CONSOLE_CONFIG?.CHANNEL || 'OFFICIAL';
   const channelLinks = configData.ALL_CHANNEL_LINKS?.[channel] || {};
-  const channelFeatures = configData.ALL_CHANNEL_FEATURE_STATUS?.[channel] || {};
+  const channelFeatures = configData.ALL_CHANNEL_FEATURE_STATUS || {};
   const features = configData.ALL_FEATURE_STATUS || {};
 
   return {
     ...consoleConfig,
     CHANNEL_LINKS: channelLinks,
-    CHANNEL_FEATURE_STATUS: channelFeatures,
+    CHANNEL_FEATURE_STATUS: processChannelFeatures(channelFeatures, channel),
     FEATURE_STATUS: processFeatures(features),
   };
 };

@@ -4,7 +4,7 @@ import { AppManifest } from '@alicloud/console-os-kernal/lib/type';
 import { AlfaReleaseConfig, AlfaDynamicConfig } from '../../types';
 
 function isManifest(url: string, data?: AppManifest) {
-  if (/\/manifest.json$/.exec(url) && data) {
+  if (/\.manifest.json$/.exec(url) && data) {
     if (data.name && data.entrypoints && data.resources) {
       return true;
     }
@@ -16,9 +16,8 @@ function isManifest(url: string, data?: AppManifest) {
 function isRelease(url: string, data?: AlfaReleaseConfig) {
   if (/\/release.json$/.exec(url) && data) {
     const latestVersion = data['dist-tags']?.latest;
-    const entryFile = data.versions?.entry;
 
-    if (latestVersion && entryFile) return true;
+    if (latestVersion && data.versions?.[latestVersion].entry) return true;
   }
 
   return false;
@@ -69,6 +68,7 @@ export default async function responseInterceptor(response: AxiosResponse<any>) 
   }
 
   const error = new Error() as AxiosError;
+  error.message = 'responseDataIllegal';
   error.code = '0';
   error.config = config;
   error.response = response;

@@ -23,6 +23,7 @@ export default function createApplication(loader: BaseLoader) {
       afterUnmount, beforeUpdate, sandbox: customSandbox,
     } = props;
     const [app, setApp] = useState<MicroApplication | null>(null);
+    const [, setError] = useState(null);
     const appRef = useRef<HTMLElement | undefined>(undefined);
     const tagName = normalizeName(props.name);
 
@@ -76,7 +77,9 @@ export default function createApplication(loader: BaseLoader) {
 
         setApp(App);
       })().catch((e) => {
-        throw e;
+        setError(() => {
+          throw e;
+        });
       });
 
       return () => {

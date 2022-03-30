@@ -1,5 +1,4 @@
 import { IAppConfig, getConfig, getLocale, IWin } from '@alicloud/alfa-core';
-import { AlfaDynamicConfig } from '@alicloud/alfa-core/lib/types';
 
 import { getConsoleConfig } from '../utils/getConsoleConfig';
 import { getConsoleGlobal } from '../utils/getConsoleGlobal';

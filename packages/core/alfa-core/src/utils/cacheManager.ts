@@ -34,7 +34,7 @@ class Cache {
 
     this.store[url] = request.get<T>(url);
 
-    const { data } = await request.get<T>(url);
+    const { data } = await this.store[url];
     const result = data;
 
     if (result) this.store[url] = result;

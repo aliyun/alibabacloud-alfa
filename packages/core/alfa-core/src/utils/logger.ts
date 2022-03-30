@@ -55,6 +55,7 @@ export default class Logger implements AlfaLogger {
   debug(params: Params) {
     // do not log debug message in production env
     if (this.context.env === 'prod') return;
+    // TODO: debug with devtools
     console.log('DEBUG', this.mergeData(params));
   }
 
@@ -74,8 +75,14 @@ export default class Logger implements AlfaLogger {
   }
 
   private track(method: Method, topic: string, params: Params) {
+    const data = this.mergeData(params);
+
     // do not track during development
-    if (this.context.ENV === 'local') return;
-    logger[method](topic, this.mergeData(params));
+    if (this.context.ENV !== 'prod') {
+      console[method](topic, data);
+      return;
+    }
+
+    logger[method](topic, data);
   }
 }

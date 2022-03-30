@@ -17,7 +17,7 @@ type ChannelFeatures = Partial<Record<string, {
   status: boolean;
   attribute: {
     customAttrs: Record<string, unknown>;
-    regions: {
+    regions: string[] | {
       region: string[];
     };
   };

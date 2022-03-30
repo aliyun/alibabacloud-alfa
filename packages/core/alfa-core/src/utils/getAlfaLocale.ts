@@ -19,6 +19,8 @@ export const getLocale = async (config: IAppConfig) => {
 
   let messages: Record<string, string> = {};
 
+  if (!localeVersion) return messages;
+
   try {
     messages = await cache.getRemote<Record<string, string>>(localeEntry);
   } catch (e) {
