@@ -1,5 +1,5 @@
 import { AlfaDynamicConfig, IAppConfig } from '../types';
-import { getRelease } from './getAlfaRelease';
+import { getRelease } from './getRelease';
 import cache from './cacheManager';
 
 const defaultConfig: AlfaDynamicConfig = {

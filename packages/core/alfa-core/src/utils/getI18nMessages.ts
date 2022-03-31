@@ -1,5 +1,5 @@
-import { getAlfaLocale } from './index';
-import { getRelease } from './getAlfaRelease';
+import { getLocale } from './locale';
+import { getRelease } from './getRelease';
 import { IAppConfig } from '../types';
 import cache from './cacheManager';
 
@@ -8,12 +8,12 @@ import cache from './cacheManager';
  * @param config
  * @returns
  */
-export const getLocale = async (config: IAppConfig) => {
+export const getI18nMessages = async (config: IAppConfig) => {
   const releaseConfig = await getRelease(config);
 
   const { logger } = config;
 
-  const locale = getAlfaLocale();
+  const locale = getLocale(config.locale);
   const localeVersion = releaseConfig['dist-tags']?.['locales-latest'] || '';
   const localeEntry = releaseConfig['locales-versions']?.[localeVersion]?.[locale];
 

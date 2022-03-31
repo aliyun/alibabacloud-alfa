@@ -1,6 +1,6 @@
 import { createMicroApp } from '@alicloud/console-os-kernal';
 
-import { getManifestFromConfig, getURL, getAlfaEnv } from './utils';
+import { getManifestFromConfig, getURL, getEnv } from './utils';
 import Hook, { ChainPromise, HookHandler } from './utils/hookManager';
 import { IAppConfig } from './types';
 import Logger from './utils/logger';
@@ -8,7 +8,7 @@ import Logger from './utils/logger';
 const mergeConfig = (appConfig: IAppConfig, logger: Logger): IAppConfig => {
   return {
     ...appConfig,
-    env: appConfig.env || getAlfaEnv(),
+    env: getEnv(appConfig.env),
     logger: appConfig.logger || logger,
   };
 };
@@ -35,7 +35,7 @@ export default class BaseLoader {
   async register<P = {}>(passInConfig: IAppConfig<P>) {
     const logger = new Logger();
     if (!passInConfig) {
-      logger.error({ E_MSG: 'cannot find config before start.' });
+      logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find config before start.' });
       return Promise.reject(new Error('[alfa-core] cannot find config before start.'));
     }
 

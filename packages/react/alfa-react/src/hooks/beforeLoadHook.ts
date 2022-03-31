@@ -1,4 +1,4 @@
-import { IAppConfig, getConfig, getLocale, IWin } from '@alicloud/alfa-core';
+import { IAppConfig, getConfig, getI18nMessages, IWin } from '@alicloud/alfa-core';
 
 import { getConsoleConfig } from '../utils/getConsoleConfig';
 import { getConsoleGlobal } from '../utils/getConsoleGlobal';
@@ -18,7 +18,7 @@ async function afterLoadHook(appConfig: IAppConfig) {
     await Promise.all([
       getConsoleConfig(configData, defaultConsoleConfig),
       getConsoleGlobal(configData, defaultConsoleGlobal),
-      getLocale(appConfig),
+      getI18nMessages(appConfig),
     ]);
 
   const CONFIG_END_TIME = Date.now();

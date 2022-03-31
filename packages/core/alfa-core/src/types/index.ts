@@ -1,6 +1,7 @@
 import { OSApplication, SandBoxOption, AppInfo } from '@alicloud/console-os-kernal';
 
 export class AlfaLogger<P = any> {
+  setContext?: (params: P) => void;
   record?: (params: P) => void;
   send?: () => void;
   info?: (params: P) => void;
@@ -63,6 +64,7 @@ export interface IAppConfig<P = any> extends IOptions {
   };
   app?: OSApplication;
   env?: EnvEnum;
+  locale?: string;
 }
 
 export interface IOptions {
@@ -81,9 +83,7 @@ export interface AlfaVersion {
 
 export type LOCALE = 'en_US' | 'zh_CN' | 'zh_TW' | 'zh_HK' | 'ja_JP';
 
-export type AlfaLocaleVersion = {
-  [key in LOCALE | 'entry']: string;
-};
+export type AlfaLocaleVersion = Partial<Record<string, string>>;
 
 export type Version = string;
 
