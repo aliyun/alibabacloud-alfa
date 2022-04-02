@@ -32,7 +32,7 @@ const formatManifest = (manifestContent: Manifest, manifestUrl: string): Manifes
     externals,
     entrypoints: {
       [entrypoint]: {
-        css: entrypoints[entrypoint].css.map(replaceHost),
+        css: entrypoints[entrypoint].css?.map(replaceHost),
         js: entrypoints[entrypoint].js.map(replaceHost),
       },
     },

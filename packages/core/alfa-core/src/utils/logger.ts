@@ -54,7 +54,7 @@ export default class Logger implements AlfaLogger {
 
   debug(params: Params) {
     // do not log debug message in production env
-    if (this.context.env === 'prod') return;
+    if (this.context.ENV === 'prod') return;
     // TODO: debug with devtools
     console.log('DEBUG', this.mergeData(params));
   }
