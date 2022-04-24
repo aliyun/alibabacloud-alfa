@@ -6,8 +6,10 @@ type Manifest = Exclude<IAppConfig['manifest'], string | undefined>;
 
 const devHostname = '//dev.g.alicdn.com/';
 
-const replaceHost = (origin: string) => {
-  return origin.replace('//g.alicdn.com/', devHostname);
+const formatURL = (origin: string, base: string) => {
+  const url = origin.replace('//g.alicdn.com/', devHostname);
+
+  return new URL(url, base).toString();
 };
 
 /**
@@ -15,8 +17,6 @@ const replaceHost = (origin: string) => {
  * @param manifest
  */
 const formatManifest = (manifestContent: Manifest, manifestUrl: string): Manifest => {
-  if (manifestUrl.indexOf(devHostname) === -1) return manifestContent;
-
   const { name, resources, runtime, externals, entrypoints } = manifestContent;
 
   const entrypoint = Object.keys(entrypoints)[0];
@@ -24,7 +24,7 @@ const formatManifest = (manifestContent: Manifest, manifestUrl: string): Manifes
   return {
     name,
     resources: Object.keys(resources).reduce<Record<string, string>>((map, key) => {
-      map[key] = replaceHost(resources[key]);
+      map[key] = formatURL(resources[key], manifestUrl);
 
       return map;
     }, {}),
@@ -32,8 +32,8 @@ const formatManifest = (manifestContent: Manifest, manifestUrl: string): Manifes
     externals,
     entrypoints: {
       [entrypoint]: {
-        css: entrypoints[entrypoint].css?.map(replaceHost),
-        js: entrypoints[entrypoint].js.map(replaceHost),
+        css: entrypoints[entrypoint].css?.map((url) => formatURL(url, manifestUrl)),
+        js: entrypoints[entrypoint].js.map((url) => formatURL(url, manifestUrl)),
       },
     },
   };
