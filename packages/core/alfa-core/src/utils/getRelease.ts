@@ -36,6 +36,8 @@ export const getRelease = async (config: IAppConfig) => {
   try {
     const releaseConfig = await cache.getRemote<AlfaReleaseConfig>(getReleaseUrl(name, env));
 
+    if (!releaseConfig) throw new Error('releaseConfig is null');
+
     logger?.setContext && logger.setContext({
       release: JSON.stringify(releaseConfig),
     });
