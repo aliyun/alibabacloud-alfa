@@ -30,6 +30,32 @@ export const ENV: AlfaEnvConfig = {
   },
 };
 
+const disCdnPrepubUrl = 'https://cws2.alicdn.com/Prepub/pkgs/${id}/release.json';
+const disCdnReleaseUrl = 'https://cws.alicdn.com/Release/pkgs/${id}/release.json';
+
+export const DIS_ENV: AlfaEnvConfig = {
+  local: {
+    releaseUrl: process.env.ALFA_RELEASE_URL || disCdnPrepubUrl,
+    configUrl: cdnPrepubConfigUrl,
+    resourceUrl: resourceDailyUrl,
+  },
+  daily: {
+    releaseUrl: disCdnPrepubUrl,
+    configUrl: cdnPrepubConfigUrl,
+    resourceUrl: resourceDailyUrl,
+  },
+  pre: {
+    releaseUrl: disCdnPrepubUrl,
+    configUrl: cdnPrepubConfigUrl,
+    resourceUrl: resourceDailyUrl,
+  },
+  prod: {
+    releaseUrl: disCdnReleaseUrl,
+    configUrl: cdnReleaseConfigUrl,
+    resourceUrl: resourceProdUrl,
+  },
+};
+
 export const getConsoleEnv = (): EnvEnum => {
   if (process.env.NODE_ENV === 'development') {
     return 'local';

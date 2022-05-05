@@ -7,7 +7,11 @@ type Manifest = Exclude<IAppConfig['manifest'], string | undefined>;
 const devHostname = '//dev.g.alicdn.com/';
 
 const formatURL = (origin: string, base: string) => {
-  const url = origin.replace('//g.alicdn.com/', devHostname);
+  let url = origin;
+
+  if (base.indexOf(devHostname) !== -1) {
+    url = url.replace('//g.alicdn.com/', devHostname);
+  }
 
   return new URL(url, base).toString();
 };

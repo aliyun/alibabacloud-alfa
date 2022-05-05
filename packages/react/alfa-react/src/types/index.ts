@@ -43,6 +43,9 @@ export interface WidgetFactoryOption extends Omit<AlfaFactoryOption, OmitKeys> {
 
   // 加载 XConsole 样式
   theme?: string;
+
+  // 加载中心化 release 文件
+  central?: boolean;
 }
 
 export interface AlfaEnvConfigDescriptor {

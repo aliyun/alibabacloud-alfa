@@ -1,8 +1,9 @@
 import axios from 'axios';
 import template from 'lodash/template';
+import { getRelease } from '@alicloud/alfa-core';
 
 import { WidgetFactoryOption, WidgetReleaseConfig } from '../types';
-import { ENV, getConsoleEnv } from './env';
+import { ENV, DIS_ENV, getConsoleEnv } from './env';
 
 export let cachedRelease: Record<string, any> | null = null;
 
@@ -14,7 +15,9 @@ const normalizeEntryUrl = (id: string, version: string, resourceUrl: string) => 
 };
 
 export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
-  const env = ENV[option.env || getConsoleEnv()];
+  const { central = true, env } = option;
+
+  const Release = central ? ENV[env || getConsoleEnv()] : DIS_ENV[env || getConsoleEnv()];
   if (!option.version) {
     throw new Error('No Version for Widget');
   }
@@ -22,12 +25,12 @@ export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
   if (!option.version.endsWith('.x')) {
     return {
       version: option.version,
-      entryUrl: normalizeEntryUrl(option.name, option.version, env.resourceUrl || WIDGET_ENTRY_URL),
+      entryUrl: normalizeEntryUrl(option.name, option.version, Release.resourceUrl || WIDGET_ENTRY_URL),
     };
   }
 
   if (!cachedRelease) {
-    const resp = await axios.get<WidgetReleaseConfig>(env.releaseUrl);
+    const resp = await axios.get<WidgetReleaseConfig>(Release.releaseUrl);
     cachedRelease = resp.data;
   }
 
@@ -35,6 +38,6 @@ export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
 
   return {
     version,
-    entryUrl: normalizeEntryUrl(option.name, version, env.resourceUrl || WIDGET_ENTRY_URL),
+    entryUrl: normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL),
   };
 };
