@@ -4,7 +4,7 @@ import { AlfaLogger } from '../types';
 
 const logger = createLogger({
   project: 'alfa',
-  endpoint: 'cn-wulanchabu.log.aliyuncs.com', // project_xx 的外网域名，在 SLS project 概览里可以找到
+  endpoint: 'alfa.log-global.aliyuncs.com', // project_xx 的外网域名，在 SLS project 概览里可以找到
   logstore: 'loader', // 日志落库的地方
 });
 

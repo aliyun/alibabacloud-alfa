@@ -20,7 +20,7 @@ export default function createApplication(loader: BaseLoader) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
-      afterUnmount, beforeUpdate, sandbox: customSandbox,
+      afterUnmount, beforeUpdate, sandbox: customSandbox, locale,
     } = props;
     const [app, setApp] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
@@ -61,6 +61,7 @@ export default function createApplication(loader: BaseLoader) {
           beforeUnmount,
           afterUnmount,
           beforeUpdate,
+          locale,
         });
 
         if (!App) {
@@ -95,7 +96,7 @@ export default function createApplication(loader: BaseLoader) {
     }
 
     const dataAttrs = {
-      'data-id': version,
+      'data-id': name,
       'data-version': version,
       'data-loader': loaderVersion,
     };
