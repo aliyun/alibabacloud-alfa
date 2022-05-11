@@ -1,6 +1,5 @@
-import axios from 'axios';
 import template from 'lodash/template';
-import { getRelease } from '@alicloud/alfa-core';
+import { IWin, request, AlfaReleaseConfig } from '@alicloud/alfa-core';
 
 import { WidgetFactoryOption, WidgetReleaseConfig } from '../types';
 import { ENV, DIS_ENV, getConsoleEnv } from './env';
@@ -8,6 +7,8 @@ import { ENV, DIS_ENV, getConsoleEnv } from './env';
 export let cachedRelease: Record<string, any> | null = null;
 
 const WIDGET_ENTRY_URL = 'https://g.alicdn.com/${id}/${version}/index.js';
+
+const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK;
 
 const normalizeEntryUrl = (id: string, version: string, resourceUrl: string) => {
   const gitRepoId = id.replace('@ali/', '').replace('widget-', 'widget/');
@@ -29,15 +30,43 @@ export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
     };
   }
 
-  if (!cachedRelease) {
-    const resp = await axios.get<WidgetReleaseConfig>(Release.releaseUrl);
-    cachedRelease = resp.data;
-  }
+  let version;
+  let entryUrl;
 
-  const version = cachedRelease[option.name][option.version].latest;
+  if (central) {
+    if (!cachedRelease) {
+      const resp = await request.get<WidgetReleaseConfig>(Release.releaseUrl);
+      if (!resp || !resp.data) throw new Error('Cannot get Release');
+      cachedRelease = resp.data;
+    }
+
+    const latestVersion = cachedRelease[option.name][option.version].latest;
+    const nextVersion = cachedRelease[option.name][option.version].next?.version;
+    const gray = cachedRelease[option.name][option.version].next?.gray;
+
+    version = (uid && Number(uid.substring(uid.length - 2)) < gray) ? nextVersion : latestVersion;
+    entryUrl = normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL);
+  } else {
+    const resp = await request.get<AlfaReleaseConfig>(Release.releaseUrl);
+    if (!resp || !resp.data) throw new Error('Cannot get Release');
+    const release = resp.data;
+
+    const nextVersion = release['dist-tags']?.[`${option.version}-next`];
+    version = release['dist-tags']?.[option.version];
+
+    // has gray version
+    if (nextVersion && release?.['next-versions']?.[nextVersion] && uid) {
+      const sampling = release['next-versions'][nextVersion].featureStatus.sampling || 0;
+      if (sampling * 100 > Number(uid.substring(uid.length - 2))) {
+        version = nextVersion;
+      }
+    }
+
+    entryUrl = version && release.versions?.[version]?.entry;
+  }
 
   return {
     version,
-    entryUrl: normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL),
+    entryUrl,
   };
 };

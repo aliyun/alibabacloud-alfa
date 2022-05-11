@@ -96,6 +96,7 @@ export interface AlfaReleaseConfig {
   versions?: Record<Version, Partial<AlfaVersion>>;
   'locales-versions'?: Record<Version, Partial<AlfaLocaleVersion>>;
   'config-versions'?: Record<Version, Partial<AlfaConfigVersion>>;
+  'next-versions'?: Record<Version, { featureStatus: AlfaFeature }>;
 }
 
 type AlfaChannelLinks = Partial<Record<Channel, ChannelLinks>>;

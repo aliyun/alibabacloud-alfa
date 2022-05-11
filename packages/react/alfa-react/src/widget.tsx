@@ -28,7 +28,7 @@ export function createCWSWidget<T>(option: WidgetFactoryOption) {
 
     return loadBundle({
       id: normalizeName(option.name),
-      url: (option.url || url).replace('index.js', option?.alfaLoader ? 'index.alfa.js' : 'index.js'),
+      url: (option.url || url || '').replace('index.js', (option?.alfaLoader) ? 'index.alfa.js' : 'index.js'),
       deps: {
         ...deps,
         ...option.dependencies,

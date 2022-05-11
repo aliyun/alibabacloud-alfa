@@ -4,7 +4,7 @@ import { AppManifest } from '@alicloud/console-os-kernal/lib/type';
 import { AlfaReleaseConfig, AlfaDynamicConfig } from '../../types';
 
 function isManifest(url: string, data?: AppManifest) {
-  if (/\.manifest.json$/.exec(url) && data) {
+  if (/\.manifest\.json$/.exec(url) && data) {
     if (data.name && data.entrypoints && data.resources) {
       return true;
     }
@@ -14,7 +14,22 @@ function isManifest(url: string, data?: AppManifest) {
 }
 
 function isRelease(url: string, data?: AlfaReleaseConfig) {
-  if (/\/release.json$/.exec(url) && data) {
+  const pathname = new URL(url).pathname;
+
+  if (!data) return false;
+
+  // central cws release.json
+  if (pathname === '/release.json') {
+    return Object.keys(data || {}).length > 0;
+  }
+
+  // distributed cws release.json
+  if (/@ali\/widget-[\w-]+\/release\.json$/.exec(pathname)) {
+    return Object.keys(data?.versions || {}).length > 0;
+  }
+
+  // alfa release.json
+  if (/\/release\.json$/.exec(pathname) && data) {
     const latestVersion = data['dist-tags']?.latest;
 
     if (latestVersion && data.versions?.[latestVersion].entry) return true;
@@ -24,8 +39,14 @@ function isRelease(url: string, data?: AlfaReleaseConfig) {
 }
 
 function isConfig(url: string, data: AlfaDynamicConfig) {
-  if (/\/config.json/.exec(url) && data) {
-    if ('ALL_CHANNEL_LINKS' in data && 'ALL_CHANNEL_FEATURE_STATUS' in data && 'ALL_FEATURE_STATUS' in data) return true;
+  // cws config.json
+  if (/@ali\/widget-[\w-]+\/release\.json$/.exec(url)) {
+    return ('features' in data && 'locales' in data && 'links' in data);
+  }
+
+  // alfa config.json
+  if (/\/config\.json$/.exec(url) && data) {
+    return ('ALL_CHANNEL_LINKS' in data && 'ALL_CHANNEL_FEATURE_STATUS' in data && 'ALL_FEATURE_STATUS' in data);
   }
 
   return false;
