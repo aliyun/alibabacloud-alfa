@@ -1,40 +1,33 @@
-/**
- * injectScriptCallBack
- * @lastModified 20190821
- * @forwardCompatibleTo 20190821
- * @createAt 20190821
- */
-
 export const getJsonCallback = (src) => {
   let u;
-  try{
+  try {
     u = new URL(src);
-  } catch( error ) {
-    return ;
+  } catch (error) {
+    return;
   }
   const sp = u.searchParams;
   if (!sp) {
     return null;
   }
 
-  return sp.get( 'callback' ) || sp.get( 'cb' );
-}
+  return sp.get('callback') || sp.get('cb');
+};
 
-const injectScriptCallBack = scriptEl => {
+const injectScriptCallBack = (scriptEl) => {
   setTimeout(() => {
-    if( !scriptEl.src ){
-      return ;
+    if (!scriptEl.src) {
+      return;
     }
     const appWindow = scriptEl.ownerContext.window;
     const callbackName = getJsonCallback(scriptEl.src);
-    if( callbackName && typeof appWindow[ callbackName ] === 'function' ){
-      window[ callbackName ] = function( ...args ){
-        const result = appWindow[ callbackName ]( ...args );
-        window[ callbackName ] = null;
+    if (callbackName && typeof appWindow[callbackName] === 'function') {
+      window[callbackName] = function (...args) {
+        const result = appWindow[callbackName](...args);
+        window[callbackName] = null;
         return result;
-      }
+      };
     }
-  }, 0 );
-}
+  }, 0);
+};
 
 export default injectScriptCallBack;

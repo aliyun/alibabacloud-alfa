@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import { loadBundle } from '@alicloud/console-os-loader';
 
 import { WidgetFactoryOption, WidgetCWSConfig } from './types';
-import { createAlfaApp } from './app';
 import { getWidgetVersionById, getWidgetDeps, getWidgetConfigById, eventEmitter } from './widget/index';
 import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
@@ -29,7 +28,7 @@ export function createCWSWidget<T>(option: WidgetFactoryOption) {
 
     return loadBundle({
       id: normalizeName(option.name),
-      url: (option.url || url).replace('index.js', option?.alfaLoader ? 'index.alfa.js' : 'index.js'),
+      url: (option.url || url || '').replace('index.js', (option?.alfaLoader) ? 'index.alfa.js' : 'index.js'),
       deps: {
         ...deps,
         ...option.dependencies,

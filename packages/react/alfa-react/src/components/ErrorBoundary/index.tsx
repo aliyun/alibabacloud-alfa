@@ -5,13 +5,14 @@ import { AlfaLogger } from '@alicloud/alfa-core';
 import ErrorPanel from './ErrorPanel';
 
 interface IProps {
+  fallbackRender?: (error?: Error) => Element;
   appDidCatch?: (error?: Error, info?: ErrorInfo) => void;
   logger?: AlfaLogger;
 }
 
 interface State {
   hasError: boolean;
-  error: Error | null;
+  error?: Error;
 }
 
 interface GlobalBl {
@@ -25,7 +26,7 @@ class ErrorBoundary extends React.Component<IProps, State> {
     super(props);
     this.state = {
       hasError: false,
-      error: null,
+      error: undefined,
     };
   }
 
@@ -39,12 +40,13 @@ class ErrorBoundary extends React.Component<IProps, State> {
 
     // You can also log the error to an error reporting service in appDidCatch
     appDidCatch && appDidCatch(error, errorInfo);
-    logger?.error({ E_MSG: '', E_STACK: error, C_STACK: errorInfo });
+    logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: error.message, E_STACK: error, C_STACK: errorInfo });
   }
 
   render() {
     const { error } = this.state;
     if (this.state.hasError) {
+      if (this.props.fallbackRender) return this.props.fallbackRender(error);
       // You can render any custom fallback UI
       return (<ErrorPanel error={error} />);
     }

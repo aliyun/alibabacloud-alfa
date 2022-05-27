@@ -1,4 +1,4 @@
-import { getConfig, AlfaConfig, IWin, IAppConfig } from '@alicloud/alfa-core';
+import { AlfaConfig, IWin } from '@alicloud/alfa-core';
 import md5 from 'crypto-js/md5';
 
 /**
@@ -6,12 +6,14 @@ import md5 from 'crypto-js/md5';
  * @param features
  */
 const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
+  if (!features) return {};
+
   return Object.keys(features).reduce<Partial<Record<string, boolean>>>((newFeatures, key) => {
-    const feature = features[key];
+    const feature = features?.[key];
 
     if (!feature) return newFeatures;
 
-    const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.CURRENT_PK || '';
+    const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK || '';
     const md5Uid = md5(uid).toString();
 
     const {
@@ -35,22 +37,62 @@ const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
   }, {});
 };
 
+const getRegions = (regions: string[] | { region?: string[] }) => {
+  if (!Array.isArray(regions) && regions.region) {
+    return regions.region || [];
+  }
+
+  return [];
+};
+
+const processChannelFeatures = (allChannelFeatures: AlfaConfig['ALL_CHANNEL_FEATURE_STATUS'], channel: string) => {
+  const channelFeatures = allChannelFeatures?.[channel];
+
+  if (!channelFeatures) return {};
+
+  return Object.keys(channelFeatures).reduce<Record<string, {
+    status: boolean;
+    attribute: {
+      customAttrs: Record<string, unknown>;
+      regions: string[] | {
+        region: string[];
+      };
+    };
+  }>>((newChannelFeatures, key) => {
+    const channelFeature = channelFeatures[key];
+
+    if (!channelFeature) return newChannelFeatures;
+
+    if (newChannelFeatures) {
+      const { status, attribute } = channelFeature;
+
+      newChannelFeatures[key] = {
+        status,
+        attribute: {
+          ...attribute,
+          regions: getRegions(channelFeature.attribute.regions),
+        },
+      };
+    }
+
+    return newChannelFeatures;
+  }, {});
+};
+
 const mergeConfigDataWithConsoleConfig = (configData: AlfaConfig, consoleConfig: IWin['ALIYUN_CONSOLE_CONFIG']) => {
   const channel = (window as IWin)?.ALIYUN_CONSOLE_CONFIG?.CHANNEL || 'OFFICIAL';
   const channelLinks = configData.ALL_CHANNEL_LINKS?.[channel] || {};
-  const channelFeatures = configData.ALL_CHANNEL_FEATURE_STATUS?.[channel] || {};
+  const channelFeatures = configData.ALL_CHANNEL_FEATURE_STATUS || {};
   const features = configData.ALL_FEATURE_STATUS || {};
 
   return {
     ...consoleConfig,
     CHANNEL_LINKS: channelLinks,
-    CHANNEL_FEATURE_STATUS: channelFeatures,
+    CHANNEL_FEATURE_STATUS: processChannelFeatures(channelFeatures, channel),
     FEATURE_STATUS: processFeatures(features),
   };
 };
 
-export const getConsoleConfig = async (config: IAppConfig, consoleConfig: any) => {
-  // TODO: 容灾，获取 ConsoleConfig 失效的情况
-  const configData = await getConfig(config);
+export const getConsoleConfig = async (configData: AlfaConfig, consoleConfig: any) => {
   return mergeConfigDataWithConsoleConfig(configData, consoleConfig);
 };

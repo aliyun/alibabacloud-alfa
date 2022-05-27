@@ -4,12 +4,12 @@ import { AlfaLogger } from '../types';
 
 const logger = createLogger({
   project: 'alfa',
-  endpoint: 'cn-wulanchabu.log.aliyuncs.com', // project_xx 的外网域名，在 SLS project 概览里可以找到
+  endpoint: 'alfa.log-global.aliyuncs.com', // project_xx 的外网域名，在 SLS project 概览里可以找到
   logstore: 'loader', // 日志落库的地方
 });
 
 interface Params {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | undefined;
 }
 
 enum Method {
@@ -21,7 +21,7 @@ enum Method {
 
 export default class Logger implements AlfaLogger {
   cache: Params;
-  caches: Params[];
+  // caches: Params[];
   context: Params;
 
   constructor(context: Params = {}) {
@@ -54,7 +54,8 @@ export default class Logger implements AlfaLogger {
 
   debug(params: Params) {
     // do not log debug message in production env
-    if (this.context.env === 'prod') return;
+    if (this.context.ENV === 'prod') return;
+    // TODO: debug with devtools
     console.log('DEBUG', this.mergeData(params));
   }
 
@@ -74,8 +75,14 @@ export default class Logger implements AlfaLogger {
   }
 
   private track(method: Method, topic: string, params: Params) {
+    const data = this.mergeData(params);
+
     // do not track during development
-    if (this.context.ENV === 'local') return;
-    logger[method](topic, this.mergeData(params));
+    if (this.context.ENV !== 'prod') {
+      console[method](topic, data);
+      return;
+    }
+
+    logger[method](topic, data);
   }
 }

@@ -2,7 +2,7 @@ export const addEventListener = (el, originEvent) => (type, listener, options) =
   const listeners = el._listenerMap.get(type) || [];
   el._listenerMap.set(type, [...listeners, listener]);
   return originEvent.apply(el, [type, listener, options]);
-}
+};
 
 export const removeEventListener = (el, originEvent) => (type, listener, options) => {
   const storedTypeListeners = el._listenerMap.get(type);
@@ -10,7 +10,7 @@ export const removeEventListener = (el, originEvent) => (type, listener, options
     storedTypeListeners.splice(storedTypeListeners.indexOf(listener), 1);
   }
   return originEvent.apply(el, [type, listener, options]);
-}
+};
 
 const elProperties = ['innerHTML', 'text', 'innerText'];
 
@@ -31,8 +31,7 @@ export const injectHTMLScriptElement = (el) => {
           this.ownerContext.evalScript && el.ownerContext.evalScript(value.toString());
         }
       },
-      enumerable: false
+      enumerable: false,
     });
   });
-
-}
+};

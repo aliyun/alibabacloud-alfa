@@ -1,6 +1,6 @@
 import { createMicroApp } from '@alicloud/console-os-kernal';
 
-import { getManifestFromConfig, getURL, getAlfaEnv } from './utils';
+import { getManifestFromConfig, getURL, getEnv } from './utils';
 import Hook, { ChainPromise, HookHandler } from './utils/hookManager';
 import { IAppConfig } from './types';
 import Logger from './utils/logger';
@@ -8,7 +8,7 @@ import Logger from './utils/logger';
 const mergeConfig = (appConfig: IAppConfig, logger: Logger): IAppConfig => {
   return {
     ...appConfig,
-    env: appConfig.env || getAlfaEnv(),
+    env: getEnv(appConfig.env),
     logger: appConfig.logger || logger,
   };
 };
@@ -23,7 +23,7 @@ export default class BaseLoader {
   afterResolve: Hook<IAppConfig>;
   beforeLoad: Hook<IAppConfig>;
   afterLoad: Hook<IAppConfig>;
-  config: IAppConfig;
+  config?: IAppConfig;
 
   constructor() {
     this.beforeResolve = new Hook<IAppConfig>();
@@ -32,10 +32,10 @@ export default class BaseLoader {
     this.afterLoad = new Hook<IAppConfig>();
   }
 
-  async register<P = {}, C = {}>(passInConfig: IAppConfig<P> & C) {
+  async register<P = {}>(passInConfig: IAppConfig<P>) {
     const logger = new Logger();
     if (!passInConfig) {
-      logger.error({ E_MSG: 'cannot find config before start.' });
+      logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find config before start.' });
       return Promise.reject(new Error('[alfa-core] cannot find config before start.'));
     }
 
@@ -49,9 +49,9 @@ export default class BaseLoader {
       ENV: env,
     });
 
-    const chains: Array<ChainPromise<IAppConfig<P> | (IAppConfig<P> & C)>> = [];
+    const chains: Array<ChainPromise<IAppConfig<P>> | undefined> = [];
 
-    const flattenHookHandlers = (handler: HookHandler<IAppConfig<P> & C>) => {
+    const flattenHookHandlers = (handler: HookHandler<IAppConfig<P>>) => {
       const { fulfilled, rejected } = handler;
 
       chains.push(fulfilled, rejected);
@@ -65,6 +65,9 @@ export default class BaseLoader {
 
     // modify resolved config
     this.afterResolve.handlers.forEach(flattenHookHandlers);
+
+    chains.push(this.init, undefined);
+
     // update props before load
     this.beforeLoad.handlers.forEach(flattenHookHandlers);
 
@@ -80,7 +83,7 @@ export default class BaseLoader {
       promise = promise.then(chains.shift(), chains.shift());
     }
 
-    return promise;
+    return promise.catch((e) => { throw e; });
   }
 
   /**
@@ -104,11 +107,11 @@ export default class BaseLoader {
   }
 
   /**
-   * loadApp from remote
+   * init config for micro app
    * @param config
    * @returns
    */
-  private async load(config: IAppConfig) {
+  private async init(config: IAppConfig) {
     const {
       name,
       container,
@@ -144,11 +147,20 @@ export default class BaseLoader {
       // parcel
     });
 
-    await app.load();
-
     return {
       ...config,
       app,
     };
+  }
+
+  /**
+   * loadApp from remote
+   * @param config
+   * @returns
+   */
+  private async load(config: IAppConfig) {
+    await config?.app?.load();
+
+    return config;
   }
 }

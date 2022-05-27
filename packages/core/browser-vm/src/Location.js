@@ -14,7 +14,7 @@ class Location{
       get( target, name ){
         switch( name ) {
           case 'reload':
-            return () => {};
+            return () => window.location.reload();
           case 'replace':
             return () => {};
           case 'toString':

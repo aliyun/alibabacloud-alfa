@@ -1,3 +1,3 @@
 export const isSSR = () => {
-  return typeof document === 'undefined'
-}
+  return typeof document === 'undefined';
+};

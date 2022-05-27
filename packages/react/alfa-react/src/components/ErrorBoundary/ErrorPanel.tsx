@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IProps {
-  error: Error | null;
+  error?: Error;
 }
 const padding = 24;
 const containerBackground = '#fcebea';

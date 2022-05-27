@@ -5,17 +5,16 @@ import { version as LOADER_VERSION } from '../version';
 // get manifest before resolve
 // normalize name
 async function beforeResolveHook(appConfig: IAppConfig) {
-  let { manifest: resolvedManifest } = appConfig;
   const { logger } = appConfig;
 
   const START_TIME = Date.now();
   const MANIFEST_START_TIME = Date.now();
-  if (!resolvedManifest) {
-    resolvedManifest = await getManifest(appConfig);
-  }
+
+  const resolvedManifest = await getManifest(appConfig);
+
   const MANIFEST_END_TIME = Date.now();
 
-  logger?.record({
+  logger?.record && logger.record({
     LOADER_VERSION,
     START_TIME,
     MANIFEST_START_TIME,

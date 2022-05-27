@@ -32,7 +32,7 @@ const createWidget = (option: any) => {
 };
 
 export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFactoryOption): Promise<WidgetRuntime> => {
-  const { entryUrl, version } = await getWidgetVersionById({
+  const { entryUrl = '', version } = await getWidgetVersionById({
     name: WIDGET_RUNTIME_ID,
     version: option?.runtimeVersion || '1.x',
   });

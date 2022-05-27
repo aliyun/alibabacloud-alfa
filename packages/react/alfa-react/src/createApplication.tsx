@@ -1,9 +1,10 @@
-import React, { Suspense, useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
 import { AlfaFactoryOption, MicroApplication } from './types';
+import { version as loaderVersion } from './version';
 
 interface IProps<C = any> extends AlfaFactoryOption {
   customProps: C;
@@ -17,16 +18,31 @@ interface IProps<C = any> extends AlfaFactoryOption {
 export default function createApplication(loader: BaseLoader) {
   return function Application<C = any>(props: IProps<C>) {
     const {
-      name, version, manifest, loading, sandbox, customProps, className, style, container,
+      name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
-      afterUnmount, beforeUpdate,
+      afterUnmount, beforeUpdate, sandbox: customSandbox, locale,
     } = props;
     const [app, setApp] = useState<MicroApplication | null>(null);
-    const appRef = useRef<HTMLElement | null | undefined>(null);
+    const [, setError] = useState(null);
+    const appRef = useRef<HTMLElement | undefined>(undefined);
     const tagName = normalizeName(props.name);
 
+    const sandbox = useMemo(() => {
+      return {
+        ...customSandbox,
+        // allowResources: [
+        //   ...(customSandbox?.allowResources || []),
+        //   /^https?:\/\/at\.alicdn\.com\//,
+        // ],
+        externalsVars: [
+          ...(customSandbox?.externalsVars || []),
+          // global vars used in ConsoleBase.forApp
+          '_console_base_ready_',
+        ],
+      };
+    }, [customSandbox]);
+
     useEffect(() => {
-      // eslint-disable-next-line no-useless-catch
       (async () => {
         const { app: App, logger } = await loader.register<C>({
           entry,
@@ -45,16 +61,15 @@ export default function createApplication(loader: BaseLoader) {
           beforeUnmount,
           afterUnmount,
           beforeUpdate,
+          locale,
         });
 
         if (!App) {
-          return logger?.error({ E_MSG: 'load app failed.' });
+          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.' });
         }
 
-        await App.load();
-
         if (!appRef.current) {
-          return logger?.error({ E_MSG: 'cannot find container.' });
+          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find container.' });
         }
 
         await App.mount(appRef.current, {
@@ -62,15 +77,17 @@ export default function createApplication(loader: BaseLoader) {
         });
 
         setApp(App);
-
-        return () => {
-          App && App.unmount();
-        };
       })().catch((e) => {
-        throw e;
+        setError(() => {
+          throw e;
+        });
       });
+
+      return () => {
+        app && app.unmount();
+      };
     }, [
-      name, manifest, customProps, sandbox, entry, url, version, container,
+      app, name, manifest, customProps, sandbox, entry, url, version, container,
       customLogger, deps, env, beforeMount, afterMount, beforeUnmount, afterUnmount, beforeUpdate,
     ]);
 
@@ -78,16 +95,23 @@ export default function createApplication(loader: BaseLoader) {
       app.update(customProps);
     }
 
+    const dataAttrs = {
+      'data-id': name,
+      'data-version': version,
+      'data-loader': loaderVersion,
+    };
+
     return (
-      <Suspense fallback={<Loading loading={loading} />}>
-        <>
-          {
-            (sandbox && sandbox !== true && sandbox.disableFakeBody)
-              ? React.createElement(tagName, { style, className, ref: appRef, dataId: name })
-              : React.createElement(tagName, {}, React.createElement('div', { ref: appRef }))
-          }
-        </>
-      </Suspense>
+      <>
+        {
+          !app ? <Loading loading={loading} /> : null
+        }
+        {
+          (sandbox && sandbox.disableFakeBody)
+            ? React.createElement(tagName, { style, className, ref: appRef, ...dataAttrs })
+            : React.createElement(tagName, { ...dataAttrs }, React.createElement('div', { ref: appRef, style, className }))
+        }
+      </>
     );
   };
 }

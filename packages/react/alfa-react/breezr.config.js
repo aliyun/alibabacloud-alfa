@@ -4,6 +4,6 @@ module.exports = {
       moduleName: 'aliOSKernal',
       useTypescript: true,
       useTerserPlugin: true,
-    }]
-  ]
-}
+    }],
+  ],
+};

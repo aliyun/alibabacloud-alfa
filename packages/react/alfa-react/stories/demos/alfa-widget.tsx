@@ -2,9 +2,8 @@ import React from 'react';
 import { createAlfaWidget } from '../../src';
 
 const AlfaApp = createAlfaWidget({
-  name: '@ali/alfa-cloud-home-widget-alfa-widget-demo',
-  version: '0.1.0',
-  // env: 'prod',
+  name: '@ali/alfa-cloud-cms-app-cloudmonitor',
+  locale: 'zh_CN',
   // dynamicConfig: true,
 });
 

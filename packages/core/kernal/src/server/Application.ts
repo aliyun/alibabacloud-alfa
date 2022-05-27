@@ -19,7 +19,7 @@ export class Application {
   }
 
   /**
-   * 
+   *
    */
   public load(env: IIsomorphicEnvironment) {
     this.remoteApp = env.getBundle(this.appInfo.manifest);

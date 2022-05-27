@@ -6,13 +6,13 @@ import { createCWSWidget } from './widget';
 import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './hooks/beforeResolveHook';
-import afterLoadHook from './hooks/afterLoadHook';
+import beforeLoadHook from './hooks/beforeLoadHook';
 
 const loader = BaseLoader.create();
 
 loader.beforeResolve.use(beforeResolveHook);
-loader.afterLoad.use(afterLoadHook);
-loader.afterLoad.use(async (appConfig) => {
+loader.beforeLoad.use(beforeLoadHook);
+loader.beforeLoad.use(async (appConfig) => {
   const { app } = appConfig;
 
   if (app && app.context) {

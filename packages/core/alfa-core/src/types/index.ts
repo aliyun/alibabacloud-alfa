@@ -1,12 +1,13 @@
 import { OSApplication, SandBoxOption, AppInfo } from '@alicloud/console-os-kernal';
 
 export class AlfaLogger<P = any> {
-  record: (params: P) => void;
-  send: () => void;
-  info: (params: P) => void;
-  error: (params: P) => void;
-  warn: (params: P) => void;
-  debug: (params: P) => void;
+  setContext?: (params: P) => void;
+  record?: (params: P) => void;
+  send?: () => void;
+  info?: (params: P) => void;
+  error?: (params: P) => void;
+  warn?: (params: P) => void;
+  debug?: (params: P) => void;
 }
 
 type Channel = string;
@@ -17,7 +18,7 @@ type ChannelFeatures = Partial<Record<string, {
   status: boolean;
   attribute: {
     customAttrs: Record<string, unknown>;
-    regions: {
+    regions: string[] | {
       region: string[];
     };
   };
@@ -27,6 +28,7 @@ type FeatureStatus = Partial<Record<string, boolean>>;
 
 export interface IWin {
   ALIYUN_CONSOLE_I18N_MESSAGE?: Record<string, string>;
+  ALIYUN_CONSOLE_GLOBAL?: Record<string, any>;
   ALIYUN_CONSOLE_CONFIG?: Partial<{
     fEnv: EnvEnum;
     LOCALE: string;
@@ -50,7 +52,7 @@ export interface IAppConfig<P = any> extends IOptions {
   entry?: IAppManifest | string;
   name: string;
   version?: string;
-  container?: HTMLElement | null;
+  container?: HTMLElement;
   props?: P;
 
   // alfa 的扩展属性
@@ -62,6 +64,7 @@ export interface IAppConfig<P = any> extends IOptions {
   };
   app?: OSApplication;
   env?: EnvEnum;
+  locale?: string;
 }
 
 export interface IOptions {
@@ -80,9 +83,7 @@ export interface AlfaVersion {
 
 export type LOCALE = 'en_US' | 'zh_CN' | 'zh_TW' | 'zh_HK' | 'ja_JP';
 
-export type AlfaLocaleVersion = {
-  [key in LOCALE | 'entry']: string;
-};
+export type AlfaLocaleVersion = Partial<Record<string, string>>;
 
 export type Version = string;
 
@@ -95,6 +96,7 @@ export interface AlfaReleaseConfig {
   versions?: Record<Version, Partial<AlfaVersion>>;
   'locales-versions'?: Record<Version, Partial<AlfaLocaleVersion>>;
   'config-versions'?: Record<Version, Partial<AlfaConfigVersion>>;
+  'next-versions'?: Record<Version, { featureStatus: AlfaFeature }>;
 }
 
 type AlfaChannelLinks = Partial<Record<Channel, ChannelLinks>>;
@@ -113,9 +115,10 @@ interface AlfaFeature {
 type AlfaFeatures = Partial<Record<string, AlfaFeature>>;
 
 export interface AlfaDynamicConfig {
-  ALL_CHANNEL_LINKS: AlfaChannelLinks;
-  ALL_CHANNEL_FEATURE_STATUS: AlfaChannelFeatures;
-  ALL_FEATURE_STATUS: AlfaFeatures;
+  ALL_CHANNEL_LINKS?: AlfaChannelLinks;
+  ALL_CHANNEL_FEATURE_STATUS?: AlfaChannelFeatures;
+  ALL_FEATURE_STATUS?: AlfaFeatures;
+  GLOBAL_DATA?: Record<string, any>;
 }
 
 export type EnvEnum = 'prod' | 'local' | 'pre' | 'daily';
