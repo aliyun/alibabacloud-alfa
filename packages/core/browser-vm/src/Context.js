@@ -79,7 +79,7 @@ class Context {
 
       // TODO: change src to a reasonable value.
       iframe.setAttribute('src', conf.url ? conf.url : '/api.json');
-      iframe.style.cssText = 'position: absolute; top: -20000px; width: 100%; height: 1px;';
+      iframe.style.cssText = 'position: absolute; top: -20000px; width: 1px; height: 1px;';
 
       document.body.appendChild(iframe);
 

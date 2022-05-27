@@ -23,6 +23,11 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
   const passedInOption = option;
 
   return React.memo((props: P) => {
+    const customProps = {
+      ...props,
+      __injectHistory: props.history,
+    };
+
     return (
       <ErrorBoundary {...props}>
         <Application<P>
@@ -30,7 +35,7 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
           {...passedInOption}
           sandbox={option.sandbox || (props as P & { sandbox: {} }).sandbox}
           deps={dependencies || {}}
-          customProps={props}
+          customProps={customProps}
         />
       </ErrorBoundary>
     );

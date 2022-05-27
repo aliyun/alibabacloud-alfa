@@ -33,37 +33,44 @@ export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
   let version;
   let entryUrl;
 
+  // if central is true, get cws.alicdn.com/release.json firstly
   if (central) {
     if (!cachedRelease) {
       const resp = await request.get<WidgetReleaseConfig>(Release.releaseUrl);
-      if (!resp || !resp.data) throw new Error('Cannot get Release');
-      cachedRelease = resp.data;
-    }
+      if (resp && resp.data) {
+        cachedRelease = resp.data;
 
-    const latestVersion = cachedRelease[option.name][option.version].latest;
-    const nextVersion = cachedRelease[option.name][option.version].next?.version;
-    const gray = cachedRelease[option.name][option.version].next?.gray;
+        const latestVersion = cachedRelease[option.name][option.version].latest;
+        const nextVersion = cachedRelease[option.name][option.version].next?.version;
+        const gray = cachedRelease[option.name][option.version].next?.gray;
 
-    version = (uid && Number(uid.substring(uid.length - 2)) < gray) ? nextVersion : latestVersion;
-    entryUrl = normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL);
-  } else {
-    const resp = await request.get<AlfaReleaseConfig>(Release.releaseUrl);
-    if (!resp || !resp.data) throw new Error('Cannot get Release');
-    const release = resp.data;
+        version = (uid && Number(uid.substring(uid.length - 2)) < gray) ? nextVersion : latestVersion;
+        entryUrl = normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL);
 
-    const nextVersion = release['dist-tags']?.[`${option.version}-next`];
-    version = release['dist-tags']?.[option.version];
-
-    // has gray version
-    if (nextVersion && release?.['next-versions']?.[nextVersion] && uid) {
-      const sampling = release['next-versions'][nextVersion].featureStatus.sampling || 0;
-      if (sampling * 100 > Number(uid.substring(uid.length - 2))) {
-        version = nextVersion;
+        return {
+          version,
+          entryUrl,
+        };
       }
     }
-
-    entryUrl = version && release.versions?.[version]?.entry;
   }
+
+  const resp = await request.get<AlfaReleaseConfig>(Release.releaseUrl);
+  if (!resp || !resp.data) throw new Error('Cannot get Release');
+  const release = resp.data;
+
+  const nextVersion = release['dist-tags']?.[`${option.version}-next`];
+  version = release['dist-tags']?.[option.version];
+
+  // has gray version
+  if (nextVersion && release?.['next-versions']?.[nextVersion] && uid) {
+    const sampling = release['next-versions'][nextVersion].featureStatus.sampling || 0;
+    if (sampling * 100 > Number(uid.substring(uid.length - 2))) {
+      version = nextVersion;
+    }
+  }
+
+  entryUrl = version && release.versions?.[version]?.entry;
 
   return {
     version,
