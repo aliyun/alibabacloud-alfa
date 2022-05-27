@@ -8,7 +8,7 @@
 import injectScriptCallBack, { getJsonCallback } from './utils/injectScriptCallBack';
 import { isSSR } from './utils/isSSR';
 
-const makeElInjector = (originMethod) => function( el, ...args ){
+const makeElInjector = (originMethod, methodName) => function( el, ...args ){
 
   // 如果不在 BrowserVM 的白名单内，尝试通过 context 的 load script 通过 xhr 获取脚本内容，并在沙箱中执行
   if (
@@ -46,10 +46,14 @@ const makeElInjector = (originMethod) => function( el, ...args ){
   // fix: babel 会把 fn.call 转义成 fn.call.apply 造成 chrome 50 的几个版本报错
   // 这里 尝试 try catch 如果报错 直接调用 fn.apply
 
+  const methodArgs = methodName === 'append' && el === undefined // 修复 append 的过程中 append() 为一个没参数的状态。应为 append 的函数签名为 append(param1, param2, /* ... ,*/ paramN)
+    ? [...args]
+    : [el, ...args];
+
   try {
-    return originMethod.call( this, el, ...args );
+    return originMethod.call( this, ...methodArgs );
   } catch {
-    return originMethod.apply( this, [el, ...args] );
+    return originMethod.apply( this, methodArgs );
   }
 }
 
@@ -58,6 +62,6 @@ if(!isSSR() && typeof window.Element === 'function' ){
 
   for ( const method of mountElementMethods ) {
     const originMethod = window.Element.prototype[ method ];
-    window.Element.prototype[ method ] = makeElInjector(originMethod);
+    window.Element.prototype[ method ] = makeElInjector(originMethod, methodName);
   }
 }
