@@ -62,6 +62,6 @@ if(!isSSR() && typeof window.Element === 'function' ){
 
   for ( const method of mountElementMethods ) {
     const originMethod = window.Element.prototype[ method ];
-    window.Element.prototype[ method ] = makeElInjector(originMethod, methodName);
+    window.Element.prototype[ method ] = makeElInjector(originMethod, method);
   }
 }
