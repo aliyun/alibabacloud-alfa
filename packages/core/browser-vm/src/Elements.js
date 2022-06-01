@@ -1,40 +1,33 @@
-/**
- * Elements.js
- * @lastModified 2019085
- * @forwardCompatibleTo 2019085
- * @createAt 2019085
- */
-
 import injectScriptCallBack, { getJsonCallback } from './utils/injectScriptCallBack';
 import { isSSR } from './utils/isSSR';
 
-const makeElInjector = (originMethod, methodName) => function( el, ...args ){
-
+const makeElInjector = (originMethod, methodName) => function (el, ...args) {
   // 如果不在 BrowserVM 的白名单内，尝试通过 context 的 load script 通过 xhr 获取脚本内容，并在沙箱中执行
   if (
     el && el._evalScriptInSandbox
-    && el.ownerContext && el.nodeName === 'SCRIPT' 
-    && el.src && el.ownerContext.allowResources.indexOf(el.src) === -1 
+    && el.ownerContext && el.nodeName === 'SCRIPT'
+    && el.src && el.ownerContext.allowResources.indexOf(el.src) === -1
     && !getJsonCallback(el.src)
   ) {
     return el.ownerContext.loadScripts(el.src).then(() => {
       const fns = el._listenerMap.get('load');
       if (fns) {
-        fns.forEach((fn) => { fn() })
+        fns.forEach((fn) => { fn(); });
       }
-      el.onload && el.onload();
+      const e = new Event('load');
+      el.onload && el.onload(e);
     }).catch((e) => {
       console.error(e);
       const fns = el._listenerMap.get('error');
       if (fns) {
-        fns.forEach((fn) => { fn(e) })
+        fns.forEach((fn) => { fn(e); });
       }
       el.onerror && el.onerror(e);
     });
   }
 
-  if( el && el.nodeName === 'SCRIPT' && el.ownerContext){
-    injectScriptCallBack( el );
+  if (el && el.nodeName === 'SCRIPT' && el.ownerContext) {
+    injectScriptCallBack(el);
   }
 
   // 如果有 scriptText, 证明在 append 之前被设置了 text
@@ -51,17 +44,17 @@ const makeElInjector = (originMethod, methodName) => function( el, ...args ){
     : [el, ...args];
 
   try {
-    return originMethod.call( this, ...methodArgs );
+    return originMethod.call(this, ...methodArgs);
   } catch {
-    return originMethod.apply( this, methodArgs );
+    return originMethod.apply(this, methodArgs);
   }
-}
+};
 
-if(!isSSR() && typeof window.Element === 'function' ){
-  const mountElementMethods = [ 'appendChild', 'insertBefore', 'append' ];
+if (!isSSR() && typeof window.Element === 'function') {
+  const mountElementMethods = ['appendChild', 'insertBefore', 'append'];
 
-  for ( const method of mountElementMethods ) {
-    const originMethod = window.Element.prototype[ method ];
-    window.Element.prototype[ method ] = makeElInjector(originMethod, method);
+  for (const method of mountElementMethods) {
+    const originMethod = window.Element.prototype[method];
+    window.Element.prototype[method] = makeElInjector(originMethod, method);
   }
 }

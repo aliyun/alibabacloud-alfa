@@ -1,12 +1,12 @@
 import template from 'lodash/template';
 import { request } from '@alicloud/alfa-core';
 
-import { AlfaFactoryOption, WidgetCWSConfig } from '../types';
+import { WidgetFactoryOption, WidgetCWSConfig } from '../types';
 import { ENV, getConsoleEnv } from './env';
 
 const cachedConfig: Record<string, WidgetCWSConfig> = {};
 
-export const getWidgetConfigById = async (option: AlfaFactoryOption) => {
+export const getWidgetConfigById = async (option: WidgetFactoryOption) => {
   const env = ENV[option.env || getConsoleEnv()];
 
   if (!cachedConfig[option.name]) {
