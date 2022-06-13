@@ -37,7 +37,7 @@ export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFact
     version: option?.runtimeVersion || '1.x',
   });
 
-  const { version: messageVersion } = await getWidgetVersionById({
+  const { version: messageVersion = '0.0.8' } = await getWidgetVersionById({
     name: WIDGET_WIND_MESSAGE_ID,
     version: '0.x',
   });

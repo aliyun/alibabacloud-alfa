@@ -10,13 +10,15 @@ const WIDGET_ENTRY_URL = 'https://g.alicdn.com/${id}/${version}/index.js';
 
 const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK;
 
-const normalizeEntryUrl = (id: string, version: string, resourceUrl: string) => {
+const normalizeEntryUrl = (id: string, version?: string, resourceUrl?: string) => {
+  if (!version) throw new Error('No Version for Widget');
+
   const gitRepoId = id.replace('@ali/', '').replace('widget-', 'widget/');
   return template(resourceUrl)({ id: gitRepoId, version });
 };
 
 export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
-  const { central = true, env } = option;
+  const { name, central = true, env } = option;
 
   const Release = central ? ENV[env || getConsoleEnv()] : DIS_ENV[env || getConsoleEnv()];
   if (!option.version) {
@@ -39,23 +41,25 @@ export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
       const resp = await request.get<WidgetReleaseConfig>(Release.releaseUrl);
       if (resp && resp.data) {
         cachedRelease = resp.data;
-
-        const latestVersion = cachedRelease[option.name][option.version].latest;
-        const nextVersion = cachedRelease[option.name][option.version].next?.version;
-        const gray = cachedRelease[option.name][option.version].next?.gray;
-
-        version = (uid && Number(uid.substring(uid.length - 2)) < gray) ? nextVersion : latestVersion;
-        entryUrl = normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL);
-
-        return {
-          version,
-          entryUrl,
-        };
       }
     }
   }
 
-  const resp = await request.get<AlfaReleaseConfig>(Release.releaseUrl);
+  if (cachedRelease) {
+    const latestVersion = cachedRelease[option.name][option.version].latest;
+    const nextVersion = cachedRelease[option.name][option.version].next?.version;
+    const gray = cachedRelease[option.name][option.version].next?.gray;
+
+    version = (uid && Number(uid.substring(uid.length - 2)) < gray) ? nextVersion : latestVersion;
+    entryUrl = normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL);
+
+    return {
+      version,
+      entryUrl,
+    };
+  }
+
+  const resp = await request.get<AlfaReleaseConfig>(template(Release.releaseUrl)({ id: name }));
   if (!resp || !resp.data) throw new Error('Cannot get Release');
   const release = resp.data;
 
@@ -70,7 +74,7 @@ export const getWidgetVersionById = async (option: WidgetFactoryOption) => {
     }
   }
 
-  entryUrl = version && release.versions?.[version]?.entry;
+  entryUrl = normalizeEntryUrl(option.name, version, Release.resourceUrl || WIDGET_ENTRY_URL);
 
   return {
     version,

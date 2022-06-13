@@ -23,12 +23,11 @@ window.ALIYUN_CONSOLE_GLOBAL = {
 };
 
 const AlfaApp = createAlfaApp({
-  name: '@ali/alfa-cloud-mybase-app-console',
-  manifest: 'https://dev.g.alicdn.com/aliyun-next/cddc/8.0.0/ali-alfa-cloud-mybase-app-console.manifest.json',
+  name: '@ali/alfa-cloud-cms-app-enterprisequikebi',
   // version: '0.1.0',
   env: 'pre',
   sandbox: {
-    allowResources: ['http://g.alicdn.com/aliyun-next/cddc/8.0.0/8.js'],
+    allowResources: [],
   },
 });
 

@@ -46,6 +46,10 @@ export interface WidgetFactoryOption extends Omit<AlfaFactoryOption, OmitKeys> {
 
   // 加载中心化 release 文件
   central?: boolean;
+
+  host?: string;
+
+  configHost?: string;
 }
 
 export interface AlfaEnvConfigDescriptor {

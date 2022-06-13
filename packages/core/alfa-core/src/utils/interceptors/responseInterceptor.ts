@@ -40,7 +40,7 @@ function isRelease(url: string, data?: AlfaReleaseConfig) {
 
 function isConfig(url: string, data: AlfaDynamicConfig) {
   // cws config.json
-  if (/@ali\/widget-[\w-]+\/release\.json$/.exec(url)) {
+  if (/@ali\/widget-[\w-]+\/config\.json$/.exec(url)) {
     return ('features' in data && 'locales' in data && 'links' in data);
   }
 

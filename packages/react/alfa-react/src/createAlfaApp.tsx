@@ -22,7 +22,7 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
 
   const passedInOption = option;
 
-  return React.memo((props: P) => {
+  return React.memo((props: P & { history: any; sandbox: {} }) => {
     const customProps = {
       ...props,
       __injectHistory: props.history,
@@ -33,7 +33,7 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
         <Application<P>
           // 兼容历史逻辑，优先使用 option 中的 sandbox 参数
           {...passedInOption}
-          sandbox={option.sandbox || (props as P & { sandbox: {} }).sandbox}
+          sandbox={option.sandbox || props.sandbox}
           deps={dependencies || {}}
           customProps={customProps}
         />
