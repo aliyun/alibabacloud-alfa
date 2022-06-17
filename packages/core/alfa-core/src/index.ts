@@ -10,7 +10,7 @@ export { default as request } from './utils/request';
 export * from './utils/index';
 export { createEventBus, prefetch } from '@alicloud/console-os-kernal';
 
-export {
+export type {
   IAppConfig,
   IOptions,
   AlfaFactoryOption,

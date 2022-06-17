@@ -37,6 +37,7 @@ build/Release
 lib
 es
 dist
+types
 
 # TypeScript v1 declaration files
 typings/

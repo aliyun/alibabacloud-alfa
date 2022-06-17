@@ -4,18 +4,20 @@
   "description": "Alfa Framework (React Version)",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "typings": "lib/index.d.ts",
+  "types": "types/index.d.ts",
   "author": "pushiming",
   "license": "MIT",
   "scripts": {
+    "prepublish": "npm run version && npm run build && npm run babel && npm run babel:esm && npm run types",
+    "build": "breezr build --engine webpack",
+    "babel": "breezr build --engine babel",
+    "babel:esm": "breezr build --engine babel --es-module",
+    "types": "tsc --emitDeclarationOnly -d --declarationDir ./types",
+    "storybook": "breezr start-storybook",
+    "clean": "rm -rf lib es dist types yarn.lock",
     "start": "breezr start-storybook",
     "precommit": "npm run version",
-    "prepublish": "npm run version && npm run build && npm run babel && npm run babel:esm",
-    "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
-    "babel:esm": "breezr build --engine babel --es-module",
-    "build": "breezr build --engine webpack",
-    "clean": "rm -rf lib yarn.lock",
-    "version": "node -p \"'export const version = \\'' + require('./package.json').version + '\\';'\" > src/version.ts"
+    "version": "node -p \"'export const version = \\'' + require('./package.json').version + '\\';'\" > src/version.ts && git add src/version.ts"
   },
   "publishConfig": {
     "access": "public"
