@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-ng-portal",
-  "version": "1.4.0",
+  "version": "1.4.5",
   "description": "Console OS Angular Portal",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -32,7 +32,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/console-os-events": "^1.0.0-next.11",
+    "@alicloud/console-os-events": "^1.4.5",
     "single-spa-angular": "^3.1.0"
   },
   "peerDependencies": {
