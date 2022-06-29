@@ -25,7 +25,7 @@ loader.beforeLoad.use(async (appConfig) => {
 
 const Application = createApplication(loader);
 
-function createAlfaApp<P = any>(option: AlfaFactoryOption) {
+function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
   const { name, dependencies } = option || {};
 
   if (name.match(/@ali\/widget-/)) {
@@ -52,4 +52,4 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
   ));
 }
 
-export default createAlfaApp;
+export default createAlfaWidget;

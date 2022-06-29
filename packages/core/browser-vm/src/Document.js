@@ -44,7 +44,6 @@ class Document{
               el.appId = options.id;
               // 对于 script 标签如果开启防逃逸，就直接 hack script 标签
               if (el.tagName === 'SCRIPT' && !options.enableScriptEscape) {
-                el._evalScriptInSandbox = true;
                 injectHTMLScriptElement(el)
               }
               return el;

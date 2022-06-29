@@ -19,19 +19,25 @@ export const injectHTMLScriptElement = (el) => {
   el.addEventListener = addEventListener(el, el.addEventListener);
   el.removeEventListener = removeEventListener(el, el.removeEventListener);
 
-  elProperties.forEach((property) => {
-    Object.defineProperty(el, property, {
-      get: function get() {
-        return this.scriptText || '';
-      },
-      set: function set(value) {
-        this.scriptText = value;
-        // 如果是已经插入到 dom 树里面，则直接执行
-        if (el.parentNode) {
-          this.ownerContext.evalScript && el.ownerContext.evalScript(value.toString());
-        }
-      },
-      enumerable: false,
+  // do not redefine property in sandbox
+  if (!el._evalScriptInSandbox) {
+    elProperties.forEach((property) => {
+      Object.defineProperty(el, property, {
+        get: function get() {
+          return this.scriptText || '';
+        },
+        set: function set(value) {
+          this.scriptText = value;
+          // 如果是已经插入到 dom 树里面，则直接执行
+          if (el.parentNode) {
+            this.ownerContext.evalScript && el.ownerContext.evalScript(value.toString());
+          }
+        },
+        enumerable: false,
+      });
     });
-  });
+
+    el._evalScriptInSandbox = true;
+  }
+
 };
