@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createAlfaWidget } from '../../src';
 
-const AlfaApp = createAlfaWidget({
-  name: '@ali/alfa-cloud-cddc-widget-instance-create',
+const AlfaWidget = createAlfaWidget({
+  name: '@ali/alfa-cloud-home-widget-alfa-widget-demo',
   locale: 'en_US',
+  loading: false,
   // dynamicConfig: true,
 });
 
+const Wrapper = (props) => {
+  return <AlfaWidget {...props} />
+}
+
 const Basic: React.FC<{}> = () => {
-  const [, reRender] = useState({});
+  const [, reRender] = useState();
+
+  useEffect(() => {
+    reRender({});
+  }, []);
 
   return (
     <div>
       <button onClick={() => reRender({})}>btn</button>
-      <AlfaApp test={{}} />
+      <Wrapper a={Date.now()} test={() => {}} />
     </div>
   );
 };

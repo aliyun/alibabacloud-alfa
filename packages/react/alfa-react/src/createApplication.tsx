@@ -42,27 +42,29 @@ export default function createApplication(loader: BaseLoader) {
       };
     }, [customSandbox]);
 
+    const memoOptions = useMemo(() => ({
+      entry, // deprecated
+      url, // deprecated
+      name,
+      version,
+      manifest,
+      container: container || appRef.current,
+      props: customProps,
+      sandbox,
+      logger: customLogger,
+      deps,
+      env,
+      beforeMount,
+      afterMount,
+      beforeUnmount,
+      afterUnmount,
+      beforeUpdate,
+      locale,
+    }), []);
+
     useEffect(() => {
       (async () => {
-        const { app: App, logger } = await loader.register<C>({
-          entry,
-          url,
-          name,
-          version,
-          manifest,
-          container: container || appRef.current,
-          props: customProps,
-          sandbox,
-          logger: customLogger,
-          deps,
-          env,
-          beforeMount,
-          afterMount,
-          beforeUnmount,
-          afterUnmount,
-          beforeUpdate,
-          locale,
-        });
+        const { app: App, logger } = await loader.register<C>(memoOptions);
 
         if (!App) {
           return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.' });
@@ -86,10 +88,7 @@ export default function createApplication(loader: BaseLoader) {
       return () => {
         app && app.unmount();
       };
-    }, [
-      app, name, manifest, customProps, sandbox, entry, url, version, container,
-      customLogger, deps, env, beforeMount, afterMount, beforeUnmount, afterUnmount, beforeUpdate,
-    ]);
+    }, [memoOptions]);
 
     if (app) {
       app.update(customProps);
