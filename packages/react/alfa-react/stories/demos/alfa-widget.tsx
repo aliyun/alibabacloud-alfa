@@ -13,16 +13,14 @@ const Wrapper = (props) => {
 }
 
 const Basic: React.FC<{}> = () => {
-  const [, reRender] = useState();
-
-  useEffect(() => {
-    reRender({});
-  }, []);
+  const [visible, setVisible] = useState(true);
 
   return (
     <div>
-      <button onClick={() => reRender({})}>btn</button>
-      <Wrapper a={Date.now()} test={() => {}} />
+      <button onClick={() => setVisible(!visible)}>btn</button>
+      {
+        visible ? <Wrapper a={Date.now()} test={() => {}} /> : null
+      }
     </div>
   );
 };

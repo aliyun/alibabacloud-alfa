@@ -20,6 +20,7 @@
     "@types/debug": "0.0.30",
     "@types/jest": "^23.3.13",
     "@types/lodash": "^4.14.121",
+    "@types/minimist": "^1.2.2",
     "@types/node": "^12.7.0",
     "@types/object-assign": "^4.0.30",
     "@types/webpack-assets-manifest": "^3.0.0",

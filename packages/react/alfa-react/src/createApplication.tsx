@@ -48,7 +48,7 @@ export default function createApplication(loader: BaseLoader) {
       name,
       version,
       manifest,
-      container: container || appRef.current,
+      container,
       props: customProps,
       sandbox,
       logger: customLogger,
@@ -64,7 +64,10 @@ export default function createApplication(loader: BaseLoader) {
 
     useEffect(() => {
       (async () => {
-        const { app: App, logger } = await loader.register<C>(memoOptions);
+        const { app: App, logger } = await loader.register<C>({
+          ...memoOptions,
+          container: memoOptions.container || appRef.current,
+        });
 
         if (!App) {
           return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.' });
