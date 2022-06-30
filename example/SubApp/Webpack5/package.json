@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/demo-console-os-webpack-5",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "",
   "keywords": [],
   "main": "src/index.js",
@@ -8,7 +8,7 @@
     "@alicloud/console-os-react-portal": "^1.4.5"
   },
   "devDependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^1.4.5",
+    "@alicloud/console-toolkit-plugin-os": "^1.4.6",
     "@babel/core": "^7.7.2",
     "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/preset-env": "^7.7.1",

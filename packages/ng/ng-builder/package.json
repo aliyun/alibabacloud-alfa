@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-ng-builder",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "NG builder for Angular",
   "main": "lib/index.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
-    "@alicloud/console-toolkit-plugin-os": "^1.4.5",
+    "@alicloud/console-toolkit-plugin-os": "^1.4.6",
     "webpack-assets-manifest": "^3.1.1"
   },
   "author": "boelroy <boelroy@live.com>",

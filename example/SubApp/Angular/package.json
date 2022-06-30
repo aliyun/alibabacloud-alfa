@@ -1,9 +1,9 @@
 {
   "name": "@alicloud/demo-console-os-angular-app",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "private": true,
   "dependencies": {
-    "@alicloud/console-os-ng-builder": "^1.4.5",
+    "@alicloud/console-os-ng-builder": "^1.4.6",
     "@alicloud/console-os-ng-portal": "^1.4.5",
     "@angular/animations": "8.2.14",
     "@angular/common": "8.2.14",
