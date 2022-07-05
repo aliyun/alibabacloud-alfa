@@ -58,6 +58,7 @@ class Context {
   }
 
   updateBody(dom) {
+    if (!dom && this.body) return;
     this.body = dom;
   }
 

@@ -63,13 +63,16 @@ export default function createApplication(loader: BaseLoader) {
     }), []);
 
     useEffect(() => {
+      let App: MicroApplication | undefined;
       (async () => {
-        const { app: App, logger } = await loader.register<C>({
+        const { app, logger } = await loader.register<C>({
           ...memoOptions,
           container: memoOptions.container || appRef.current,
         });
 
-        if (!App) {
+        App = app;
+
+        if (!app) {
           return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.' });
         }
 
@@ -77,11 +80,11 @@ export default function createApplication(loader: BaseLoader) {
           return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find container.' });
         }
 
-        await App.mount(appRef.current, {
+        await app.mount(appRef.current, {
           customProps,
         });
 
-        setApp(App);
+        setApp(app);
       })().catch((e) => {
         setError(() => {
           throw e;
@@ -89,7 +92,7 @@ export default function createApplication(loader: BaseLoader) {
       });
 
       return () => {
-        app && app.unmount();
+        App && App.unmount();
       };
     }, [memoOptions]);
 
