@@ -80,6 +80,9 @@ export default function createApplication(loader: BaseLoader) {
           return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find container.' });
         }
 
+        // update body in sandbox context
+        app.context.updateBody?.(appRef.current);
+
         await app.mount(appRef.current, {
           customProps,
         });
@@ -112,7 +115,7 @@ export default function createApplication(loader: BaseLoader) {
           !app ? <Loading loading={loading} /> : null
         }
         {
-          (sandbox && sandbox.disableFakeBody)
+          (sandbox && sandbox.disableFakeBody && false)
             ? React.createElement(tagName, { style, className, ref: appRef, ...dataAttrs })
             : React.createElement(tagName, { ...dataAttrs }, React.createElement('div', { ref: appRef, style, className }))
         }
