@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/alfa-react",
-  "version": "1.4.8",
+  "version": "1.4.9-alpha.0",
   "description": "Alfa Framework (React Version)",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -42,7 +42,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/alfa-core": "^1.4.7",
+    "@alicloud/alfa-core": "^1.4.9-alpha.0",
     "@alicloud/console-os-loader": "^1.2.3",
     "@alicloud/widget-utils-console": "^0.1.6",
     "classnames": "^2.2.6",
