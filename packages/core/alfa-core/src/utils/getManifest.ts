@@ -4,16 +4,15 @@ import cache from './cacheManager';
 
 type Manifest = Exclude<IAppConfig['manifest'], string | undefined>;
 
-const devHostname = '//dev.g.alicdn.com/';
-
 const formatURL = (origin: string, base: string) => {
-  let url = origin;
+  const originURL = new URL(origin, base);
+  const baseURL = new URL(base);
 
-  if (base.indexOf(devHostname) !== -1) {
-    url = url.replace('//g.alicdn.com/', devHostname);
+  if (originURL.origin !== baseURL.origin) {
+    return new URL(originURL.pathname, base).toString();
   }
 
-  return new URL(url, base).toString();
+  return originURL.toString();
 };
 
 /**

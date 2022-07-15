@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { createAlfaWidget } from '../../src';
+import { createAlfaWidget, addGlobalRequestInterceptor } from '../../src';
 
 const AlfaWidget = createAlfaWidget({
   name: '@ali/alfa-cloud-home-widget-alfa-widget-demo',
@@ -7,6 +7,12 @@ const AlfaWidget = createAlfaWidget({
   loading: false,
   // dynamicConfig: true,
 });
+
+addGlobalRequestInterceptor((config) => {
+  console.info(config);
+
+  return config;
+})
 
 const Wrapper = (props) => {
   return <AlfaWidget {...props} />

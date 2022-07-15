@@ -15,7 +15,8 @@ export const getI18nMessages = async (config: IAppConfig) => {
 
   const locale = getLocale(config.locale);
   const localeVersion = releaseConfig['dist-tags']?.['locales-latest'] || '';
-  const localeEntry = releaseConfig['locales-versions']?.[localeVersion]?.[locale];
+  const matchKey = Object.keys(releaseConfig['locales-versions']?.[localeVersion] || {}).find((key) => key && key.toLowerCase() === locale.toLowerCase())
+  const localeEntry = matchKey && releaseConfig['locales-versions']?.[localeVersion]?.[matchKey];
 
   let messages: Record<string, string> = {};
 

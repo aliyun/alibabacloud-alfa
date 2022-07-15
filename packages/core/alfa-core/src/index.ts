@@ -1,4 +1,5 @@
 export { createMicroApp } from './createMicroApp';
+export { addRequestInterceptor } from './utils/interceptors';
 export { getRelease } from './utils/getRelease';
 export { getManifest } from './utils/getManifest';
 export { getConfig } from './utils/getConfig';

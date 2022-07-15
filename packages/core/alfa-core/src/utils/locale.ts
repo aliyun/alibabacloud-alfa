@@ -7,14 +7,12 @@ const globalLocale = 'en_US';
  * @param key
  * @returns
  */
-const formatLocale = (key?: string) => key?.replace('-', '_');
+const formatLocale = (key: string) => key.replace('-', '_');
 
 /**
  * getLocale
  * @returns
  */
 export const getLocale = (key?: string): string => {
-  const locale = formatLocale(key || (window as IWin)?.ALIYUN_CONSOLE_CONFIG?.LOCALE);
-
-  return locale || globalLocale;
+  return formatLocale(key || (window as IWin)?.ALIYUN_CONSOLE_CONFIG?.LOCALE || globalLocale);
 };

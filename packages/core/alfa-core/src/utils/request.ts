@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import networkErrorInterceptor from './interceptors/networkErrorInterceptor';
 import responseInterceptor from './interceptors/responseInterceptor';
+import requestInterceptor from './interceptors/requestInterceptor';
 
 const instance = axios.create();
 

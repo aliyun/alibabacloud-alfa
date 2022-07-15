@@ -81,7 +81,7 @@ export default function createApplication(loader: BaseLoader) {
         }
 
         // update body in sandbox context
-        app.context.updateBody?.(appRef.current);
+        app.context.updateBody?.(memoOptions.sandbox.disableFakeBody ? document.body : appRef.current);
 
         await app.mount(appRef.current, {
           customProps,
@@ -115,7 +115,7 @@ export default function createApplication(loader: BaseLoader) {
           !app ? <Loading loading={loading} /> : null
         }
         {
-          (sandbox && sandbox.disableFakeBody && false)
+          (sandbox && sandbox.disableFakeBody)
             ? React.createElement(tagName, { style, className, ref: appRef, ...dataAttrs })
             : React.createElement(tagName, { ...dataAttrs }, React.createElement('div', { ref: appRef, style, className }))
         }

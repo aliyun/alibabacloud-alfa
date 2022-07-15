@@ -25,6 +25,7 @@
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.0",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
+    "@types/axios": "^0.14.0",
     "@types/chai": "^4.1.7",
     "@types/classnames": "^2.2.9",
     "@types/crypto-js": "^4.0.2",
