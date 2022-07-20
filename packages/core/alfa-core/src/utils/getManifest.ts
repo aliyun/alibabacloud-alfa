@@ -1,12 +1,14 @@
 import { getRelease } from './getRelease';
 import { IAppConfig } from '../types';
 import cache from './cacheManager';
-import { getRelativePath } from './index'
+import { getRelativePath, getFeatureStatus } from './index';
 
 type Manifest = Exclude<IAppConfig['manifest'], string | undefined>;
 
-const formatURL = (origin: string, base: string, ) => {
-  return new URL(origin, base).toString();
+const formatURL = (origin: string, base: string) => {
+  // incorrect: new URL('../b', 'https://example.com/a/c') => https://example.com/b
+  // correct: new URL('../b', 'https://example.com/a/c/') => https://example.com/a/b
+  return new URL(origin, base.endsWith('/') ? base : `${base}/`).toString();
 };
 
 /**
@@ -52,8 +54,18 @@ export const getManifest = async (config: IAppConfig) => {
     let { version = latestVersion } = config;
 
     if (version) {
-      // if version is in dist-tags, return value
+      // version maybe tag
       if (releaseConfig['dist-tags']?.[version]) {
+        // return gray version when
+        const nextDistTag = releaseConfig['next-dist-tags']?.[version];
+        const grayVersion = nextDistTag?.version;
+        if (grayVersion) {
+          const feat = nextDistTag?.featureStatus;
+
+          if (getFeatureStatus(feat)) version = grayVersion;
+          return;
+        }
+
         version = releaseConfig['dist-tags'][version] || '';
       }
 
@@ -62,13 +74,13 @@ export const getManifest = async (config: IAppConfig) => {
   }
 
   try {
-    const { config, data } = await cache.getRemote<Manifest>(entry);
+    const { config: requestConfig, data } = await cache.getRemote<Manifest>(entry);
 
     logger?.setContext && logger.setContext({
       manifest: JSON.stringify(data),
     });
 
-    return formatManifest(data, entry, config.url || entry);
+    return formatManifest(data, entry, requestConfig.url || entry);
   } catch (e) {
     logger?.error && logger.error({ E_CODE: 'GetManifestError', E_MSG: e.message, data: JSON.stringify(releaseConfig) });
   }

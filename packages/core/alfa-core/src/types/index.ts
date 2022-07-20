@@ -91,8 +91,23 @@ export interface AlfaConfigVersion {
   [key: string]: string;
 }
 
+export interface AlfaFeature {
+  enableSampling?: boolean;
+  enableWhiteList?: boolean;
+  enableBlockList?: boolean;
+  sampling?: number;
+  whiteList?: string[];
+  blockList?: string[];
+}
+
+interface GrayVersion {
+  version: string;
+  featureStatus: AlfaFeature;
+}
+
 export interface AlfaReleaseConfig {
   'dist-tags'?: Partial<Record<string, string>>;
+  'next-dist-tags'?: Partial<Record<string, GrayVersion>>;
   versions?: Record<Version, Partial<AlfaVersion>>;
   'locales-versions'?: Record<Version, Partial<AlfaLocaleVersion>>;
   'config-versions'?: Record<Version, Partial<AlfaConfigVersion>>;
@@ -102,15 +117,6 @@ export interface AlfaReleaseConfig {
 type AlfaChannelLinks = Partial<Record<Channel, ChannelLinks>>;
 
 type AlfaChannelFeatures = Partial<Record<Channel, ChannelFeatures>>;
-
-interface AlfaFeature {
-  enableSampling: boolean;
-  enableWhiteList: boolean;
-  enableBlockList: boolean;
-  sampling: number;
-  whiteList: string[];
-  blockList: string[];
-}
 
 type AlfaFeatures = Partial<Record<string, AlfaFeature>>;
 
