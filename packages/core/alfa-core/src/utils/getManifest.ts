@@ -1,25 +1,19 @@
 import { getRelease } from './getRelease';
 import { IAppConfig } from '../types';
 import cache from './cacheManager';
+import { getRelativePath } from './index'
 
 type Manifest = Exclude<IAppConfig['manifest'], string | undefined>;
 
-const formatURL = (origin: string, base: string) => {
-  const originURL = new URL(origin, base);
-  const baseURL = new URL(base);
-
-  if (originURL.origin !== baseURL.origin) {
-    return new URL(originURL.pathname, base).toString();
-  }
-
-  return originURL.toString();
+const formatURL = (origin: string, base: string, ) => {
+  return new URL(origin, base).toString();
 };
 
 /**
  * format url in manifest json
  * @param manifest
  */
-const formatManifest = (manifestContent: Manifest, manifestUrl: string): Manifest => {
+const formatManifest = (manifestContent: Manifest, inputManifestUrl: string, realManifestUrl: string): Manifest => {
   const { name, resources, runtime, externals, entrypoints } = manifestContent;
 
   const entrypoint = Object.keys(entrypoints)[0];
@@ -27,7 +21,7 @@ const formatManifest = (manifestContent: Manifest, manifestUrl: string): Manifes
   return {
     name,
     resources: Object.keys(resources).reduce<Record<string, string>>((map, key) => {
-      map[key] = formatURL(resources[key], manifestUrl);
+      map[key] = formatURL(getRelativePath(inputManifestUrl, resources[key]), realManifestUrl);
 
       return map;
     }, {}),
@@ -35,8 +29,8 @@ const formatManifest = (manifestContent: Manifest, manifestUrl: string): Manifes
     externals,
     entrypoints: {
       [entrypoint]: {
-        css: entrypoints[entrypoint].css?.map((url) => formatURL(url, manifestUrl)),
-        js: entrypoints[entrypoint].js.map((url) => formatURL(url, manifestUrl)),
+        css: entrypoints[entrypoint].css?.map((url) => formatURL(getRelativePath(inputManifestUrl, url), realManifestUrl)),
+        js: entrypoints[entrypoint].js.map((url) => formatURL(getRelativePath(inputManifestUrl, url), realManifestUrl)),
       },
     },
   };
@@ -68,16 +62,16 @@ export const getManifest = async (config: IAppConfig) => {
   }
 
   try {
-    const result = await cache.getRemote<Manifest>(entry);
+    const { config, data } = await cache.getRemote<Manifest>(entry);
 
     logger?.setContext && logger.setContext({
-      manifest: JSON.stringify(result),
+      manifest: JSON.stringify(data),
     });
 
-    return formatManifest(result, entry);
+    return formatManifest(data, entry, config.url || entry);
   } catch (e) {
     logger?.error && logger.error({ E_CODE: 'GetManifestError', E_MSG: e.message, data: JSON.stringify(releaseConfig) });
   }
 
-  return '';
+  return null;
 };

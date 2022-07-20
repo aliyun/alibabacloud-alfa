@@ -28,7 +28,7 @@ export const getConfig = async (config: IAppConfig) => {
   if (!configVersion || !configEntry) return configData;
 
   try {
-    configData = await cache.getRemote<AlfaDynamicConfig>(configEntry);
+    configData = (await cache.getRemote<AlfaDynamicConfig>(configEntry)).data;
   } catch (e) {
     logger?.error && logger.error({
       E_CODE: 'GetConfigError',

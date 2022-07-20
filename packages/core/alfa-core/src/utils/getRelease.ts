@@ -34,7 +34,7 @@ export const getRelease = async (config: IAppConfig) => {
   const env = getEnv(config.env);
 
   try {
-    const releaseConfig = await cache.getRemote<AlfaReleaseConfig>(getReleaseUrl(name, env));
+    const releaseConfig = (await cache.getRemote<AlfaReleaseConfig>(getReleaseUrl(name, env))).data;
 
     if (!releaseConfig) throw new Error('releaseConfig is null');
 

@@ -23,7 +23,7 @@ export const getI18nMessages = async (config: IAppConfig) => {
   if (!localeVersion) return messages;
 
   try {
-    messages = await cache.getRemote<Record<string, string>>(localeEntry);
+    messages = (await cache.getRemote<Record<string, string>>(localeEntry)).data;
   } catch (e) {
     logger?.error && logger.error({
       E_CODE: 'GetLocaleError',

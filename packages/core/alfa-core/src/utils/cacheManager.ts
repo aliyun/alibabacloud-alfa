@@ -20,24 +20,23 @@ class Cache {
    * @param url
    * @returns
    */
-  async getRemote<T = any>(url?: string): Promise<T> {
+  async getRemote<T = any>(url?: string): Promise<AxiosResponse<T>> {
     if (!url) throw new Error('url is empty');
 
-    const value = this.store[url] as Promise<AxiosResponse> | any;
+    const value = this.store[url] as Promise<AxiosResponse<T>> | undefined;
     if (value) {
       if (isPromiseLike(value)) {
-        const { data } = await value;
-        return data;
+        const result = await value;
+        return result;
       }
-      return value as T;
+      return value;
     }
 
     this.store[url] = request.get<T>(url);
 
-    const { data } = await this.store[url];
-    const result = data;
+    const result = await this.store[url];
 
-    if (result) this.store[url] = result;
+    if (result?.data) this.store[url] = result;
 
     return result;
   }
