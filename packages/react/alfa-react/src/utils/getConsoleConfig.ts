@@ -20,14 +20,14 @@ const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
       enableBlockList, enableSampling, enableWhiteList, sampling, blockList, whiteList,
     } = feature;
 
-    if (enableBlockList && blockList.includes(md5Uid)) {
+    if (enableBlockList && blockList?.includes(md5Uid)) {
       newFeatures[key] = false;
-    } else if (enableWhiteList && whiteList.includes(md5Uid)) {
+    } else if (enableWhiteList && whiteList?.includes(md5Uid)) {
       newFeatures[key] = true;
     } else if (enableSampling) {
       const gray = uid.substring(uid.length - 2);
 
-      if (Number(gray) >= sampling * 100 || sampling === 0) newFeatures[key] = false;
+      if (Number(gray) >= (sampling ?? 0) * 100 || sampling === 0) newFeatures[key] = false;
       newFeatures[key] = true;
     } else {
       newFeatures[key] = false;

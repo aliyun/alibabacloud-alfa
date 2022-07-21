@@ -85,5 +85,5 @@ export const getManifest = async (config: IAppConfig) => {
     logger?.error && logger.error({ E_CODE: 'GetManifestError', E_MSG: e.message, data: JSON.stringify(releaseConfig) });
   }
 
-  return null;
+  return undefined;
 };
