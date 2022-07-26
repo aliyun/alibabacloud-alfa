@@ -56,11 +56,12 @@ export const getManifest = async (config: IAppConfig) => {
     if (version) {
       // version maybe tag
       if (releaseConfig['dist-tags']?.[version]) {
-        version = releaseConfig['dist-tags'][version] || '';
-
-        // return gray version when
         const nextDistTag = releaseConfig['next-dist-tags']?.[version];
         const grayVersion = nextDistTag?.version;
+
+        version = releaseConfig['dist-tags'][version] || '';
+
+        // return gray version when featStatus is true
         if (grayVersion) {
           const feat = nextDistTag?.featureStatus;
 
