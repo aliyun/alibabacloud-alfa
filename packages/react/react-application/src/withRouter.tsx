@@ -14,15 +14,21 @@ interface IRouterProps {
   externalRouterHandler: (href: string) => void;
 }
 
+const normalizeName = (name: string) => {
+  return name.replace(/@/g, '').replace(/\//g, '-');
+};
+
 export const withRouter = (App: React.Component<{}, IProps>) => {
   return (props: IProps & IRouterProps) => {
     const { id, history, formatNextPath } = props;
+
+    const name = normalizeName(id);
 
     React.useEffect(() => {
       const historyChangeHandle = (appLocation: Location) => {
         // 判断当前 location 的状态是不是一致的，如果是一致的就不要二次 replace
         // 防止出现多次渲染的情况，甚至触发无限渲染
-        const nextPath = formatNextPath ? formatNextPath(id, appLocation) : `${appLocation.pathname}${appLocation.search}`;
+        const nextPath = formatNextPath ? formatNextPath(name, appLocation) : `${appLocation.pathname}${appLocation.search}`;
         if (nextPath !== `${window.location.pathname}${window.location.search}`) {
           // 这里由于要和 React-Router 的 history 保持一致
           // history replace 会触发宿主自顶向下的渲染，同时也会导致 react-router 的变化
@@ -32,19 +38,19 @@ export const withRouter = (App: React.Component<{}, IProps>) => {
       };
 
       const externalRouterHandler = (href: string) => {
-        props.externalRouterHandler ? props.externalRouterHandler(href)  : history?.push?.(href);
-      }
+        props.externalRouterHandler ? props.externalRouterHandler(href) : history?.push?.(href);
+      };
 
-      eventBus.on(`${id}:history-change`, historyChangeHandle);
-      eventBus.on(`${id}:external-router`, externalRouterHandler);
+      eventBus.on(`${name}:history-change`, historyChangeHandle);
+      eventBus.on(`${name}:external-router`, externalRouterHandler);
 
       return () => {
-        eventBus.removeListener(`${id}:history-change`, historyChangeHandle);
-        eventBus.removeListener(`${id}:external-router`, externalRouterHandler);
+        eventBus.removeListener(`${name}:history-change`, historyChangeHandle);
+        eventBus.removeListener(`${name}:external-router`, externalRouterHandler);
       };
-    }, [formatNextPath, id, history])
+    }, [formatNextPath, name, history]);
 
     // @ts-ignore
-    return <App __enableInitialHistoryAction {...omit(props, ['history', 'formatNextPath', 'externalRouterHandler'])}/>
-  }
-}
+    return <App __enableInitialHistoryAction {...omit(props, ['history', 'formatNextPath', 'externalRouterHandler'])} />;
+  };
+};
