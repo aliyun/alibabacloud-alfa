@@ -43,7 +43,7 @@ export const getManifest = async (config: IAppConfig) => {
   const latestVersion = releaseConfig['dist-tags']?.latest;
   const { manifest, logger } = config;
 
-  let entry = '';
+  let entry: string | undefined;
 
   // if user has custom manifest
   if (manifest) {
@@ -56,6 +56,8 @@ export const getManifest = async (config: IAppConfig) => {
     if (version) {
       // version maybe tag
       if (releaseConfig['dist-tags']?.[version]) {
+        version = releaseConfig['dist-tags'][version] || '';
+
         // return gray version when
         const nextDistTag = releaseConfig['next-dist-tags']?.[version];
         const grayVersion = nextDistTag?.version;
@@ -63,15 +65,14 @@ export const getManifest = async (config: IAppConfig) => {
           const feat = nextDistTag?.featureStatus;
 
           if (getFeatureStatus(feat)) version = grayVersion;
-          return;
         }
-
-        version = releaseConfig['dist-tags'][version] || '';
       }
 
-      entry = releaseConfig.versions?.[version].entry || '';
+      entry = releaseConfig.versions?.[version].entry;
     }
   }
+
+  if (!entry) return undefined;
 
   try {
     const { config: requestConfig, data } = await cache.getRemote<Manifest>(entry);
@@ -83,7 +84,6 @@ export const getManifest = async (config: IAppConfig) => {
     return formatManifest(data, entry, requestConfig.url || entry);
   } catch (e) {
     logger?.error && logger.error({ E_CODE: 'GetManifestError', E_MSG: e.message, data: JSON.stringify(releaseConfig) });
+    return undefined;
   }
-
-  return undefined;
 };
