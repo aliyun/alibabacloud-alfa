@@ -14,6 +14,16 @@ window.ALIYUN_CONSOLE_CONFIG = {
       zoneId: 'cn-beijing-f',
     }],
   }],
+  STATIC_API: {
+    regions: {
+      code: '200',
+      data: {
+        Regions: {
+          Region: [],
+        },
+      },
+    },
+  },
 };
 
 window.ALIYUN_CONSOLE_GLOBAL = {
@@ -23,7 +33,7 @@ window.ALIYUN_CONSOLE_GLOBAL = {
 };
 
 const AlfaApp = createAlfaApp({
-  name: '@ali/alfa-cloud-cms-app-enterprisequikebi',
+  name: '@ali/alfa-cloud-gpdb-app-crosswise',
   // version: '0.1.0',
   env: 'pre',
   sandbox: {

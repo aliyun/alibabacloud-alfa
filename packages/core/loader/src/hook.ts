@@ -4,12 +4,12 @@ import { Module, globalModule } from './module';
 import { Record } from './module/Record';
 
 const getContext = (id: string, chunkRecord: Record) => {
-  let context = chunkRecord.context;
+  let { context } = chunkRecord;
   if (isFunction(chunkRecord.context)) {
-    context = context({id});
+    context = context({ id });
   }
-  return context
-}
+  return context;
+};
 
 let preHook = null;
 
@@ -17,8 +17,9 @@ let preHook = null;
  * 在前面加载的模块系统中寻找模块
  */
 const findModuleInParent = (id: string, resolver: BundleResolver) => {
-  preHook && !preHook.standalone && preHook(id, resolver);
-}
+  // remove !preHook.standalone
+  if (preHook) preHook(id, resolver);
+};
 
 /**
  * 脚本类型的模块加载，这里是为了那些没导出，但是需要被沙箱 wrap 的脚本
@@ -30,27 +31,26 @@ const resolveExternalScript = (id: string, resolver: BundleResolver, scriptRecor
     Module.record.delete(`${id}_scripts_`);
     scriptRecord.loaded = true;
     scriptRecord.resolve();
-  } catch(e) {
+  } catch (e) {
     scriptRecord.reject(e);
   }
-}
+};
 
 /**
  * inject the global hooks for jsonp loader
- * 
+ *
  * @param {string} id module Id
  * @param {BundleResolver} resolver bundle entry
  */
 export const hook = (id: string, resolver: BundleResolver) => {
   if (id && resolver) {
-
     const chunkRecord = Module.record.get(id);
     const scriptRecord = Module.record.get(`${id}_scripts_`);
 
     // 做循环加载，如果子模块中需要加载某个模块优先去父模块去找
     if (!chunkRecord && !scriptRecord) {
       // 为了防止一个 ConsoleOS 子应用作为容器单独加载的时候，__CONSOLE_OS_GLOBAL_HOOK__ 为空函数的问题
-      return findModuleInParent(id, resolver)
+      return findModuleInParent(id, resolver);
     }
 
     // 为了在沙箱中加载前置脚本
@@ -78,7 +78,7 @@ export const hook = (id: string, resolver: BundleResolver) => {
           }
           const dep = module.resolveModule(depsName);
           dep.exports = exports;
-        })
+        });
       }
 
       module.resolver = resolver;
@@ -88,7 +88,7 @@ export const hook = (id: string, resolver: BundleResolver) => {
       resolver(module.require, module, module.exports, { ...context });
 
       chunkRecord.resolve(chunkRecord);
-    } catch(e) {
+    } catch (e) {
       chunkRecord.reject(e);
     }
 
@@ -103,11 +103,10 @@ export const hook = (id: string, resolver: BundleResolver) => {
  *  window.__CONSOLE_OS_GLOBAL_HOOK__(id, function(require, module, exports, { dependencies }){ / wepback build umd code /})
  */
 if (typeof document !== 'undefined') { // only cache pre hooks in browser environment
-  if (
-    window.__CONSOLE_OS_GLOBAL_HOOK__
-  ) {
-    preHook = window.__CONSOLE_OS_GLOBAL_HOOK__
+  if (window.__CONSOLE_OS_GLOBAL_HOOK__) {
+    preHook = window.__CONSOLE_OS_GLOBAL_HOOK__;
   }
-  
-  window.__CONSOLE_OS_GLOBAL_HOOK__ = hook;  
+
+  // 在 alfa 微前端工程中，__CONSOLE_OS_GLOBAL_HOOK__ 覆盖会导致 webpack 代码分片的加载被此 hook 劫持从而运行失败
+  window.__CONSOLE_OS_GLOBAL_HOOK__ = hook;
 }
