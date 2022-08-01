@@ -18,7 +18,11 @@ let preHook = null;
  */
 const findModuleInParent = (id: string, resolver: BundleResolver) => {
   // remove !preHook.standalone
-  if (preHook) preHook(id, resolver);
+  if (preHook) {
+    preHook(id, resolver);
+  } else if (window.__IS_CONSOLE_OS_CONTEXT__) {
+    window.parent.__CONSOLE_OS_GLOBAL_HOOK__(id, resolver);
+  }
 };
 
 /**
