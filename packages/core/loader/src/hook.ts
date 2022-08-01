@@ -20,7 +20,7 @@ const findModuleInParent = (id: string, resolver: BundleResolver) => {
   // remove !preHook.standalone
   if (preHook) {
     preHook(id, resolver);
-  } else if (window.__IS_CONSOLE_OS_CONTEXT__) {
+  } else if ((window as { __IS_CONSOLE_OS_CONTEXT__?: boolean }).__IS_CONSOLE_OS_CONTEXT__) {
     window.parent.__CONSOLE_OS_GLOBAL_HOOK__(id, resolver);
   }
 };
