@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-loader",
-  "version": "1.4.14-alpha.0",
+  "version": "1.4.14-alpha.1",
   "description": "Console OS Loader",
   "main": "lib/index.js",
   "module": "es/index.js",
