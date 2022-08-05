@@ -81,15 +81,16 @@ const processChannelFeatures = (allChannelFeatures: AlfaConfig['ALL_CHANNEL_FEAT
 
 const mergeConfigDataWithConsoleConfig = (configData: AlfaConfig, consoleConfig: IWin['ALIYUN_CONSOLE_CONFIG']) => {
   const channel = (window as IWin)?.ALIYUN_CONSOLE_CONFIG?.CHANNEL || 'OFFICIAL';
-  const channelLinks = configData.ALL_CHANNEL_LINKS?.[channel] || {};
-  const channelFeatures = configData.ALL_CHANNEL_FEATURE_STATUS || {};
-  const features = configData.ALL_FEATURE_STATUS || {};
+  const channelLinks = configData.ALL_CHANNEL_LINKS?.[channel];
+  const channelFeatures = configData.ALL_CHANNEL_FEATURE_STATUS;
+  const features = configData.ALL_FEATURE_STATUS;
 
   return {
     ...consoleConfig,
-    CHANNEL_LINKS: channelLinks,
-    CHANNEL_FEATURE_STATUS: processChannelFeatures(channelFeatures, channel),
-    FEATURE_STATUS: processFeatures(features),
+    CHANNEL_LINKS: channelLinks || consoleConfig?.CHANNEL_LINKS,
+    CHANNEL_FEATURE_STATUS:
+      processChannelFeatures(channelFeatures, channel) || consoleConfig?.CHANNEL_FEATURE_STATUS,
+    FEATURE_STATUS: processFeatures(features) || consoleConfig?.FEATURE_STATUS,
   };
 };
 

@@ -5,9 +5,10 @@ export { getEnv } from './env';
 export { getLocale } from './locale';
 
 export function getFeatureStatus(feature?: AlfaFeature) {
-  if (!feature) return false;
-
   const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK || '';
+
+  if (!feature || !uid) return false;
+
   const md5Uid = md5(uid).toString();
 
   const {

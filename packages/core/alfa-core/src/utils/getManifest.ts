@@ -40,7 +40,7 @@ const formatManifest = (manifestContent: Manifest, inputManifestUrl: string, rea
 
 export const getManifest = async (config: IAppConfig) => {
   const releaseConfig = await getRelease(config);
-  const latestVersion = releaseConfig['dist-tags']?.latest;
+  const latestVersion = 'latest';
   const { manifest, logger } = config;
 
   let entry: string | undefined;
@@ -69,7 +69,7 @@ export const getManifest = async (config: IAppConfig) => {
         }
       }
 
-      entry = releaseConfig.versions?.[version].entry;
+      entry = releaseConfig.versions?.[version]?.entry;
     }
   }
 
