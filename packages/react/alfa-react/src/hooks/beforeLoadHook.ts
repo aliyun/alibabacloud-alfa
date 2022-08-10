@@ -5,7 +5,7 @@ import { getConsoleGlobal } from '../utils/getConsoleGlobal';
 
 // inject consoleConfig & locales after load
 async function afterLoadHook(appConfig: IAppConfig) {
-  const { app, logger } = appConfig;
+  const { app, logger, sandbox } = appConfig;
 
   const defaultConsoleConfig = (window as IWin).ALIYUN_CONSOLE_CONFIG || {};
   const defaultConsoleGlobal = (window as IWin).ALIYUN_CONSOLE_GLOBAL || {};
@@ -29,8 +29,8 @@ async function afterLoadHook(appConfig: IAppConfig) {
   };
 
 
-  // inject global variables
-  if (app && app.context) {
+  // inject global variables when sandbox is valid
+  if (app?.context && !sandbox?.disable) {
     (app.context.window as IWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
     (app.context.window as IWin).ALIYUN_CONSOLE_GLOBAL = consoleGlobal;
     (app.context.window as IWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;

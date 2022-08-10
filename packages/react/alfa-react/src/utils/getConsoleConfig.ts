@@ -87,10 +87,18 @@ const mergeConfigDataWithConsoleConfig = (configData: AlfaConfig, consoleConfig:
 
   return {
     ...consoleConfig,
-    CHANNEL_LINKS: channelLinks || consoleConfig?.CHANNEL_LINKS,
-    CHANNEL_FEATURE_STATUS:
-      processChannelFeatures(channelFeatures, channel) || consoleConfig?.CHANNEL_FEATURE_STATUS,
-    FEATURE_STATUS: processFeatures(features) || consoleConfig?.FEATURE_STATUS,
+    CHANNEL_LINKS: {
+      ...consoleConfig?.CHANNEL_LINKS,
+      ...channelLinks,
+    },
+    CHANNEL_FEATURE_STATUS: {
+      ...consoleConfig?.CHANNEL_FEATURE_STATUS,
+      ...processChannelFeatures(channelFeatures, channel),
+    },
+    FEATURE_STATUS: {
+      ...consoleConfig?.FEATURE_STATUS,
+      ...processFeatures(features),
+    },
   };
 };
 
