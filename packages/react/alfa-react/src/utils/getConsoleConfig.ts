@@ -27,8 +27,11 @@ const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
     } else if (enableSampling) {
       const gray = uid.substring(uid.length - 2);
 
-      if (Number(gray) >= (sampling ?? 0) * 100 || sampling === 0) newFeatures[key] = false;
-      newFeatures[key] = true;
+      if (Number(gray) >= (sampling ?? 0) * 100 || sampling === 0) {
+        newFeatures[key] = false;
+      } else {
+        newFeatures[key] = true;
+      }
     } else {
       newFeatures[key] = false;
     }
