@@ -10,6 +10,18 @@ interface IProps<C = any> extends AlfaFactoryOption {
   customProps: C;
 }
 
+interface IWin {
+  UA_Opt?: {
+    LogVal?: string;
+  };
+  RISK_INFO?: {
+    UMID?: string;
+  };
+  um?: {
+    getToken?: () => any;
+  };
+}
+
 /**
  * container for microApp mount
  * @param loader alfa-core loader
@@ -28,6 +40,17 @@ export default function createApplication(loader: BaseLoader) {
     const tagName = normalizeName(props.name);
 
     const sandbox = useMemo(() => {
+      const aliyunExternalsVars = [];
+
+      if ((window as IWin).UA_Opt?.LogVal) {
+        aliyunExternalsVars.push('UA_Opt');
+        aliyunExternalsVars.push((window as IWin).UA_Opt?.LogVal as string);
+      }
+
+      if ((window as IWin).RISK_INFO?.UMID) aliyunExternalsVars.push('RISK_INFO');
+
+      if ((window as IWin).um?.getToken) aliyunExternalsVars.push('um');
+
       return {
         ...customSandbox,
         // allowResources: [
@@ -38,6 +61,8 @@ export default function createApplication(loader: BaseLoader) {
           ...(customSandbox?.externalsVars || []),
           // global vars used in ConsoleBase.forApp
           '_console_base_ready_',
+          // risk control
+          ...aliyunExternalsVars,
         ],
       };
     }, [customSandbox]);
