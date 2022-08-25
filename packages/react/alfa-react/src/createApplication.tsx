@@ -34,7 +34,7 @@ export default function createApplication(loader: BaseLoader) {
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
       afterUnmount, beforeUpdate, sandbox: customSandbox, locale,
     } = props;
-    const [app, setApp] = useState<MicroApplication | null>(null);
+    const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
     const appRef = useRef<HTMLElement | undefined>(undefined);
     const tagName = normalizeName(props.name);
@@ -88,6 +88,7 @@ export default function createApplication(loader: BaseLoader) {
     }), []);
 
     useEffect(() => {
+      let isUnmounted = false;
       let App: MicroApplication | undefined;
       (async () => {
         const { app, logger } = await loader.register<C>({
@@ -96,6 +97,9 @@ export default function createApplication(loader: BaseLoader) {
         });
 
         App = app;
+
+        // container has been unmounted
+        if (isUnmounted) return;
 
         if (!app) {
           return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.' });
@@ -112,7 +116,7 @@ export default function createApplication(loader: BaseLoader) {
           customProps,
         });
 
-        setApp(app);
+        setAppInstance(app);
       })().catch((e) => {
         setError(() => {
           throw e;
@@ -120,12 +124,13 @@ export default function createApplication(loader: BaseLoader) {
       });
 
       return () => {
+        isUnmounted = true;
         App && App.unmount();
       };
     }, [memoOptions]);
 
-    if (app) {
-      app.update(customProps);
+    if (appInstance) {
+      appInstance.update(customProps);
     }
 
     const dataAttrs = {
@@ -137,7 +142,7 @@ export default function createApplication(loader: BaseLoader) {
     return (
       <>
         {
-          !app ? <Loading loading={loading} /> : null
+          !appInstance ? <Loading loading={loading} /> : null
         }
         {
           (sandbox && sandbox.disableFakeBody)
