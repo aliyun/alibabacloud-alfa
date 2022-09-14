@@ -5,7 +5,7 @@ import { AlfaLogger } from '@alicloud/alfa-core';
 import ErrorPanel from './ErrorPanel';
 
 interface IProps {
-  fallbackRender?: (error?: Error) => Element;
+  fallbackRender?: (error?: Error) => React.ReactNode;
   appDidCatch?: (error?: Error, info?: ErrorInfo) => void;
   logger?: AlfaLogger;
 }
