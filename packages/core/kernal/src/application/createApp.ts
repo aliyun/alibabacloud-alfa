@@ -30,7 +30,15 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
       allowResources: sandBoxOption.allowResources,
       enableScriptEscape: false,
     });
-    context.history.replaceState(null, '', sandBoxOption.initialPath || '/');
+
+    // throw error when iframe is about:blank
+    try {
+      if (context.history && context.history.replaceState) {
+        context.history.replaceState(null, '', sandBoxOption.initialPath || '/');
+      }
+    } catch (e) {
+      console.error(e);
+    }
   } else {
     // @ts-ignore
     window.__IS_CONSOLE_OS_CONTEXT__ = true;
