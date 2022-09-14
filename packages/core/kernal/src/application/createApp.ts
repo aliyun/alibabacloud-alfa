@@ -33,7 +33,7 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
 
     // throw error when iframe is about:blank
     try {
-      if (context.history && context.history.replaceState) {
+      if (context.history && context.history.replaceState && sandBoxOption.sandBoxUrl !== 'about:blank') {
         context.history.replaceState(null, '', sandBoxOption.initialPath || '/');
       }
     } catch (e) {
