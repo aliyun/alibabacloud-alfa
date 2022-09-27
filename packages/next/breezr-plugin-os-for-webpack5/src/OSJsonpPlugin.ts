@@ -23,7 +23,7 @@ export class OSJsonpWebpackPlugin {
         (compilation) => {
           compilation.hooks.processAssets.tap({
             name: 'OSJsonpPlugin',
-            stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
+            stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
           }, (chunks) => {
             this.wrappChunks(compiler, compilation, chunks);
           });
