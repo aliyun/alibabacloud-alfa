@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-toolkit-plugin-os",
-  "version": "1.4.6",
+  "version": "1.4.21",
   "description": "console os plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
