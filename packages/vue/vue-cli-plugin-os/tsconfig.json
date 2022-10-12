@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./lib",
-    "jsx": "react",
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es5",
     "esModuleInterop": true,
     "lib": ["dom", "es2015", "scripthost"],
@@ -15,10 +14,8 @@
       "~/*": [ "./src/*" ]
     }
   },
-  "include": [
-    "./index.js"
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "lib"
   ]
 }
