@@ -30,6 +30,8 @@ export interface AlfaFactoryOption extends IAppConfig {
     css?: Record<string, string>;
     js?: Record<string, string>;
   };
+  // config
+  dynamicConfig?: boolean;
   // used in cwsWidget
   runtimeVersion?: string;
   // render when throw error

@@ -126,6 +126,7 @@ export default class BaseLoader {
       beforeUpdate,
       sandbox,
       // logger,
+      ...extendedConfig
     } = config;
 
     const app = await createMicroApp({
@@ -149,6 +150,7 @@ export default class BaseLoader {
 
     return {
       ...config,
+      ...extendedConfig,
       app,
     };
   }

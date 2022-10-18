@@ -65,6 +65,9 @@ export interface IAppConfig<P = any> extends IOptions {
   app?: OSApplication;
   env?: EnvEnum;
   locale?: string;
+
+  // extends
+  dynamicConfig?: boolean;
 }
 
 export interface IOptions {

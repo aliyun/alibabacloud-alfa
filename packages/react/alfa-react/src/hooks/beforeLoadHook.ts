@@ -9,14 +9,14 @@ interface IAliyunWin extends IWin {
 
 // inject consoleConfig & locales after load
 async function afterLoadHook(appConfig: IAppConfig) {
-  const { app, logger, sandbox } = appConfig;
+  const { app, logger, sandbox, dynamicConfig } = appConfig;
 
   const defaultConsoleConfig = (window as IWin).ALIYUN_CONSOLE_CONFIG || {};
   const defaultConsoleGlobal = (window as IWin).ALIYUN_CONSOLE_GLOBAL || {};
 
   const CONFIG_START_TIME = Date.now();
 
-  const configData = await getConfig(appConfig);
+  const configData = dynamicConfig ? await getConfig(appConfig) : {};
 
   const [consoleConfig, consoleGlobal, messages] =
     await Promise.all([

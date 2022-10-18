@@ -32,7 +32,7 @@ export default function createApplication(loader: BaseLoader) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
-      afterUnmount, beforeUpdate, sandbox: customSandbox, locale,
+      afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig = true,
     } = props;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
@@ -67,6 +67,7 @@ export default function createApplication(loader: BaseLoader) {
       };
     }, [customSandbox]);
 
+    // 固化第一次的配置
     const memoOptions = useMemo(() => ({
       entry, // deprecated
       url, // deprecated
@@ -85,6 +86,7 @@ export default function createApplication(loader: BaseLoader) {
       afterUnmount,
       beforeUpdate,
       locale,
+      dynamicConfig,
     }), []);
 
     useEffect(() => {
