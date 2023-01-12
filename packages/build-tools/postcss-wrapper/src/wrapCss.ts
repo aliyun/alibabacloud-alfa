@@ -10,8 +10,8 @@ export interface IWrapCssOption {
 }
 
 const getExtends = (ext?: string) => {
-  return ext ? ext : '.os.css';
-}
+  return ext || '.os.css';
+};
 
 export const wrapCss = async (dirPath: string, root: string, opts: IWrapCssOption) => {
   if (!existsSync(dirPath)) {
@@ -21,23 +21,22 @@ export const wrapCss = async (dirPath: string, root: string, opts: IWrapCssOptio
   const ext = getExtends(opts.ext);
 
   glob('**/*.css', {
-    cwd: dirPath
+    cwd: dirPath,
   }, (error, files) => {
     files.forEach(async (file) => {
       if (!file.endsWith('.css') || file.endsWith(ext)) {
         return;
       }
-      const srcPath = join(dirPath, file)
-      const destPath = `${join(dirPath, dirname(file), basename(file)).replace('.css', '')}${ !opts.disableOsCssExtends ? ext : '.css' }`
+      const srcPath = join(dirPath, file);
+      const destPath = `${join(dirPath, dirname(file), basename(file)).replace('.css', '')}${ !opts.disableOsCssExtends ? ext : '.css' }`;
       const cssContent = readFileSync(srcPath, 'utf-8');
-  
+
       const result = await postcss([
-        postcssWrap({ stackableRoot: root, repeat: 1, overrideIds: false })
+        postcssWrap({ stackableRoot: root, repeat: 1, overrideIds: false }),
       ])
-        .process(cssContent, { from: dirname(file), to: destPath })
-  
+        .process(cssContent, { from: dirname(file), to: destPath });
+
       writeFileSync(destPath, result.css, 'utf-8');
     });
-  })
-  
-}
+  });
+};

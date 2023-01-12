@@ -47,6 +47,7 @@ async function afterLoadHook(appConfig: IAppConfig) {
     CONFIG_START_TIME,
     CONFIG_END_TIME,
     END_TIME,
+    COST: CONFIG_END_TIME - CONFIG_START_TIME,
   });
 
   logger?.send && logger.send();

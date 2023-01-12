@@ -1,6 +1,6 @@
 import { removeContext, VMContext } from '@alicloud/console-os-browser-vm';
 
-import { Parcel, mountRootParcel } from 'os-single-spa';
+import { Parcel, mountRootParcel, UPDATING } from 'os-single-spa';
 import { serializeData, flattenFnArray } from '../misc/util';
 import { AppInfo, SandBoxOption } from '../type';
 import { createEventBus } from './createEventBus';
@@ -14,10 +14,10 @@ type ApplicationRejecter = (reason?: any) => Promise<Application> | void;
  * Application
  */
 export class Application {
-  public context: VMContext & { _aliOSKernel?: any };
-  public parcel?: Parcel;
-  public remoteApp;
-  public allowEvents: string[];
+  context: VMContext & { _aliOSKernel?: any };
+  parcel?: Parcel;
+  remoteApp;
+  allowEvents: string[];
 
   private appInfo: AppInfo;
   private inited: boolean;
@@ -25,55 +25,55 @@ export class Application {
   private _pendingResolver: ApplicationResolver;
   private _pendingRejecter: ApplicationRejecter;
 
-  public constructor(appInfo: AppInfo, context: VMContext, option?: SandBoxOption) {
+  constructor(appInfo: AppInfo, context: VMContext, option?: SandBoxOption) {
     this.appInfo = appInfo;
     this.context = context;
     this.inited = false;
 
     const DEFAULT_EVENTS = [
-      this.historyEventName
+      this.historyEventName,
     ];
 
     this.allowEvents = option.allowEvents ? [
       ...option.allowEvents,
-      ...DEFAULT_EVENTS
+      ...DEFAULT_EVENTS,
     ] : [
-      ...DEFAULT_EVENTS
+      ...DEFAULT_EVENTS,
     ];
   }
 
-  public isInited() {
+  isInited() {
     return this.inited;
   }
 
-  public setPendingPromise(p: Promise<Application>) {
+  setPendingPromise(p: Promise<Application>) {
     this.pendingPromise = p;
   }
 
-  public getPendingPromise() {
+  getPendingPromise() {
     return this.pendingPromise;
   }
 
-  public setPendingResolver(resolver: ApplicationResolver) {
+  setPendingResolver(resolver: ApplicationResolver) {
     this._pendingResolver = resolver;
   }
 
-  public get pendingResolver() {
+  get pendingResolver() {
     return this._pendingResolver;
   }
 
-  public setPendingRejecter(reject: ApplicationRejecter) {
+  setPendingRejecter(reject: ApplicationRejecter) {
     this._pendingRejecter = reject;
   }
 
-  public get pendingRejecter() {
+  get pendingRejecter() {
     return this._pendingRejecter;
   }
 
   /**
-   * 
+   *
    */
-  public async load() {
+  async load() {
     if (!this.remoteApp) {
       this.remoteApp = await createAppLoader(this.appInfo, this.context);
     }
@@ -84,10 +84,10 @@ export class Application {
   /**
    * public api for mount logic for app
    */
-  public async mount(dom?: Element, { customProps }: { customProps?: any } = {}) {
+  async mount(dom?: Element, { customProps }: { customProps?: any } = {}) {
     const { baseFrame } = this.context;
     if (baseFrame) {
-      // listen for message and popstate evt 
+      // listen for message and popstate evt
       baseFrame.contentWindow.addEventListener('popstate', this._emitLocationChange);
       baseFrame.contentWindow.addEventListener('message', this._emitGlobalEvent);
     }
@@ -102,8 +102,8 @@ export class Application {
       domElement: dom || this.appInfo.dom,
       appProps: {
         emitter: createEventBus(),
-        ...(customProps || this.appInfo.customProps)
-      }
+        ...(customProps || this.appInfo.customProps),
+      },
     });
 
     this.attachParcel(parcel);
@@ -111,22 +111,21 @@ export class Application {
     return this.parcel.mountPromise;
   }
 
-  public async update(props: any) {
-    // @ts-ignore
-    return this.parcel && this.parcel.update && this.parcel.update({
+  async update(props: any) {
+    return this.parcel?.update({
       appProps: {
         ...props,
         emitter: createEventBus(),
-      }
-    })
+      },
+    });
   }
 
   /**
    * public api for unmount logic for app, it will unmount the node of the app
    * but no destory the sandbox for app
    */
-  public async unmount() {
-    if (this.parcel && this.parcel.getStatus() === "MOUNTED") {
+  async unmount() {
+    if (this.parcel && this.parcel.getStatus() === 'MOUNTED') {
       const { baseFrame } = this.context;
       if (baseFrame) {
         baseFrame.contentWindow.removeEventListener('popstate', this._emitLocationChange);
@@ -140,7 +139,7 @@ export class Application {
    * public api for destroy the app, it with unmount all node and destroy the
    * sandbox
    */
-  public async destroy() {
+  async destroy() {
     await this.unmount();
     removeContext(this.context);
   }
@@ -149,11 +148,11 @@ export class Application {
    * @deprecated
    * public api for destroy the app
    */
-  public async dispose() {
-    return this.destroy()
+  async dispose() {
+    return this.destroy();
   }
 
-  public getExposedModule<T>(moduleName: string) {
+  getExposedModule<T>(moduleName: string) {
     if (!this.remoteApp.exposedModule) {
       return undefined;
     }
@@ -162,18 +161,18 @@ export class Application {
   }
 
   /**
-   * 
-   * @param parcel 
+   *
+   * @param parcel
    */
-  public attachParcel(parcel: Parcel) {
+  attachParcel(parcel: Parcel) {
     this.parcel = parcel;
   }
 
   /* ---------------------------------------------------- */
 
   private _emitLocationChange = () => {
-    eventBus.emit(this.historyEventName, this.context.location)
-  }
+    eventBus.emit(this.historyEventName, this.context.location);
+  };
 
   private _emitGlobalEvent = (e: MessageEvent) => {
     const payload = e.data;
@@ -184,11 +183,11 @@ export class Application {
     payload.appId = this.appInfo.name;
 
     if (payload.type === this.historyEventName) {
-      this._emitLocationChange()
+      this._emitLocationChange();
     } else {
-      eventBus.emit(payload.type, serializeData(payload))
+      eventBus.emit(payload.type, serializeData(payload));
     }
-  }
+  };
 
   private get historyEventName() {
     return `${this.appInfo.name}:history-change`;

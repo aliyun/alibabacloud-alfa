@@ -49,7 +49,7 @@
     "crypto-js": "^4.1.1"
   },
   "peerDependencies": {
-    "react": "^16 | ^17"
+    "react": ">=16.0.0"
   },
   "gitHead": "3d2c643b87f1c7557f2ccf12c53d80b5a8d8d0ee"
 }
