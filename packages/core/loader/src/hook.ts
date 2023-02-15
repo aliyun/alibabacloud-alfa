@@ -13,6 +13,10 @@ const getContext = (id: string, chunkRecord: Record) => {
 
 let preHook = null;
 
+const fallbackHook = function (id, resolver) {
+  resolver(undefined, undefined, undefined, window, location, history, document);
+};
+
 /**
  * 在前面加载的模块系统中寻找模块
  */
@@ -22,6 +26,10 @@ const findModuleInParent = (id: string, resolver: BundleResolver) => {
     preHook(id, resolver);
   } else if ((window as { __IS_CONSOLE_OS_CONTEXT__?: boolean }).__IS_CONSOLE_OS_CONTEXT__) {
     window.parent.__CONSOLE_OS_GLOBAL_HOOK__(id, resolver);
+  } else {
+    // 仅 consoleBase 中使用
+    // 避免控制台主应用晚于 consoleBase 加载被识别成子应用
+    fallbackHook(id, resolver);
   }
 };
 
