@@ -32,7 +32,7 @@ export const getConfig = async (config: IAppConfig) => {
   } catch (e) {
     logger?.error && logger.error({
       E_CODE: 'GetConfigError',
-      E_MSG: e.message,
+      E_MSG: (e as Error).message,
     });
   }
 

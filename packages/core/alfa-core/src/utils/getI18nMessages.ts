@@ -27,7 +27,7 @@ export const getI18nMessages = async (config: IAppConfig) => {
   } catch (e) {
     logger?.error && logger.error({
       E_CODE: 'GetLocaleError',
-      E_MSG: e.message,
+      E_MSG: (e as Error).message,
     });
   }
 

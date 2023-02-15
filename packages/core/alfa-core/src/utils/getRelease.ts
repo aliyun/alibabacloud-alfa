@@ -46,7 +46,7 @@ export const getRelease = async (config: IAppConfig) => {
   } catch (e) {
     logger?.error && logger.error({
       E_CODE: 'GetReleaseError',
-      E_MSG: e.message,
+      E_MSG: (e as Error).message,
     });
   }
 
