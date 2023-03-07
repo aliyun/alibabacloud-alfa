@@ -33,5 +33,5 @@
     "@alicloud/console-logger-sls": "^1.2.31",
     "@alicloud/console-os-kernal": "^1.4.22"
   },
-  "gitHead": "3d2c643b87f1c7557f2ccf12c53d80b5a8d8d0ee"
+  "gitHead": "6387c6b9e984da70641716a25ff92d382cc4d7ca"
 }
