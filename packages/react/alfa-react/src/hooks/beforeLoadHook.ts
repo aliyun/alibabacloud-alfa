@@ -15,30 +15,31 @@ async function afterLoadHook(appConfig: IAppConfig) {
   const defaultConsoleGlobal = (window as IWin).ALIYUN_CONSOLE_GLOBAL || {};
 
   const CONFIG_START_TIME = Date.now();
+  let CONFIG_END_TIME = Date.now();
 
-  const configData = dynamicConfig ? await getConfig(appConfig) : {};
+  if (dynamicConfig) {
+    const configData = await getConfig(appConfig);
 
-  const [consoleConfig, consoleGlobal, messages] =
-    await Promise.all([
+    const [consoleConfig, consoleGlobal, messages] = await Promise.all([
       getConsoleConfig(configData, defaultConsoleConfig),
       getConsoleGlobal(configData, defaultConsoleGlobal),
       getI18nMessages(appConfig),
     ]);
 
-  const CONFIG_END_TIME = Date.now();
+    CONFIG_END_TIME = Date.now();
 
-  const i18nMessages = {
-    ...(window as IAliyunWin).ALIYUN_CONSOLE_I18N_MESSAGE,
-    ...messages,
-  };
+    const i18nMessages = {
+      ...(window as IAliyunWin).ALIYUN_CONSOLE_I18N_MESSAGE,
+      ...messages,
+    };
 
-
-  // inject global variables when sandbox is valid
-  if (app?.context && !sandbox?.disable) {
-    (app.context.window as IAliyunWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
-    (app.context.window as IAliyunWin).ALIYUN_CONSOLE_GLOBAL = consoleGlobal;
-    (app.context.window as IAliyunWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
-    (app.context.window as IAliyunWin).ALIYUN_WIND_MESSAGE = (window as IAliyunWin).ALIYUN_WIND_MESSAGE;
+    // inject global variables when sandbox is valid
+    if (app?.context && !sandbox?.disable) {
+      (app.context.window as IAliyunWin).ALIYUN_CONSOLE_CONFIG = consoleConfig;
+      (app.context.window as IAliyunWin).ALIYUN_CONSOLE_GLOBAL = consoleGlobal;
+      (app.context.window as IAliyunWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
+      (app.context.window as IAliyunWin).ALIYUN_WIND_MESSAGE = (window as IAliyunWin).ALIYUN_WIND_MESSAGE;
+    }
   }
 
   const END_TIME = Date.now();
