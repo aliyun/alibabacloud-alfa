@@ -1,5 +1,5 @@
 import { getRelease } from './getRelease';
-import { IAppConfig } from '../types';
+import { AlfaReleaseConfig, IAppConfig } from '../types';
 import cache from './cacheManager';
 import { getRelativePath, getFeatureStatus } from './index';
 
@@ -43,6 +43,7 @@ export const getManifest = async (config: IAppConfig) => {
   const { manifest, logger } = config;
 
   let entry: string | undefined;
+  let releaseConfig: AlfaReleaseConfig | undefined;
 
   // if user has custom manifest
   if (manifest) {
@@ -50,8 +51,8 @@ export const getManifest = async (config: IAppConfig) => {
 
     entry = manifest;
   } else {
-    const releaseConfig = await getRelease(config);
     let { version = latestVersion } = config;
+    releaseConfig = await getRelease(config);
 
     if (version) {
       // version maybe tag
