@@ -32,7 +32,7 @@ export default function createApplication(loader: BaseLoader) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
-      afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig = true,
+      afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig,
     } = props;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
@@ -86,7 +86,8 @@ export default function createApplication(loader: BaseLoader) {
       afterUnmount,
       beforeUpdate,
       locale,
-      dynamicConfig,
+      // 用户自定义 manifest 且未传入 dynamicConfig 时，默认值为 false，否则为 true
+      dynamicConfig: dynamicConfig || !manifest,
     }), []);
 
     useEffect(() => {

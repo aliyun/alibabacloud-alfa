@@ -39,7 +39,6 @@ const formatManifest = (manifestContent: Manifest, inputManifestUrl: string, rea
 };
 
 export const getManifest = async (config: IAppConfig) => {
-  const releaseConfig = await getRelease(config);
   const latestVersion = 'latest';
   const { manifest, logger } = config;
 
@@ -51,6 +50,7 @@ export const getManifest = async (config: IAppConfig) => {
 
     entry = manifest;
   } else {
+    const releaseConfig = await getRelease(config);
     let { version = latestVersion } = config;
 
     if (version) {
