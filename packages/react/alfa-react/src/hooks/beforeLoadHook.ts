@@ -40,6 +40,11 @@ async function afterLoadHook(appConfig: IAppConfig) {
       (app.context.window as IAliyunWin).ALIYUN_CONSOLE_I18N_MESSAGE = i18nMessages;
       (app.context.window as IAliyunWin).ALIYUN_WIND_MESSAGE = (window as IAliyunWin).ALIYUN_WIND_MESSAGE;
     }
+  } else if (app?.context && !sandbox?.disable) {
+    (app.context.window as IAliyunWin).ALIYUN_CONSOLE_CONFIG = defaultConsoleConfig;
+    (app.context.window as IAliyunWin).ALIYUN_CONSOLE_GLOBAL = defaultConsoleGlobal;
+    (app.context.window as IAliyunWin).ALIYUN_CONSOLE_I18N_MESSAGE = (window as IAliyunWin).ALIYUN_CONSOLE_I18N_MESSAGE;
+    (app.context.window as IAliyunWin).ALIYUN_WIND_MESSAGE = (window as IAliyunWin).ALIYUN_WIND_MESSAGE;
   }
 
   const END_TIME = Date.now();
