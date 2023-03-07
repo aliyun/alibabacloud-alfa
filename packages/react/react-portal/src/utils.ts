@@ -8,9 +8,33 @@ declare global {
   }
 }
 
+/**
+ * kernel 会为沙箱 context 注入 __IS_CONSOLE_OS_CONTEXT__
+ */
+declare let context: {
+  __IS_CONSOLE_OS_CONTEXT__: boolean;
+};
+
+/**
+ * @deprecated
+ * 判断是否在微应用环境，实现上有问题，请不要再使用
+ * @returns
+ */
 export const isOsContext = (): boolean => {
   return window.__IS_CONSOLE_OS_CONTEXT__;
-}
+};
+
+/**
+ * 判断是否作为微应用的 jsBundle 加载
+ */
+export const isOsBundle = (): boolean => {
+  try {
+    return context.__IS_CONSOLE_OS_CONTEXT__;
+  } catch (e) {
+    // 降级
+    return window.__IS_CONSOLE_OS_CONTEXT__;
+  }
+};
 
 interface IProps extends React.Attributes {
   history?: History;
@@ -22,7 +46,7 @@ interface IProps extends React.Attributes {
 
 export const getPathNameWithQueryAndSearch = () => {
   return location.href.replace(/^.*\/\/[^\/]+/, '');
-}
+};
 
 let isFirstEnter = true;
 
@@ -35,18 +59,18 @@ const updateHistory = (history: History, path: string) => {
     if (isFirstEnter) {
       setTimeout(() => {
         history.push(path);
-      }, 0)
+      }, 0);
     } else {
       history.push(path);
     }
   }
   isFirstEnter = false;
-}
+};
 
 /**
  * Sync route with children
- * @param Comp 
- * @param history 
+ * @param Comp
+ * @param history
  */
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   const Wrapper: React.FC<IProps> = (props: IProps) => {
@@ -56,28 +80,28 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: 
       isFirstEnter = false;
     }, [path]);
     return React.createElement(Comp, props);
-  }
-  Wrapper.displayName = `withSyncHistory(${Comp.displayName})`
+  };
+  Wrapper.displayName = `withSyncHistory(${Comp.displayName})`;
   return Wrapper;
-}
+};
 
 
 export class Wrapper extends React.Component<IProps> {
-  public static displayName = `withSyncHistory`;
+  static displayName = 'withSyncHistory';
 
-  public componentDidMount() {
+  componentDidMount() {
     const { history } = this.props;
     updateHistory(history, this.props.path);
   }
 
-  public componentDidUpdate(preprops) {
+  componentDidUpdate(preprops) {
     const { history } = this.props;
     if (this.props.path != preprops.path) {
       updateHistory(history, this.props.path);
     }
   }
 
-  public render() {
+  render() {
     const { Comp } = this.props;
     return React.createElement(Comp, this.props);
   }
@@ -85,15 +109,14 @@ export class Wrapper extends React.Component<IProps> {
 
 /**
  * Sync route with children Compatible with react15
- * @param Comp 
- * @param history 
+ * @param Comp
+ * @param history
  */
 export const withCompatibleSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
-  
   const WrapperComp = (props: IProps) => React.createElement(Wrapper, {
-    Comp: Comp,
-    history: history,
+    Comp,
+    history,
     props,
   });
-  return WrapperComp
-}
+  return WrapperComp;
+};

@@ -40,9 +40,13 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
       console.error(e);
     }
   } else {
+    // FIXME: 污染了全局环境
     // @ts-ignore
     window.__IS_CONSOLE_OS_CONTEXT__ = true;
   }
+
+  // @ts-ignore
+  context.__IS_CONSOLE_OS_CONTEXT__ = true;
 
   // @ts-ignore
   context._aliOSKernel = appInfo.sharingKernel ? _aliOSKernel : null;
