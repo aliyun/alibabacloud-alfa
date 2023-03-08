@@ -87,7 +87,7 @@ export default function createApplication(loader: BaseLoader) {
       beforeUpdate,
       locale,
       // 用户自定义 manifest 且未传入 dynamicConfig 时，默认值为 false，否则为 true
-      dynamicConfig: dynamicConfig || !manifest,
+      dynamicConfig: typeof dynamicConfig === 'boolean' ? dynamicConfig : !manifest,
     }), []);
 
     useEffect(() => {
