@@ -40,6 +40,8 @@ export interface AppInfo<T = any> extends BasicModule, ExtendsAppLifeCycles<T> {
   };
   publicPath?: string;
   sharingKernel?: boolean;
+  // 不使用缓存
+  noCache?: boolean;
 }
 
 export interface AppCreationOption<E> {

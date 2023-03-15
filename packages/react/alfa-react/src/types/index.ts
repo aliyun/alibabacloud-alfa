@@ -30,7 +30,13 @@ export interface AlfaFactoryOption extends IAppConfig {
     css?: Record<string, string>;
     js?: Record<string, string>;
   };
-  // config
+  /**
+   * 关闭缓存模式
+   */
+  noCache?: boolean;
+  /**
+   * 开启业务配置加载
+   */
   dynamicConfig?: boolean;
   // used in cwsWidget
   runtimeVersion?: string;

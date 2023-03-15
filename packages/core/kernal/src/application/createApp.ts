@@ -7,7 +7,7 @@ import { AppInfo, SandBoxOption } from '../type';
 import { getManifest } from '../misc/manifest';
 import * as _aliOSKernel from '../index';
 
-const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
+const createAppInstance = async (appInfo: AppInfo, appName: string, sandBoxOption: SandBoxOption, noCache = false): Promise<Application> => {
   let context: VMContext = { window, document, location, history };
 
   const app = new Application(appInfo, context, sandBoxOption);
@@ -18,12 +18,12 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
 
   app.setPendingPromise(promise);
 
-  AppCachePool.setApp(appInfo.name, app);
+  if (!noCache) AppCachePool.setApp(appName, app);
 
   if (!sandBoxOption.disable) {
     context = await createContext({
       body: appInfo.dom,
-      id: appInfo.name,
+      id: appName,
       externals: sandBoxOption ? sandBoxOption.externalsVars : [],
       url: sandBoxOption.sandBoxUrl,
       disableBody: sandBoxOption.disableFakeBody,
@@ -62,10 +62,11 @@ const createAppInstance = async (appInfo: AppInfo, sandBoxOption: SandBoxOption)
  * @param sandBoxOption sandbox option for app
  */
 export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBoxOption): Promise<Application> => {
-  const manifest = await getManifest(appInfo, appInfo.name);
-  appInfo.name = manifest.name;
+  const { name, noCache = false } = appInfo;
+  const manifest = await getManifest(appInfo, name);
+  const appName = manifest.name;
 
-  let app = AppCachePool.getApp(appInfo.name);
+  let app = noCache ? null : AppCachePool.getApp(appName);
 
   // if app is init and app is singleton, return the
   // singleton instance for app
@@ -83,15 +84,13 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
 
   // handle app loading status
   // if app is loading
-  if (!app || !app.isInited()) {
-    if (app) {
-      return new Promise((resolve) => {
-        resolve(app.getPendingPromise());
-      });
-    }
+  if (app && !app.isInited) {
+    return new Promise((resolve) => {
+      resolve(app.getPendingPromise());
+    });
   }
 
-  app = await createAppInstance(appInfo, sandBoxOption);
+  app = await createAppInstance(appInfo, appName, sandBoxOption, noCache);
 
   app.pendingResolver && app.pendingResolver(app);
   return app;

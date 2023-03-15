@@ -1,35 +1,47 @@
-import { Record } from './Record';
 import { BundleResolver } from '../type';
 
+// 模块加载记录，加载成功后销毁该记录
+export class Record<T = any> {
+  resolve: (value?: T | PromiseLike<T>) => void;
+  reject: (reason?: any) => void;
+  promise: Promise<T>;
+  // 模块是否加载成功，初始时为 false
+  loaded: boolean;
+  deps: {
+    [key: string]: any;
+  };
+  context: any;
+}
+
 export class Module {
-  public static record: Map<string, Record> = new Map<string, Record>()
+  static record: Map<string, Record> = new Map<string, Record>();
   /**
    * unique identity for module
    */
-  public readonly id: string;
+  readonly id: string;
 
   /**
    * parent who load this module. it is main by default.
    * but when A bundle use loader to load B bundle, parent
    * of B is A;
    */
-  public readonly parent: string;
+  readonly parent: string;
 
   /**
    * export object of the module
    */
-  public exports;
+  exports;
 
-  public readonly filename: string;
-  public readonly exited: boolean;
+  readonly filename: string;
+  readonly exited: boolean;
 
-  public loaded: boolean;
+  loaded: boolean;
 
-  public context: any;
-  public resolver: BundleResolver;
+  context: any;
+  resolver: BundleResolver;
   private cache: Map<string, Module> = new Map<string, Module>();
 
-  public constructor(id: string, parent: string) {
+  constructor(id: string, parent: string) {
     this.id = id;
     this.exports = {};
     this.parent = parent;
@@ -38,22 +50,22 @@ export class Module {
     this.loaded = false;
   }
 
-  public resolved = (id: string) => {
+  resolved = (id: string) => {
     return this.cache.has(id);
-  }
+  };
 
-  public require = (id: string) => {
+  require = (id: string) => {
     const module = this.resolveModule(id);
     return this.context?.window[id] || module.exports;
-  }
+  };
 
-  public requireIsolateWithContext(id: string, context: any) {
+  requireIsolateWithContext(id: string, context: any) {
     const module = this.resolveModule(id);
     module.resolver(module.require, module, module.exports, { ...context });
     return module.exports;
   }
 
-  public resolveModule(id: string, parent: string = null) {
+  resolveModule(id: string, parent: string = null) {
     const cachedModule = this.cache.get(id);
     if (cachedModule !== undefined) {
       return cachedModule;

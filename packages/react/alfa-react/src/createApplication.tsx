@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import Loading from './components/Loading';
-import { normalizeName } from './utils';
+import { normalizeName, isOsContext } from './utils';
 import { AlfaFactoryOption, MicroApplication } from './types';
 import { version as loaderVersion } from './version';
 
@@ -32,7 +32,7 @@ export default function createApplication(loader: BaseLoader) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
-      afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig,
+      afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache
     } = props;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
@@ -86,6 +86,7 @@ export default function createApplication(loader: BaseLoader) {
       afterUnmount,
       beforeUpdate,
       locale,
+      noCache,
       // 用户自定义 manifest 且未传入 dynamicConfig 时，默认值为 false，否则为 true
       dynamicConfig: typeof dynamicConfig === 'boolean' ? dynamicConfig : !manifest,
     }), []);
@@ -129,6 +130,9 @@ export default function createApplication(loader: BaseLoader) {
       return () => {
         isUnmounted = true;
         App && App.unmount();
+
+        // 在沙箱中嵌套时，必须销毁实例，避免第二次加载时异常
+        if (isOsContext()) App?.destroy();
       };
     }, [memoOptions]);
 

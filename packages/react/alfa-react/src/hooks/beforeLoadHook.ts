@@ -47,6 +47,14 @@ async function afterLoadHook(appConfig: IAppConfig) {
     (app.context.window as IAliyunWin).ALIYUN_WIND_MESSAGE = (window as IAliyunWin).ALIYUN_WIND_MESSAGE;
   }
 
+  const overrides = sandbox?.overrideGlobalVars;
+
+  if (overrides && app) {
+    Object.entries(overrides).forEach(([key, value]) => {
+      (app.context.window as any)[key] = value;
+    });
+  }
+
   const END_TIME = Date.now();
 
   logger?.record && logger.record({

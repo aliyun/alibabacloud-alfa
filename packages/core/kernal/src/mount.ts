@@ -30,7 +30,7 @@ export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) 
   }
 
   return await createApplication(appInfo, sandBox);
-}
+};
 
 /**
  * Load app assets instance according to its manifest,
@@ -40,7 +40,7 @@ export const createMicroApp = async (appInfo: AppInfo, options: AppOption = {}) 
 export const load = async (app: Application) => {
   await app.load();
   return app;
-}
+};
 
 /**
  * Mount app to a dom
@@ -50,7 +50,7 @@ export const load = async (app: Application) => {
 export const mount = async (app: Application, mountInfo: AppInfo) => {
   await app.mount(mountInfo.dom, { customProps: mountInfo.customProps });
   return app;
-}
+};
 
 /**
  * update the props to application
@@ -58,26 +58,26 @@ export const mount = async (app: Application, mountInfo: AppInfo) => {
  * @param props
  */
 export const update = async (app: Application, props: any) => {
-  await app.update(props)
-}
+  await app.update(props);
+};
 
 /**
  * mount a app
  * @param app
  */
 export const unmount = async (app: Application) => {
-  await app.unmount()
+  await app.unmount();
   return app;
-}
+};
 
 export const destroy = async (app: Application) => {
-  await app.destroy()
+  await app.destroy();
   return app;
-}
+};
 
 export const getExposedModule = <T>(app: Application, moduleName: string) => {
   return app.getExposedModule<T>(moduleName);
-}
+};
 
 export const loadExposedModule = async <T>(appInfo: AppInfo, moduleName: string, options: AppOption = {}) => {
   // create application
@@ -86,7 +86,7 @@ export const loadExposedModule = async <T>(appInfo: AppInfo, moduleName: string,
   await load(app);
 
   return getExposedModule<T>(app, moduleName);
-}
+};
 
 /**
  *
@@ -97,16 +97,16 @@ export const mountApp = async (appInfo: AppInfo, options: AppOption = {}) => {
   // create application
   const app = await createMicroApp(appInfo, options);
   // load application
-  await load(app)
+  await load(app);
   // mount application
   await mount(app, appInfo);
 
   return app;
-}
+};
 
 export const isAppRegistered = (appName: string) => {
   return getAppNames().indexOf(appName) !== -1;
-}
+};
 
 /**
  * Start consoleos instance
@@ -120,6 +120,6 @@ export const start = (options?: GlobalOption) => {
   startSpa();
   createCachePool({});
   ManifestCachePool.createCachePool();
-}
+};
 
 start();

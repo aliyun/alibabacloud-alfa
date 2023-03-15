@@ -54,6 +54,7 @@ export interface IAppConfig<P = any> extends IOptions {
   version?: string;
   container?: HTMLElement;
   props?: P;
+  noCache?: boolean;
 
   // alfa 的扩展属性
   manifest?: AppInfo['manifest'];
@@ -71,7 +72,9 @@ export interface IAppConfig<P = any> extends IOptions {
 }
 
 export interface IOptions {
-  sandbox?: SandBoxOption;
+  sandbox?: SandBoxOption & {
+    overrideGlobalVars?: Record<string, any>;
+  };
   beforeMount?: AppInfo['appWillMount'];
   afterMount?: AppInfo['appDidMount'];
   beforeUnmount?: AppInfo['appWillUnmount'];

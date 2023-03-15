@@ -1,7 +1,6 @@
 import isFunction from 'lodash/isFunction';
 import { BundleResolver } from './type';
-import { Module, globalModule } from './module';
-import { Record } from './module/Record';
+import { Record, Module, globalModule } from './module';
 
 const getContext = (id: string, chunkRecord: Record) => {
   let { context } = chunkRecord;
@@ -21,6 +20,8 @@ const findModuleInParent = (id: string, resolver: BundleResolver) => {
   if (preHook) {
     preHook(id, resolver);
   } else if ((window as { __IS_CONSOLE_OS_CONTEXT__?: boolean }).__IS_CONSOLE_OS_CONTEXT__) {
+    // 如果子应用开启代码分片，分片代码会在沙箱环境下运行，导致此时 hook 执行时由于没有加载记录而失败
+    // 所以需要到沙箱外层去查找
     window.parent.__CONSOLE_OS_GLOBAL_HOOK__(id, resolver);
   }
 };
@@ -111,6 +112,5 @@ if (typeof document !== 'undefined') { // only cache pre hooks in browser enviro
     preHook = window.__CONSOLE_OS_GLOBAL_HOOK__;
   }
 
-  // 在 alfa 微前端工程中，__CONSOLE_OS_GLOBAL_HOOK__ 覆盖会导致 webpack 代码分片的加载被此 hook 劫持从而运行失败
   window.__CONSOLE_OS_GLOBAL_HOOK__ = hook;
 }

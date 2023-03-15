@@ -125,6 +125,7 @@ export default class BaseLoader {
       afterUnmount,
       beforeUpdate,
       sandbox,
+      noCache,
       // logger,
       ...extendedConfig
     } = config;
@@ -137,6 +138,7 @@ export default class BaseLoader {
       deps,
       url,
       // logger,
+      noCache,
 
       appWillMount: beforeMount,
       appDidMount: afterMount,
