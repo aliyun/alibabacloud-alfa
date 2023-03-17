@@ -47,6 +47,8 @@ export default function createApplication(loader: BaseLoader) {
     $puppeteer.current = puppeteer;
     $basename.current = basename;
 
+    if ($puppeteer.current) (customProps as unknown as { consoleBase: any }).consoleBase = null;
+
     const sandbox = useMemo(() => {
       const aliyunExternalsVars = [];
 
