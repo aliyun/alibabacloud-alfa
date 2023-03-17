@@ -106,6 +106,7 @@ export default function createApplication(loader: BaseLoader) {
       let App: MicroApplication | undefined;
       let originalPushState: (data: any, unused: string, url?: string | null) => void;
       let originalReplaceState: (data: any, unused: string, url?: string | null) => void;
+      let originalGo: (n?: number) => void;
 
       (async () => {
         const { app, logger } = await loader.register<C>({
@@ -135,6 +136,7 @@ export default function createApplication(loader: BaseLoader) {
         if (frameWindow) {
           originalPushState = frameWindow?.history.pushState;
           originalReplaceState = frameWindow?.history.replaceState;
+          originalGo = frameWindow?.history.go;
           // update context history according to path
           if (path) originalReplaceState(null, '', path);
 
@@ -148,6 +150,10 @@ export default function createApplication(loader: BaseLoader) {
             frameWindow.history.replaceState = (data, unused, _url) => {
               window.history.replaceState(data, unused, `${$basename.current || ''}/${_url}`.replace(/\/\//g, '/'));
               originalReplaceState(data, unused, _url as string);
+            };
+
+            frameWindow.history.go = (n?: number) => {
+              window.history.go(n);
             };
           }
         }
@@ -171,10 +177,13 @@ export default function createApplication(loader: BaseLoader) {
 
         App.unmount();
 
-        const frameWindow = App.context.baseFrame?.contentWindow;
+        const frameHistory = App.context.baseFrame?.contentWindow?.history;
 
-        if (frameWindow && originalPushState) frameWindow.history.pushState = originalPushState;
-        if (frameWindow && originalReplaceState) frameWindow.history.pushState = originalReplaceState;
+        if (frameHistory) {
+          if (originalPushState !== frameHistory.pushState) frameHistory.pushState = originalPushState;
+          if (originalReplaceState !== frameHistory.replaceState) frameHistory.pushState = originalReplaceState;
+          if (originalGo !== frameHistory.go) frameHistory.go = originalGo;
+        }
 
         // 在沙箱中嵌套时，必须销毁实例，避免第二次加载时异常
         if (isOsContext()) App.destroy();
