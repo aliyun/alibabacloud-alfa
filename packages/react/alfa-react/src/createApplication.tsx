@@ -8,6 +8,8 @@ import { version as loaderVersion } from './version';
 
 interface IProps<C = any> extends AlfaFactoryOption {
   customProps: C;
+  puppeteer?: boolean;
+  basename?: string;
 }
 
 interface IWin {
@@ -32,12 +34,18 @@ export default function createApplication(loader: BaseLoader) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
-      afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache
+      afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache,
+      puppeteer, basename,
     } = props;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
     const appRef = useRef<HTMLElement | undefined>(undefined);
+    const $puppeteer = useRef(puppeteer);
+    const $basename = useRef(basename);
     const tagName = normalizeName(props.name);
+
+    $puppeteer.current = puppeteer;
+    $basename.current = basename;
 
     const sandbox = useMemo(() => {
       const aliyunExternalsVars = [];
@@ -94,6 +102,9 @@ export default function createApplication(loader: BaseLoader) {
     useEffect(() => {
       let isUnmounted = false;
       let App: MicroApplication | undefined;
+      let originalPushState: (data: any, unused: string, url?: string | null) => void;
+      let originalReplaceState: (data: any, unused: string, url?: string | null) => void;
+
       (async () => {
         const { app, logger } = await loader.register<C>({
           ...memoOptions,
@@ -116,10 +127,34 @@ export default function createApplication(loader: BaseLoader) {
         // update body in sandbox context
         app.context.updateBody?.(memoOptions.sandbox.disableFakeBody ? document.body : appRef.current);
 
+        const { path } = memoOptions.props as Record<string, any>;
+        const frameWindow = app.context.baseFrame?.contentWindow;
+
+        if (frameWindow) {
+          originalPushState = frameWindow?.history.pushState;
+          originalReplaceState = frameWindow?.history.replaceState;
+          // update context history according to path
+          if (path) originalReplaceState(null, '', path);
+
+
+          if ($puppeteer.current && frameWindow) {
+            frameWindow.history.pushState = (data, unused, _url) => {
+              window.history.pushState(data, unused, `${$basename.current || ''}/${_url}`.replace(/\/\//g, '/'));
+              originalReplaceState(data, unused, _url as string);
+            };
+
+            frameWindow.history.replaceState = (data, unused, _url) => {
+              window.history.replaceState(data, unused, `${$basename.current || ''}/${_url}`.replace(/\/\//g, '/'));
+              originalReplaceState(data, unused, _url as string);
+            };
+          }
+        }
+
         await app.mount(appRef.current, {
           customProps,
         });
 
+        // just run once
         setAppInstance(app);
       })().catch((e) => {
         setError(() => {
@@ -129,10 +164,18 @@ export default function createApplication(loader: BaseLoader) {
 
       return () => {
         isUnmounted = true;
-        App && App.unmount();
+
+        if (!App) return;
+
+        App.unmount();
+
+        const frameWindow = App.context.baseFrame?.contentWindow;
+
+        if (frameWindow && originalPushState) frameWindow.history.pushState = originalPushState;
+        if (frameWindow && originalReplaceState) frameWindow.history.pushState = originalReplaceState;
 
         // 在沙箱中嵌套时，必须销毁实例，避免第二次加载时异常
-        if (isOsContext()) App?.destroy();
+        if (isOsContext()) App.destroy();
       };
     }, [memoOptions]);
 
