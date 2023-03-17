@@ -38,18 +38,18 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
 
   const passedInOption = option;
 
-  return React.memo((props: P) => (
+  return (props: P) => (
     // Compatible with old logic
     // props should not passed in errorBoundary
     <ErrorBoundary {...props}>
-      <Application<P>
+      <Application
         {...passedInOption}
         // name={name}
         deps={dependencies || {}}
         customProps={props}
       />
     </ErrorBoundary>
-  ));
+  );
 }
 
 export default createAlfaWidget;

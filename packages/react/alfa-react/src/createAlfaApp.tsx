@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import ErrorBoundary from './components/ErrorBoundary';
@@ -14,6 +14,17 @@ loader.beforeLoad.use(beforeLoadHook);
 
 const Application = createApplication(loader);
 
+interface IProps {
+  /**
+   * @deprecated
+   */
+  sandbox: Record<string, any>;
+  puppeteer?: boolean;
+  basename?: string;
+  history?: any;
+  path?: string;
+}
+
 function createAlfaApp<P = any>(option: AlfaFactoryOption) {
   const { name, dependencies } = option || {};
 
@@ -22,15 +33,15 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
 
   const passedInOption = option;
 
-  return React.memo((props: P & { history: any; sandbox: {}; puppeteer?: boolean; basename?: string }) => {
-    const customProps = {
+  return (props: P & IProps) => {
+    const customProps = useMemo(() => ({
       ...props,
       __injectHistory: props.history,
-    };
+    }), [props]);
 
     return (
       <ErrorBoundary {...props}>
-        <Application<P>
+        <Application
           // 兼容历史逻辑，优先使用 option 中的 sandbox 参数
           {...passedInOption}
           puppeteer={props.puppeteer}
@@ -38,10 +49,12 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
           sandbox={option.sandbox || props.sandbox}
           deps={dependencies || {}}
           customProps={customProps}
+          // 受控模式下，用于触发子应用随主应用路由变更更新
+          path={props.puppeteer ? window.location.toString() : props.path}
         />
       </ErrorBoundary>
     );
-  });
+  };
 }
 
 export default createAlfaApp;

@@ -10,6 +10,7 @@ interface IProps<C = any> extends AlfaFactoryOption {
   customProps: C;
   puppeteer?: boolean;
   basename?: string;
+  path?: string;
 }
 
 interface IWin {
@@ -24,13 +25,40 @@ interface IWin {
   };
 }
 
+const resolvePath = (...args: Array<string | undefined>) => {
+  return `/${ args.join('/')}`.replace(/\/+/g, '/');
+};
+
+/**
+ * 去掉 location.origin 的路径
+ */
+const peelPath = (location: Location) => {
+  return location.pathname + location.search + location.hash;
+};
+
+const addBasename = (path: string, basename?: string) => {
+  if (!basename) return path;
+
+  return resolvePath(basename, path);
+};
+
+const stripBasename = (path: string, basename?: string) => {
+  if (!basename) return path;
+
+  const _path = resolvePath(path);
+  const _basename = resolvePath(basename);
+
+  if (_path === _basename) return '/';
+  return _path.replace(new RegExp(`^${_basename}`, 'ig'), '');
+};
+
 /**
  * container for microApp mount
  * @param loader alfa-core loader
  * @returns
  */
 export default function createApplication(loader: BaseLoader) {
-  return function Application<C = any>(props: IProps<C>) {
+  function Application <C = any>(props: IProps<C>) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
@@ -47,7 +75,15 @@ export default function createApplication(loader: BaseLoader) {
     $puppeteer.current = puppeteer;
     $basename.current = basename;
 
-    if ($puppeteer.current) (customProps as unknown as { consoleBase: any }).consoleBase = null;
+    // 受控模式锁定一些参数
+    if ($puppeteer.current) {
+      // 禁止子应用和 consoleBase 通信
+      (customProps as unknown as { consoleBase: any }).consoleBase = null;
+      // 覆写 path 参数，用于通知子应用更新路由
+      (customProps as unknown as { path: string }).path = stripBasename(peelPath(window.location), $basename.current);
+      // 禁止注入 history
+      (customProps as unknown as { __injectHistory: any }).__injectHistory = null;
+    }
 
     const sandbox = useMemo(() => {
       const aliyunExternalsVars = [];
@@ -108,6 +144,30 @@ export default function createApplication(loader: BaseLoader) {
       let originalReplaceState: (data: any, unused: string, url?: string | null) => void;
       let originalGo: (n?: number) => void;
 
+      const dispatchFramePopstate = () => {
+        const popstateEvent = new Event('popstate');
+        (popstateEvent as unknown as { state: string }).state = 'mock';
+
+        App?.context.baseFrame?.contentWindow?.dispatchEvent(popstateEvent);
+      };
+
+      // 受控模式下，返回不会触发子应用内的路由更新
+      const updateAppHistory = () => {
+        if (App) {
+          // 如果子应用路径不同，主动通知子应用 popstate 事件
+          const nextPath = peelPath(App.context.location);
+          if (nextPath !== stripBasename(peelPath(window.location), $basename.current)) {
+            const popstateEvent = new Event('popstate');
+            (popstateEvent as unknown as { state: string }).state = 'mock';
+
+            if (originalReplaceState) originalReplaceState(null, '', stripBasename(peelPath(window.location), $basename.current));
+            dispatchFramePopstate();
+          }
+        }
+      };
+
+      window.addEventListener('popstate', updateAppHistory);
+
       (async () => {
         const { app, logger } = await loader.register<C>({
           ...memoOptions,
@@ -138,20 +198,31 @@ export default function createApplication(loader: BaseLoader) {
           originalReplaceState = frameWindow?.history.replaceState;
           originalGo = frameWindow?.history.go;
           // update context history according to path
-          if (path) originalReplaceState(null, '', path);
+          if (path) originalReplaceState(null, '', path.replace(/\/+/g, '/'));
 
-
-          if ($puppeteer.current && frameWindow) {
+          if (frameWindow) {
             frameWindow.history.pushState = (data, unused, _url) => {
-              window.history.pushState(data, unused, `${$basename.current || ''}/${_url}`.replace(/\/\//g, '/'));
-              originalReplaceState(data, unused, _url as string);
+              if ($puppeteer.current) {
+                const nextPath = addBasename(_url?.toString() || '', $basename.current);
+                if (`${nextPath}` !== peelPath(window.location)) {
+                  window.history.pushState(data, unused, nextPath);
+                }
+
+                originalReplaceState(data, unused, _url as string);
+              } else {
+                originalPushState(data, unused, _url as string);
+              }
             };
 
             frameWindow.history.replaceState = (data, unused, _url) => {
-              window.history.replaceState(data, unused, `${$basename.current || ''}/${_url}`.replace(/\/\//g, '/'));
+              const nextPath = addBasename(_url?.toString() || '', $basename.current);
+              if ($puppeteer.current) {
+                window.history.replaceState(data, unused, nextPath);
+              }
               originalReplaceState(data, unused, _url as string);
             };
 
+            // 劫持微应用的返回
             frameWindow.history.go = (n?: number) => {
               window.history.go(n);
             };
@@ -161,6 +232,11 @@ export default function createApplication(loader: BaseLoader) {
         await app.mount(appRef.current, {
           customProps,
         });
+
+        if (frameWindow) {
+          // 每次挂载后主动触发子应用内的 popstate 事件，借此触发 react-router history 的检查逻辑
+          dispatchFramePopstate();
+        }
 
         // just run once
         setAppInstance(app);
@@ -173,9 +249,9 @@ export default function createApplication(loader: BaseLoader) {
       return () => {
         isUnmounted = true;
 
-        if (!App) return;
+        window.removeEventListener('popstate', updateAppHistory);
 
-        App.unmount();
+        if (!App) return;
 
         const frameHistory = App.context.baseFrame?.contentWindow?.history;
 
@@ -184,6 +260,8 @@ export default function createApplication(loader: BaseLoader) {
           if (originalReplaceState !== frameHistory.replaceState) frameHistory.pushState = originalReplaceState;
           if (originalGo !== frameHistory.go) frameHistory.go = originalGo;
         }
+
+        App.unmount();
 
         // 在沙箱中嵌套时，必须销毁实例，避免第二次加载时异常
         if (isOsContext()) App.destroy();
@@ -212,5 +290,7 @@ export default function createApplication(loader: BaseLoader) {
         }
       </>
     );
-  };
+  }
+
+  return React.memo(Application);
 }
