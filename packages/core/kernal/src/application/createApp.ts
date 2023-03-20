@@ -87,7 +87,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
 
   // handle app loading status
   // if app is loading
-  if (app && !app.isInited) {
+  if (app && !app.isInited()) {
     return new Promise((resolve) => {
       resolve(app.getPendingPromise());
     });
