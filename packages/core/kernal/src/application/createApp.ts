@@ -66,6 +66,9 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   const manifest = await getManifest(appInfo, name);
   const appName = manifest.name;
 
+  // FIXME: 覆写 appInfo.name，其它地方会用到
+  appInfo.name = appName;
+
   let app = noCache ? null : AppCachePool.getApp(appName);
 
   // if app is init and app is singleton, return the
