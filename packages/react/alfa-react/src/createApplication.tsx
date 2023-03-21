@@ -58,7 +58,7 @@ const stripBasename = (path: string, basename?: string) => {
  * @returns
  */
 export default function createApplication(loader: BaseLoader) {
-  function Application <C = any>(props: IProps<C>) {
+  return function Application <C = any>(props: IProps<C>) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
@@ -291,6 +291,4 @@ export default function createApplication(loader: BaseLoader) {
       </>
     );
   }
-
-  return React.memo(Application);
 }
