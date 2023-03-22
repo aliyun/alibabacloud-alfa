@@ -45,7 +45,7 @@ interface IProps extends React.Attributes {
 }
 
 export const getPathNameWithQueryAndSearch = () => {
-  return location.href.replace(/^.*\/\/[^\/]+/, '');
+  return location.href.replace(/^.*\/\/[^/]+/, '');
 };
 
 let isFirstEnter = true;
@@ -78,7 +78,7 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: 
     useEffect(() => {
       updateHistory(history, path);
       isFirstEnter = false;
-    }, [path]);
+    });
     return React.createElement(Comp, props);
   };
   Wrapper.displayName = `withSyncHistory(${Comp.displayName})`;
