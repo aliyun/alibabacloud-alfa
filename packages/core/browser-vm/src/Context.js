@@ -12,6 +12,38 @@ import History from './History';
 import { getFetchCredentials } from './utils/credentials';
 
 class Context {
+  static create(conf) {
+    return new Promise((resolve) => {
+      const iframe = document.createElement('iframe');
+
+      // TODO: change src to a reasonable value.
+      iframe.setAttribute('src', conf.url ? conf.url : '/api.json');
+      iframe.style.cssText = 'position: absolute; top: -20000px; width: 1px; height: 1px;';
+
+      if (conf.id) iframe.setAttribute('data-id', conf.id);
+
+      // body will be hijacked in sandbox, so get body from html
+      const topBody = document.documentElement?.getElementsByTagName('body')[0] || document.body;
+
+      topBody.appendChild(iframe);
+
+      // the onload will no trigger when src is about:blank
+      if (conf.url === 'about:blank') {
+        return resolve(new this(conf, iframe));
+      }
+
+      iframe.onload = () => {
+        resolve(new this(conf, iframe));
+      };
+    });
+  }
+
+  static async remove(context) {
+    if (context.remove) {
+      context.remove();
+    }
+  }
+
   constructor(conf, frame) {
     this.location = new Location(frame.contentWindow.location);
     this.history = new History(conf.id, frame.contentWindow);
@@ -43,6 +75,7 @@ class Context {
   }
 
   evalScript(code, url = '') {
+    // eslint-disable-next-line no-new-func
     const resolver = new Function(`
       return function ({window, location, history, document}){ 
         with(window.__CONSOLE_OS_GLOBAL_VARS_) {
@@ -71,33 +104,6 @@ class Context {
       } else {
         this.baseFrame.setAttribute('src', 'about:blank');
       }
-    }
-  }
-
-  static create(conf) {
-    return new Promise((resolve) => {
-      const iframe = document.createElement('iframe');
-
-      // TODO: change src to a reasonable value.
-      iframe.setAttribute('src', conf.url ? conf.url : '/api.json');
-      iframe.style.cssText = 'position: absolute; top: -20000px; width: 1px; height: 1px;';
-
-      document.body.appendChild(iframe);
-
-      // the onload will no trigger when src is about:blank
-      if (conf.url === 'about:blank') {
-        return resolve(new this(conf, iframe));
-      }
-
-      iframe.onload = () => {
-        resolve(new this(conf, iframe));
-      };
-    });
-  }
-
-  static async remove(context) {
-    if (context.remove) {
-      context.remove();
     }
   }
 }

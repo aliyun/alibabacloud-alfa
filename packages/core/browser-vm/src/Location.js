@@ -1,8 +1,8 @@
-class Location{
-  constructor( location ){
-    return new Proxy( {}, {
+class Location {
+  constructor(location) {
+    return new Proxy({}, {
       set(target, name, value) {
-        switch( name ) {
+        switch (name) {
           case 'href':
             break;
           default:
@@ -11,8 +11,8 @@ class Location{
         return true;
       },
 
-      get( target, name ){
-        switch( name ) {
+      get(target, name) {
+        switch (name) {
           case 'reload':
             return () => window.location.reload();
           case 'replace':
@@ -21,20 +21,20 @@ class Location{
             return () => {
               try {
                 return location.toString();
-              } catch(e) {
+              } catch (e) {
                 return location.href;
               }
             };
           default:
             break;
         }
-        if( typeof location[ name ] === 'function' ){
-          return location[ name ].bind && location[ name ].bind( target );
+        if (typeof location[name] === 'function') {
+          return location[name].bind && location[name].bind(target);
         } else {
-          return location[ name ];
+          return location[name];
         }
-      }
-    } );
+      },
+    });
   }
 }
 
