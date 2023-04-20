@@ -19,7 +19,7 @@ interface IProps {
    * @deprecated
    */
   sandbox: Record<string, any>;
-  puppeteer?: boolean;
+  syncHistory?: boolean;
   basename?: string;
   history?: any;
   path?: string;
@@ -44,13 +44,11 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
         <Application
           // 兼容历史逻辑，优先使用 option 中的 sandbox 参数
           {...passedInOption}
-          puppeteer={props.puppeteer}
+          syncHistory={props.syncHistory}
           basename={props.basename}
           sandbox={option.sandbox || props.sandbox}
           deps={dependencies || {}}
           customProps={customProps}
-          // 受控模式下，用于触发子应用随主应用路由变更更新
-          path={props.puppeteer ? window.location.toString() : props.path}
         />
       </ErrorBoundary>
     );

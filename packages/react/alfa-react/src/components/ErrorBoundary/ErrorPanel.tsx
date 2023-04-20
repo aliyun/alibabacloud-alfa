@@ -12,6 +12,7 @@ const containerStyle = {
 };
 
 const commonErrorStyle = {
+  display: 'none',
   lineHeight: '22px',
   color: '#d93026',
   fontSize: 14,
@@ -20,17 +21,9 @@ const commonErrorStyle = {
 const ErrorPanel: React.FC<IProps> = (props) => {
   const { error } = props;
   return (
-    <div style={{ padding }}>
-      {
-        process.env.NODE_ENV === 'development'
-          ? (
-            <div style={containerStyle}>
-              <div style={commonErrorStyle}>{error?.message}</div>
-              <pre style={{ overflow: 'scroll' }}>{error?.stack}</pre>
-            </div>
-          )
-          : <div style={commonErrorStyle}>Error</div>
-      }
+    <div style={containerStyle}>
+      <div style={commonErrorStyle}>{error?.message}</div>
+      <pre style={{ overflow: 'scroll' }}>{error?.stack}</pre>
     </div>
   );
 };

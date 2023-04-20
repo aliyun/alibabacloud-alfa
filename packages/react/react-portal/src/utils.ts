@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Context } from './Context';
 import { History } from 'history';
 
@@ -74,11 +74,18 @@ const updateHistory = (history: History, path: string) => {
  */
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   const Wrapper: React.FC<IProps> = (props: IProps) => {
-    const { path } = useContext(Context).appProps || {};
+    const { path, syncHistory } = useContext(Context).appProps || {};
+    const prevPath = useRef(path);
+
     useEffect(() => {
-      updateHistory(history, path);
       isFirstEnter = false;
+
+      if (prevPath.current === path && !syncHistory) return;
+
+      prevPath.current = path;
+      updateHistory(history, path);
     });
+
     return React.createElement(Comp, props);
   };
   Wrapper.displayName = `withSyncHistory(${Comp.displayName})`;

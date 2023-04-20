@@ -8,9 +8,8 @@ import { version as loaderVersion } from './version';
 
 interface IProps<C = any> extends AlfaFactoryOption {
   customProps: C;
-  puppeteer?: boolean;
+  syncHistory?: boolean;
   basename?: string;
-  path?: string;
 }
 
 interface IWin {
@@ -63,20 +62,20 @@ export default function createApplication(loader: BaseLoader) {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
       afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache,
-      puppeteer, basename,
+      syncHistory, basename,
     } = props;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
     const appRef = useRef<HTMLElement | undefined>(undefined);
-    const $puppeteer = useRef(puppeteer);
+    const $syncHistory = useRef(syncHistory);
     const $basename = useRef(basename);
     const tagName = normalizeName(props.name);
 
-    $puppeteer.current = puppeteer;
+    $syncHistory.current = syncHistory;
     $basename.current = basename;
 
     // 受控模式锁定一些参数
-    if ($puppeteer.current) {
+    if ($syncHistory.current) {
       // 禁止子应用和 consoleBase 通信
       (customProps as unknown as { consoleBase: any }).consoleBase = null;
       // 覆写 path 参数，用于通知子应用更新路由
@@ -202,7 +201,7 @@ export default function createApplication(loader: BaseLoader) {
 
           if (frameWindow) {
             frameWindow.history.pushState = (data, unused, _url) => {
-              if ($puppeteer.current) {
+              if ($syncHistory.current) {
                 const nextPath = addBasename(_url?.toString() || '', $basename.current);
                 if (`${nextPath}` !== peelPath(window.location)) {
                   window.history.pushState(data, unused, nextPath);
@@ -216,7 +215,7 @@ export default function createApplication(loader: BaseLoader) {
 
             frameWindow.history.replaceState = (data, unused, _url) => {
               const nextPath = addBasename(_url?.toString() || '', $basename.current);
-              if ($puppeteer.current) {
+              if ($syncHistory.current) {
                 window.history.replaceState(data, unused, nextPath);
               }
               originalReplaceState(data, unused, _url as string);
@@ -290,5 +289,5 @@ export default function createApplication(loader: BaseLoader) {
         }
       </>
     );
-  }
+  };
 }
