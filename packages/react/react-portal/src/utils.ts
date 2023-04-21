@@ -75,7 +75,7 @@ const updateHistory = (history: History, path: string) => {
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   const Wrapper: React.FC<IProps> = (props: IProps) => {
     const { path, syncHistory } = useContext(Context).appProps || {};
-    const prevPath = useRef(path);
+    const prevPath = useRef('');
 
     useEffect(() => {
       isFirstEnter = false;
