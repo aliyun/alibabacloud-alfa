@@ -150,22 +150,21 @@ export default function createApplication(loader: BaseLoader) {
         App?.context.baseFrame?.contentWindow?.dispatchEvent(popstateEvent);
       };
 
-      // 受控模式下，返回不会触发子应用内的路由更新
       const updateAppHistory = () => {
         if (App) {
           // 如果子应用路径不同，主动通知子应用 popstate 事件
           const nextPath = peelPath(App.context.location);
           if (nextPath !== stripBasename(peelPath(window.location), $basename.current)) {
-            const popstateEvent = new Event('popstate');
-            (popstateEvent as unknown as { state: string }).state = 'mock';
-
-            if (originalReplaceState) originalReplaceState(null, '', stripBasename(peelPath(window.location), $basename.current));
-            dispatchFramePopstate();
+            if (originalReplaceState) {
+              originalReplaceState(null, '', stripBasename(peelPath(window.location), $basename.current));
+              dispatchFramePopstate();
+            }
           }
         }
       };
 
-      window.addEventListener('popstate', updateAppHistory);
+      // 受控模式下，返回不会触发子应用内的路由更新，需要主动通知
+      if ($syncHistory.current) window.addEventListener('popstate', updateAppHistory);
 
       (async () => {
         const { app, logger } = await loader.register<C>({
@@ -248,7 +247,7 @@ export default function createApplication(loader: BaseLoader) {
       return () => {
         isUnmounted = true;
 
-        window.removeEventListener('popstate', updateAppHistory);
+        if ($syncHistory.current) window.removeEventListener('popstate', updateAppHistory);
 
         if (!App) return;
 
@@ -261,6 +260,9 @@ export default function createApplication(loader: BaseLoader) {
         }
 
         App.unmount();
+
+        // TODO: 在沙箱中嵌套时，unmount 必须销毁沙箱实例，避免在其它微应用中复用该沙箱，导致环境变量污染
+        // if (isOsContext()) App.destroy();
       };
     }, [memoOptions]);
 
