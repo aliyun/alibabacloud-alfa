@@ -261,9 +261,6 @@ export default function createApplication(loader: BaseLoader) {
         }
 
         App.unmount();
-
-        // 在沙箱中嵌套时，必须销毁实例，避免第二次加载时异常
-        if (isOsContext()) App.destroy();
       };
     }, [memoOptions]);
 
