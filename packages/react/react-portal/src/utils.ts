@@ -48,20 +48,28 @@ export const getPathNameWithQueryAndSearch = () => {
   return location.href.replace(/^.*\/\/[^/]+/, '');
 };
 
+const removeHash = (path: string) => {
+  return path.replace(/^\/?#/, '');
+};
+
 let isFirstEnter = true;
 
 const updateHistory = (history: History, path: string) => {
   if (!history) {
     return;
   }
+
   if (path && path !== getPathNameWithQueryAndSearch()) {
+    // 移除 hash 前缀，避免 react-router history 无法识别
+    const realPath = removeHash(path);
+
     // 防止还没发生 第一渲染 破坏 path 的状态
     if (isFirstEnter) {
       setTimeout(() => {
-        history.push(path);
+        history.push(realPath);
       }, 0);
     } else {
-      history.push(path);
+      history.push(realPath);
     }
   }
   isFirstEnter = false;
@@ -75,14 +83,25 @@ const updateHistory = (history: History, path: string) => {
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   const Wrapper: React.FC<IProps> = (props: IProps) => {
     const { path, syncHistory } = useContext(Context).appProps || {};
-    const prevPath = useRef('');
+    // 上一次同步的 path
+    const prevSyncPath = useRef('');
 
     useEffect(() => {
       isFirstEnter = false;
 
-      if (prevPath.current === path && !syncHistory) return;
+      /**
+       * 开启路由同步时，强制更新 history，避免微应用内部路由改变后，主应用再次跳转初始路径时不生效
+       */
+      if (prevSyncPath.current === path && !syncHistory) return;
 
-      prevPath.current = path;
+      /**
+      * 开启路由同步后，初始化的 path 可能是无效路径，此时微应用内默认会重定向至兜底页
+      * 此时如果再次更新 path，会导致微应用内的 Redirect 逻辑失效（react-router history 逻辑限制，避免死循环），从而跳转到空白页
+      * 所以需要在第一次渲染成功后判断 history.action，如果值为 REPLACE 说明初始路径是无效路径发生了重定向，此时不应再更新微应用路由
+      */
+      if (!prevSyncPath.current && syncHistory && history.action === 'REPLACE') return;
+
+      prevSyncPath.current = path;
       updateHistory(history, path);
     });
 
