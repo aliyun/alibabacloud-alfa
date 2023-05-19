@@ -2,12 +2,16 @@ import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import Loading from './components/Loading';
-import { normalizeName, isOsContext } from './utils';
+import { normalizeName } from './utils';
 import { AlfaFactoryOption, MicroApplication } from './types';
 import { version as loaderVersion } from './version';
 
 interface IProps<C = any> extends AlfaFactoryOption {
-  customProps: C;
+  customProps: C & {
+    consoleBase?: any;
+    path?: string;
+    __injectHistory?: any;
+  };
   syncHistory?: boolean;
   basename?: string;
 }
@@ -41,6 +45,16 @@ const addBasename = (path: string, basename?: string) => {
   return resolvePath(basename, path);
 };
 
+const addLeftSlash = (path: string) => {
+  return path.charAt(0) === '/' ? path : `/${ path}`;
+};
+
+/**
+ * 从 path 移除 basename 部分
+ * @param path
+ * @param basename
+ * @returns string
+ */
 const stripBasename = (path: string, basename?: string) => {
   if (!basename) return path;
 
@@ -74,14 +88,16 @@ export default function createApplication(loader: BaseLoader) {
     $syncHistory.current = syncHistory;
     $basename.current = basename;
 
+    if (customProps.path) customProps.path = addLeftSlash(customProps.path);
+
     // 受控模式锁定一些参数
     if ($syncHistory.current) {
       // 禁止子应用和 consoleBase 通信
-      (customProps as unknown as { consoleBase: any }).consoleBase = null;
+      customProps.consoleBase = null;
       // 覆写 path 参数，用于通知子应用更新路由
-      (customProps as unknown as { path: string }).path = stripBasename(peelPath(window.location), $basename.current);
+      customProps.path = stripBasename(peelPath(window.location), $basename.current);
       // 禁止注入 history
-      (customProps as unknown as { __injectHistory: any }).__injectHistory = null;
+      customProps.__injectHistory = null;
     }
 
     const sandbox = useMemo(() => {
@@ -152,8 +168,12 @@ export default function createApplication(loader: BaseLoader) {
 
       const updateAppHistory = () => {
         if (App) {
-          // 如果子应用路径不同，主动通知子应用 popstate 事件
           const nextPath = peelPath(App.context.location);
+
+          // 路由同步只应该在相同 basename 下生效
+          if (!peelPath(window.location).startsWith($basename.current || '')) return;
+
+          // 如果主子应用路径不同，主动通知子应用 popstate 事件
           if (nextPath !== stripBasename(peelPath(window.location), $basename.current)) {
             if (originalReplaceState) {
               originalReplaceState(null, '', stripBasename(peelPath(window.location), $basename.current));
@@ -255,7 +275,7 @@ export default function createApplication(loader: BaseLoader) {
 
         if (frameHistory) {
           if (originalPushState !== frameHistory.pushState) frameHistory.pushState = originalPushState;
-          if (originalReplaceState !== frameHistory.replaceState) frameHistory.pushState = originalReplaceState;
+          if (originalReplaceState !== frameHistory.replaceState) frameHistory.replaceState = originalReplaceState;
           if (originalGo !== frameHistory.go) frameHistory.go = originalGo;
         }
 

@@ -38,7 +38,7 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
 
   const passedInOption = option;
 
-  return (props: P) => (
+  return (props: P & {}) => (
     // Compatible with old logic
     // props should not passed in errorBoundary
     <ErrorBoundary {...props}>
