@@ -71,6 +71,9 @@ export const getManifest = async (config: IAppConfig) => {
       }
 
       entry = releaseConfig.versions?.[version]?.entry;
+
+      // modify version in config
+      config.version = version;
     }
   }
 
