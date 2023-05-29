@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import ErrorBoundary from './components/ErrorBoundary';
@@ -50,6 +50,17 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
       />
     </ErrorBoundary>
   );
+}
+
+/**
+ * create memorized app in react function component, just create App after first mounted
+ * @param option
+ * @returns
+ */
+export function useAlfaWidget<P = any>(option: AlfaFactoryOption) {
+  const App = useMemo(() => createAlfaWidget<P>(option), []);
+
+  return App;
 }
 
 export default createAlfaWidget;

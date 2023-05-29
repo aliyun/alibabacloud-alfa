@@ -3,6 +3,7 @@ import { BaseLoader } from '@alicloud/alfa-core';
 
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
+import { countRegister } from './utils/counter';
 import { AlfaFactoryOption, MicroApplication } from './types';
 import { version as loaderVersion } from './version';
 
@@ -84,6 +85,7 @@ export default function createApplication(loader: BaseLoader) {
     const $syncHistory = useRef(syncHistory);
     const $basename = useRef(basename);
     const tagName = normalizeName(props.name);
+    const [releaseVersion, setReleaseVersion] = useState('');
 
     $syncHistory.current = syncHistory;
     $basename.current = basename;
@@ -187,10 +189,14 @@ export default function createApplication(loader: BaseLoader) {
       if ($syncHistory.current) window.addEventListener('popstate', updateAppHistory);
 
       (async () => {
-        const { app, logger } = await loader.register<C>({
+        countRegister(memoOptions.name);
+
+        const { app, logger, version: realVersion } = await loader.register<C>({
           ...memoOptions,
           container: memoOptions.container || appRef.current,
         });
+
+        setReleaseVersion(realVersion || 'unknown');
 
         App = app;
 
@@ -292,8 +298,12 @@ export default function createApplication(loader: BaseLoader) {
 
     const dataAttrs = {
       'data-id': name,
-      'data-version': version,
+      // 加载器版本
       'data-loader': loaderVersion,
+      // 请求版本
+      'data-request-version': version || 'latest',
+      // 实际线上版本
+      'data-release-version': releaseVersion,
     };
 
     return (

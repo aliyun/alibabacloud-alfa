@@ -55,4 +55,15 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
   };
 }
 
+/**
+ * create memorized app in react function component, just create App after first mounted
+ * @param option
+ * @returns
+ */
+export function useAlfaApp<P = any>(option: AlfaFactoryOption) {
+  const App = useMemo(() => createAlfaApp<P>(option), []);
+
+  return App;
+}
+
 export default createAlfaApp;
