@@ -63,7 +63,8 @@ const stripBasename = (path: string, basename?: string) => {
   const _basename = resolvePath(basename);
 
   if (_path === _basename) return '/';
-  return _path.replace(new RegExp(`^${_basename}`, 'ig'), '');
+  // escape all possible regex special characters
+  return _path.replace(new RegExp(`^${_basename.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1')}`, 'ig'), '');
 };
 
 /**
