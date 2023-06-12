@@ -48,7 +48,7 @@ export const getPathNameWithQueryAndSearch = () => {
   return location.href.replace(/^.*\/\/[^/]+/, '');
 };
 
-const removeHash = (path: string) => {
+export const removeHash = (path: string) => {
   return path.replace(/^\/?#/, '');
 };
 
@@ -81,10 +81,12 @@ const updateHistory = (history: History, path: string) => {
  * @param history
  */
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
+  // 这里不能做 memo，不然会导致相同的 props 无法透传下去
   const Wrapper: React.FC<IProps> = (props: IProps) => {
-    const { path, syncHistory } = useContext(Context).appProps || {};
+    const { path, syncHistory, __innerStamp } = useContext(Context).appProps || {};
     // 上一次同步的 path
     const prevSyncPath = useRef('');
+    const innerStamp = useRef('');
 
     useEffect(() => {
       /**
@@ -92,7 +94,11 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: 
        */
       if (prevSyncPath.current === path && !syncHistory) return;
 
+      // innerStamp 没有变化，说明更新不是由主应用触发，跳过路由同步逻辑
+      if (innerStamp.current === __innerStamp) return;
+
       prevSyncPath.current = path;
+      innerStamp.current = __innerStamp;
       updateHistory(history, path);
       isFirstEnter = false;
     });

@@ -9,9 +9,14 @@ import { version as loaderVersion } from './version';
 
 interface IProps<C = any> extends AlfaFactoryOption {
   customProps: C & {
+    // xconsole 的 consoleBase 配置
     consoleBase?: any;
+    // 指定子应用 path
     path?: string;
+    // 注入给子应用的 history 对象，不建议再使用
     __injectHistory?: any;
+    // 内部时间戳，用于主子应用确认主应用是否需要更新
+    __innerStamp?: string;
   };
   syncHistory?: boolean;
   basename?: string;
@@ -91,6 +96,10 @@ export default function createApplication(loader: BaseLoader) {
     $syncHistory.current = syncHistory;
     $basename.current = basename;
 
+    if (customProps.__innerStamp) console.warn('Please do not use __innerStamp which used in internal.');
+    // 更新标记，保证每次更新都会更新
+    customProps.__innerStamp = (+new Date()).toString(36);
+
     if (customProps.path) customProps.path = addLeftSlash(customProps.path);
 
     // 受控模式锁定一些参数
@@ -128,8 +137,11 @@ export default function createApplication(loader: BaseLoader) {
           // risk control
           ...aliyunExternalsVars,
         ],
+        // 配置沙箱初始化 path
+        initialPath: customSandbox?.initialPath || customProps.path,
+        syncInitHref: !!$syncHistory.current,
       };
-    }, [customSandbox]);
+    }, [customSandbox, customProps.path]);
 
     // 固化第一次的配置
     const memoOptions = useMemo(() => ({

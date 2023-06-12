@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-react-portal",
-  "version": "1.4.36",
+  "version": "1.5.0",
   "description": "Console OS React Portal",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,9 +20,12 @@
     "@alicloud/console-toolkit-cli": "^1.0.0",
     "@alicloud/console-toolkit-preset-wind-component": "^1.0.0",
     "@types/chai": "^4.1.7",
+    "@types/history": "^4.7.11",
     "@types/jest": "^24.0.23",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
     "@types/single-spa-react": "^2.8.3",
     "enzyme": "^3.10.0",
     "history": "^4.10.1",
@@ -30,14 +33,18 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "ts-jest": "^23.10.5",
-    "typescript": "^3.0.3"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "@alicloud/console-os-events": "^1.4.5",
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4",
     "single-spa-react": "^2.10.2"
   },
   "peerDependencies": {
-    "react": "^16"
+    "react": "^16",
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4"
   },
   "gitHead": "ff9294b1d5e08b14691c8aa2bef098da2857f3df"
 }
