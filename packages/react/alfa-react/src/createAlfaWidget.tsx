@@ -46,7 +46,7 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
         {...passedInOption}
         // name={name}
         deps={dependencies || {}}
-        customProps={props}
+        customProps={{ ...props }}
       />
     </ErrorBoundary>
   );
