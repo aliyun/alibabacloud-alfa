@@ -5,7 +5,7 @@ import { History } from 'history';
 import { Context } from './Context';
 import { getPathNameWithQueryAndSearch, removeHash } from './utils';
 
-let isFirstEnter = false;
+let isFirstEnter = true;
 
 const updateHistory = (history: History, path: string) => {
   if (!history) {
