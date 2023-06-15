@@ -95,7 +95,7 @@ export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: 
       if (prevSyncPath.current === path && !syncHistory) return;
 
       // innerStamp 没有变化，说明更新不是由主应用触发，跳过路由同步逻辑
-      if (innerStamp.current === __innerStamp) return;
+      if (__innerStamp && innerStamp.current === __innerStamp) return;
 
       prevSyncPath.current = path;
       innerStamp.current = __innerStamp;
