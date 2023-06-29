@@ -270,11 +270,6 @@ export default function createApplication(loader: BaseLoader) {
           customProps,
         });
 
-        if (frameWindow) {
-          // 每次挂载后主动触发子应用内的 popstate 事件，借此触发 react-router history 的检查逻辑
-          dispatchFramePopstate();
-        }
-
         // just run once
         setAppInstance(app);
       })().catch((e) => {
