@@ -52,28 +52,58 @@ export const removeHash = (path: string) => {
   return path.replace(/^\/?#/, '');
 };
 
-let isFirstEnter = true;
-
-const updateHistory = (history: History, path: string) => {
+export const updateHistory = (history: History, path: string) => {
   if (!history) {
     return;
   }
 
-  if (path && path !== getPathNameWithQueryAndSearch()) {
-    // 移除 hash 前缀，避免 react-router history 无法识别
-    const realPath = removeHash(path);
+  // 移除 hash 前缀，避免 react-router history 无法识别
+  const stripHashPath = removeHash(path);
 
-    // 防止第一次渲染发生 redirect 时修改 path 导致再次进入重定向逻辑, <Redirect /> 只在 onmount 时才会修改路由
-    // 故而重复渲染 <Redirect /> 是无效的
-    if (isFirstEnter && history.action === 'REPLACE') {
-      setTimeout(() => {
-        history.push(realPath);
-      }, 0);
-    } else {
-      history.push(realPath);
-    }
+  // 检测 path 是否一致
+  if (
+    (path && path !== getPathNameWithQueryAndSearch())
+    || stripHashPath.replace(/\?.*$/, '') !== history.location.pathname // react-router 的 history 可能不正
+  ) {
+    history.push(stripHashPath);
   }
 };
+
+export function useSyncHistory(history: History) {
+  const { path, syncHistory, __innerStamp } = useContext(Context).appProps || {};
+  // 上一次同步的 path
+  const prevSyncPath = useRef('');
+  const innerStamp = useRef('');
+  const isFirstEnter = useRef(true);
+
+  // 主子应用 path 不同且开启同步路由时，需要同步
+  const needSync = prevSyncPath.current !== path && syncHistory;
+  // render 是否是由主应用触发，需要主应用在 props 传递 __innerStamp
+  const renderFromParent = typeof __innerStamp === 'undefined' || (__innerStamp && innerStamp.current !== __innerStamp);
+
+  useEffect(() => {
+    // 开启路由同步时，强制更新 history，避免微应用内部路由改变后，主应用再次跳转初始路径时不生效
+    // innerStamp 没有变化，说明更新不是由主应用触发，跳过路由同步逻辑
+    if (needSync && renderFromParent) {
+      prevSyncPath.current = path;
+      innerStamp.current = __innerStamp;
+      updateHistory(history, path);
+    }
+
+    isFirstEnter.current = false;
+
+    return () => {
+      // reset isFirstEnter when unmount
+      isFirstEnter.current = true;
+    };
+  });
+
+  return {
+    isFirstEnter: isFirstEnter.current,
+    needSync,
+    renderFromParent,
+  };
+}
 
 /**
  * Sync route with children
@@ -83,32 +113,12 @@ const updateHistory = (history: History, path: string) => {
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   // 这里不能做 memo，不然会导致相同的 props 无法透传下去
   const Wrapper: React.FC<IProps> = (props: IProps) => {
-    const { path, syncHistory, __innerStamp } = useContext(Context).appProps || {};
-    // 上一次同步的 path
-    const prevSyncPath = useRef('');
-    const innerStamp = useRef('');
+    const { isFirstEnter, needSync, renderFromParent } = useSyncHistory(history);
 
-    useEffect(() => {
-      /**
-       * 开启路由同步时，强制更新 history，避免微应用内部路由改变后，主应用再次跳转初始路径时不生效
-       */
-      if (prevSyncPath.current === path && !syncHistory) return;
-
-      // innerStamp 没有变化，说明更新不是由主应用触发，跳过路由同步逻辑
-      if (__innerStamp && innerStamp.current === __innerStamp) return;
-
-      prevSyncPath.current = path;
-      innerStamp.current = __innerStamp;
-      updateHistory(history, path);
-      isFirstEnter = false;
-    });
-
-    useEffect(() => {
-      return () => {
-        // reset isFirstEnter when unmount
-        isFirstEnter = true;
-      };
-    });
+    // 第一次 render 时，如果需要同步路由，则返回 null，避免渲染错误的页面:
+    // 第一次渲染发生 redirect 时修改 path 导致再次进入重定向逻辑, <Redirect /> 只在 onmount 时才会修改路由
+    // 故而重复渲染 <Redirect /> 是无效的
+    if (isFirstEnter && needSync && renderFromParent) return null;
 
     return React.createElement(Comp, props);
   };

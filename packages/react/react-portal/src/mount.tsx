@@ -59,6 +59,7 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
     constructor(props) {
       super(props);
 
+      // @deprecated
       if (props.__enableInitialHistoryAction && props?.appProps?.path && props?.appProps?.path !== getPathNameWithQueryAndSearch()) {
         window.history.replaceState(null, null, props?.appProps?.path);
       }

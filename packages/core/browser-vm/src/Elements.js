@@ -2,11 +2,13 @@ import injectScriptCallBack, { getJsonCallback } from './utils/injectScriptCallB
 import { isSSR } from './utils/isSSR';
 
 const makeElInjector = (originMethod, methodName) => function (el, ...args) {
+  const notAllowed = el.ownerContext && (el.ownerContext.allowResources.indexOf(el.src) === -1 && el.ownerContext.allowResources !== '*');
+
   // 如果不在 BrowserVM 的白名单内，尝试通过 context 的 load script 通过 xhr 获取脚本内容，并在沙箱中执行
   if (
     el && el._evalScriptInSandbox
     && el.ownerContext && el.nodeName === 'SCRIPT'
-    && el.src && el.ownerContext.allowResources.indexOf(el.src) === -1
+    && el.src && notAllowed
     && !getJsonCallback(el.src)
   ) {
     return el.ownerContext.loadScripts(el.src).then(() => {

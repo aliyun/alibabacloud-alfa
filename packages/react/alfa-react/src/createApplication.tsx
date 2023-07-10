@@ -191,7 +191,7 @@ export default function createApplication(loader: BaseLoader) {
           // 如果主子应用路径不同，主动通知子应用 popstate 事件
           if (nextPath !== stripBasename(peelPath(window.location), $basename.current)) {
             if (originalReplaceState) {
-              originalReplaceState(null, '', stripBasename(peelPath(window.location), $basename.current));
+              originalReplaceState(history.state, '', stripBasename(peelPath(window.location), $basename.current));
               dispatchFramePopstate();
             }
           }
@@ -235,7 +235,7 @@ export default function createApplication(loader: BaseLoader) {
           originalReplaceState = frameWindow?.history.replaceState;
           originalGo = frameWindow?.history.go;
           // update context history according to path
-          if (path) originalReplaceState(null, '', path.replace(/\/+/g, '/'));
+          if (path) originalReplaceState(history.state, '', path.replace(/\/+/g, '/'));
 
           if (frameWindow) {
             frameWindow.history.pushState = (data, unused, _url) => {
@@ -269,6 +269,11 @@ export default function createApplication(loader: BaseLoader) {
         await app.mount(appRef.current, {
           customProps,
         });
+
+        if (frameWindow) {
+          // 每次挂载后主动触发子应用内的 popstate 事件，借此触发 react-router history 的检查逻辑
+          dispatchFramePopstate();
+        }
 
         // just run once
         setAppInstance(app);

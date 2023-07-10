@@ -1,6 +1,6 @@
-import * as WebpackChain from 'webpack-chain';
+import WebpackChain from 'webpack-chain';
 import * as webpack from 'webpack';
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 import { wrapCss } from 'postcss-prefix-wrapper';
 import * as path from 'path';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
@@ -12,6 +12,8 @@ import { MultiEntryManifest } from './MultiEntryManifest';
 import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
 import { getEnv, error, info, exit, debug, done } from '@alicloud/console-toolkit-shared-utils';
 
+import { publishVersion } from './utils/defEnv';
+
 let globalSSREntry: string | null = null;
 
 export const chainOsWebpack = (options: PluginOptions) => async (config: WebpackChain) => {
@@ -19,7 +21,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     return;
   }
   const { jsonpCall, injectVars, ssrEntry } = options;
-  options.id = normalizeId(options.name || options.id);
+  options.id = normalizeId(options.name || options.id, publishVersion);
   config
     .output
     .library(options.id)
@@ -45,6 +47,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     // @ts-ignore
       .devtoolNamespace(options.id);
 
+    // @ts-ignore
     config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
       transform: (manifest: any, plugin: any) => {
         const { entrypoints } = manifest;
@@ -145,8 +148,8 @@ const buildOsBundle = async (api: PluginAPI, opts: PluginOptions) => {
 
     done('console os bundle build successfully!');
   } catch (e) {
-    error(e.toString());
-    debug('ssr', e.stack);
+    error((e as Error).toString());
+    debug('ssr', (e as Error).stack);
     exit(0);
   }
 };
