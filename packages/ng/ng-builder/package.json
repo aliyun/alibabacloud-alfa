@@ -9,7 +9,7 @@
     "watch": "tsc -watch -d true -p ./",
     "test": "jest",
     "cov": "jest  --coverage",
-    "prepare": "npm run compile",
+    "prepublishOnly": "npm run compile",
     "clean": "rm -rf lib yarn.lock"
   },
   "devDependencies": {
@@ -28,11 +28,13 @@
     "single-spa-angular": "^3.0.1",
     "ts-jest": "^24.0.0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.5.3"
+    "typescript": "^4.0.0"
   },
   "dependencies": {
     "@alicloud/console-toolkit-plugin-os": "^1.4.22",
-    "webpack-assets-manifest": "^3.1.1"
+    "tslib": "^2.4.0",
+    "webpack-assets-manifest": "^3.1.1",
+    "webpack-chain": "^6.5.1"
   },
   "author": "boelroy <boelroy@live.com>",
   "license": "MIT",

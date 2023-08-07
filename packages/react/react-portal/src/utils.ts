@@ -25,7 +25,8 @@ export const isOsContext = (): boolean => {
 };
 
 /**
- * 判断是否作为微应用的 jsBundle 加载
+ * 判断是否作为微应用的 jsBundle 加载，使用 hook 函数传入的 context 来判断
+ * 用于替换 isOsContext
  */
 export const isOsBundle = (): boolean => {
   try {
@@ -48,8 +49,8 @@ export const getPathNameWithQueryAndSearch = () => {
   return location.href.replace(/^.*\/\/[^/]+/, '');
 };
 
-export const removeHash = (path: string) => {
-  return path.replace(/^\/?#/, '');
+export const removeHash = (path?: string) => {
+  return path?.replace(/^\/?#/, '');
 };
 
 export const updateHistory = (history: History, path: string) => {
@@ -63,7 +64,7 @@ export const updateHistory = (history: History, path: string) => {
   // 检测 path 是否一致
   if (
     (path && path !== getPathNameWithQueryAndSearch())
-    || stripHashPath.replace(/\?.*$/, '') !== history.location.pathname // react-router 的 history 可能不正
+    || (stripHashPath && stripHashPath.replace(/\?.*$/, '') !== history.location.pathname) // react-router 的 history 可能不正
   ) {
     history.push(stripHashPath);
   }
@@ -76,9 +77,10 @@ export function useSyncHistory(history: History) {
   const innerStamp = useRef('');
   const isFirstEnter = useRef(true);
 
-  // 主子应用 path 不同且开启同步路由时，需要同步
-  const needSync = prevSyncPath.current !== path && syncHistory;
+  // 主子应用 path 不同或开启同步路由时，需要同步
+  const needSync = (prevSyncPath.current !== path && path) || syncHistory;
   // render 是否是由主应用触发，需要主应用在 props 传递 __innerStamp
+  // 如果是主应用触发，一定会传递 __innerStamp
   const renderFromParent = typeof __innerStamp === 'undefined' || (__innerStamp && innerStamp.current !== __innerStamp);
 
   useEffect(() => {

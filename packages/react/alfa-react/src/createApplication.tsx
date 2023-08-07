@@ -107,7 +107,7 @@ export default function createApplication(loader: BaseLoader) {
       // 禁止子应用和 consoleBase 通信
       customProps.consoleBase = null;
       // 覆写 path 参数，用于通知子应用更新路由
-      customProps.path = stripBasename(peelPath(window.location), $basename.current);
+      customProps.path = addLeftSlash(stripBasename(peelPath(window.location), $basename.current));
       // 禁止注入 history
       customProps.__injectHistory = null;
     }

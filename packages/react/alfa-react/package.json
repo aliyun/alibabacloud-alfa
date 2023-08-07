@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/alfa-react",
-  "version": "1.4.40-alpha.0",
+  "version": "1.4.40",
   "description": "Alfa Framework (React Version)",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -31,6 +31,7 @@
     "@types/crypto-js": "^4.0.2",
     "@types/jest": "^23.3.13",
     "@types/lodash": "^4.14.176",
+    "@types/prop-types": "^15.7.5",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/single-spa-react": "^2.8.3",
@@ -39,14 +40,16 @@
     "react-dom": "^16.9.0",
     "ts-jest": "^23.10.5",
     "tslib": "^2.4.0",
-    "typescript": "^3.0.3"
+    "typescript": "^4.0.0"
   },
   "dependencies": {
-    "@alicloud/alfa-core": "^1.4.30-alpha.0",
-    "@alicloud/console-os-loader": "^1.4.30-alpha.0",
+    "@alicloud/alfa-core": "workspace:*",
+    "@alicloud/console-os-loader": "workspace:*",
     "@alicloud/widget-utils-console": "^0.1.6",
+    "axios": "^1.4.0",
     "classnames": "^2.2.6",
-    "crypto-js": "^4.1.1"
+    "crypto-js": "^4.1.1",
+    "prop-types": "^15.8.1"
   },
   "peerDependencies": {
     "react": ">=16.0.0"

@@ -52,7 +52,7 @@ export function flattenFnArray(fns, description) {
           promise
             .then(() => {
               if (index === fns.length - 1) {
-                resolve();
+                resolve(undefined);
               } else {
                 waitForPromises(index + 1);
               }

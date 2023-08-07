@@ -10,7 +10,7 @@
     "watch": "tsc -watch -d true -p ./",
     "test": "jest",
     "cov": "jest  --coverage",
-    "prepare": "npm run compile",
+    "prepublishOnly": "npm run compile",
     "clean": "rm -rf lib yarn.lock"
   },
   "devDependencies": {
@@ -31,7 +31,7 @@
     "nyc": "^13.1.0",
     "ts-jest": "^24.0.0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.5.3",
+    "typescript": "^4.0.0",
     "webpack": "^5.0.0"
   },
   "dependencies": {
@@ -42,6 +42,7 @@
     "postcss-prefix-wrapper": "^1.2.0",
     "user-home": "^2.0.0",
     "webpack-assets-manifest": "^5.0.0",
+    "webpack-chain": "^6.5.1",
     "webpack-sources": "^3.0.0"
   },
   "author": "流司",

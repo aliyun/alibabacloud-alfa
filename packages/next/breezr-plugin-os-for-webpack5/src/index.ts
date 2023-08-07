@@ -146,8 +146,8 @@ const buildOsBundle = async (api: PluginAPI, opts: PluginOptions) => {
 
     done('console os bundle build successfully!');
   } catch (e) {
-    error(e.toString());
-    debug('ssr', e.stack);
+    error((e as Error).toString());
+    debug('ssr', (e as Error).stack);
     exit(0);
   }
 };

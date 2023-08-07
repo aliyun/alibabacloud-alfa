@@ -13,7 +13,7 @@
     "babel:esm": "breezr build --engine babel --es-module",
     "build": "breezr build --engine webpack",
     "storybook": "breezr start-storybook",
-    "clean": "rm -rf lib yarn.lock"
+    "clean": "rm -rf lib es yarn.lock dist node_modules"
   },
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.0",
@@ -22,7 +22,7 @@
     "@types/jest": "^23.3.13",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5",
-    "typescript": "^3.0.3"
+    "typescript": "^4.0.0"
   },
   "gitHead": "7793fa2f0c47e8d2260c07b7604f7cd95916cfef"
 }
