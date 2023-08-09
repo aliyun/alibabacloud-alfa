@@ -16,6 +16,7 @@ const defaultExternals = [
   'mozCancelAnimationFrame',
   'oCancelAnimationFrame',
   'msCancelAnimationFrame',
+  'matchMedia',
 ];
 
 class Window {
