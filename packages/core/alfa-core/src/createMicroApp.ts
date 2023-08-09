@@ -3,7 +3,7 @@ import { getManifestFromConfig, getURL } from './utils';
 import { IAppConfig, IOptions } from './types';
 
 // TODO: deprecate in next major version
-export const createMicroApp = <T>(appConfig: IAppConfig<T>, options: IOptions = {}) => {
+export const createMicroApp = <T extends Record<string, any>>(appConfig: IAppConfig<T>, options: IOptions = {}) => {
   const manifest = getManifestFromConfig(appConfig);
   const url = getURL(appConfig);
 

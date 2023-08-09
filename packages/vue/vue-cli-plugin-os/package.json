@@ -7,16 +7,18 @@
     "compile": "rm -rf ./lib && tsc -d true -p ./"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.195",
     "chai": "^4.2.0",
     "jest": "^24.2.0-alpha.0",
     "nyc": "^13.1.0",
     "ts-jest": "^24.0.0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.5.3"
+    "typescript": "^4.0.0"
   },
   "dependencies": {
     "@alicloud/console-toolkit-plugin-os": "^1.4.22",
-    "@alicloud/console-toolkit-shared-utils": "^1.2.30"
+    "@alicloud/console-toolkit-shared-utils": "^1.2.30",
+    "tslib": "^2.4.0"
   },
   "peerDependencies": {
     "webpack": ">=4"

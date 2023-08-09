@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import SingleSpaReact from 'single-spa-react';
 import { EventEmitter } from '@alicloud/console-os-events';
 
-import { getPathNameWithQueryAndSearch, isOsContext } from './utils';
+import { getPathNameWithQueryAndSearch, isOsContext, isOsBundle } from './utils';
 import { Context } from './Context';
 import { IContextProps } from './types';
 import ErrorBoundary, { Logger } from './ErrorBoundary';
@@ -124,7 +124,7 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
     }
   }
 
-  if (isOsContext()) {
+  if (isOsBundle() || isOsContext()) {
     const reactLifecycles = SingleSpaReact({
       // @ts-ignore
       React,

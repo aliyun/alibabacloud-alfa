@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-react-portal",
-  "version": "1.5.4-alpha.5",
+  "version": "1.5.8",
   "description": "Console OS React Portal",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -32,12 +32,15 @@
     "jest": "^23.6.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
     "ts-jest": "^23.10.5",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@alicloud/console-os-events": "^1.4.5",
-    "single-spa-react": "^2.10.2"
+    "@alicloud/console-os-events": "workspace:*",
+    "single-spa-react": "^2.10.2",
+    "tslib": "^2.4.0"
   },
   "peerDependencies": {
     "react": "^16",

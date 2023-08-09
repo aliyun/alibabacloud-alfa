@@ -5,38 +5,42 @@ export interface OSJsonpWebpackPluginOption {
   injectVars?: string[];
   jsonpCall?: string;
   id: string;
+  lite?: boolean;
 }
 
 export class OSJsonpWebpackPlugin {
-  public option: OSJsonpWebpackPluginOption;
-  public constructor(option: OSJsonpWebpackPluginOption) {
+  option: OSJsonpWebpackPluginOption;
+  constructor(option: OSJsonpWebpackPluginOption) {
     this.option = {
       ...option,
     };
   }
 
-  public apply(compiler: Compiler) {
+  apply(compiler: Compiler) {
     if (compiler.hooks) {
       compiler.hooks.compilation.tap(
         'OSJsonpPlugin', // <-- Set a meaningful name here for stacktraces
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         (compilation) => {
           compilation.hooks.afterOptimizeChunkAssets.tap('OSJsonpPlugin', (chunks) => {
-            this.wrappChunks(compiler, compilation, chunks)
+            this.wrappChunks(compiler, compilation, chunks);
           });
-        }
+        },
       );
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       compiler.plugin('compilation', (compilation) => {
         // @ts-ignore
         compilation.plugin('after-optimize-chunk-assets', (chunks) => {
-          this.wrappChunks(compiler, compilation, chunks)
+          this.wrappChunks(compiler, compilation, chunks);
         });
       });
     }
   }
 
-  private wrappChunks(compiler: Compiler,compilation: compilation.Compilation, chunks: compilation.Chunk[]) {
-    chunks.forEach(firstChunk => {
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  private wrappChunks(compiler: Compiler, compilation: compilation.Compilation, chunks: compilation.Chunk[]) {
+    chunks.forEach((firstChunk) => {
       if (!firstChunk) {
         return;
       }
@@ -55,7 +59,7 @@ export class OSJsonpWebpackPlugin {
       compilation.assets[entryFile] = new ConcatSource(prefix, entryAsset, suffix);
     });
   }
-  
+
   private getId(compiler: Compiler): string {
     const { output } = compiler.options;
     if (!output) {
@@ -73,13 +77,12 @@ export class OSJsonpWebpackPlugin {
   }
 
   private _wrapCodeWithOSJsonp(id: string) {
-    const injectVars = ['window', 'location', 'history', 'document', ...(this.option.injectVars || [])];
+    const injectVars = this.option.lite ? ['history', 'location'] : ['window', 'location', 'history', 'document', ...(this.option.injectVars || [])];
     const jsonpCall = this.option.jsonpCall || 'window.__CONSOLE_OS_GLOBAL_HOOK__';
 
     return [`
 if (!window.__CONSOLE_OS_GLOBAL_HOOK__){window.__CONSOLE_OS_GLOBAL_VARS_={};window.__CONSOLE_OS_GLOBAL_HOOK__ = function(id, resolver) {resolver(undefined, undefined, undefined, {${injectVars.map((item) => `${item}: ${item}`).join(',')}})};window.__CONSOLE_OS_GLOBAL_HOOK__.standalone = true}
-${jsonpCall}(${JSON.stringify(id)}, function(require, module, exports, context){ ${injectVars.map(item => `var ${item} = context.${item}`).join(';')};with(window.__CONSOLE_OS_GLOBAL_VARS_) { \n
-`, '\n}})']
-  
+${jsonpCall}(${JSON.stringify(id)}, function(require, module, exports, context){ ${injectVars.map((item) => `var ${item} = context.${item}`).join(';')};with(window.__CONSOLE_OS_GLOBAL_VARS_) { \n
+`, '\n}})'];
   }
 }

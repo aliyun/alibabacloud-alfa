@@ -34,7 +34,7 @@
     "typescript": "^3.0.3"
   },
   "dependencies": {
-    "@alicloud/console-os-kernal": "1.4.30-alpha.0",
+    "@alicloud/console-os-kernal": "workspace:*",
     "classnames": "^2.2.6"
   },
   "peerDependencies": {

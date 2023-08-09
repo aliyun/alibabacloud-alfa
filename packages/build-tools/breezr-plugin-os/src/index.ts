@@ -1,9 +1,9 @@
 import WebpackChain from 'webpack-chain';
-import * as webpack from 'webpack';
+import webpack from 'webpack';
 import minimist from 'minimist';
 import { wrapCss } from 'postcss-prefix-wrapper';
-import * as path from 'path';
-import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
+import path from 'path';
+import WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
 import { DonePlugin } from './DonePlugins';
 import { normalizeId } from './utils/normalizeId';
@@ -20,8 +20,8 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   if (process.env.IS_SSR === 'true') {
     return;
   }
-  const { jsonpCall, injectVars, ssrEntry } = options;
-  options.id = normalizeId(options.name || options.id, publishVersion);
+  const { jsonpCall, injectVars, ssrEntry, lite, standalone } = options;
+  options.id = normalizeId(options.name || options.id, standalone ? publishVersion : undefined);
   config
     .output
     .library(options.id)
@@ -33,6 +33,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       injectVars,
       jsonpCall,
       id: options.id,
+      lite,
     }]);
 
   if (!options.webpack5) {
