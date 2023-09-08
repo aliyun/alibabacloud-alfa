@@ -18,11 +18,30 @@ interface IProps {
   /**
    * @deprecated
    */
-  sandbox: Record<string, any>;
+  sandbox?: Record<string, any>;
+  /**
+   * 处理外跳链接
+   * @param url
+   * @returns
+   */
+  handleExternalLink?: (url: string) => void;
+  /**
+   * 是否开启路由自动同步，需配合 basename 使用
+   */
   syncHistory?: boolean;
+  /**
+   * 子应用路由前缀
+   */
   basename?: string;
   history?: any;
+  /**
+   * 子应用路由
+   */
   path?: string;
+  /**
+   * 根节点样式
+   */
+  style?: React.CSSProperties;
 }
 
 function createAlfaApp<P = any>(option: AlfaFactoryOption) {
@@ -44,6 +63,7 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
         <Application
           // 兼容历史逻辑，优先使用 option 中的 sandbox 参数
           {...passedInOption}
+          style={props.style || passedInOption.style}
           syncHistory={props.syncHistory}
           basename={props.basename}
           sandbox={option.sandbox || props.sandbox}

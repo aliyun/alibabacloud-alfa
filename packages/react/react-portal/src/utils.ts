@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { Context } from './Context';
 import { History } from 'history';
+
+import { Context } from './Context';
 
 declare global {
   interface Window {
@@ -162,4 +163,11 @@ export const withCompatibleSyncHistory = (Comp: React.ComponentClass | React.FC,
     props,
   });
   return WrapperComp;
+};
+
+/**
+ * 获取当前浏览器地址
+ */
+export const getBrowserUrl = () => {
+  return window.parent.location.href;
 };

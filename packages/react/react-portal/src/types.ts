@@ -1,4 +1,4 @@
 export interface IContextProps {
   inOsSandBox: boolean;
-  appProps?: any
+  appProps?: any;
 }

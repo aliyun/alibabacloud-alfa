@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { BaseLoader } from '@alicloud/alfa-core';
+import { BaseLoader, createEventBus } from '@alicloud/alfa-core';
 
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
@@ -17,6 +17,8 @@ interface IProps<C = any> extends AlfaFactoryOption {
     __injectHistory?: any;
     // 内部时间戳，用于主子应用确认主应用是否需要更新
     __innerStamp?: string;
+    // 处理外部链接跳转
+    handleExternalLink?: (href: string) => void;
   };
   syncHistory?: boolean;
   basename?: string;
@@ -33,6 +35,8 @@ interface IWin {
     getToken?: () => any;
   };
 }
+
+const eventBus = createEventBus();
 
 const resolvePath = (...args: Array<string | undefined>) => {
   return `/${ args.join('/')}`.replace(/\/+/g, '/');
@@ -85,6 +89,7 @@ export default function createApplication(loader: BaseLoader) {
       afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache,
       syncHistory, basename,
     } = props;
+    const { handleExternalLink } = customProps;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
     const [, setError] = useState(null);
     const appRef = useRef<HTMLElement | undefined>(undefined);
@@ -304,6 +309,18 @@ export default function createApplication(loader: BaseLoader) {
         // if (isOsContext()) App.destroy();
       };
     }, [memoOptions]);
+
+    useEffect(() => {
+      const _handleExternalLink = (href: string) => {
+        handleExternalLink?.(href);
+      };
+
+      eventBus.on(`${normalizeName(name)}:external-router`, _handleExternalLink);
+
+      return () => {
+        eventBus.removeListener(`${normalizeName(name)}:external-router`, _handleExternalLink);
+      };
+    }, [handleExternalLink, name]);
 
     if (appInstance) {
       appInstance.update(customProps);

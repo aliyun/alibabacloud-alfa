@@ -23,6 +23,19 @@ loader.beforeLoad.use(async (appConfig) => {
   return appConfig;
 });
 
+interface IProps {
+  /**
+   * 处理外跳链接
+   * @param url
+   * @returns
+   */
+  handleExternalLink?: (url: string) => void;
+  /**
+   * 根节点样式
+   */
+  style?: React.CSSProperties;
+}
+
 const Application = createApplication(loader);
 
 function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
@@ -38,13 +51,14 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
 
   const passedInOption = option;
 
-  return (props: P & {}) => (
+  return (props: P & IProps) => (
     // Compatible with old logic
     // props should not passed in errorBoundary
     <ErrorBoundary {...props}>
       <Application
         {...passedInOption}
         // name={name}
+        style={props.style || passedInOption.style}
         deps={dependencies || {}}
         customProps={{ ...props }}
       />

@@ -25,6 +25,10 @@ export interface AlfaFactoryOption extends IAppConfig {
   dependencies?: Record<string, any>;
   // style for container root
   className?: string;
+  /**
+   * @deprecated
+   * 根节点样式
+   */
   style?: Record<string, any>;
   unstable_runtime?: {
     css?: Record<string, string>;
