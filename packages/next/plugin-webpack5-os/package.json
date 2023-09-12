@@ -1,6 +1,6 @@
 {
-  "name": "@alicloud/console-toolkit-plugin-os",
-  "version": "2.0.0-alpha.2",
+  "name": "@alicloud/console-toolkit-plugin-webpack5-os",
+  "version": "1.0.0",
   "description": "console os plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
@@ -45,7 +45,9 @@
     "webpack-chain": "^6.5.1",
     "webpack-sources": "^3.0.0"
   },
-  "author": "流司",
+  "author": "fringey",
   "license": "MIT",
-  "gitHead": "43925181e0a3e489559b7ab1bb6c68e59e00d58e"
+  "publishConfig": {
+    "access": "public"
+  }  
 }
