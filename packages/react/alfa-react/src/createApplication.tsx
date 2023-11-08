@@ -17,6 +17,8 @@ interface IProps<C = any> extends AlfaFactoryOption {
     __injectHistory?: any;
     // 内部时间戳，用于主子应用确认主应用是否需要更新
     __innerStamp?: string;
+    // 主应用的 history.state，每次更新需要同步
+    __historyState?: string;
     // 处理外部链接跳转
     handleExternalLink?: (href: string) => void;
   };
@@ -101,9 +103,10 @@ export default function createApplication(loader: BaseLoader) {
     $syncHistory.current = syncHistory;
     $basename.current = basename;
 
-    if (customProps.__innerStamp) console.warn('Please do not use __innerStamp which used in internal.');
+    // if (customProps.__innerStamp) console.warn('Please do not use __innerStamp which used in internal.');
     // 更新标记，保证每次更新都会更新
     customProps.__innerStamp = (+new Date()).toString(36);
+    customProps.__historyState = history.state;
 
     if (customProps.path) customProps.path = addLeftSlash(customProps.path);
 
@@ -181,11 +184,16 @@ export default function createApplication(loader: BaseLoader) {
 
       const dispatchFramePopstate = () => {
         const popstateEvent = new Event('popstate');
-        (popstateEvent as unknown as { state: string }).state = 'mock';
+        (popstateEvent as unknown as { state: string }).state = history.state;
 
         App?.context.baseFrame?.contentWindow?.dispatchEvent(popstateEvent);
       };
 
+      /**
+       * 因为要兼容历史逻辑，所以这段逻辑并不会执行
+       * react-router 的路由监听 callback 会先执行并更新子应用内部路由
+       * @returns
+       */
       const updateAppHistory = () => {
         if (App) {
           const nextPath = peelPath(App.context.location);
@@ -209,9 +217,11 @@ export default function createApplication(loader: BaseLoader) {
       (async () => {
         countRegister(memoOptions.name);
 
+        const fakeBody = memoOptions.container || appRef.current || document.body;
+
         const { app, logger, version: realVersion } = await loader.register<C>({
           ...memoOptions,
-          container: memoOptions.container || appRef.current,
+          container: fakeBody,
         });
 
         setReleaseVersion(realVersion || 'unknown');
@@ -230,7 +240,7 @@ export default function createApplication(loader: BaseLoader) {
         }
 
         // update body in sandbox context
-        app.context.updateBody?.(memoOptions.sandbox.disableFakeBody ? document.body : appRef.current);
+        app.context.updateBody?.(memoOptions.sandbox.disableFakeBody ? document.body : fakeBody);
 
         const { path } = memoOptions.props as Record<string, any>;
         const frameWindow = app.context.baseFrame?.contentWindow;
@@ -271,7 +281,7 @@ export default function createApplication(loader: BaseLoader) {
           }
         }
 
-        await app.mount(appRef.current, {
+        await app.mount(fakeBody, {
           customProps,
         });
 

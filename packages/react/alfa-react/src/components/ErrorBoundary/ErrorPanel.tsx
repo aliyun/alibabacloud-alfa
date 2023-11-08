@@ -7,12 +7,12 @@ const padding = 24;
 const containerBackground = '#fcebea';
 
 const containerStyle = {
+  display: 'none',
   background: containerBackground,
   padding,
 };
 
 const commonErrorStyle = {
-  display: 'none',
   lineHeight: '22px',
   color: '#d93026',
   fontSize: 14,

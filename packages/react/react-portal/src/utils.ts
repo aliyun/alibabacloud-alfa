@@ -54,7 +54,7 @@ export const removeHash = (path?: string) => {
   return path?.replace(/^\/?#/, '');
 };
 
-export const updateHistory = (history: History, path: string) => {
+export const updateHistory = (history: History, path: string, state?: Record<string, any>) => {
   if (!history) {
     return;
   }
@@ -67,12 +67,12 @@ export const updateHistory = (history: History, path: string) => {
     (path && path !== getPathNameWithQueryAndSearch())
     || (stripHashPath && stripHashPath.replace(/\?.*$/, '') !== history.location.pathname) // react-router 的 history 可能不正
   ) {
-    history.push(stripHashPath);
+    history.push(stripHashPath, state?.state || history.location.state);
   }
 };
 
 export function useSyncHistory(history: History) {
-  const { path, syncHistory, __innerStamp } = useContext(Context).appProps || {};
+  const { path, syncHistory, __innerStamp, __historyState } = useContext(Context).appProps || {};
   // 上一次同步的 path
   const prevSyncPath = useRef('');
   const innerStamp = useRef('');
@@ -90,7 +90,7 @@ export function useSyncHistory(history: History) {
     if (needSync && renderFromParent) {
       prevSyncPath.current = path;
       innerStamp.current = __innerStamp;
-      updateHistory(history, path);
+      updateHistory(history, path, __historyState);
     }
 
     isFirstEnter.current = false;
