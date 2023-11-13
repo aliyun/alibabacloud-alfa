@@ -23,6 +23,7 @@ interface IProps<C = any> extends AlfaFactoryOption {
     handleExternalLink?: (href: string) => void;
   };
   syncHistory?: boolean;
+  onSyncHistory?: (type: 'replace' | 'push', path: string, data: any) => void;
   basename?: string;
 }
 
@@ -89,7 +90,7 @@ export default function createApplication(loader: BaseLoader) {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
       afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache,
-      syncHistory, basename,
+      syncHistory, basename, onSyncHistory,
     } = props;
     const { handleExternalLink } = customProps;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
@@ -258,6 +259,7 @@ export default function createApplication(loader: BaseLoader) {
                 const nextPath = addBasename(_url?.toString() || '', $basename.current);
                 if (`${nextPath}` !== peelPath(window.location)) {
                   window.history.pushState(data, unused, nextPath);
+                  onSyncHistory && onSyncHistory('push', nextPath, data);
                 }
 
                 originalReplaceState(data, unused, _url as string);
@@ -270,6 +272,7 @@ export default function createApplication(loader: BaseLoader) {
               const nextPath = addBasename(_url?.toString() || '', $basename.current);
               if ($syncHistory.current) {
                 window.history.replaceState(data, unused, nextPath);
+                onSyncHistory && onSyncHistory('replace', nextPath, data);
               }
               originalReplaceState(data, unused, _url as string);
             };

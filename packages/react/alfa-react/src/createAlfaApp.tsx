@@ -30,6 +30,10 @@ interface IProps {
    */
   syncHistory?: boolean;
   /**
+   * 同步子应用路由的回调函数
+   */
+  onSyncHistory?: (type: 'replace' | 'push', pathname: string, state: any) => void;
+  /**
    * 子应用路由前缀
    */
   basename?: string;
@@ -65,6 +69,7 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
           {...passedInOption}
           style={props.style || passedInOption.style}
           syncHistory={props.syncHistory}
+          onSyncHistory={props.onSyncHistory}
           basename={props.basename}
           sandbox={option.sandbox || props.sandbox}
           deps={dependencies || {}}
