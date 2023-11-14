@@ -107,7 +107,7 @@ export default function createApplication(loader: BaseLoader) {
     // if (customProps.__innerStamp) console.warn('Please do not use __innerStamp which used in internal.');
     // 更新标记，保证每次更新都会更新
     customProps.__innerStamp = (+new Date()).toString(36);
-    customProps.__historyState = history.state;
+    customProps.__historyState = window.history?.state;
 
     if (customProps.path) customProps.path = addLeftSlash(customProps.path);
 
