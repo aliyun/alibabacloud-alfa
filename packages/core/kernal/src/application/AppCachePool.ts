@@ -9,7 +9,7 @@ let cache: LRU<string, Application> = null;
  */
 export function createCachePool(option) {
   cache = new LRU<string, Application>({
-    max: option.max || 10,
+    max: option.max || 30,
     dispose: (key, app) => {
       app.dispose();
     },

@@ -18,7 +18,7 @@ const createAppInstance = async (appInfo: AppInfo, appName: string, sandBoxOptio
 
   app.setPendingPromise(promise);
 
-  if (!noCache) AppCachePool.setApp(JSON.stringify(appInfo.manifest || appName), app);
+  if (!noCache) AppCachePool.setApp(appName, app);
 
   if (!sandBoxOption.disable) {
     context = await createContext({
@@ -69,7 +69,7 @@ export const createApplication = async (appInfo: AppInfo, sandBoxOption: SandBox
   // FIXME: 覆写 appInfo.name，其它地方会用到
   appInfo.name = appName;
 
-  let app = noCache ? null : AppCachePool.getApp(JSON.stringify(appInfo.manifest || appName));
+  let app = noCache ? null : AppCachePool.getApp(appName);
 
   // if app is init and app is singleton, return the
   // singleton instance for app
