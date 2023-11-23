@@ -80,6 +80,20 @@ const stripBasename = (path: string, basename?: string) => {
 };
 
 /**
+ * fix Error (we do not know why):
+ * Failed to read the 'state' property from 'History':
+ * May not use a History object associated with a Document that is not fully active
+ * @returns any
+ */
+const getHistoryState = () => {
+  try {
+    return window?.history.state;
+  } catch (e) {
+    return null;
+  }
+};
+
+/**
  * container for microApp mount
  * @param loader alfa-core loader
  * @returns
@@ -107,7 +121,7 @@ export default function createApplication(loader: BaseLoader) {
     // if (customProps.__innerStamp) console.warn('Please do not use __innerStamp which used in internal.');
     // 更新标记，保证每次更新都会更新
     customProps.__innerStamp = (+new Date()).toString(36);
-    customProps.__historyState = window.history?.state;
+    customProps.__historyState = getHistoryState();
 
     if (customProps.path) customProps.path = addLeftSlash(customProps.path);
 
@@ -185,7 +199,7 @@ export default function createApplication(loader: BaseLoader) {
 
       const dispatchFramePopstate = () => {
         const popstateEvent = new Event('popstate');
-        (popstateEvent as unknown as { state: string }).state = history.state;
+        (popstateEvent as unknown as { state: string }).state = getHistoryState() || {};
 
         App?.context.baseFrame?.contentWindow?.dispatchEvent(popstateEvent);
       };
@@ -205,7 +219,7 @@ export default function createApplication(loader: BaseLoader) {
           // 如果主子应用路径不同，主动通知子应用 popstate 事件
           if (nextPath !== stripBasename(peelPath(window.location), $basename.current)) {
             if (originalReplaceState) {
-              originalReplaceState(history.state, '', stripBasename(peelPath(window.location), $basename.current));
+              originalReplaceState(getHistoryState(), '', stripBasename(peelPath(window.location), $basename.current));
               dispatchFramePopstate();
             }
           }
@@ -251,7 +265,7 @@ export default function createApplication(loader: BaseLoader) {
           originalReplaceState = frameWindow?.history.replaceState;
           originalGo = frameWindow?.history.go;
           // update context history according to path
-          if (path) originalReplaceState(history.state, '', path.replace(/\/+/g, '/'));
+          if (path) originalReplaceState(getHistoryState(), '', path.replace(/\/+/g, '/'));
 
           if (frameWindow) {
             frameWindow.history.pushState = (data, unused, _url) => {
