@@ -5,6 +5,7 @@ import { addEventListener, removeEventListener } from './events';
 import { isConstructable, isBoundedFunction } from './utils/common';
 
 const globalFnName = ['setTimeout', 'setInterval', 'clearInterval', 'clearTimeout'];
+const globalVars = ['location', 'history'];
 const defaultExternals = [
   'requestAnimationFrame',
   'webkitRequestAnimationFrame',
@@ -27,11 +28,19 @@ class Window {
     ];
     const __CONSOLE_OS_GLOBAL_VARS_ = {};
 
+    // 拦截全局方法
     globalFnName.forEach((name) => {
       if (externals.includes(name)) {
         return;
       }
       __CONSOLE_OS_GLOBAL_VARS_[name] = frame.contentWindow[name].bind(frame.contentWindow);
+    });
+
+    // 通过拦截外置的全局变量，指向外部变量
+    globalVars.forEach((name) => {
+      if (externals.includes(name)) {
+        __CONSOLE_OS_GLOBAL_VARS_[name] = window[name];
+      }
     });
 
     return new Proxy(frame.contentWindow, {

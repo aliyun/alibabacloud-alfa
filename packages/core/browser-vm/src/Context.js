@@ -49,11 +49,13 @@ class Context {
     this.history = new History(conf.id, frame.contentWindow);
     this.window = new Window(conf, this, frame, location);
     this.allowResources = conf.allowResources || [];
-    let { body } = conf;
 
-    if (conf.disableBody) {
+    let { body } = conf;
+    const { disableBody } = conf;
+
+    if (disableBody) {
       body = document.body;
-    } else if (!conf.body) {
+    } else if (!body) {
       body = document.createElement('body');
       document.documentElement.appendChild(body);
     }
