@@ -1,3 +1,7 @@
+function isAboutBlank(loc) {
+  return loc && loc.href === 'about:blank';
+}
+
 class Location {
   constructor(location) {
     return new Proxy({}, {
@@ -20,16 +24,19 @@ class Location {
           case 'toString':
             return () => {
               try {
-                return location.toString();
+                return isAboutBlank(location) ? window.location.toString() : location.toString();
               } catch (e) {
-                return location.href;
+                return isAboutBlank(location) ? window.location.href : location.href;
               }
             };
           default:
             break;
         }
+
         if (typeof location[name] === 'function') {
           return location[name].bind && location[name].bind(target);
+        } else if (isAboutBlank(location)) {
+          return window.location[name];
         } else {
           return location[name];
         }
