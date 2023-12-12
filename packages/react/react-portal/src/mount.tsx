@@ -8,15 +8,15 @@ import { Context } from './Context';
 import { IContextProps } from './types';
 import ErrorBoundary, { Logger } from './ErrorBoundary';
 
-interface EmitterProps extends Record<string, any> {
+interface EmitterProps {
   emitter?: EventEmitter;
 }
 
 interface IProps {
-  customProps: EmitterProps;
-  appProps: EmitterProps;
+  customProps?: EmitterProps;
+  appProps?: EmitterProps;
   appDidCatch?: (error: Error) => void;
-  logger: Logger;
+  logger?: Logger;
 }
 
 const globalEventEmitter = (data: any) => {
@@ -54,8 +54,8 @@ export function registerExposedModule(moduleName: string, modules: any) {
   exposeModuleMap[moduleName] = modules;
 }
 
-export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: Element | null, id?: string, options?: any) {
-  class ConsoleApp extends React.Component<T & IProps> {
+export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: Element | null, id?: string) {
+  class ConsoleApp extends React.Component<EmitterProps & IProps> {
     constructor(props) {
       super(props);
 
@@ -64,19 +64,6 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
         window.history.replaceState(null, null, props?.appProps?.path);
       }
     }
-    /**
-     * 针对 外跳 的路由提供简单的方式通知宿主
-     * @param e 点击事件
-     */
-    private handleExternalLinks = (e: Event) => {
-      const target = e.target as HTMLAnchorElement;
-      const { emitter, id, name } = getProps(this.props);
-      if (target.tagName === 'A' && target.hasAttribute('data-alfa-external-router')) {
-        e.preventDefault();
-        e.stopPropagation();
-        emitter && emitter.emit(`${name || id}:external-router`, target.getAttribute('href'));
-      }
-    };
 
     componentDidCatch() { /* Empty */ }
 
@@ -122,11 +109,25 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
         </ErrorBoundary>
       );
     }
+
+    /**
+     * @deprecated
+     * 针对 外跳 的路由提供简单的方式通知宿主
+     * @param e 点击事件
+     */
+    private handleExternalLinks = (e: Event) => {
+      const target = e.target as HTMLAnchorElement;
+      const { emitter, id: appId, name } = getProps(this.props);
+      if (target.tagName === 'A' && target.hasAttribute('data-alfa-external-router')) {
+        e.preventDefault();
+        e.stopPropagation();
+        emitter && emitter.emit(`${name || appId}:external-router`, target.getAttribute('href'));
+      }
+    };
   }
 
   if (isOsBundle() || isOsContext()) {
     const reactLifecycles = SingleSpaReact({
-      // @ts-ignore
       React,
       ReactDOM,
       rootComponent: ConsoleApp,
@@ -149,7 +150,6 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
       exposedModule: exposeModuleMap,
     };
   } else {
-    // @ts-ignore
     ReactDOM.render(<ConsoleApp />, container);
   }
 }
