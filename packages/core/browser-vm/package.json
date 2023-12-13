@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-browser-vm",
-  "version": "1.4.25",
+  "version": "1.4.25-alpha.0",
   "description": "browser virtual machine",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -14,7 +14,6 @@
     "test": "breezr test:unit --coverage --env jsdom",
     "clean": "rm -rf es build lib yarn.lock"
   },
-  "author": "Boelroy",
   "license": "ISC",
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.1",
@@ -29,6 +28,5 @@
     "babel-loader": "^8.0.6",
     "js-beautify": "^1.10.1",
     "jsdom": "^16.2.2"
-  },
-  "gitHead": "9c6fffdb53e1b42c98b80e3f4eb896a3e2ee0c86"
+  }
 }

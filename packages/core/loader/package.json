@@ -1,11 +1,10 @@
 {
   "name": "@alicloud/console-os-loader",
-  "version": "1.4.30-alpha.0",
+  "version": "1.4.30",
   "description": "Console OS Loader",
   "main": "lib/index.js",
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
-  "author": "Boelroy",
   "license": "MIT",
   "scripts": {
     "prepublish": "rm -rf ./lib ./es && npm run build && npm run babel && npm run babel:esm",
@@ -30,6 +29,5 @@
   "dependencies": {
     "debug": "^4.1.1",
     "tslib": "^2.4.0"
-  },
-  "gitHead": "43925181e0a3e489559b7ab1bb6c68e59e00d58e"
+  }
 }
