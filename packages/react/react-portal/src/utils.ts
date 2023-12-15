@@ -67,7 +67,7 @@ export const updateHistory = (history: History, path: string, state?: Record<str
     (path && path !== getPathNameWithQueryAndSearch())
     || (stripHashPath && stripHashPath.replace(/\?.*$/, '') !== history.location.pathname) // react-router 的 history 可能不正
   ) {
-    history.push(stripHashPath, state?.state || history.location.state);
+    history.push(stripHashPath, (state && 'state' in state) ? state.state : history.location.state);
   }
 };
 
