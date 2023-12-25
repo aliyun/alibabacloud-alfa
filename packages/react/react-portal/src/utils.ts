@@ -69,7 +69,7 @@ export const updateHistory = (history: History, path: string, state?: Record<str
     // history.location maybe undefined
     || (stripHashPath && history.location && stripHashPath.replace(/\?.*$/, '') !== history.location.pathname)
   ) {
-    history.push(stripHashPath, (state && 'state' in state) ? state.state : history.location.state);
+    history.push(stripHashPath, (state && 'state' in state) ? state.state : history.location?.state);
   }
 };
 

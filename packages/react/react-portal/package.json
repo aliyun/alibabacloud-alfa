@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-react-portal",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "Console OS React Portal",
   "main": "lib/index.js",
   "module": "es/index.js",
