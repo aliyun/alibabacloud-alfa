@@ -148,7 +148,7 @@ export default function createApplication(loader: BaseLoader) {
       if ((window as IWin).um?.getToken) aliyunExternalsVars.push('um');
 
       ['__bl', 'aplus_queue', 'goldlog_queue', 'goldlog', 'APLUS_CONFIG'].forEach((key) => {
-        if (window[key as any]) aliyunExternalsVars.push('key');
+        if (window[key as any]) aliyunExternalsVars.push(key);
       });
 
       return {
