@@ -10,7 +10,7 @@ export interface IRegisterOption {
 }
 export const registerConfigToRegistry = (id: string, {
   port,
-  https = false
+  https = false,
 }: IRegisterOption) => {
   const userHome = require('user-home');
   const microAppDir = resolve(userHome, '.breezr/microapp/');
@@ -22,22 +22,22 @@ export const registerConfigToRegistry = (id: string, {
 
   const registries = JSON.parse(fs.readFileSync(registryFile, 'utf-8'));
   const query = qs.encode({
-    id: id,
-    manifest: `${https ? 'https' : 'http'}://localhost:${port}/${id}.manifest.json`
+    id,
+    manifest: `${https ? 'https' : 'http'}://localhost:${port}/${id}.manifest.json`,
   });
 
   Object.values(registries).forEach((registryPath) => {
-    console.log(`${registryPath}?${query}`)
-    axios.get(`${registryPath}?${query}` as string).catch(() => {})
+    console.log(`${registryPath}?${query}`);
+    axios.get(`${registryPath}?${query}` as string).catch(() => {});
   });
 
   process.on('exit', () => {
-    Object.values(registries).forEach(function (registryPath) {
-        var query = qs.encode({
-          id: id,
-          manifest: ''
-        });
-        axios.get(registryPath + "?" + query).catch(() => {});
+    Object.values(registries).forEach((registryPath) => {
+      const _query = qs.encode({
+        id,
+        manifest: '',
+      });
+      axios.get(`${registryPath }?${_query}`).catch(() => {});
     });
-  })
-}
+  });
+};

@@ -11,28 +11,29 @@ interface MultiEntryManifestOptions {
 export class MultiEntryManifest {
   private options: MultiEntryManifestOptions;
 
-  public constructor(options: MultiEntryManifestOptions) {
+  constructor(options: MultiEntryManifestOptions) {
     this.options = {
-      ...defaultOptions, 
-      ...options
+      ...defaultOptions,
+      ...options,
     };
   }
 
-  public apply (compiler: Compiler) {
+  apply(compiler: Compiler) {
     if (compiler.hooks) {
-      compiler.hooks.emit.tap('MultiEntryManifest', (compilation) => {
-        this.compileMultiEntry(compiler, compilation);
+      compiler.hooks.emit.tap('MultiEntryManifest', (_compilation) => {
+        this.compileMultiEntry(compiler, _compilation);
       });
     } else {
-      compiler.plugin('emit', (compilation) => {
-        this.compileMultiEntry(compiler, compilation);
+      // @ts-ignore
+      compiler.plugin('emit', (_compilation) => {
+        this.compileMultiEntry(compiler, _compilation);
       });
     }
-  } 
+  }
 
-  private compileMultiEntry(compiler: Compiler, compilation: compilation.Compilation) {
+  private compileMultiEntry(compiler: Compiler, _compilation: compilation.Compilation) {
     const webpackConfig = compiler.options;
-    const manifestStr = compilation.assets[this.options.entryName];
+    const manifestStr = _compilation.assets[this.options.entryName];
     const manifest = JSON.parse(manifestStr.source());
 
     if (isObject(webpackConfig.entry) && webpackConfig.output?.path) {
@@ -50,24 +51,24 @@ export class MultiEntryManifest {
         // @ts-ignore
         Object.values(manifest.entrypoints[entryId]).forEach((entryPaths: string[]) => {
           entryPaths.forEach((entryPath) => {
-            if (!compilation.assets[entryPath]) {
+            if (!_compilation.assets[entryPath]) {
               return;
             }
-            compilation.assets[entryPath] = new RawSource(
-              compilation.assets[entryPath].source().replace(
+            _compilation.assets[entryPath] = new RawSource(
+              _compilation.assets[entryPath].source().replace(
                 `window.__CONSOLE_OS_GLOBAL_HOOK__("${this.options.entryName.replace('.manifest.json', '')}`,
                 `window.__CONSOLE_OS_GLOBAL_HOOK__("${entryId}`,
-              )
-            )
-          })
-        })
+              ),
+            );
+          });
+        });
 
-        compilation.assets[`${entryId}.manifest.json`] = new RawSource(JSON.stringify({
+        _compilation.assets[`${entryId}.manifest.json`] = new RawSource(JSON.stringify({
           ...manifest,
           name: entryId,
           entrypoints: {
-            [entryId]: manifest.entrypoints[entryId]
-          }
+            [entryId]: manifest.entrypoints[entryId],
+          },
         }, null, 2));
       });
     }

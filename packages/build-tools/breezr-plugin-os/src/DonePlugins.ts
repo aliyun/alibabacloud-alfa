@@ -9,28 +9,28 @@ interface DoneOptions {
 export class DonePlugin {
   private options: DoneOptions;
 
-  public constructor(options: DoneOptions) {
+  constructor(options: DoneOptions) {
     this.options = {
-      ...defaultOptions, 
-      ...options
+      ...defaultOptions,
+      ...options,
     };
   }
 
-  public apply (compiler: Compiler) {
+  apply(compiler: Compiler) {
     if (compiler.hooks) {
       compiler.hooks.done.tap(
         'DonePlugin', // <-- Set a meaningful name here for stacktraces
         (data) => {
-          this.options.done && this.options.done(compiler.options)
+          this.options.done && this.options.done(compiler.options);
           return data;
-        }
+        },
       );
     } else {
-      compiler.plugin('done', (data) => {
-        this.options.done && this.options.done(compiler.options)
+      // @ts-ignore
+      compiler.plugin('done', (data: any) => {
+        this.options.done && this.options.done(compiler.options);
         return data;
-      })
+      });
     }
-    
   }
 }
