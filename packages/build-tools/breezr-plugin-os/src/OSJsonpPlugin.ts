@@ -21,18 +21,21 @@ export class OSJsonpWebpackPlugin {
       compiler.hooks.compilation.tap(
         'OSJsonpPlugin', // <-- Set a meaningful name here for stacktraces
         // eslint-disable-next-line @typescript-eslint/no-shadow
-        (compilation) => {
-          compilation.hooks.afterOptimizeChunkAssets.tap('OSJsonpPlugin', (chunks) => {
-            this.wrappChunks(compiler, compilation, chunks);
+        // @ts-ignore
+        (_compilation) => {
+          _compilation.hooks.afterOptimizeChunkAssets.tap('OSJsonpPlugin', (chunks) => {
+            // @ts-ignore
+            this.wrappChunks(compiler, _compilation, chunks);
           });
         },
       );
     } else {
       // eslint-disable-next-line @typescript-eslint/no-shadow
-      compiler.plugin('compilation', (compilation) => {
+      // @ts-ignore
+      compiler.plugin('compilation', (_compilation: any) => {
         // @ts-ignore
         compilation.plugin('after-optimize-chunk-assets', (chunks) => {
-          this.wrappChunks(compiler, compilation, chunks);
+          this.wrappChunks(compiler, _compilation, chunks);
         });
       });
     }

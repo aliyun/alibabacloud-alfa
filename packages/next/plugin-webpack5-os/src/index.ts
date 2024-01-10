@@ -34,6 +34,11 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       webpack5: options.webpack5,
     }]);
 
+  // 本地开发环境，设置 publicPath 为 '.'
+  if (getEnv().isDev()) {
+    config.output.publicPath('.');
+  }
+
   if (!options.webpack5) {
     config
       .output
