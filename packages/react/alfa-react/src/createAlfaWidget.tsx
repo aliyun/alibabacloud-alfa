@@ -60,8 +60,8 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
  * @param option
  * @returns
  */
-export function useAlfaWidget<P = any>(option: AlfaFactoryOption) {
-  const App = useMemo(() => createAlfaWidget<P>(option), []);
+export function useAlfaWidget<P = any>(option: AlfaFactoryOption, deps?: any[]) {
+  const App = useMemo(() => createAlfaWidget<P>(option), deps || [option?.name, option?.version]);
 
   return App;
 }

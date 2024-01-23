@@ -67,12 +67,14 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
 }
 
 /**
- * create memorized app in react function component, just create App after first mounted
+ * create memorized app in react function component,
+ * it will update when name or version changed as default
  * @param option
+ * @param dep custom useMemo deps
  * @returns
  */
-export function useAlfaApp<P = any>(option: AlfaFactoryOption) {
-  const App = useMemo(() => createAlfaApp<P>(option), [JSON.stringify(option)]);
+export function useAlfaApp<P = any>(option: AlfaFactoryOption, deps?: any[]) {
+  const App = useMemo(() => createAlfaApp<P>(option), deps || [option?.name, option?.version]);
 
   return App;
 }
