@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import ErrorBoundary from './components/ErrorBoundary';
-import { AlfaFactoryOption } from './types';
+import { AlfaFactoryOption, CommonProps } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './hooks/beforeResolveHook';
 import beforeLoadHook from './hooks/beforeLoadHook';
@@ -14,17 +14,7 @@ loader.beforeLoad.use(beforeLoadHook);
 
 const Application = createApplication(loader);
 
-interface IProps {
-  /**
-   * @deprecated
-   */
-  sandbox?: Record<string, any>;
-  /**
-   * 处理外跳链接
-   * @param url
-   * @returns
-   */
-  handleExternalLink?: (url: string) => void;
+interface IProps extends CommonProps {
   /**
    * 是否开启路由自动同步，需配合 basename 使用
    */
@@ -42,10 +32,6 @@ interface IProps {
    * 子应用路由
    */
   path?: string;
-  /**
-   * 根节点样式
-   */
-  style?: React.CSSProperties;
 }
 
 function createAlfaApp<P = any>(option: AlfaFactoryOption) {
@@ -86,7 +72,7 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
  * @returns
  */
 export function useAlfaApp<P = any>(option: AlfaFactoryOption) {
-  const App = useMemo(() => createAlfaApp<P>(option), []);
+  const App = useMemo(() => createAlfaApp<P>(option), [JSON.stringify(option)]);
 
   return App;
 }

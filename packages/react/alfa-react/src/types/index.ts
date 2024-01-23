@@ -12,7 +12,6 @@ export interface AlfaReleaseConfig {
   'dist-tag': Record<string, string>;
 }
 
-
 export type EnvEnum = 'prod' | 'local' | 'pre' | 'daily';
 export interface AlfaFactoryOption extends IAppConfig {
   // name: string;
@@ -42,27 +41,38 @@ export interface AlfaFactoryOption extends IAppConfig {
    * 开启业务配置加载
    */
   dynamicConfig?: boolean;
-  // used in cwsWidget
+  /**
+   * @deprecated
+   * used in cwsWidget
+   */
   runtimeVersion?: string;
-  // render when throw error
-  fallbackRender?: (error: Error) => Element;
 }
 
-type OmitKeys = 'manifest';
-export interface WidgetFactoryOption extends Omit<AlfaFactoryOption, OmitKeys> {
-  runtimeVersion?: string;
-  alfaLoader?: boolean;
-
-  // 加载 XConsole 样式
-  theme?: string;
-
-  // 加载中心化 release 文件
-  central?: boolean;
-
-  host?: string;
-
-  configHost?: string;
+export interface CommonProps {
+  /**
+   * @deprecated
+   */
+  sandbox?: Record<string, any>;
+  /**
+   * 处理外跳链接
+   * @param url
+   * @returns
+   */
+  handleExternalLink?: (url?: string) => void;
+  /**
+   * 根节点样式
+   */
+  style?: React.CSSProperties;
+  /**
+   * render when throw error
+   */
+  fallbackRender?: (error?: Error) => Element;
 }
+
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+
+export type MicroApplication = ThenArg<ReturnType<typeof createMicroApp>>;
+
 
 export interface AlfaEnvConfigDescriptor {
   releaseUrl: string;
@@ -78,12 +88,33 @@ export interface AlfaEnvConfig {
   prod: AlfaEnvConfigDescriptor;
 }
 
+/**
+ * 兼容 cws widget 的配置
+ */
+
 export interface WidgetReleaseConfig {
   [id: string]: {
     [version: string]: {
       latest: string;
     };
   };
+}
+
+type OmitKeys = 'manifest';
+
+export interface WidgetFactoryOption extends Omit<AlfaFactoryOption, OmitKeys> {
+  runtimeVersion?: string;
+  alfaLoader?: boolean;
+
+  // 加载 XConsole 样式
+  theme?: string;
+
+  // 加载中心化 release 文件
+  central?: boolean;
+
+  host?: string;
+
+  configHost?: string;
 }
 
 export interface WidgetCWSConfig {
@@ -123,6 +154,3 @@ export interface WidgetRuntime {
   '@ali/wind-intl/lib/withRcIntl': any;
   '@ali/widget-utils-console': any;
 }
-
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
-export type MicroApplication = ThenArg<ReturnType<typeof createMicroApp>>;

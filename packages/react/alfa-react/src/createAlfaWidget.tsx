@@ -3,7 +3,7 @@ import { BaseLoader } from '@alicloud/alfa-core';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import { createCWSWidget } from './widget';
-import { AlfaFactoryOption } from './types';
+import { AlfaFactoryOption, CommonProps } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './hooks/beforeResolveHook';
 import beforeLoadHook from './hooks/beforeLoadHook';
@@ -23,18 +23,7 @@ loader.beforeLoad.use(async (appConfig) => {
   return appConfig;
 });
 
-interface IProps {
-  /**
-   * 处理外跳链接
-   * @param url
-   * @returns
-   */
-  handleExternalLink?: (url: string) => void;
-  /**
-   * 根节点样式
-   */
-  style?: React.CSSProperties;
-}
+interface IProps extends CommonProps {}
 
 const Application = createApplication(loader);
 
