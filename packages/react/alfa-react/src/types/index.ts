@@ -46,6 +46,10 @@ export interface AlfaFactoryOption extends IAppConfig {
    * used in cwsWidget
    */
   runtimeVersion?: string;
+  /**
+   * @deprecated
+   */
+  fallbackRender?: (error?: Error) => Element;
 }
 
 export interface CommonProps {
