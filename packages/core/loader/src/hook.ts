@@ -12,6 +12,10 @@ const getContext = (id: string, chunkRecord: Record) => {
 
 let preHook = null;
 
+const fallbackHook = function (id, resolver) {
+  resolver(undefined, undefined, undefined, window, location, history, document);
+};
+
 /**
  * 在前面加载的模块系统中寻找模块
  */
@@ -43,7 +47,7 @@ const resolveExternalScript = (id: string, resolver: BundleResolver, scriptRecor
 
 /**
  * inject the global hooks for jsonp loader
- *
+ * TODO: 解决多个 loader 实例的冲突问题
  * @param {string} id module Id
  * @param {BundleResolver} resolver bundle entry
  */
@@ -63,8 +67,9 @@ export const hook = (id: string, resolver: BundleResolver) => {
       return resolveExternalScript(id, resolver, scriptRecord);
     }
 
-    // 如果不存在这个模块的记录，则直接返回
+    // 如果不存在这个模块的记录，则直接执行
     if (!chunkRecord) {
+      fallbackHook(id, resolver);
       return;
     }
 
