@@ -63,7 +63,7 @@ function jsonpRequire(id: string, url: string) {
 }
 
 export async function xmlRequire(id: string, url: string, transform: (source: string) => string) {
-  const resp = await fetch(url);
+  const resp = await fetch(url, { credentials: 'include' });
   const code = await resp.text();
 
   // eslint-disable-next-line no-eval
