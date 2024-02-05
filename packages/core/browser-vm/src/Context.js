@@ -9,7 +9,6 @@ import Window from './Window';
 import Document from './Document';
 import Location from './Location';
 import History from './History';
-import { getFetchCredentials } from './utils/credentials';
 
 class Context {
   static create(conf) {
@@ -71,7 +70,7 @@ class Context {
   }
 
   async loadScripts(url) {
-    const resp = await fetch(url, { credentials: getFetchCredentials(url) });
+    const resp = await fetch(url, { credentials: 'include' });
     const code = await resp.text();
     this.evalScript(code, url);
   }
