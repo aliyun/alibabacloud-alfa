@@ -70,7 +70,7 @@ class Context {
   }
 
   async loadScripts(url) {
-    const resp = await fetch(url, { credentials: 'include' });
+    const resp = await fetch(url);
     const code = await resp.text();
     this.evalScript(code, url);
   }
