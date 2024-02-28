@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/alfa-core",
-  "version": "1.4.32",
+  "version": "1.4.33",
   "description": "MicroFront End SDK for alicloud",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@alicloud/console-logger-sls": "^1.2.31",
-    "@alicloud/console-os-kernal": "workspace:*",
+    "@alicloud/console-os-kernal": "workspace:^",
     "@alicloud/cookie": "^1.5.3",
     "@types/crypto-js": "^4.1.1",
     "axios": "^0.21.4",
