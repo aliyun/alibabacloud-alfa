@@ -23,10 +23,16 @@ const findModuleInParent = (id: string, resolver: BundleResolver) => {
   // remove !preHook.standalone
   if (preHook) {
     preHook(id, resolver);
-  } else if ((window as { __IS_CONSOLE_OS_CONTEXT__?: boolean }).__IS_CONSOLE_OS_CONTEXT__) {
+  } else if (
+    // 由于历史原因，window.__IS_CONSOLE_OS_CONTEXT__ 无法用来判断是否在沙箱中，需要额外判断 hook
+    (window as { __IS_CONSOLE_OS_CONTEXT__?: boolean }).__IS_CONSOLE_OS_CONTEXT__
+    && window.parent.__CONSOLE_OS_GLOBAL_HOOK__ !== hook
+  ) {
     // 如果子应用开启代码分片，分片代码会在沙箱环境下运行，导致此时 hook 执行时由于没有加载记录而失败
     // 所以需要到沙箱外层去查找
     window.parent.__CONSOLE_OS_GLOBAL_HOOK__(id, resolver);
+  } else {
+    fallbackHook(id, resolver);
   }
 };
 
@@ -65,12 +71,6 @@ export const hook = (id: string, resolver: BundleResolver) => {
     // 为了在沙箱中加载前置脚本
     if (scriptRecord) {
       return resolveExternalScript(id, resolver, scriptRecord);
-    }
-
-    // 如果不存在这个模块的记录，则直接执行
-    if (!chunkRecord) {
-      fallbackHook(id, resolver);
-      return;
     }
 
     // 处理模块
