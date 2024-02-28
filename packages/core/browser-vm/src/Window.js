@@ -19,6 +19,7 @@ const defaultExternals = [
   'msCancelAnimationFrame',
   'matchMedia',
   'getSelection',
+  'open',
 ];
 
 class Window {
