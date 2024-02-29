@@ -22,6 +22,7 @@ declare let context: {
  * @returns
  */
 export const isOsContext = (): boolean => {
+  // 关闭沙箱时，会修改主应用的 window 造成污染
   return window.__IS_CONSOLE_OS_CONTEXT__;
 };
 
@@ -31,6 +32,10 @@ export const isOsContext = (): boolean => {
  */
 export const isOsBundle = (): boolean => {
   try {
+    if (typeof context.__IS_CONSOLE_OS_CONTEXT__ === 'undefined') {
+      return window.__IS_CONSOLE_OS_CONTEXT__;
+    }
+
     return context.__IS_CONSOLE_OS_CONTEXT__;
   } catch (e) {
     // 降级
