@@ -13,11 +13,22 @@ function onScriptComplete(id: string, script: HTMLScriptElement, timeout: number
   script.onload = null;
   clearTimeout(timeout);
 
-  // 加载完成时会通过全局 hook 注册
+  // 加载完成时会通过全局 hook 注册，成功后设置 loaded 为 true
   // 当记录中，该模块加载状态为 false，清除该记录
   const record = Module.record.get(id);
-  if (id && id.endsWith && !id.endsWith('_scripts_') && record && !record.loaded) {
-    Module.record.delete(id);
+
+  if (record) {
+    if (record.loaded) {
+      record.resolve();
+
+      if (id.endsWith('_scripts_')) {
+        Module.record.delete(id);
+      }
+    } else {
+      record.reject(record.error);
+
+      Module.record.delete(id);
+    }
   }
 }
 

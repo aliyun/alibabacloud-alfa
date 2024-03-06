@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useContext } from 'react';
 import { BaseLoader, createEventBus } from '@alicloud/alfa-core';
+import { ConsoleRegion, ConsoleResourceGroup, ConsoleContext } from '@alicloud/xconsole-context';
 
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
@@ -7,24 +8,63 @@ import { countRegister } from './utils/counter';
 import { AlfaFactoryOption, MicroApplication } from './types';
 import { version as loaderVersion } from './version';
 
-interface IProps<C = any> extends AlfaFactoryOption {
-  customProps: C & {
-    // xconsole 的 consoleBase 配置
-    consoleBase?: any;
-    // 指定子应用 path
-    path?: string;
-    // 注入给子应用的 history 对象，不建议再使用
-    __injectHistory?: any;
-    // 内部时间戳，用于主子应用确认主应用是否需要更新
-    __innerStamp?: string;
-    // 主应用的 history.state，每次更新需要同步
-    __historyState?: string;
-    // 处理外部链接跳转
-    handleExternalLink?: (href: string) => void;
-  };
+export interface IApplicationCustomProps {
+  /**
+   * 根结点样式
+   */
+  style?: Record<string, any>;
+  /**
+   * 注入给子应用的 consoleBase 配置
+   */
+  consoleBase?: any;
+  /**
+   * 指定子应用 path
+   */
+  path?: string;
+  /**
+   * 注入给子应用的运行时配置
+   */
+  appConfig?: any;
+  // 注入给子应用的 history 对象，不建议再使用
+  __injectHistory?: any;
+  // 内部时间戳，用于主子应用确认主应用是否需要更新
+  __innerStamp?: string;
+  // 主应用的 history.state，每次更新需要同步
+  __historyState?: string;
+  /**
+   * 处理外部链接跳转
+   * @param href
+   */
+  handleExternalLink?: (href: string) => void;
+}
+
+export interface IApplicationProps<C = any> extends AlfaFactoryOption {
+  customProps: C & IApplicationCustomProps;
+  /**
+   * 是否开启路由自动同步，需配合 basename 使用
+   */
   syncHistory?: boolean;
-  onSyncHistory?: (type: 'replace' | 'push', path: string, data: any) => void;
+  /**
+   * 是否开启 region 自动同步
+   */
+  syncRegion?: boolean;
+  /**
+   * 是否开启资源组自动同步
+   */
+  syncResourceGroup?: boolean;
+  /**
+   * 同步子应用路由的回调函数
+   */
+  onSyncHistory?: (type: 'replace' | 'push', pathname: string, state: any) => void;
+  /**
+   * 分配给子应用的路由前缀
+   */
   basename?: string;
+  /**
+   * @deprecated
+   * 注入给子应用的 history 实例，不推荐使用
+   */
+  history?: any;
 }
 
 interface IWin {
@@ -99,12 +139,12 @@ const getHistoryState = () => {
  * @returns
  */
 export default function createApplication(loader: BaseLoader) {
-  return function Application <C = any>(props: IProps<C>) {
+  return function Application <C = any>(props: IApplicationProps<C>) {
     const {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
       afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache,
-      syncHistory, basename, onSyncHistory,
+      syncHistory, syncRegion, syncResourceGroup, basename, onSyncHistory,
     } = props;
     const { handleExternalLink } = customProps;
     const [appInstance, setAppInstance] = useState<MicroApplication | null>(null);
@@ -112,6 +152,8 @@ export default function createApplication(loader: BaseLoader) {
     const appRef = useRef<HTMLElement | undefined>(undefined);
     const $syncHistory = useRef(syncHistory);
     const $basename = useRef(basename);
+    const { region: regionContext, resourceGroup: resourceGroupContext } = useContext(ConsoleContext);
+
     const tagName = normalizeName(props.name);
     const [releaseVersion, setReleaseVersion] = useState('');
 
@@ -133,6 +175,32 @@ export default function createApplication(loader: BaseLoader) {
       customProps.path = addLeftSlash(stripBasename(peelPath(window.location), $basename.current));
       // 禁止注入 history
       customProps.__injectHistory = null;
+    }
+
+    customProps.consoleBase = {
+      ...ConsoleRegion,
+      ...ConsoleResourceGroup,
+      ...customProps.consoleBase,
+    };
+
+    /**
+     * 同步主应用的 Region
+     */
+    if (syncRegion) {
+      customProps.consoleBase = {
+        ...customProps.consoleBase,
+        ...regionContext,
+      };
+    }
+
+    /**
+     * 同步更新主应用的 ResourceGroup
+     */
+    if (syncResourceGroup) {
+      customProps.consoleBase = {
+        ...customProps.consoleBase,
+        ...resourceGroupContext,
+      };
     }
 
     const sandbox = useMemo(() => {

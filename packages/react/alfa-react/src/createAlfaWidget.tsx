@@ -3,10 +3,11 @@ import { BaseLoader } from '@alicloud/alfa-core';
 
 import ErrorBoundary from './components/ErrorBoundary';
 import { createCWSWidget } from './widget';
-import { AlfaFactoryOption, CommonProps } from './types';
+import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './hooks/beforeResolveHook';
 import beforeLoadHook from './hooks/beforeLoadHook';
+import type { IApplicationCustomProps } from './createApplication';
 
 const loader = BaseLoader.create();
 
@@ -23,7 +24,7 @@ loader.beforeLoad.use(async (appConfig) => {
   return appConfig;
 });
 
-interface IProps extends CommonProps {}
+interface IProps extends Omit<IApplicationCustomProps, 'consoleBase' | 'path' | 'appConfig'> {}
 
 const Application = createApplication(loader);
 

@@ -2,10 +2,12 @@ import React, { useMemo } from 'react';
 import { BaseLoader } from '@alicloud/alfa-core';
 
 import ErrorBoundary from './components/ErrorBoundary';
-import { AlfaFactoryOption, CommonProps } from './types';
+import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './hooks/beforeResolveHook';
 import beforeLoadHook from './hooks/beforeLoadHook';
+
+import type { IApplicationProps, IApplicationCustomProps } from './createApplication';
 
 const loader = BaseLoader.create();
 
@@ -14,25 +16,7 @@ loader.beforeLoad.use(beforeLoadHook);
 
 const Application = createApplication(loader);
 
-interface IProps extends CommonProps {
-  /**
-   * 是否开启路由自动同步，需配合 basename 使用
-   */
-  syncHistory?: boolean;
-  /**
-   * 同步子应用路由的回调函数
-   */
-  onSyncHistory?: (type: 'replace' | 'push', pathname: string, state: any) => void;
-  /**
-   * 子应用路由前缀
-   */
-  basename?: string;
-  history?: any;
-  /**
-   * 子应用路由
-   */
-  path?: string;
-}
+interface IProps extends IApplicationProps, IApplicationCustomProps {}
 
 function createAlfaApp<P = any>(option: AlfaFactoryOption) {
   const { name, dependencies } = option || {};
@@ -55,6 +39,8 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
           {...passedInOption}
           style={props.style || passedInOption.style}
           syncHistory={props.syncHistory}
+          syncRegion={props.syncRegion}
+          syncResourceGroup={props.syncResourceGroup}
           onSyncHistory={props.onSyncHistory}
           basename={props.basename}
           sandbox={option.sandbox || props.sandbox}

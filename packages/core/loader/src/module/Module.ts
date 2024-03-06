@@ -7,6 +7,8 @@ export class Record<T = any> {
   promise: Promise<T>;
   // 模块是否加载成功，初始时为 false
   loaded: boolean;
+  // 加载错误信息
+  error: any;
   deps: {
     [key: string]: any;
   };

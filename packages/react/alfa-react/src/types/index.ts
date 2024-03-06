@@ -52,26 +52,26 @@ export interface AlfaFactoryOption extends IAppConfig {
   fallbackRender?: (error?: Error) => Element;
 }
 
-export interface CommonProps {
-  /**
-   * @deprecated
-   */
-  sandbox?: Record<string, any>;
-  /**
-   * 处理外跳链接
-   * @param url
-   * @returns
-   */
-  handleExternalLink?: (url?: string) => void;
-  /**
-   * 根节点样式
-   */
-  style?: React.CSSProperties;
-  /**
-   * render when throw error
-   */
-  fallbackRender?: (error?: Error) => Element;
-}
+// export interface CommonProps {
+//   /**
+//    * @deprecated
+//    */
+//   sandbox?: Record<string, any>;
+//   /**
+//    * 处理外跳链接
+//    * @param url
+//    * @returns
+//    */
+//   handleExternalLink?: (url?: string) => void;
+//   /**
+//    * 根节点样式
+//    */
+//   style?: React.CSSProperties;
+//   /**
+//    * render when throw error
+//    */
+//   fallbackRender?: (error?: Error) => Element;
+// }
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 

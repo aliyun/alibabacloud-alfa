@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/alfa-react",
-  "version": "1.5.12",
+  "version": "1.5.13-alpha.2",
   "description": "Alfa Framework (React Version)",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -45,8 +45,10 @@
   },
   "dependencies": {
     "@alicloud/alfa-core": "workspace:^",
+    "@alicloud/console-base-messenger": "^1.18.1",
     "@alicloud/console-os-loader": "workspace:^",
     "@alicloud/widget-utils-console": "^0.1.6",
+    "@alicloud/xconsole-context": "^2.4.32",
     "axios": "^1.4.0",
     "classnames": "^2.2.6",
     "crypto-js": "^4.1.1",

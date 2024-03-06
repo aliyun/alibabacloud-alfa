@@ -43,11 +43,9 @@ const resolveExternalScript = (id: string, resolver: BundleResolver, scriptRecor
   try {
     const context = getContext(id, scriptRecord);
     resolver.call(context.window, undefined, undefined, undefined, { ...context });
-    Module.record.delete(`${id}_scripts_`);
     scriptRecord.loaded = true;
-    scriptRecord.resolve();
   } catch (e) {
-    scriptRecord.reject(e);
+    scriptRecord.error = e;
   }
 };
 
@@ -97,12 +95,10 @@ export const hook = (id: string, resolver: BundleResolver) => {
 
       resolver(module.require, module, module.exports, { ...context });
 
-      chunkRecord.resolve(chunkRecord);
+      chunkRecord.loaded = true;
     } catch (e) {
-      chunkRecord.reject(e);
+      scriptRecord.error = e;
     }
-
-    chunkRecord.loaded = true;
   }
 };
 
