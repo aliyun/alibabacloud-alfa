@@ -7,6 +7,7 @@ import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './hooks/beforeResolveHook';
 import beforeLoadHook from './hooks/beforeLoadHook';
+import { isOneConsole } from './helpers/oneConsole';
 import type { IApplicationCustomProps } from './createApplication';
 
 const loader = BaseLoader.create();
@@ -40,6 +41,12 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption) {
   if (!name) return () => null;
 
   const passedInOption = option;
+
+  // 非 oneConsole 环境下设置 iframe 沙箱地址为 about:blank
+  // 避免沙箱创建失败
+  if (passedInOption.sandbox && !passedInOption.sandbox.sandBoxUrl && !isOneConsole()) {
+    passedInOption.sandbox.sandBoxUrl = 'about:blank';
+  }
 
   return (props: P & IProps) => (
     // Compatible with old logic

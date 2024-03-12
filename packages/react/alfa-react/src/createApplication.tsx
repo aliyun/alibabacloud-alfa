@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo, useContext } from 'react';
 import { BaseLoader, createEventBus } from '@alicloud/alfa-core';
 import { ConsoleRegion, ConsoleResourceGroup, ConsoleContext } from '@alicloud/xconsole-context';
+import { forApp } from '@alicloud/console-base-messenger';
 
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
@@ -165,7 +166,9 @@ export default function createApplication(loader: BaseLoader) {
     customProps.__innerStamp = (+new Date()).toString(36);
     customProps.__historyState = getHistoryState();
 
-    if (customProps.path) customProps.path = addLeftSlash(customProps.path);
+    if (customProps.path) {
+      customProps.path = addLeftSlash(customProps.path);
+    }
 
     // 受控模式锁定一些参数
     if ($syncHistory.current) {
@@ -177,29 +180,47 @@ export default function createApplication(loader: BaseLoader) {
       customProps.__injectHistory = null;
     }
 
-    customProps.consoleBase = {
-      ...ConsoleRegion,
-      ...ConsoleResourceGroup,
-      ...customProps.consoleBase,
-    };
-
     /**
      * 同步主应用的 Region
-     */
-    if (syncRegion) {
-      customProps.consoleBase = {
-        ...customProps.consoleBase,
-        ...regionContext,
-      };
-    }
-
-    /**
      * 同步更新主应用的 ResourceGroup
      */
-    if (syncResourceGroup) {
+    if (syncRegion || syncResourceGroup) {
+      let region;
+      let resourceGroup;
+
+      if (syncRegion) {
+        // regionContext 为默认值时，不覆盖
+        if (regionContext === ConsoleRegion) {
+          region = undefined;
+        } else {
+          region = regionContext;
+        }
+      } else {
+        region = ConsoleRegion;
+      }
+
+      if (syncResourceGroup) {
+        // resourceGroupContext 为默认值时，不覆盖
+        if (resourceGroupContext === ConsoleResourceGroup) {
+          resourceGroup = undefined;
+        } else {
+          resourceGroup = resourceGroupContext;
+        }
+      } else {
+        resourceGroup = ConsoleResourceGroup;
+      }
+
       customProps.consoleBase = {
         ...customProps.consoleBase,
-        ...resourceGroupContext,
+        ...forApp,
+        ...region,
+        ...resourceGroup,
+      };
+    } else {
+      customProps.consoleBase = {
+        ...ConsoleRegion,
+        ...ConsoleResourceGroup,
+        ...customProps.consoleBase,
       };
     }
 
