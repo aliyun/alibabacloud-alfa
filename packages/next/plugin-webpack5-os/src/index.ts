@@ -5,12 +5,13 @@ import { wrapCss } from 'postcss-prefix-wrapper';
 import * as path from 'path';
 import * as WebpackAssetsManifestPlugin from 'webpack-assets-manifest';
 import { PluginAPI, PluginOptions } from '@alicloud/console-toolkit-core';
+import { getEnv, error, info, exit, debug, done } from '@alicloud/console-toolkit-shared-utils';
+
 import { DonePlugin } from './DonePlugins';
 import { normalizeId } from './utils/normalizeId';
 import { OSJsonpWebpackPlugin } from './OSJsonpPlugin';
 import { MultiEntryManifest } from './MultiEntryManifest';
 import { registerConfigToRegistry } from './utils/registerConfigToRegistry';
-import { getEnv, error, info, exit, debug, done } from '@alicloud/console-toolkit-shared-utils';
 
 let globalSSREntry: string | null = null;
 
@@ -18,8 +19,11 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   if (process.env.IS_SSR === 'true') {
     return;
   }
-  const { jsonpCall, injectVars, ssrEntry } = options;
+
+  const { jsonpCall, injectVars, ssrEntry, ignoreFilenames } = options;
+
   options.id = normalizeId(options.name || options.id);
+
   config
     .output
     .library(options.id)
@@ -30,6 +34,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     .use(OSJsonpWebpackPlugin, [{
       injectVars,
       jsonpCall,
+      ignoreFilenames,
       id: options.id,
       webpack5: options.webpack5,
     }]);

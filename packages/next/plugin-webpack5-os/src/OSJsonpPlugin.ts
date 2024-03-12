@@ -6,6 +6,7 @@ export interface OSJsonpWebpackPluginOption {
   jsonpCall?: string;
   id: string;
   webpack5?: boolean;
+  ignoreFilenames?: Array<string | RegExp>;
 }
 
 export class OSJsonpWebpackPlugin {
@@ -35,6 +36,18 @@ export class OSJsonpWebpackPlugin {
   private wrappChunks(compiler: Compiler, compilation: Compilation, assets: Compilation['assets']) {
     Object.entries(assets).forEach(([id, asset]) => {
       if (!id.endsWith('.js')) return;
+
+      if (
+        this.option.ignoreFilenames?.find(
+          (strOrReg) => {
+            if (typeof strOrReg === 'string') return strOrReg === id;
+            if (strOrReg instanceof RegExp) return strOrReg.test(id);
+            return false;
+          },
+        )
+      ) {
+        return;
+      }
 
       const code = asset.source().toString();
 

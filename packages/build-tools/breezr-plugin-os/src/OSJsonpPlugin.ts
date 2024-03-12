@@ -6,6 +6,7 @@ export interface OSJsonpWebpackPluginOption {
   jsonpCall?: string;
   id: string;
   lite?: boolean;
+  ignoreFilenames?: Array<string | RegExp>;
 }
 
 export class OSJsonpWebpackPlugin {
@@ -50,6 +51,18 @@ export class OSJsonpWebpackPlugin {
       const entryFile = firstChunk.files.find((file) => file.endsWith('.js'));
       if (!entryFile) {
         return chunks;
+      }
+
+      if (
+        this.option.ignoreFilenames?.find(
+          (strOrReg) => {
+            if (typeof strOrReg === 'string') return strOrReg === entryFile;
+            if (strOrReg instanceof RegExp) return strOrReg.test(entryFile);
+            return false;
+          },
+        )
+      ) {
+        return;
       }
 
       const entryAsset = compilation.assets[entryFile];

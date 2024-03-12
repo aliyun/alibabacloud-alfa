@@ -20,7 +20,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
   if (process.env.IS_SSR === 'true') {
     return;
   }
-  const { jsonpCall, injectVars, ssrEntry, lite, standalone } = options;
+  const { jsonpCall, injectVars, ssrEntry, lite, standalone, ignoreFilenames } = options;
   options.id = normalizeId(options.name || options.id, standalone ? publishVersion : undefined);
   config
     .output
@@ -31,6 +31,7 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     .plugin('OSJsonpPlugin')
     .use(OSJsonpWebpackPlugin, [{
       injectVars,
+      ignoreFilenames,
       jsonpCall,
       id: options.id,
       lite,
