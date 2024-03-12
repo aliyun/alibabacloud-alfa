@@ -1,14 +1,8 @@
-/**
- * Context
- * @lastModified 2019086
- * @forwardCompatibleTo 2019086
- * @createAt 2019086
- */
-
 import Window from './Window';
 import Document from './Document';
 import Location from './Location';
 import History from './History';
+import { getFetchCredentials } from './utils/credentials';
 
 class Context {
   static create(conf) {
@@ -70,7 +64,7 @@ class Context {
   }
 
   async loadScripts(url) {
-    const resp = await fetch(url);
+    const resp = await fetch(url, { credentials: getFetchCredentials(url) });
     const code = await resp.text();
     this.evalScript(code, url);
   }
