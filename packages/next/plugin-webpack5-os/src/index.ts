@@ -40,14 +40,14 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     }]);
 
   // 本地开发环境，设置 publicPath 为 '.'
-  if (getEnv().isDev()) {
-    config.output.publicPath('.');
-    // webpack-dev-sever 4.x publicPath 默认读取 output.publicPath
-    // 因此上面的逻辑会影响到 devServer，需要手动设置为 /
-    config.devServer.devMiddleware({
-      publicPath: '/',
-    });
-  }
+  // if (getEnv().isDev()) {
+  //   config.output.publicPath('.');
+  //   // webpack-dev-sever 4.x publicPath 默认读取 output.publicPath
+  //   // 因此上面的逻辑会影响到 devServer，需要手动设置为 /
+  //   config.devServer.devMiddleware({
+  //     publicPath: '/',
+  //   });
+  // }
 
   config
     .output

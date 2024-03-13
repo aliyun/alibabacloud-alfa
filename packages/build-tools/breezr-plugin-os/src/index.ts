@@ -38,9 +38,9 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     }]);
 
   // 本地开发环境，设置 publicPath 为 '.'
-  if (getEnv().isDev()) {
-    config.output.publicPath('.');
-  }
+  // if (getEnv().isDev()) {
+  //   config.output.publicPath('.');
+  // }
 
   if (!options.webpack5) {
     config
