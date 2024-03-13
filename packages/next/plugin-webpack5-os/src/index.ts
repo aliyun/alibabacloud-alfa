@@ -1,4 +1,4 @@
-import * as WebpackChain from 'webpack-chain';
+import * as WebpackChain from '@gem-mine/webpack-chain';
 import * as webpack from 'webpack';
 import * as minimist from 'minimist';
 import { wrapCss } from 'postcss-prefix-wrapper';
@@ -39,15 +39,20 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       webpack5: options.webpack5,
     }]);
 
-  // 本地开发环境，设置 publicPath 为 '.'
-  if (getEnv().isDev()) {
-    config.output.publicPath('.');
-  }
-
   if (!options.webpack5) {
     config
       .output
       .jsonpFunction(`webpackJsonp${options.id}`);
+  }
+
+  // 本地开发环境，设置 publicPath 为 '.'
+  if (getEnv().isDev()) {
+    config.output.publicPath('.');
+    // webpack-dev-sever 4.x publicPath 默认读取 output.publicPath
+    // 因此上面的逻辑会影响到 devServer，需要手动设置为 /
+    config.devServer.devMiddleware({
+      publicPath: '/',
+    });
   }
 
   if (!options.webpack3) {

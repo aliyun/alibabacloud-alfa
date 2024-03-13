@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-toolkit-plugin-webpack5-os",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "console os plugin for breezr",
   "main": "lib/index.js",
   "scripts": {
@@ -36,18 +36,18 @@
   },
   "dependencies": {
     "@alicloud/console-toolkit-shared-utils": "^1.0.0",
+    "@gem-mine/webpack-chain": "^7.1.0",
     "axios": "^0.20.0",
     "lodash": "^4.17.11",
     "package-json": "^6.5.0",
     "postcss-prefix-wrapper": "^1.2.0",
     "user-home": "^2.0.0",
     "webpack-assets-manifest": "^5.0.0",
-    "webpack-chain": "^6.5.1",
     "webpack-sources": "^3.0.0"
   },
   "author": "fringey",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
-  }  
+  }
 }
