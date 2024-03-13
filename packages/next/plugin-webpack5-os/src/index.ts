@@ -39,12 +39,6 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
       webpack5: options.webpack5,
     }]);
 
-  if (!options.webpack5) {
-    config
-      .output
-      .jsonpFunction(`webpackJsonp${options.id}`);
-  }
-
   // 本地开发环境，设置 publicPath 为 '.'
   if (getEnv().isDev()) {
     config.output.publicPath('.');
@@ -55,48 +49,45 @@ export const chainOsWebpack = (options: PluginOptions) => async (config: Webpack
     });
   }
 
-  if (!options.webpack3) {
-    config
-      .output
-    // @ts-ignore
-      .devtoolNamespace(options.id);
+  config
+    .output
+    .devtoolNamespace(options.id);
 
-    config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
-      transform: (manifest: any, plugin: any) => {
-        const { entrypoints } = manifest;
-        if (entrypoints) {
-          delete manifest.entrypoints;
+  config.plugin('WebpackAssetsManifestPlugin').use(WebpackAssetsManifestPlugin, [{
+    transform: (manifest: any, plugin: any) => {
+      const { entrypoints } = manifest;
+      if (entrypoints) {
+        delete manifest.entrypoints;
 
-          Object.values(entrypoints).forEach((entry: any) => {
-            if (entry.assets) {
-              Object.keys(entry.assets).forEach((key) => {
-                entry[key] = entry.assets[key];
-              });
-            }
+        Object.values(entrypoints).forEach((entry: any) => {
+          if (entry.assets) {
+            Object.keys(entry.assets).forEach((key) => {
+              entry[key] = entry.assets[key];
+            });
+          }
 
-            if (entry?.css && !options.disableOsCssExtends && !options.disableCssPrefix) {
-              entry.css = entry.css.map((cssBundle: any) => cssBundle.replace('.css', '.os.css'));
-            }
-          });
-        }
-        return {
-          name: options.id,
-          resources: manifest,
-          externals: plugin.compiler.options.externals || {},
-          runtime: options.runtime || {},
-          entrypoints,
-          server_entrypoint: ssrEntry || globalSSREntry,
-        };
-      },
-      publicPath: true,
-      entrypoints: true,
-      output: `${options.id}.manifest.json`,
-    }]);
+          if (entry?.css && !options.disableOsCssExtends && !options.disableCssPrefix) {
+            entry.css = entry.css.map((cssBundle: any) => cssBundle.replace('.css', '.os.css'));
+          }
+        });
+      }
+      return {
+        name: options.id,
+        resources: manifest,
+        externals: plugin.compiler.options.externals || {},
+        runtime: options.runtime || {},
+        entrypoints,
+        server_entrypoint: ssrEntry || globalSSREntry,
+      };
+    },
+    publicPath: true,
+    entrypoints: true,
+    output: `${options.id}.manifest.json`,
+  }]);
 
-    config.plugin('MultiEntryManifest').use(MultiEntryManifest, [{
-      entryName: `${options.id}.manifest.json`,
-    }]);
-  }
+  config.plugin('MultiEntryManifest').use(MultiEntryManifest, [{
+    entryName: `${options.id}.manifest.json`,
+  }]);
 
   config.plugin('WebpackDonePlugin').use(DonePlugin, [{
     done: () => {
