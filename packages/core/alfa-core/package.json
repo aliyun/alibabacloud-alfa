@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/alfa-core",
-  "version": "1.4.37",
+  "version": "1.4.38",
   "description": "MicroFront End SDK for alicloud",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -11,7 +11,7 @@
     "access": "public"
   },
   "scripts": {
-    "prepublish": "npm run build && npm run babel && npm run babel:esm && npm run types",
+    "prepublishOnly": "npm run babel && npm run babel:esm && npm run types",
     "build": "breezr build --engine webpack",
     "babel": "breezr build --engine babel",
     "babel:esm": "breezr build --engine babel --es-module",

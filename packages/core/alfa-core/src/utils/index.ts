@@ -1,16 +1,15 @@
-import md5 from 'crypto-js/md5';
-
-import { IAppConfig, AlfaFeature, IWin } from '../types';
+import { getMainUid, getMD5MainUid } from './uid';
+import { IAppConfig, AlfaFeature } from '../types';
 
 export { getEnv } from './env';
 export { getLocale } from './locale';
+export { getMainUid, getMD5MainUid };
 
 export function getFeatureStatus(feature?: AlfaFeature) {
-  const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK || '';
+  const uid = getMainUid();
+  const md5Uid = getMD5MainUid();
 
-  if (!feature || !uid) return false;
-
-  const md5Uid = md5(uid).toString();
+  if (!feature || !md5Uid) return false;
 
   const {
     enableBlockList, enableSampling, enableWhiteList, sampling, blockList, whiteList,
@@ -20,7 +19,7 @@ export function getFeatureStatus(feature?: AlfaFeature) {
 
   if (enableWhiteList && whiteList?.includes(md5Uid)) return true;
 
-  if (enableSampling) {
+  if (enableSampling && uid) {
     const gray = uid.substring(uid.length - 2);
 
     if (Number(gray) >= (sampling ?? 0) * 100 || sampling === 0) return false;
