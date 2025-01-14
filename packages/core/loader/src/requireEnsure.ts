@@ -64,6 +64,7 @@ function jsonpRequire(id: string, url: string, uuid: string) {
   const script = document.createElement('script');
   script.charset = 'utf-8';
   script.src = url;
+  script.crossOrigin = 'anonymous';
 
   script.setAttribute('nonce', '');
   // 用于加载的脚本判断来源

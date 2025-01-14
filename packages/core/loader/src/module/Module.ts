@@ -18,6 +18,9 @@ export class Record<T = any> {
 }
 
 export class Module {
+  /**
+   * chunk 加载记录
+   */
   static record: Map<string, Record> = new Map<string, Record>();
   /**
    * unique identity for module

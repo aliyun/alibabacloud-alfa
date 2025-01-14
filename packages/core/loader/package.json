@@ -1,13 +1,13 @@
 {
   "name": "@alicloud/console-os-loader",
-  "version": "1.4.42",
+  "version": "1.4.43",
   "description": "Console OS Loader",
   "main": "lib/index.js",
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "prepublish": "rm -rf ./lib ./es && npm run babel && npm run babel:esm",
+    "prepublishOnly": "rm -rf ./lib ./es && npm run babel && npm run babel:esm",
     "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d --declarationDir ./lib",
     "babel:esm": "breezr build --engine babel --es-module",
     "storybook": "breezr start-storybook",
