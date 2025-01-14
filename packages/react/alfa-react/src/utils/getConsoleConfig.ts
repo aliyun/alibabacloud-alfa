@@ -1,5 +1,4 @@
-import { AlfaConfig, IWin } from '@alicloud/alfa-core';
-import md5 from 'crypto-js/md5';
+import { AlfaConfig, IWin, getMainUid, getMD5MainUid } from '@alicloud/alfa-core';
 
 /**
  * transform
@@ -13,8 +12,8 @@ const processFeatures = (features: AlfaConfig['ALL_FEATURE_STATUS']) => {
 
     if (!feature) return newFeatures;
 
-    const uid = (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK || '';
-    const md5Uid = md5(uid).toString();
+    const uid = getMainUid() || '';
+    const md5Uid = getMD5MainUid() || '';
 
     const {
       enableBlockList, enableSampling, enableWhiteList, sampling, blockList, whiteList,

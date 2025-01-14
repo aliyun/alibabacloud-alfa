@@ -48,8 +48,6 @@ class ErrorBoundary extends React.Component<IProp, State> {
       window.__bl && window.__bl.error && window.__bl.error(error, errorInfo);
     }
 
-    console.error(error);
-
     this.props.appDidCatch && this.props.appDidCatch(error);
   }
 
