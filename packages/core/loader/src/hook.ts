@@ -110,7 +110,7 @@ export const hook = (id: string, resolver: BundleResolver, script?: HTMLOrSVGScr
 
       chunkRecord.loaded = true;
     } catch (e) {
-      scriptRecord.error = e;
+      chunkRecord.error = e;
     }
   }
 };
