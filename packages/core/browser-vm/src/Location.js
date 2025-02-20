@@ -1,5 +1,5 @@
 function isAboutBlank(loc) {
-  return loc && loc.href.startsWith('about:blank');
+  return loc && loc.href && loc.href.startsWith('about:blank');
 }
 
 class Location {
