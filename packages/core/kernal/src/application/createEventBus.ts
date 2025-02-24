@@ -10,7 +10,7 @@ export const createEventBus = () => {
     if (typeof kernel === 'undefined') {
       return eventBus;
     } else if (kernel.createEventBus) {
-      return kernel.createEventBus();
+      return kernel.createEventBus() as EventEmitter;
     } else {
       return eventBus;
     }

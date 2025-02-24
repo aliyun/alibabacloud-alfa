@@ -7,12 +7,11 @@
   "typings": "lib/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "prepublish": "npm run build && npm run babel && npm run babel:esm",
+    "prepublishOnly": "npm run babel && npm run babel:esm",
     "babel": "breezr build --engine babel && tsc --emitDeclarationOnly -d true --declarationDir ./lib",
     "babel:esm": "breezr build --engine babel --es-module",
-    "build": "breezr build --engine webpack",
     "storybook": "breezr start-storybook",
-    "clean": "rm -rf lib yarn.lock"
+    "clean": "rm -rf lib es"
   },
   "devDependencies": {
     "@alicloud/console-toolkit-cli": "^1.0.0",
