@@ -35,9 +35,9 @@ export interface IApplicationCustomProps {
   __historyState?: string;
   /**
    * 处理外部链接跳转
-   * @param href
+   * @param href string | object
    */
-  handleExternalLink?: (href: string) => void;
+  handleExternalLink?: (href: any) => void;
 }
 
 export interface IApplicationProps<C = any> extends AlfaFactoryOption {
@@ -405,6 +405,8 @@ export default function createApplication(loader: BaseLoader) {
         await app.mount(fakeBody, {
           customProps,
         });
+
+        if (isUnmounted) return;
 
         // 降低优先级
         setTimeout(() => {

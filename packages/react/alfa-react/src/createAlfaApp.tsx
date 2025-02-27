@@ -4,8 +4,8 @@ import { BaseLoader } from '@alicloud/alfa-core';
 import ErrorBoundary from './components/ErrorBoundary';
 import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
-import beforeResolveHook from './hooks/beforeResolveHook';
-import beforeLoadHook from './hooks/beforeLoadHook';
+import beforeResolveHook from './loaders/beforeResolveHook';
+import beforeLoadHook from './loaders/beforeLoadHook';
 
 import type { IApplicationProps, IApplicationCustomProps } from './createApplication';
 

@@ -7,3 +7,4 @@ export * from './utils';
 export { forceCheck } from 'react-lazyload';
 // todo
 export { createEventBus, prefetch } from '@alicloud/alfa-core';
+export * from './hooks';
