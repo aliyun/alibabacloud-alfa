@@ -44,10 +44,10 @@ export const isOsBundle = (): boolean => {
 };
 
 interface IProps extends React.Attributes {
-  history?: History;
-  emitter?: any;
-  path?: string;
-  id?: string;
+  // history?: History;
+  // emitter?: any;
+  // path?: string;
+  // id?: string;
   [key: string]: any;
 }
 
@@ -109,12 +109,11 @@ export function useSyncHistory(history: History) {
   // render 是否是由主应用触发，需要主应用在 props 传递 __innerStamp
   // 如果是主应用触发，一定会传递 __innerStamp，兼容历史逻辑：__innerStamp 可能不存在
   const renderFromParent = typeof __innerStamp === 'undefined' || (__innerStamp && innerStamp.current !== __innerStamp);
-  const renderFromSelf = typeof __innerStamp === 'undefined';
 
   // 注意同步路由发生在第一次 mount 后
   useEffect(() => {
     // innerStamp 没有变化，说明更新不是由主应用触发，跳过路由同步逻辑
-    if (needSync && (renderFromParent || renderFromSelf)) {
+    if (needSync && renderFromParent) {
       prevSyncPath.current = path;
       innerStamp.current = __innerStamp;
       updateHistory(history, path, __historyState, syncHistory && isFirstEnter.current);
