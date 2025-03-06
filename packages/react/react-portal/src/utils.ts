@@ -72,19 +72,12 @@ export const removeHash = (path?: string) => {
  * @param checkReplaceInFirstEnter
  * @returns
  */
-export const updateHistory = (history: History, path: string, state?: Record<string, any>, checkReplaceInFirstEnter?: boolean) => {
+export const updateHistory = (history: History, path: string, state?: Record<string, any>) => {
   if (!history) {
     return;
   }
 
   const stripHashPath = removeHash(path);
-
-  // 在开启 syncHistory 后第一次挂载前检查是否已经发生重定向，若是则不再重复更新，避免进入死循环导致 Redirect 渲染空
-  // 原因：react-router Redirect 会在 render 的时候更新 history 和 location，若在 Redirect 挂载后修改 history location
-  // 若新 path 无法命中路由导致重复渲染 Redirect，Redirect 将不再会重定向，而是直接返回空。
-  if (history.action === 'REPLACE' && checkReplaceInFirstEnter) {
-    return;
-  }
 
   // path 和 url 不一致时才可同步，避免 rerender 导致死循环
   if (
@@ -116,15 +109,10 @@ export function useSyncHistory(history: History) {
     if (needSync && renderFromParent) {
       prevSyncPath.current = path;
       innerStamp.current = __innerStamp;
-      updateHistory(history, path, __historyState, syncHistory && isFirstEnter.current);
+      updateHistory(history, path, __historyState);
     }
 
     isFirstEnter.current = false;
-
-    return () => {
-      // reset isFirstEnter when unmount
-      isFirstEnter.current = true;
-    };
   });
 
   return {
@@ -143,13 +131,10 @@ export function useSyncHistory(history: History) {
 export const withSyncHistory = (Comp: React.ComponentClass | React.FC, history: History) => {
   // 这里不能做 memo，不然会导致相同的 props 无法透传下去
   const Wrapper: React.FC<IProps> = (props: IProps) => {
-    const { isFirstEnter, needSync, renderFromParent, syncHistory } = useSyncHistory(history);
+    const { isFirstEnter, needSync, renderFromParent } = useSyncHistory(history);
 
-    // 兼容历史路由同步逻辑，避免微应用初始化时因为拿不到正确的 url 渲染了错误的页面
-    // 通过 needSync 判断只有在微应用路由同步时才会检测第一次渲染
-    // 通过 renderFromParent 过滤掉应用本身触发的 render
-    // 当主应用开启了 syncHistory 模式时不需要判断第一次渲染
-    if (isFirstEnter && needSync && renderFromParent && !syncHistory) return null;
+    // 由于 effect 执行顺序由里到外，为了避免路由状态混乱，应优先处理路由同步后再渲染子应用
+    if (isFirstEnter && needSync && renderFromParent) return null;
 
     return React.createElement(Comp, props);
   };
