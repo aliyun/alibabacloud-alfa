@@ -2,7 +2,7 @@ import { getCookie } from '@alicloud/cookie';
 
 import { IWin } from '../types';
 
-const globalLocale = 'en_US';
+const globalLocale = 'zh_CN';
 
 const localeMap: Record<string, string> = {
   zh: 'zh_CN',
