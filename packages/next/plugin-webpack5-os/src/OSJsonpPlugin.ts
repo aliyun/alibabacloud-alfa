@@ -75,12 +75,12 @@ export class OSJsonpWebpackPlugin {
   }
 
   private _wrapCodeWithOSJsonp(id: string) {
-    const injectVars = ['window', 'location', 'history', 'document', ...(this.option.injectVars || [])];
+    const injectVars = ['window', 'location', 'history', 'document', 'self', ...(this.option.injectVars || [])];
     const jsonpCall = this.option.jsonpCall || 'window.__CONSOLE_OS_GLOBAL_HOOK__';
 
     return [`
 if (!window.__CONSOLE_OS_GLOBAL_HOOK__){window.__CONSOLE_OS_GLOBAL_VARS_={};window.__CONSOLE_OS_GLOBAL_HOOK__ = function(id, resolver) {resolver(undefined, undefined, undefined, {${injectVars.map((item) => `${item}: ${item}`).join(',')}})};window.__CONSOLE_OS_GLOBAL_HOOK__.standalone = true}
-${jsonpCall}(${JSON.stringify(id)}, function(require, module, exports, context){ ${injectVars.map((item) => `var ${item} = context.${item}`).join(';')};with(window.__CONSOLE_OS_GLOBAL_VARS_) { \n
+${jsonpCall}(${JSON.stringify(id)}, function(require, module, exports, context){ ${injectVars.map((item) => `var ${item} = context.${item === 'self' ? 'window' : item}`).join(';')};with(window.__CONSOLE_OS_GLOBAL_VARS_) { \n
 `, '\n}})'];
   }
 }
