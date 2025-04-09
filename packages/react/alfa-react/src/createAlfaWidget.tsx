@@ -133,6 +133,16 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
   };
 }
 
+export function createAlfaWidgetSingleton(option: AlfaFactoryOption) {
+  return createAlfaWidget({
+    ...option,
+    noCache: true,
+    sandbox: {
+      sandBoxUrl: 'about:blank',
+    },
+  });
+}
+
 /**
  * create memorized app in react function component, just create App after first mounted
  * @param option

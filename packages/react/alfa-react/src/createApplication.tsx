@@ -1,14 +1,15 @@
-import React, { useRef, useEffect, useState, useMemo, useContext } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useContext, useCallback } from 'react';
 import { BaseLoader, createEventBus } from '@alicloud/alfa-core';
 import { ConsoleRegion, ConsoleResourceGroup, ConsoleContext } from '@alicloud/xconsole-context';
 import { forApp } from '@alicloud/console-base-messenger';
+import { forceCheck } from 'react-lazyload';
 
 import Loading from './components/Loading';
-import { normalizeName, setNativeProperty } from './utils';
+import { normalizeName, setNativeProperty, peelPath, getHistoryState, stripBasename, addBasename, addLeftSlash } from './utils';
+import { useCallbackRef } from './hooks';
 import { countRegister } from './utils/counter';
-import { AlfaFactoryOption, MicroApplication } from './types';
 import { version as loaderVersion } from './version';
-import { forceCheck } from 'react-lazyload';
+import type { AlfaFactoryOption, MicroApplication } from './types';
 
 export interface IApplicationCustomProps {
   /**
@@ -85,56 +86,11 @@ interface IWin {
 
 const eventBus = createEventBus();
 
-const resolvePath = (...args: Array<string | undefined>) => {
-  return `/${ args.join('/')}`.replace(/\/+/g, '/');
-};
+const dispatchFramePopstate = (App: MicroApplication) => {
+  const popstateEvent = new Event('popstate');
+  (popstateEvent as unknown as { state: string }).state = getHistoryState() || {};
 
-/**
- * 去掉 location.origin 的路径
- */
-const peelPath = (location: Location) => {
-  return location.pathname + location.search + location.hash;
-};
-
-const addBasename = (path: string, basename?: string) => {
-  if (!basename) return path;
-
-  return resolvePath(basename, path);
-};
-
-const addLeftSlash = (path: string) => {
-  return path.charAt(0) === '/' ? path : `/${ path}`;
-};
-
-/**
- * 从 path 移除 basename 部分
- * @param path
- * @param basename
- * @returns string
- */
-const stripBasename = (path: string, basename?: string) => {
-  if (!basename) return path;
-
-  const _path = resolvePath(path);
-  const _basename = resolvePath(basename);
-
-  if (_path === _basename) return '/';
-  // escape all possible regex special characters
-  return _path.replace(new RegExp(`^${_basename.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1')}`, 'ig'), '');
-};
-
-/**
- * fix Error (we do not know why):
- * Failed to read the 'state' property from 'History':
- * May not use a History object associated with a Document that is not fully active
- * @returns any
- */
-const getHistoryState = () => {
-  try {
-    return window?.history.state;
-  } catch (e) {
-    return null;
-  }
+  App?.context.baseFrame?.contentWindow?.dispatchEvent(popstateEvent);
 };
 
 /**
@@ -148,7 +104,7 @@ export default function createApplication(loader: BaseLoader) {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
       afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache,
-      syncHistory, syncRegion, syncResourceGroup, basename, channel, onSyncHistory, delayPromise,
+      syncHistory, syncRegion, syncResourceGroup, basename, channel, delayPromise,
       preLoader,
     } = props;
     const { handleExternalLink } = customProps;
@@ -158,9 +114,15 @@ export default function createApplication(loader: BaseLoader) {
     const $syncHistory = useRef(syncHistory);
     const $basename = useRef(basename);
     const { region: regionContext, resourceGroup: resourceGroupContext } = useContext(ConsoleContext);
-
     const tagName = normalizeName(props.name);
     const [releaseVersion, setReleaseVersion] = useState('');
+    const initOptions = useRef({
+      delayPromise,
+      preLoader,
+      container,
+    });
+
+    const onSyncHistory = useCallbackRef(props.onSyncHistory || (() => {}));
 
     $syncHistory.current = syncHistory;
     $basename.current = basename;
@@ -270,7 +232,6 @@ export default function createApplication(loader: BaseLoader) {
       name,
       version,
       manifest,
-      container,
       props: customProps,
       sandbox,
       logger: customLogger,
@@ -288,19 +249,16 @@ export default function createApplication(loader: BaseLoader) {
       channel,
     }), []);
 
+    const getFakeBody = useCallback(() => {
+      return initOptions.current.container || appRef.current || document.body;
+    }, []);
+
     useEffect(() => {
       let isUnmounted = false;
       let App: MicroApplication | undefined;
       let originalPushState: (data: any, unused: string, url?: string | null) => void;
       let originalReplaceState: (data: any, unused: string, url?: string | null) => void;
       let originalGo: (n?: number) => void;
-
-      const dispatchFramePopstate = () => {
-        const popstateEvent = new Event('popstate');
-        (popstateEvent as unknown as { state: string }).state = getHistoryState() || {};
-
-        App?.context.baseFrame?.contentWindow?.dispatchEvent(popstateEvent);
-      };
 
       /**
        * 因为要兼容历史逻辑，所以这段逻辑并不会执行
@@ -318,7 +276,7 @@ export default function createApplication(loader: BaseLoader) {
           if (nextPath !== stripBasename(peelPath(window.location), $basename.current)) {
             if (originalReplaceState) {
               originalReplaceState(getHistoryState(), '', stripBasename(peelPath(window.location), $basename.current));
-              dispatchFramePopstate();
+              dispatchFramePopstate(App);
             }
           }
         }
@@ -330,12 +288,12 @@ export default function createApplication(loader: BaseLoader) {
       (async () => {
         countRegister(memoOptions.name);
 
-        const fakeBody = memoOptions.container || appRef.current || document.body;
+        const fakeBody = getFakeBody();
 
-        if (delayPromise) await delayPromise;
+        if (initOptions.current.delayPromise) await initOptions.current.delayPromise;
 
-        const { app, logger, version: realVersion } = preLoader ?
-          await preLoader({
+        const { app, logger, version: realVersion } = initOptions.current.preLoader ?
+          await initOptions.current.preLoader({
             ...memoOptions,
             container: fakeBody,
           })
@@ -378,7 +336,7 @@ export default function createApplication(loader: BaseLoader) {
               const nextPath = addBasename(_url?.toString() || '', $basename.current);
               if (`${nextPath}` !== peelPath(window.location)) {
                 window.history.pushState(data, unused, nextPath);
-                onSyncHistory && onSyncHistory('push', nextPath, data);
+                onSyncHistory('push', nextPath, data);
               }
 
               originalReplaceState(data, unused, _url as string);
@@ -391,7 +349,7 @@ export default function createApplication(loader: BaseLoader) {
             const nextPath = addBasename(_url?.toString() || '', $basename.current);
             if ($syncHistory.current) {
               window.history.replaceState(data, unused, nextPath);
-              onSyncHistory && onSyncHistory('replace', nextPath, data);
+              onSyncHistory('replace', nextPath, data);
             }
             originalReplaceState(data, unused, _url as string);
           };
@@ -402,17 +360,6 @@ export default function createApplication(loader: BaseLoader) {
           });
         }
 
-        await app.mount(fakeBody, {
-          customProps,
-        });
-
-        if (isUnmounted) return;
-
-        // 降低优先级
-        setTimeout(() => {
-          forceCheck();
-        }, 0);
-
         logger?.record && logger?.record({
           REQUEST_VERSION: memoOptions.version,
           RESPONSE_VERSION: realVersion,
@@ -420,11 +367,6 @@ export default function createApplication(loader: BaseLoader) {
         });
 
         logger?.send && logger?.send();
-
-        if (frameWindow) {
-          // 每次挂载后主动触发子应用内的 popstate 事件，借此触发 react-router history 的检查逻辑
-          dispatchFramePopstate();
-        }
 
         // just run once
         setAppInstance(app);
@@ -451,13 +393,10 @@ export default function createApplication(loader: BaseLoader) {
             setNativeProperty(frameHistory, 'go', originalGo);
           }
         }
-
-        App.unmount();
-
         // TODO: 在沙箱中嵌套时，unmount 必须销毁沙箱实例，避免在其它微应用中复用该沙箱，导致环境变量污染
         // if (isOsContext()) App.destroy();
       };
-    }, [memoOptions]);
+    }, [memoOptions, getFakeBody, onSyncHistory]);
 
     useEffect(() => {
       const _handleExternalLink = (href: string) => {
@@ -470,6 +409,40 @@ export default function createApplication(loader: BaseLoader) {
         eventBus.removeListener(`${normalizeName(name)}:external-router`, _handleExternalLink);
       };
     }, [handleExternalLink, name]);
+
+    useEffect(() => {
+      let isUnmounted = false;
+      // 等待加载完成并更新了视图后再挂载
+      if (!appInstance) return;
+
+      appInstance
+        .mount(getFakeBody(), {
+          customProps,
+        })
+        .then(() => {
+          if (isUnmounted) return;
+
+          // 每次挂载后检查是否还有 lazyload 组件未加载
+          setTimeout(() => {
+            forceCheck();
+          }, 0);
+
+          if (appInstance.context.baseFrame?.contentWindow) {
+            // 每次挂载后主动触发子应用内的 popstate 事件，借此触发 react-router history 的检查逻辑
+            dispatchFramePopstate(appInstance);
+          }
+        }).catch((e) => {
+          setError(() => {
+            throw e;
+          });
+        });
+
+      // 手动销毁
+      return () => {
+        isUnmounted = true;
+        appInstance.unmount();
+      };
+    }, [appInstance, getFakeBody]);
 
     if (appInstance) {
       appInstance.update(customProps);
@@ -488,12 +461,22 @@ export default function createApplication(loader: BaseLoader) {
     return (
       <>
         {
-          !appInstance ? <Loading loading={loading} /> : null
-        }
-        {
-          (sandbox && sandbox.disableFakeBody)
-            ? React.createElement(tagName, { style, className, ref: appRef, ...dataAttrs })
-            : React.createElement(tagName, { ...dataAttrs }, React.createElement('div', { ref: appRef, style, className }))
+          sandbox?.disableFakeBody ?
+            React.createElement(
+              tagName,
+              { style, className, ref: appRef, ...dataAttrs },
+              React.createElement(Loading, { loading: !appInstance && loading }),
+            )
+            :
+            React.createElement(
+              tagName,
+              { ...dataAttrs },
+              React.createElement(
+                'div',
+                { ref: appRef, style, className },
+                React.createElement(Loading, { loading: !appInstance && loading }),
+              ),
+            )
         }
       </>
     );

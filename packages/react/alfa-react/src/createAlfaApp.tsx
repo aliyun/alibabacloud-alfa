@@ -6,6 +6,7 @@ import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './loaders/beforeResolveHook';
 import beforeLoadHook from './loaders/beforeLoadHook';
+import { IS_SSR } from './utils';
 
 import type { IApplicationProps, IApplicationCustomProps } from './createApplication';
 
@@ -19,10 +20,23 @@ const Application = createApplication(loader);
 interface IProps extends IApplicationProps, IApplicationCustomProps {}
 
 function createAlfaApp<P = any>(option: AlfaFactoryOption) {
-  const { name, dependencies } = option || {};
+  const { name, dependencies, priority, dynamicConfig, manifest } = option || {};
 
   // check app option
   if (!name) return () => null;
+
+  let preLoader: () => Promise<any>;
+
+  if (priority === 'high' && !IS_SSR) {
+    const p = loader.register({
+      ...option,
+      // 必须设置 container，否则沙箱会创建插入一个新的 body
+      container: document.body,
+      dynamicConfig: typeof dynamicConfig === 'boolean' ? dynamicConfig : !manifest,
+    });
+
+    preLoader = async () => p;
+  }
 
   const passedInOption = option;
 
@@ -46,6 +60,7 @@ function createAlfaApp<P = any>(option: AlfaFactoryOption) {
           sandbox={option.sandbox || props.sandbox}
           deps={dependencies || {}}
           customProps={customProps}
+          preLoader={preLoader}
         />
       </ErrorBoundary>
     );

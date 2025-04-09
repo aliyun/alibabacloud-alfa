@@ -43,3 +43,54 @@ export const setNativeProperty = (obj: any, propertyName: string, value: any) =>
 };
 
 export const IS_SSR = typeof document === 'undefined';
+
+/**
+ * 去掉 location.origin 的路径
+ */
+export const peelPath = (location: Location) => {
+  return location.pathname + location.search + location.hash;
+};
+
+export const resolvePath = (...args: Array<string | undefined>) => {
+  return `/${ args.join('/')}`.replace(/\/+/g, '/');
+};
+
+export const addBasename = (path: string, basename?: string) => {
+  if (!basename) return path;
+
+  return resolvePath(basename, path);
+};
+export const addLeftSlash = (path: string) => {
+  return path.charAt(0) === '/' ? path : `/${ path}`;
+};
+
+/**
+ * 从 path 移除 basename 部分
+ * @param path
+ * @param basename
+ * @returns string
+ */
+export const stripBasename = (path: string, basename?: string) => {
+  if (!basename) return path;
+
+  const _path = resolvePath(path);
+  const _basename = resolvePath(basename);
+
+  if (_path === _basename) return '/';
+  // escape all possible regex special characters
+  return _path.replace(new RegExp(`^${_basename.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1')}`, 'ig'), '');
+};
+
+/**
+ * fix Error (we do not know why):
+ * Failed to read the 'state' property from 'History':
+ * May not use a History object associated with a Document that is not fully active
+ * @returns any
+ */
+export const getHistoryState = () => {
+  try {
+    return window?.history.state;
+  } catch (e) {
+    return null;
+  }
+};

@@ -9,14 +9,16 @@ addGlobalRequestInterceptor((config) => {
 
 const Wrapper = (props) => {
   const AlfaWidget = useAlfaWidget({
-    name: '@ali/alfa-cloud-home-widget-alfa-widget-demo',
+    name: '@ali/alfa-cloud-home-widget-cost-overview-new',
     locale: 'en_US',
-    loading: false,
     env: 'pre',
     delay: () => new Promise((resolve) => setTimeout(() => {
       resolve(undefined);
     }, 5000)),
     priority: 'high',
+    sandbox: {
+      sandBoxUrl: 'about:blank',
+    },
     // dynamicConfig: true,
   });
 
