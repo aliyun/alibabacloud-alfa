@@ -158,6 +158,13 @@ export function mount<T extends EmitterProps>(App: AppComponent<T>, container?: 
       exposedModule: exposeModuleMap,
     };
   } else {
+    // @ts-ignore;
+    if (ReactDOM.createRoot) {
+      // @ts-ignore;
+      ReactDOM.createRoot(container).render(<ConsoleApp />);
+      return;
+    }
+
     ReactDOM.render(<ConsoleApp />, container);
   }
 }
