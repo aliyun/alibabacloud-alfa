@@ -61,6 +61,10 @@ export class Module {
     return this.cache.has(id);
   };
 
+  clear = (id: string) => {
+    return this.cache.delete(id);
+  };
+
   require = (id: string) => {
     const module = this.resolveModule(id);
     return this.context?.window[id] || module.exports;

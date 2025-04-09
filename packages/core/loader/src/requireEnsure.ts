@@ -100,6 +100,11 @@ export async function xmlRequire(id: string, url: string, transform: (source: st
   resolveRecord(id);
 }
 
+// if module has been resolved
+function isModuleResolved(bundle: IBundleOption) {
+  return !bundle.noCache && globalModule.resolved(bundle.id);
+}
+
 /**
  * async require the bundle from url
  * @param bundle {IBundleOption}
@@ -107,8 +112,7 @@ export async function xmlRequire(id: string, url: string, transform: (source: st
 export async function requireEnsure<T>(bundle: IBundleOption) {
   const transform = bundle.transform || ((source: string) => source);
 
-  // if module has been resolved
-  if (!bundle.noCache && globalModule.resolved(bundle.id)) {
+  if (isModuleResolved(bundle)) {
     // if loader contains the context(window, location)
     // then get the new export using new context
     if (bundle.context) {
@@ -147,6 +151,14 @@ export async function requireEnsure<T>(bundle: IBundleOption) {
   }
 
   await Promise.all(promises);
+
+  if (isModuleResolved(bundle)) {
+    // if loader contains the context(window, location)
+    // then get the new export using new context
+    if (bundle.context) {
+      return globalModule.requireIsolateWithContext(bundle.id, bundle.context);
+    }
+  }
 
   return globalModule.require(bundle.id);
 }
