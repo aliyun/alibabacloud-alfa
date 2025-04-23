@@ -1,4 +1,5 @@
 import cache from './cacheManager';
+import { getMicroAppRelease } from './oss';
 import { IAppConfig, AlfaReleaseConfig } from '../types';
 import { getEnv } from './env';
 
@@ -14,7 +15,7 @@ export const getReleaseUrl = (name?: string, env?: string): string | undefined =
 
   switch (env) {
     case 'local':
-      return (process.env.ALFA_RELEASE_URL) as string || cdnPreUrl;
+      return (process?.env.ALFA_RELEASE_URL) as string || cdnPreUrl;
     case 'daily':
       return cdnPreUrl;
     case 'pre':
@@ -38,12 +39,18 @@ export const getRelease = async (config: IAppConfig) => {
 
     if (!releaseConfig) throw new Error('releaseConfig is null');
 
-    logger?.setContext && logger.setContext({
-      release: JSON.stringify(releaseConfig),
-    });
+    // logger?.setContext && logger.setContext({
+    //   release: JSON.stringify(releaseConfig),
+    // });
 
     return releaseConfig;
   } catch (e) {
+    try {
+      return await getMicroAppRelease<AlfaReleaseConfig>(name, env);
+    } catch (err) {
+      // ...
+    }
+
     logger?.error && logger.error({
       E_CODE: 'GetReleaseError',
       E_MSG: (e as Error).message,

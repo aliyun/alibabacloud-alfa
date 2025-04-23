@@ -1,6 +1,9 @@
-import { AlfaDynamicConfig, IAppConfig } from '../types';
 import { getRelease } from './getRelease';
 import cache from './cacheManager';
+import { getMicroAppConfig } from './oss';
+import { getEnv } from './env';
+
+import { AlfaDynamicConfig, IAppConfig } from '../types';
 
 const defaultConfig: AlfaDynamicConfig = {
   ALL_CHANNEL_FEATURE_STATUS: {},
@@ -29,7 +32,16 @@ export const getConfig = async (config: IAppConfig) => {
 
   try {
     configData = (await cache.getRemote<AlfaDynamicConfig>(configEntry)).data;
+
+    if (!configData) throw new Error('configData is null');
   } catch (e) {
+    try {
+      const [, category, product] = configEntry.match(/\/(\w+)\/(\w+)\/config.json/) || [];
+      configData = await getMicroAppConfig<AlfaDynamicConfig>(category, product, getEnv(config.env));
+    } catch (err) {
+      // ...
+    }
+
     logger?.error && logger.error({
       E_CODE: 'GetConfigError',
       E_MSG: (e as Error).message,

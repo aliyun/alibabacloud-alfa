@@ -7,7 +7,7 @@ import { EnvEnum, IWin } from '../types';
 export const getEnv = (value?: EnvEnum): EnvEnum => {
   if (value) return value;
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process?.env.NODE_ENV === 'development') {
     return 'local';
   }
 
