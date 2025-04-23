@@ -1,4 +1,4 @@
-import isFunction from 'lodash/isFunction';
+import { isFunction } from 'lodash-es';
 import { BundleResolver } from './type';
 import { Record, Module, globalModule } from './module';
 

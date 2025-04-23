@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/console-os-loader",
-  "version": "1.4.45-alpha.0",
+  "version": "1.4.45-alpha.1",
   "description": "Console OS Loader",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -26,7 +26,9 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@babel/runtime": "^7.24.1",
     "debug": "^4.1.1",
+    "lodash-es": "^4.17.21",
     "tslib": "^2.4.0",
     "uuid": "^10.0.0"
   }

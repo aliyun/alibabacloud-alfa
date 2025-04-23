@@ -125,10 +125,12 @@ export async function requireEnsure<T>(bundle: IBundleOption) {
   const promises: Array<Promise<T>> = [];
 
   let chunkRecord: Record<T> = Module.record.get(bundle.id);
+  let pending = false;
 
   if (!chunkRecord || !chunkRecord.loaded) {
     if (chunkRecord) {
       promises.push(chunkRecord.promise);
+      pending = true;
     } else {
       const promise = new Promise<T>((resolve, reject) => {
         chunkRecord = new Record();
@@ -152,7 +154,8 @@ export async function requireEnsure<T>(bundle: IBundleOption) {
 
   await Promise.all(promises);
 
-  if (isModuleResolved(bundle)) {
+  // pending 的 chunk 需要重新执行
+  if (isModuleResolved(bundle) && pending) {
     // if loader contains the context(window, location)
     // then get the new export using new context
     if (bundle.context) {
