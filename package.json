@@ -33,5 +33,13 @@
     "pnpm": "^8.6.7",
     "single-spa-react": "^2.10.2",
     "webpack-merge": "^4.2.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^18.3.20",
+      "@types/react-dom": "^18.3.6",
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1"
+    }
   }
 }

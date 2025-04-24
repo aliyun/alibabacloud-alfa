@@ -54,8 +54,8 @@ export const getManifest = async (appInfo: AppInfo, id?: string) => {
   let actualUrl = url;
   try {
     // dev 环境 请求本地服务
-    if (process.env.NODE_ENV === 'development' && process.env.ENABLE_MICRO_APP_REGISTRY_URL) {
-      const appConfig = await axios.get(`${process.env.MICRO_APP_REGISTRY_URI || '/__get_micro_app__'}?id=${id}&manifest=${url}`)
+    if (process?.env.NODE_ENV === 'development' && process?.env.ENABLE_MICRO_APP_REGISTRY_URL) {
+      const appConfig = await axios.get(`${process?.env.MICRO_APP_REGISTRY_URI || '/__get_micro_app__'}?id=${id}&manifest=${url}`)
       // @ts-ignore
       actualUrl = appConfig.data.manifest || actualUrl;
       appInfo.manifest = actualUrl;
