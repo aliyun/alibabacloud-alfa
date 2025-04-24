@@ -1,11 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { loadBundle } from '@alicloud/console-os-loader';
 
-import { WidgetFactoryOption, WidgetCWSConfig } from './types';
 import { getWidgetVersionById, getWidgetDeps, getWidgetConfigById, eventEmitter } from './widget/index';
 import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
 import { normalizeName } from './utils';
+
+import type { WidgetFactoryOption, WidgetCWSConfig } from './types';
 
 export function createCWSWidget<T>(option: WidgetFactoryOption) {
   const AlfaWidget = lazy(async () => {

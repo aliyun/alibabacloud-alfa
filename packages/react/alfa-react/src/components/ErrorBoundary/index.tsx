@@ -1,6 +1,8 @@
-import React, { ErrorInfo } from 'react';
-import isFunction from 'lodash/isFunction';
+import React from 'react';
+import { isFunction } from 'lodash-es';
 import { AlfaLogger } from '@alicloud/alfa-core';
+
+import type { PropsWithChildren, ErrorInfo } from 'react';
 
 import ErrorPanel from './ErrorPanel';
 
@@ -21,7 +23,7 @@ interface GlobalBl {
   };
 }
 
-class ErrorBoundary extends React.Component<IProps, State> {
+class ErrorBoundary extends React.Component<PropsWithChildren<IProps>, State> {
   constructor(props: IProps) {
     super(props);
     this.state = {

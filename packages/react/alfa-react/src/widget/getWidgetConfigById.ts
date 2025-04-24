@@ -1,4 +1,4 @@
-import template from 'lodash/template';
+import { template } from 'lodash-es';
 import { request } from '@alicloud/alfa-core';
 
 import { WidgetFactoryOption, WidgetCWSConfig } from '../types';

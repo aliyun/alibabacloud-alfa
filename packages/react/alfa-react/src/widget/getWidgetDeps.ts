@@ -1,7 +1,7 @@
 import react from 'react';
 import reactDom from 'react-dom';
 import axios from 'axios';
-import kebabCase from 'lodash/kebabCase';
+import { kebabCase } from 'lodash-es';
 import * as propTypes from 'prop-types';
 import { loadBundle } from '@alicloud/console-os-loader';
 import { createCWSWidget } from '../widget';
@@ -105,5 +105,5 @@ export const getWidgetDeps = async (config: WidgetCWSConfig, option?: WidgetFact
     // widget 1.x API 的兼容
     '@ali/widget-utils-config': injectedWidgetUtils,
     '@ali/widget-loader': createWidget,
-  } as WidgetRuntime;
+  };
 };

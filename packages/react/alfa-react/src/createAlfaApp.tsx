@@ -19,7 +19,7 @@ const Application = createApplication(loader);
 
 interface IProps extends IApplicationProps, IApplicationCustomProps {}
 
-function createAlfaApp<P = any>(option: AlfaFactoryOption) {
+function createAlfaApp<P = any>(option: AlfaFactoryOption): React.FC<any> {
   const { name, dependencies, priority, dynamicConfig, manifest } = option || {};
 
   // check app option

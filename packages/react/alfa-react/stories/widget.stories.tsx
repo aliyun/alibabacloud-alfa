@@ -1,53 +1,60 @@
-import * as React from 'react';
-import axios from 'axios';
-import { select, withKnobs } from '@storybook/addon-knobs';
-import { storiesOf } from '@storybook/react';
-import { createAlfaWidget } from '../src';
-import { cachedRelease } from '../src/widget/getWidgetVersionById';
-// import * as homeWidgetRuntime from '@ali/home-widget-runtime';
+/**
+ * title: "AlfaWidget Demo"
+ * description: ""
+ */
+import React, { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { useAlfaWidget, addGlobalRequestInterceptor } from '../src';
 
-// @ts-ignore
-const WidgetProps = {
-  title: '',
-  subtitle: '指定的标题',
-  cache: false,
-  className: 'cws-article',
-  namespace: 'nexconsole/component_web',
-  slug: 'card',
+type Story = StoryObj<typeof Demo>;
+
+addGlobalRequestInterceptor((config) => {
+  console.info(config);
+
+  return config;
+});
+
+const Wrapper = (props) => {
+  const AlfaWidget = useAlfaWidget({
+    name: '@ali/alfa-cloud-home-widget-cost-overview-new',
+    locale: 'en_US',
+    env: 'pre',
+    version: 'x-v2',
+    delay: () => new Promise((resolve) => setTimeout(() => {
+      resolve(undefined);
+    }, 5000)),
+    priority: 'high',
+    sandbox: {
+      sandBoxUrl: 'about:blank',
+    },
+    // dynamicConfig: true,
+  });
+
+  if (!AlfaWidget) return null;
+
+  return <AlfaWidget {...props} />;
 };
 
-storiesOf('Alfa Wigets', module)
-  .addDecorator(withKnobs)
-  .add('With Widget', () => {
-    const [reslease, setRelease] = React.useState(cachedRelease || {});
-    React.useEffect(() => {
-      (async () => {
-        // @ts-ignore
-        const resp = await axios.get<WidgetReleaseConfig>('https://cws.alicdn.com/release.json');
-        setRelease(resp.data);
-      })();
-    }, []);
-    const name = select('Widget ID', Object.keys(reslease), '@ali/widget-home-resources-overview');
-    const version = select('Widget Version', Object.keys((reslease)[name] || {}), '0.x');
+function Demo() {
+  const [visible, setVisible] = useState(false);
 
-    // @ts-ignore
-    return (
-      <>
-        {
-          React.createElement(
-            createAlfaWidget({
-              name,
-              version,
-              loading: false,
-              alfaLoader: true,
-              env: 'pre',
-              dependencies: {
-                // '@ali/home-widget-runtime': homeWidgetRuntime,
-              } }),
-            {
-              ...WidgetProps,
-            },
-          )
-        }
-      </>);
-  });
+  return (
+    <div>
+      <button onClick={() => setVisible(!visible)}>btn</button>
+      {
+        visible ? <Wrapper a={Date.now()} test={() => {}} /> : null
+      }
+    </div>
+  );
+}
+
+const meta: Meta<typeof Demo> = {
+  component: Demo,
+};
+
+export const Widget: Story = {
+  args: {},
+  render: () => <Demo />,
+};
+
+export default meta;

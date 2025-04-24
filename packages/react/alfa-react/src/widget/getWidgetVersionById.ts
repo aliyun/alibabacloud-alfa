@@ -1,4 +1,4 @@
-import template from 'lodash/template';
+import { template } from 'lodash-es';
 import { IWin, request, AlfaReleaseConfig } from '@alicloud/alfa-core';
 
 import { WidgetFactoryOption, WidgetReleaseConfig } from '../types';

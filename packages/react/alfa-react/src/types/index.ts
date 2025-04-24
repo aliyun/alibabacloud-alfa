@@ -53,7 +53,7 @@ export interface AlfaFactoryOption extends IAppConfig {
   /**
    * @deprecated
    */
-  fallbackRender?: (error?: Error) => Element;
+  fallbackRender?: (error?: Error) => React.ReactNode;
   /**
    * 延迟加载
    */
