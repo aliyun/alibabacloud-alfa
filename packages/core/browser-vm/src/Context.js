@@ -11,7 +11,8 @@ class Context {
 
       // TODO: change src to a reasonable value.
       iframe.setAttribute('src', conf.url ? conf.url : '/api.json');
-      iframe.style.cssText = 'position: absolute; top: -20000px; width: 1px; height: 1px;';
+      // window.innerHeight will be 0 if box-sizing is border-box
+      iframe.style.cssText = 'position: absolute; top: -20000px; width: 1px; height: 1px; box-sizing: border-box;';
 
       if (conf.id) iframe.setAttribute('data-id', conf.id);
 
