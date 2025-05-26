@@ -8,7 +8,7 @@ import { IWin } from '../types';
  * @returns
  */
 export const getMainUid = () => {
-  return (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK || getCookie('login_aliyunid_pk') || undefined;
+  return (window as IWin).ALIYUN_CONSOLE_CONFIG?.MAIN_ACCOUNT_PK || getCookie('login_aliyunid_pk') || getCookie('login_apsaraid_pk') || undefined;
 };
 
 /**

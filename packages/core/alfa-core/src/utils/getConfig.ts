@@ -1,9 +1,12 @@
+import parseEnv from '@alicloud/console-base-conf-parse-env';
+
 import { getRelease } from './getRelease';
 import cache from './cacheManager';
 import { getMicroAppConfig } from './oss';
 import { getEnv } from './env';
+import request from './request';
 
-import { AlfaDynamicConfig, IAppConfig } from '../types';
+import type { AlfaDynamicConfig, IAppConfig, IWin } from '../types';
 
 const defaultConfig: AlfaDynamicConfig = {
   ALL_CHANNEL_FEATURE_STATUS: {},
@@ -49,4 +52,33 @@ export const getConfig = async (config: IAppConfig) => {
   }
 
   return configData;
+};
+
+/**
+ * 支持从 fecs 接口获取业务配置，获取到的数据和控制台一致，不需要额外处理
+ */
+export const getConfigV2 = async (config: IAppConfig) => {
+  const releaseConfig = await getRelease(config);
+  const { relatedConsoleAppId } = releaseConfig.metadata || {};
+
+  if (relatedConsoleAppId) {
+    if (relatedConsoleAppId === (window as IWin).ALIYUN_CONSOLE_CONFIG?.APP_ID) {
+      return {
+        ALIYUN_CONSOLE_CONFIG: (window as IWin).ALIYUN_CONSOLE_CONFIG,
+        ALIYUN_CONSOLE_GLOBAL: (window as IWin).ALIYUN_CONSOLE_GLOBAL || {},
+      };
+    }
+
+    try {
+      const res = await request.get<{ ALIYUN_CONSOLE_CONFIG: IWin['ALIYUN_CONSOLE_CONFIG']; ALIYUN_CONSOLE_GLOBAL: Record<string, any> }>(
+        `//fecs.console.${parseEnv().MAIN_DOMAIN}/api/alfa/console/config?=appId=${relatedConsoleAppId}`,
+      );
+
+      return res.data;
+    } catch (e) {
+      // ....
+    }
+  }
+
+  return undefined;
 };

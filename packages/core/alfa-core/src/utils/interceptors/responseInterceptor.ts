@@ -80,7 +80,7 @@ export default async function responseInterceptor(response: AxiosResponse<any>) 
   if (isLegal(url, data)) {
     return response;
   } else {
-    config.url = url?.replace(/:\/\/cws\.alicdn\.com\//, '://cws2.alicdn.com/');
+    config.url = url?.replace(/:\/\/cws\.[a-z0-9-]+\.com\//, '://cws2.alicdn.com/');
     const newResponse = await axios(config);
 
     if (isLegal(url, newResponse.data)) {

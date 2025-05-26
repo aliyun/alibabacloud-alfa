@@ -2,7 +2,7 @@ export { createMicroApp } from './createMicroApp';
 export { addRequestInterceptor } from './utils/interceptors';
 export { getRelease } from './utils/getRelease';
 export { getManifest } from './utils/getManifest';
-export { getConfig } from './utils/getConfig';
+export { getConfig, getConfigV2 } from './utils/getConfig';
 export { getI18nMessages } from './utils/getI18nMessages';
 export { getLocale, getEnv } from './utils';
 export { default as BaseLoader } from './base';

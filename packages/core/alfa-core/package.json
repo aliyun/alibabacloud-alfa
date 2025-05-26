@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/alfa-core",
-  "version": "1.5.0-alpha.2",
+  "version": "1.5.0-alpha.3",
   "description": "MicroFront End SDK for alicloud",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -32,7 +32,7 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "@alicloud/console-base-conf-parse-env": "^1.4.5",
+    "@alicloud/console-base-conf-parse-env": "^1.4.6",
     "@alicloud/console-logger-sls": "^1.2.31",
     "@alicloud/console-os-kernal": "workspace:^",
     "@alicloud/cookie": "^1.5.3",
@@ -42,6 +42,5 @@
     "crypto-js": "^4.1.1",
     "qs": "^6.14.0",
     "tslib": "^2.4.0"
-  },
-  "gitHead": "6387c6b9e984da70641716a25ff92d382cc4d7ca"
+  }
 }

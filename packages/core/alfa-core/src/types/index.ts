@@ -40,6 +40,7 @@ export interface IWin {
     portalType: string;
     MAIN_ACCOUNT_PK: string;
     CURRENT_PK: string;
+    APP_ID?: string;
   }>;
 }
 
@@ -118,6 +119,9 @@ export interface AlfaReleaseConfig {
   'locales-versions'?: Record<Version, Partial<AlfaLocaleVersion>>;
   'config-versions'?: Record<Version, Partial<AlfaConfigVersion>>;
   'next-versions'?: Record<Version, { featureStatus: AlfaFeature }>;
+  metadata?: {
+    relatedConsoleAppId?: string; // 关联的控制台 ViperId
+  };
 }
 
 type AlfaChannelLinks = Partial<Record<Channel, ChannelLinks>>;
