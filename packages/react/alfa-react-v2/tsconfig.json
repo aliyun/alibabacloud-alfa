@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "strict": true,
+    "jsx": "react",
+    "module": "esnext",
+    "target": "es5",
+    "esModuleInterop": true,
+    "lib": ["dom", "es2015", "scripthost"],
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "paths": {
+      "~/*": [ "./src/*" ]
+    }
+  },
+  "include": [
+    "./src/*",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
