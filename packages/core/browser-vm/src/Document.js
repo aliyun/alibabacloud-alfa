@@ -54,6 +54,11 @@ class Document {
               return target.addEventListener(...args);
             };
 
+          case 'removeEventListener':
+            return (...args) => {
+              target.removeEventListener(...args);
+            };
+
           case 'removeEventListeners':
             return () => {
               for (const args of eventListeners) {
