@@ -52,6 +52,14 @@ function isConfig(url: string, data: AlfaDynamicConfig) {
   return false;
 }
 
+function isFecs(url: string, data: any) {
+  if (/\/(pre-)?fecs\./.test(url) && data?.data?.ALIYUN_CONSOLE_CONFIG) {
+    return true;
+  }
+
+  return false;
+}
+
 function isLocale(url: string) {
   // will not check locale file content
   if (/\/(zh_CN|zh_TW|ja_JP|en_US)/.exec(url)) return true;
@@ -62,7 +70,7 @@ function isLocale(url: string) {
 function isLegal(url?: string, data?: any) {
   // data is an object and not empty
   if (url && data && Object.prototype.toString.call(data) === '[object Object]' && Object.keys(data).length > 0) {
-    if (isManifest(url, data) || isRelease(url, data) || isConfig(url, data) || isLocale(url)) {
+    if (isManifest(url, data) || isRelease(url, data) || isConfig(url, data) || isLocale(url) || isFecs(url, data)) {
       return true;
     }
   }

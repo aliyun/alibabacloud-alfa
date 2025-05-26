@@ -5,8 +5,6 @@ export interface RequestInterceptor {
   (config: AxiosRequestConfig): AxiosRequestConfig | Promise<AxiosRequestConfig>;
 }
 
-const requestList: RequestInterceptor[] = [];
-
 export const addRequestInterceptor = (fn: RequestInterceptor) => {
   const interceptor: RequestInterceptor = (config) => {
     try {

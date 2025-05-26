@@ -70,11 +70,14 @@ export const getConfigV2 = async (config: IAppConfig) => {
     }
 
     try {
-      const res = await request.get<{ ALIYUN_CONSOLE_CONFIG: IWin['ALIYUN_CONSOLE_CONFIG']; ALIYUN_CONSOLE_GLOBAL: Record<string, any> }>(
-        `//fecs.console.${parseEnv().MAIN_DOMAIN}/api/alfa/console/config?=appId=${relatedConsoleAppId}`,
+      const res = await request.get<{
+        code: string;
+        data: { ALIYUN_CONSOLE_CONFIG: IWin['ALIYUN_CONSOLE_CONFIG']; ALIYUN_CONSOLE_GLOBAL: Record<string, any> };
+      }>(
+        `https://${config.env !== 'prod' ? 'pre-' : ''}fecs.console.${parseEnv().MAIN_DOMAIN}/api/alfa/console/config?appId=${relatedConsoleAppId}`,
       );
 
-      return res.data;
+      return res.data.data;
     } catch (e) {
       // ....
     }
