@@ -12,12 +12,17 @@ const getCurrentCdnHost = () => {
   }
 };
 
+const currentCdnHost = getCurrentCdnHost();
+
 export default async function requestInterceptor(config: AxiosRequestConfig) {
-  const hostname = getCurrentCdnHost();
-  // if cdn is not alicdn, replace it
-  if (hostname && config.url) {
-    // 非公有云下无 cws2
-    config.url = config.url.replace(new RegExp('.alicdn.com'), `.${hostname}`).replace('cws2.', 'cws.');
+  if (currentCdnHost !== 'alicdn.com') {
+    // if cdn is not alicdn, replace it
+    if (currentCdnHost && config.url) {
+      config.url = config.url
+        .replace(new RegExp('.alicdn.com'), `.${currentCdnHost}`)
+        .replace('cws2.', 'cws.') // 非公有云下无 cws2
+        .replace('dev.g.idptcloud01cdn.com', 'dev-g.idptcloud01cdn.com'); // idptcloud01cdn 无 dev.g 子域名
+    }
   }
 
   return config;
