@@ -45,3 +45,17 @@ export const getI18nMessages = async (config: IAppConfig) => {
 
   return messages;
 };
+
+export const getI18nMessagesV2 = async (config: IAppConfig) => {
+  const releaseConfig = await getRelease(config);
+  const { relatedMDSAppName } = releaseConfig.metadata || {};
+  const locale = getLocale(config.locale);
+
+  const globalNamespace = `${relatedMDSAppName}_${locale}`;
+
+  if (relatedMDSAppName && (window as Record<string, any>)[globalNamespace]) {
+    return (window as Record<string, any>)[globalNamespace];
+  }
+
+  return getI18nMessages(config);
+};

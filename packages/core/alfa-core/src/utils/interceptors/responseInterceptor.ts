@@ -88,7 +88,9 @@ export default async function responseInterceptor(response: AxiosResponse<any>) 
   if (isLegal(url, data)) {
     return response;
   } else {
-    config.url = url?.replace(/:\/\/cws\.[a-z0-9-]+\.com\//, '://cws2.alicdn.com/');
+    config.url = url?.replace(/:\/\/cws\.([a-z0-9-]+)\.com\//, (match, p1) => {
+      return `://cws2.${p1}.com/`;
+    });
     const newResponse = await axios(config);
 
     if (isLegal(url, newResponse.data)) {

@@ -1,4 +1,4 @@
-import { IAppConfig, getConfig, getConfigV2, getI18nMessages, IWin } from '@alicloud/alfa-core';
+import { IAppConfig, getConfig, getConfigV2, getI18nMessagesV2, IWin } from '@alicloud/alfa-core';
 
 import { getConsoleConfig } from '../utils/getConsoleConfig';
 import { getConsoleGlobal } from '../utils/getConsoleGlobal';
@@ -34,7 +34,7 @@ async function afterLoadHook(appConfig: IAppConfig & { channel?: string }) {
             ];
           });
         }),
-      getI18nMessages(appConfig),
+      getI18nMessagesV2(appConfig),
     ]);
 
 

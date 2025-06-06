@@ -121,6 +121,7 @@ export interface AlfaReleaseConfig {
   'next-versions'?: Record<Version, { featureStatus: AlfaFeature }>;
   metadata?: {
     relatedConsoleAppId?: string; // 关联的控制台 ViperId
+    relatedMDSAppName?: string; // 关联的 mds 应用名称
   };
 }
 
