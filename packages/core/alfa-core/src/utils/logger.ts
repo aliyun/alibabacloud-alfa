@@ -77,6 +77,9 @@ export default class Logger implements AlfaLogger {
   private track(method: Method, topic: string, params: Params) {
     const data = this.mergeData(params);
 
+    // just report in aliyun.com && alibabacloud.com
+    if (!['aliyun.com', 'alibabacloud.com', 'aliyun-inc.com', 'alibaba-inc.com'].find((domain) => location.hostname.endsWith(domain))) return false;
+
     // do not track during development
     if (this.context.ENV !== 'prod') {
       console[method](topic, data);
