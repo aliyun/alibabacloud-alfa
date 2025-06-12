@@ -35,7 +35,7 @@ const Application = createApplication(loader);
 function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
   const {
     name, dependencies, priority, dynamicConfig,
-    manifest, loading, lazyLoad, delay,
+    manifest, loading, lazyLoad, delay, sandbox,
   } = option || {};
 
   if (name.match(/@ali\/widget-/)) {
@@ -59,13 +59,7 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
     preLoader = async () => p;
   }
 
-  const passedInOption = { ...option };
-
-  // 非 oneConsole 环境下设置 iframe 沙箱地址为 about:blank
-  // 避免沙箱创建失败
-  if (passedInOption.sandbox && !passedInOption.sandbox.sandBoxUrl && !isOneConsole()) {
-    passedInOption.sandbox.sandBoxUrl = 'about:blank';
-  }
+  const passedInOption = { ...option, sandbox: { ...sandbox, sandBoxUrl: 'about:blank' } };
 
   const useDelay = () => {
     return useMemo(() => {

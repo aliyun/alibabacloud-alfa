@@ -1,5 +1,7 @@
 import type { AxiosRequestConfig } from 'axios';
 
+const whiteList = ['alicdn.com', 'idptcloud01cdn.com'];
+
 // 兼容非公有云环境
 const getCurrentCdnHost = () => {
   try {
@@ -14,10 +16,11 @@ const getCurrentCdnHost = () => {
 
 const currentCdnHost = getCurrentCdnHost();
 
+// 根据不同环境替换 cdn 的域名
 export default async function requestInterceptor(config: AxiosRequestConfig) {
-  if (currentCdnHost !== 'alicdn.com') {
+  if (currentCdnHost && currentCdnHost !== 'alicdn.com' && whiteList.includes(currentCdnHost)) {
     // if cdn is not alicdn, replace it
-    if (currentCdnHost && config.url) {
+    if (config.url) {
       config.url = config.url
         .replace(new RegExp('.alicdn.com'), `.${currentCdnHost}`)
         .replace('cws2.', 'cws.') // 非公有云下无 cws2
