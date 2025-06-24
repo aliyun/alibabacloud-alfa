@@ -61,12 +61,14 @@ export const getConfigV2 = async (config: IAppConfig) => {
   const releaseConfig = await getRelease(config);
   const { relatedConsoleAppId } = releaseConfig.metadata || {};
 
+  const currentConfig = {
+    ALIYUN_CONSOLE_CONFIG: (window as IWin).ALIYUN_CONSOLE_CONFIG || {},
+    ALIYUN_CONSOLE_GLOBAL: (window as IWin).ALIYUN_CONSOLE_GLOBAL || {},
+  };
+
   if (relatedConsoleAppId) {
     if (relatedConsoleAppId === (window as IWin).ALIYUN_CONSOLE_CONFIG?.APP_ID) {
-      return {
-        ALIYUN_CONSOLE_CONFIG: (window as IWin).ALIYUN_CONSOLE_CONFIG,
-        ALIYUN_CONSOLE_GLOBAL: (window as IWin).ALIYUN_CONSOLE_GLOBAL || {},
-      };
+      return currentConfig;
     }
 
     try {
@@ -77,11 +79,17 @@ export const getConfigV2 = async (config: IAppConfig) => {
         `https://${config.env !== 'prod' ? 'pre-' : ''}fecs.console.${parseEnv().MAIN_DOMAIN}/api/alfa/console/config?appId=${relatedConsoleAppId}`,
       );
 
-      return res.data.data;
+      return {
+        ALIYUN_CONSOLE_CONFIG: {
+          ...(window as IWin).ALIYUN_CONSOLE_CONFIG,
+          ...res.data.data.ALIYUN_CONSOLE_CONFIG,
+        },
+        ALIYUN_CONSOLE_GLOBAL: res.data.data.ALIYUN_CONSOLE_GLOBAL,
+      };
     } catch (e) {
       // ....
     }
   }
 
-  return undefined;
+  return currentConfig;
 };
