@@ -10,6 +10,8 @@ const logger = createLogger({
 
 interface Params {
   [key: string]: string | number | boolean | undefined;
+  // 强制上报
+  __force_log__?: boolean;
 }
 
 enum Method {
@@ -81,7 +83,7 @@ export default class Logger implements AlfaLogger {
     if (!['aliyun.com', 'alibabacloud.com', 'aliyun-inc.com', 'alibaba-inc.com'].find((domain) => location.hostname.endsWith(domain))) return false;
 
     // do not track during development
-    if (this.context.ENV !== 'prod') {
+    if (this.context.ENV !== 'prod' && !params?.__force_log__) {
       console[method](topic, data);
       return;
     }

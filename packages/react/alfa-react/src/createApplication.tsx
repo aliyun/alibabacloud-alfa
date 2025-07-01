@@ -104,7 +104,7 @@ export default function createApplication(loader: BaseLoader) {
       name, version, manifest, loading, customProps, className, style, container,
       entry, url, logger: customLogger, deps, env, beforeMount, afterMount, beforeUnmount,
       afterUnmount, beforeUpdate, sandbox: customSandbox, locale, dynamicConfig, noCache,
-      syncHistory, syncRegion, syncResourceGroup, basename, channel, delayPromise,
+      syncHistory, syncRegion, syncResourceGroup, basename, channel, delayPromise, forceLog,
       preLoader,
     } = props;
     const { handleExternalLink } = customProps;
@@ -311,11 +311,11 @@ export default function createApplication(loader: BaseLoader) {
         if (isUnmounted) return;
 
         if (!app) {
-          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.' });
+          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'load app failed.', __force_log__: forceLog });
         }
 
         if (!appRef.current) {
-          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find container.' });
+          return logger?.error && logger.error({ E_CODE: 'RuntimeError', E_MSG: 'cannot find container.', __force_log__: forceLog });
         }
 
         // update body in sandbox context
@@ -360,13 +360,14 @@ export default function createApplication(loader: BaseLoader) {
           });
         }
 
-        logger?.record && logger?.record({
+        logger?.record && logger.record({
           REQUEST_VERSION: memoOptions.version,
           RESPONSE_VERSION: realVersion,
           END_TIME: Date.now(),
+          __force_log__: forceLog,
         });
 
-        logger?.send && logger?.send();
+        logger?.send && logger.send();
 
         // just run once
         setAppInstance(app);

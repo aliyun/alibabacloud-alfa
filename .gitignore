@@ -37,13 +37,16 @@ build/Release
 lib
 es
 dist
-types
 
 # TypeScript v1 declaration files
 typings/
 
 # Output of 'npm pack'
 *.tgz
+
+# TypeScript types directories (ignore all except src/types)
+types/
+!**/src/types/
 
 # site
 site/public
