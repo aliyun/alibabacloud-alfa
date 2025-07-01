@@ -2,13 +2,27 @@ import type { AxiosRequestConfig } from 'axios';
 
 const whiteList = ['alicdn.com', 'idptcloud01cdn.com'];
 
+const win = window as { __alfa_cdn_host__?: string };
+
 // 兼容非公有云环境
 const getCurrentCdnHost = () => {
   try {
+    // 逻辑上所有的微应用 cdn 都是同一个 host，所以可以复用同一个全局变量
+    if (win.__alfa_cdn_host__) {
+      return win.__alfa_cdn_host__;
+    }
+
+    // document.currentScript 可能为 null
     const { hostname } = new URL((document.currentScript as HTMLScriptElement)?.src || '');
     const parts = hostname.split('.');
 
-    return parts.length > 2 ? parts.slice(-2).join('.') : hostname;
+    const currentCdnHost = parts.length > 2 ? parts.slice(-2).join('.') : hostname;
+
+    if (!win.__alfa_cdn_host__) {
+      win.__alfa_cdn_host__ = currentCdnHost;
+    }
+
+    return currentCdnHost;
   } catch (e) {
     return undefined;
   }
