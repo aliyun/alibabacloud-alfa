@@ -91,5 +91,6 @@ export const getConfigV2 = async (config: IAppConfig) => {
     }
   }
 
-  return currentConfig;
+  // 返回 undefined 让外部调用判断用于降级
+  return undefined;
 };
