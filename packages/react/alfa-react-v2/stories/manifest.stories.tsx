@@ -10,7 +10,7 @@ type Story = StoryObj<typeof Demo>;
 
 const AlfaApp = createAlfaApp({
   name: '@ali/alfa-xxxxxx',
-  manifest: 'https://dev.g.alicdn.com/ConsoleOS/OSExample/0.0.2/os-example.manifest.json',
+  manifest: 'https://g.idptcloud01cdn.com/haitu/aliyun-ebsops-app-qos-portal/0.8.9/ali-alfa-aliyun-ebsops-app-qos-portal.manifest.json',
   dependencies: {},
 });
 
