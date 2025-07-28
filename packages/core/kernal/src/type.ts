@@ -57,7 +57,7 @@ export interface SandBoxOption {
   externalsVars?: string[];
   allowEvents?: string[];
   disableFakeBody?: boolean;
-  allowResources?: string[];
+  allowResources?: string[] | '*';
 }
 
 export interface AppOption {

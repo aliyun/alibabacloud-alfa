@@ -121,6 +121,7 @@ export default function createApplication(loader: BaseLoader) {
       preLoader,
       container,
     });
+    const mountedApp = useRef(false);
 
     const onSyncHistory = useCallbackRef(props.onSyncHistory || (() => {}));
 
@@ -423,6 +424,10 @@ export default function createApplication(loader: BaseLoader) {
         .then(() => {
           if (isUnmounted) return;
 
+          // 保持 path 的路由同步，请勿删除
+          appInstance.update(customProps);
+          mountedApp.current = true;
+
           // 每次挂载后检查是否还有 lazyload 组件未加载
           setTimeout(() => {
             forceCheck();
@@ -442,10 +447,11 @@ export default function createApplication(loader: BaseLoader) {
       return () => {
         isUnmounted = true;
         appInstance.unmount();
+        mountedApp.current = false;
       };
     }, [appInstance, getFakeBody]);
 
-    if (appInstance) {
+    if (appInstance && mountedApp.current) {
       appInstance.update(customProps);
     }
 

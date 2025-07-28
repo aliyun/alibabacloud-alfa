@@ -8,7 +8,6 @@ import { AlfaFactoryOption } from './types';
 import createApplication from './createApplication';
 import beforeResolveHook from './loaders/beforeResolveHook';
 import beforeLoadHook from './loaders/beforeLoadHook';
-import { isOneConsole } from './helpers/oneConsole';
 import Loading from './components/Loading';
 import { IS_SSR } from './utils';
 import type { IApplicationCustomProps } from './createApplication';
@@ -34,7 +33,7 @@ const Application = createApplication(loader);
 
 function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
   const {
-    name, dependencies, priority, dynamicConfig,
+    name, dependencies, priority = 'medium', dynamicConfig,
     manifest, loading, lazyLoad, delay, sandbox,
   } = option || {};
 
@@ -46,39 +45,71 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
   // check app option
   if (!name) return () => null;
 
-  let preLoader: () => Promise<any>;
+  let register: (() => Promise<any>) | undefined;
+  // createAlfaWidget 创建的组件是否已经初始化
+  // 通过该变量判断是否还需要预加载
+  let initialized = false;
 
-  if (priority === 'high' && !IS_SSR) {
+  const passedInOption = {
+    ...option,
+    noCache: true,
+    deps: dependencies || {},
+    sandbox: { ...sandbox, sandBoxUrl: 'about:blank' },
+    dynamicConfig: typeof dynamicConfig === 'boolean' ? dynamicConfig : !manifest,
+  };
+
+  const createRegister = () => {
     const p = loader.register({
-      ...option,
-      // 必须设置 container，否则沙箱会创建插入一个新的 body
+      ...passedInOption,
+      // 临时设置 container，否则沙箱会创建插入一个新的 body
       container: document.body,
-      dynamicConfig: typeof dynamicConfig === 'boolean' ? dynamicConfig : !manifest,
     });
 
-    preLoader = async () => p;
+    return async () => p;
+  };
+
+  // 创建延时函数
+  const createDelayPromise = () => {
+    if (typeof delay === 'number') {
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, delay);
+      });
+    }
+
+    if (typeof delay === 'function') {
+      const fnReturn = delay();
+      if (typeof fnReturn.then === 'function') return fnReturn;
+      if (typeof fnReturn === 'number') return fnReturn;
+    }
+
+    return undefined;
+  };
+
+  if (priority === 'high' && !IS_SSR) {
+    register = createRegister();
   }
 
-  const passedInOption = { ...option, sandbox: { ...sandbox, sandBoxUrl: 'about:blank' } };
+  if (priority === 'medium' && !IS_SSR) {
+    // 默认优先级下，空闲时会去预加载微应用，而不是等待加载完成
+    if (typeof requestIdleCallback === 'function') {
+      requestIdleCallback(() => {
+        if (register || initialized) return;
+
+        register = createRegister();
+      });
+    } else {
+      setTimeout(() => {
+        if (register || initialized) return;
+
+        register = createRegister();
+      }, 0);
+    }
+  }
 
   const useDelay = () => {
-    return useMemo(() => {
-      if (typeof delay === 'number') {
-        return new Promise<void>((resolve) => {
-          setTimeout(() => {
-            resolve();
-          }, delay);
-        });
-      }
-
-      if (typeof delay === 'function') {
-        const fnReturn = delay();
-        if (typeof fnReturn.then === 'function') return fnReturn;
-        if (typeof fnReturn === 'number') return fnReturn;
-      }
-
-      return undefined;
-    }, []);
+    return useMemo(createDelayPromise, []);
   };
 
   if (priority === 'low' && !IS_SSR) {
@@ -99,7 +130,8 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
               style={props.style || passedInOption.style}
               deps={dependencies || {}}
               customProps={{ ...props }}
-              preLoader={preLoader}
+              // 低优先级下，不预加载
+              preLoader={undefined}
             />
           </ErrorBoundary>
         </LazyLoad>
@@ -109,6 +141,8 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
 
   return (props: P & IProps) => {
     const delayPromise = useDelay();
+
+    initialized = true;
 
     // Compatible with old logic
     // props should not passed in errorBoundary
@@ -120,7 +154,7 @@ function createAlfaWidget<P = any>(option: AlfaFactoryOption): React.FC<any> {
           style={props.style || passedInOption.style}
           deps={dependencies || {}}
           customProps={{ ...props }}
-          preLoader={preLoader}
+          preLoader={register}
         />
       </ErrorBoundary>
     );

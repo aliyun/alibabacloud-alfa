@@ -16,7 +16,7 @@ export interface ContextOption {
   url?: string;
   id?: string;
   disableBody?: boolean;
-  allowResources?: string[];
+  allowResources?: string[] | '*';
   enableScriptEscape?: boolean;
 }
 
