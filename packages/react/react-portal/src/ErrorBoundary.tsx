@@ -7,6 +7,7 @@ export interface Logger {
 interface IProp {
   logger?: Logger;
   appDidCatch?: (error: Error) => void;
+  children?: React.ReactNode;
 }
 
 interface State {
